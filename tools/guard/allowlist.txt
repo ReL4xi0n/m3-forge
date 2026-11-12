@@ -1,0 +1,6 @@
+# Reviewed exceptions for the public-diff guard.
+# Format: one entry per line, four TAB-separated fields:
+#   <rule>	<path>	<key>	<reason (>= 10 chars)>
+# rule: raw-overlap (key = 16-hex shingle hash printed by the guard) or forbidden-term (key = *).
+# private-path, foreign-image and gitlink can never be allowlisted.
+# A false positive is resolved ONLY by a reviewed entry here. Never bypass the hook (no --no-verify).

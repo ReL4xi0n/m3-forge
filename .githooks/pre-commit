@@ -1,0 +1,8 @@
+#!/bin/sh
+# m3-forge pre-commit: run the public-diff guard on staged files.
+# Bypassing this hook (git commit --no-verify) is forbidden; see tools/guard/allowlist.txt.
+if ! command -v node >/dev/null 2>&1; then
+  echo "m3-forge guard: node not found; commit blocked" >&2
+  exit 1
+fi
+exec node tools/guard/check-public-diff.mjs --staged

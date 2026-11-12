@@ -1,0 +1,13 @@
+{
+  "name": "m3-forge",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "an unofficial skill for Material Design 3 (repository tooling)",
+  "license": "Apache-2.0",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "test": "node --test",
+    "guard": "node tools/guard/check-public-diff.mjs"
+  }
+}
