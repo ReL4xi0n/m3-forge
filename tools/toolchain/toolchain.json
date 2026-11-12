@@ -1,0 +1,29 @@
+{
+  "root": "%USERPROFILE%\\.m3-toolchain",
+  "resolvedOn": "2026-11-12",
+  "components": {
+    "jdk": {
+      "version": "21.0.13+9 (Temurin, Windows x64)",
+      "url": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.13%2B9/OpenJDK21U-jdk_x64_windows_hotspot_21.0.13_9.zip",
+      "checksum": { "algo": "SHA256", "value": "a4dbaa05fca4bd89d84584e58c459bd732efebb1722af80ab13c6516832004f9" },
+      "dir": "jdk-21",
+      "source": "https://api.adoptium.net/v3/assets/latest/21/hotspot?architecture=x64&image_type=jdk&os=windows"
+    },
+    "flutter": {
+      "version": "3.50.0 stable (Dart 3.14.0)",
+      "url": "https://storage.googleapis.com/flutter_infra_release/releases/stable/windows/flutter_windows_3.50.0-stable.zip",
+      "checksum": { "algo": "SHA256", "value": "35fb843409c80a1c69b64bbae1756bba437222f909622d83540e266e1759aab8" },
+      "dir": "flutter",
+      "source": "https://storage.googleapis.com/flutter_infra_release/releases/releases_windows.json"
+    },
+    "cmdlinetools": {
+      "version": "22.0 (cmdline-tools;22.0, last release with the classic Java sdkmanager)",
+      "url": "https://dl.google.com/android/repository/commandlinetools-win-15859902_latest.zip",
+      "checksum": { "algo": "SHA1", "value": "b9862337a13e2809a5159dc3a08d058091bd59f6" },
+      "dir": "android-sdk/cmdline-tools/latest",
+      "removeAfterExtract": ["bin/android.exe"],
+      "source": "https://dl.google.com/android/repository/repository2-3.xml"
+    }
+  },
+  "androidPackages": ["platforms;android-36", "build-tools;36.0.0"]
+}
