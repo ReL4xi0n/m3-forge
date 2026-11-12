@@ -1,96 +1,46 @@
 #!/usr/bin/env node
 // Public-diff guard CLI. Usage:
-//   node tools/guard/check-public-diff.mjs (--staged | --range <A>..<B> | --all-tracked) [--json]
-// Exit codes: 0 clean, 1 violations, 2 forbidden-term list required but missing.
-import { execFileSync } from 'node:child_process';
-import { readFile } from 'node:fs/promises';
-import { join } from 'node:path';
-import { checkFiles, loadAllowlist, loadCorpus } from './lib.mjs';
+//   node tools/guard/check-public-diff.mjs (--staged | --range <A>..<B> | --all-tracked | --commits <rev>) [--json]
+//     --staged        files in the index (pre-commit)
+//     --range A..B    files that differ between A and B
+//     --all-tracked   every tracked file
+//     --commits <rev> every commit in `git rev-list <rev>` (A..B, or one sha for its whole history):
+//                     the content each commit introduces, its message, and noreply author/committer emails
+// Env: GUARD_FORBIDDEN_TERMS (extra terms), GUARD_REQUIRE_TERMS / GUARD_REQUIRE_CORPUS (fail closed).
+// Exit codes: 0 clean, 1 violations, 2 required private data missing, 64 usage.
+import { openRepo, loadContext, stagedEntries, rangeEntries, trackedEntries, checkEntries, checkCommits, report } from './repo.mjs';
 
 const args = process.argv.slice(2);
 const json = args.includes('--json');
-const root = execFileSync('git', ['rev-parse', '--show-toplevel'], { encoding: 'utf8' }).trim();
-const git = (gitArgs, encoding) =>
-  execFileSync('git', gitArgs, { cwd: root, maxBuffer: 1 << 30, encoding, stdio: ['ignore', 'pipe', 'pipe'] });
-const splitZ = s => s.split('\0').filter(Boolean);
-
-function selectFiles() {
-  if (args.includes('--staged')) {
-    return { paths: splitZ(git(['diff', '--cached', '--name-only', '--diff-filter=ACMR', '-z'], 'utf8')), rev: '' };
-  }
-  const i = args.indexOf('--range');
-  if (i !== -1) {
-    const range = args[i + 1] || '';
-    const [a, b] = range.split('..');
-    if (!a || !b) usage(`invalid --range "${range}"`);
-    return { paths: splitZ(git(['diff', '--name-only', '--diff-filter=ACMR', '-z', a, b], 'utf8')), rev: b };
-  }
-  if (args.includes('--all-tracked')) return { paths: splitZ(git(['ls-files', '-z'], 'utf8')), rev: '' };
-  usage('missing mode');
-}
+const valueOf = flag => {
+  const i = args.indexOf(flag);
+  return i === -1 ? null : args[i + 1] || '';
+};
 
 function usage(msg) {
-  console.error(`guard: ${msg}\nusage: check-public-diff.mjs (--staged | --range <A>..<B> | --all-tracked) [--json]`);
+  console.error(`guard: ${msg}\nusage: check-public-diff.mjs (--staged | --range <A>..<B> | --all-tracked | --commits <rev>) [--json]`);
   process.exit(64);
 }
 
-async function readTerms(notices) {
-  const terms = [];
-  try {
-    const text = await readFile(join(root, 'private', 'guard-terms.txt'), 'utf8');
-    for (const line of text.split(/\r?\n/)) {
-      const t = line.trim();
-      if (t && !t.startsWith('#')) terms.push(t);
-    }
-  } catch {
-    // no local list (fresh clone or CI)
-  }
-  for (const t of (process.env.GUARD_FORBIDDEN_TERMS || '').split(/[\n,]/)) if (t.trim()) terms.push(t.trim());
-  if (!terms.length) {
-    if (/^(1|true)$/i.test(process.env.GUARD_REQUIRE_TERMS || '')) {
-      console.error('guard: forbidden-term list required (GUARD_REQUIRE_TERMS) but none found');
-      process.exit(2);
-    }
-    notices.push('NOTICE: no forbidden-term list found; term check skipped');
-  }
-  return terms;
-}
+let select;
+if (args.includes('--staged')) select = (repo, ctx) => checkEntries(repo, stagedEntries(repo), ctx);
+else if (valueOf('--range') !== null) {
+  const range = valueOf('--range');
+  const [a, b] = range.split('..');
+  if (!a || !b) usage(`invalid --range "${range}"`);
+  select = (repo, ctx) => checkEntries(repo, rangeEntries(repo, a, b), ctx);
+} else if (args.includes('--all-tracked')) select = (repo, ctx) => checkEntries(repo, trackedEntries(repo), ctx);
+else if (valueOf('--commits') !== null) {
+  const rev = valueOf('--commits');
+  if (!rev || rev.startsWith('-')) usage(`invalid --commits "${rev}"`);
+  select = (repo, ctx) => checkCommits(repo, [rev], ctx);
+} else usage('missing mode');
 
-const notices = [];
-const { paths, rev } = selectFiles();
-const forbiddenTerms = await readTerms(notices);
-const { corpus, fromCache } = await loadCorpus(
-  join(root, 'private', 'raw'),
-  join(root, 'private', '.guard-cache', 'corpus.json'),
-);
-if (!corpus) notices.push('NOTICE: private/raw not found; raw-overlap check skipped');
-else if (fromCache) notices.push('corpus: cached');
-const allowlist = await loadAllowlist(join(root, 'tools', 'guard', 'allowlist.txt'));
-
-const files = [];
-for (const path of paths) {
-  try {
-    files.push({ path, content: git(['show', `${rev}:${path}`]) });
-  } catch {
-    // Unreadable entries still get path rules; gitlinks (mode 160000) are flagged explicitly.
-    const entry = rev ? git(['ls-tree', rev, '--', path], 'utf8') : git(['ls-files', '-s', '--', path], 'utf8');
-    const gitlink = entry.startsWith('160000');
-    files.push({ path, content: null, gitlink });
-    if (!gitlink) notices.push(`NOTICE: could not read ${path} (content checks skipped)`);
-  }
+const repo = openRepo();
+const ctx = await loadContext(repo);
+if (ctx.fatal) {
+  console.error(`guard: ${ctx.fatal}`);
+  process.exit(2);
 }
-
-const violations = checkFiles({ files, forbiddenTerms, corpus, allowlist });
-if (json) {
-  console.log(JSON.stringify({ violations, notices, checked: files.length }, null, 2));
-} else {
-  for (const n of notices) console.log(n);
-  for (const v of violations) {
-    const tail = v.key === '-' ? '(not allowlistable)' : `(allowlist key: ${v.key})`;
-    console.log(`${v.rule}  ${v.path}  ${v.detail}  ${tail}`);
-  }
-  console.log(violations.length
-    ? `guard: ${violations.length} violation(s) in ${files.length} file(s). Fix them, or add a reviewed entry to tools/guard/allowlist.txt. Never use --no-verify.`
-    : `guard: ok (${files.length} file(s) checked)`);
-}
-process.exit(violations.length ? 1 : 0);
+const result = select(repo, ctx);
+process.exit(report({ ...result, notices: ctx.notices, json }));

@@ -20,3 +20,24 @@ jobs:
         env:
           GUARD_FORBIDDEN_TERMS: ${{ secrets.GUARD_FORBIDDEN_TERMS }}
           GUARD_REQUIRE_TERMS: ${{ github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository }}
+      # Every new commit: GitHub noreply author and committer emails, no forbidden terms in the message,
+      # and no private or forbidden content in what the commit introduces (even if a later commit removes it).
+      - name: commit emails and per-commit guard
+        run: |
+          if [ "$EVENT" = pull_request ]; then
+            RANGE="$BASE_SHA..$PR_HEAD_SHA"
+          elif [ -z "$BEFORE" ] || [ "$BEFORE" = 0000000000000000000000000000000000000000 ] || ! git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
+            RANGE="$SHA"
+          else
+            RANGE="$BEFORE..$SHA"
+          fi
+          echo "commits: $RANGE"
+          node tools/guard/check-public-diff.mjs --commits "$RANGE"
+        env:
+          EVENT: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          BEFORE: ${{ github.event.before }}
+          SHA: ${{ github.sha }}
+          GUARD_FORBIDDEN_TERMS: ${{ secrets.GUARD_FORBIDDEN_TERMS }}
+          GUARD_REQUIRE_TERMS: ${{ github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository }}

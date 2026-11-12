@@ -1,0 +1,10 @@
+#!/bin/sh
+# m3-forge pre-push: blocks backup/* branches and checks every pushed commit (content it introduces,
+# commit message, GitHub noreply author/committer email) and the ref names. Fails closed like pre-commit.
+# Bypassing this hook (git push --no-verify) is forbidden.
+if ! command -v node >/dev/null 2>&1; then
+  echo "m3-forge guard: node not found; push blocked" >&2
+  exit 1
+fi
+export GUARD_REQUIRE_TERMS=1 GUARD_REQUIRE_CORPUS=1
+exec node tools/guard/pre-push.mjs "$@"

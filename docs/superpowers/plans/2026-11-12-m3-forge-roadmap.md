@@ -20,10 +20,16 @@ Every phase ends with the same steps: stop, write an evidence summary, then wait
 
 Standing rules for all phases:
 - Speak Turkish with the owner; everything in the repo is English.
-- Before every public commit, run `npm run guard -- --staged` and confirm it passes.
+- Before every public commit, run `node tools/guard/check-public-diff.mjs --staged` and confirm it
+  passes. (Windows PowerShell 5.1 drops the `--` in `npm run guard -- --staged`.)
 - Never read `evals/holdout/` before the final measurement.
 - Never auto-accept Android SDK licenses.
 - `--no-verify` (and any hook bypass) is forbidden. Guard false positives go into
   `tools/guard/allowlist.txt` with a reason, after review.
 - Public commits use the repo-local GitHub noreply email (checked 2026-11-12:
-  `…+ReL4xi0n@users.noreply.github.com`).
+  `…+ReL4xi0n@users.noreply.github.com`) as both author and committer.
+- Merge locally (fast-forward or rebase), never with GitHub's merge or squash buttons or
+  `gh pr merge`: GitHub authors those commits with the account email. Before every push, run
+  `node tools/guard/check-public-diff.mjs --commits origin/main..HEAD`. The pre-push hook and CI
+  (`--commits`) enforce noreply emails on every new commit.
+- `backup/*` branches are local only; the pre-push hook refuses to push them.

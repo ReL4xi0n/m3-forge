@@ -15,12 +15,13 @@ for (const tool of ['flutter', 'dart']) {
     mkdirSync(join(root, 'flutter', 'bin'), { recursive: true });
     writeFileSync(join(root, 'flutter', 'bin', `${tool}.bat`), '@echo APPDATA=%APPDATA%\r\n@echo ARGS=%*\r\n@exit /b 7\r\n');
     // /s + verbatim: cmd strips only the outer quotes, so the quoted path with spaces survives.
-    const r = spawnSync('cmd.exe', ['/d', '/s', '/c', `""${join(dir, 'shims', `${tool}.cmd`)}" "a b" --x"`], {
+    const r = spawnSync('cmd.exe', ['/d', '/s', '/c', `""${join(dir, 'shims', `${tool}.cmd`)}" "a b" --x "pkg:^1.2.0""`], {
       encoding: 'utf8', env: { ...process.env, M3_TOOLCHAIN: root }, windowsVerbatimArguments: true,
     });
     assert.equal(r.status, 7, r.stdout + r.stderr);
     assert.match(r.stdout, new RegExp(`APPDATA=${join(root, 'flutter-appdata').replace(/\\/g, '\\\\')}\\r?\\n`));
-    assert.match(r.stdout, /ARGS="a b" --x/);
+    // M4: carets must reach flutter.bat unchanged (`call` would double them).
+    assert.match(r.stdout, /ARGS="a b" --x "pkg:\^1\.2\.0"\r?\n/);
     assert.ok(existsSync(join(root, 'flutter-appdata')));
   });
 }

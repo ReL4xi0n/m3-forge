@@ -9,5 +9,5 @@ if not defined M3_TOOLCHAIN (
 )
 set "APPDATA=%M3_TOOLCHAIN%\flutter-appdata"
 if not exist "%APPDATA%" mkdir "%APPDATA%"
-call "%M3_TOOLCHAIN%\flutter\bin\flutter.bat" %*
-exit /b %ERRORLEVEL%
+rem No `call`: control passes to flutter.bat, so its exit code is ours and carets in arguments are not doubled.
+"%M3_TOOLCHAIN%\flutter\bin\flutter.bat" %*

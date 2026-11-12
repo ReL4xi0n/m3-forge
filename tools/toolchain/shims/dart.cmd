@@ -7,5 +7,5 @@ if not defined M3_TOOLCHAIN (
 )
 set "APPDATA=%M3_TOOLCHAIN%\flutter-appdata"
 if not exist "%APPDATA%" mkdir "%APPDATA%"
-call "%M3_TOOLCHAIN%\flutter\bin\dart.bat" %*
-exit /b %ERRORLEVEL%
+rem No `call`: control passes to dart.bat (exit code preserved, carets not doubled).
+"%M3_TOOLCHAIN%\flutter\bin\dart.bat" %*

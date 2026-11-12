@@ -34,12 +34,16 @@ Use only one of the two installs.
 
 ```
 npm test                                # unit tests
-git config core.hooksPath .githooks     # enable the pre-commit guard
+git config core.hooksPath .githooks     # maintainers: enable the pre-commit and pre-push guards
 ```
 
 - Nothing under `private/` is ever committed.
-- The pre-commit guard must never be bypassed (`--no-verify` is forbidden). A reviewed false
-  positive goes into `tools/guard/allowlist.txt` with a reason.
+- The guards must never be bypassed (`--no-verify` is forbidden). A reviewed false positive goes
+  into `tools/guard/allowlist.txt` with a reason.
+- The hooks need the maintainers' private term list and fail closed without it. Other
+  contributors can leave them off. CI repeats the checks; the term list is a repository secret,
+  so it applies to branches in this repository and to every push to `main`.
+- Commits must use a GitHub noreply email as author and committer; CI rejects any other address.
 
 ## License
 

@@ -1,8 +1,10 @@
 #!/bin/sh
 # m3-forge pre-commit: run the public-diff guard on staged files.
+# Fails closed: the private term list and raw corpus (private/ in the main checkout) must be present.
 # Bypassing this hook (git commit --no-verify) is forbidden; see tools/guard/allowlist.txt.
 if ! command -v node >/dev/null 2>&1; then
   echo "m3-forge guard: node not found; commit blocked" >&2
   exit 1
 fi
+export GUARD_REQUIRE_TERMS=1 GUARD_REQUIRE_CORPUS=1
 exec node tools/guard/check-public-diff.mjs --staged

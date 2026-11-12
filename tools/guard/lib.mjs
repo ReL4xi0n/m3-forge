@@ -37,6 +37,70 @@ export function isBinary(buf) {
   return buf.subarray(0, 8000).includes(0);
 }
 
+function utf16be(buf) {
+  const even = Buffer.from(buf.subarray(0, buf.length - (buf.length % 2)));
+  return even.swap16().toString('utf16le');
+}
+
+// Text content of a blob, or null for binary data. UTF-16 is decoded because Windows PowerShell 5.1
+// writes it by default (`>`, Out-File), and NUL bytes would otherwise make it look binary.
+export function decodeText(buf) {
+  if (buf.length >= 2 && buf[0] === 0xff && buf[1] === 0xfe) return buf.subarray(2).toString('utf16le');
+  if (buf.length >= 2 && buf[0] === 0xfe && buf[1] === 0xff) return utf16be(buf.subarray(2));
+  if (buf.length >= 3 && buf[0] === 0xef && buf[1] === 0xbb && buf[2] === 0xbf) return buf.subarray(3).toString('utf8');
+  const head = buf.subarray(0, 8000);
+  if (!head.includes(0)) return buf.toString('utf8');
+  let odd = 0;
+  let even = 0;
+  for (let i = 0; i < head.length; i++) if (head[i] === 0) (i % 2 ? odd++ : even++);
+  const min = Math.max(1, Math.floor(head.length / 2) * 0.3);
+  if (even === 0 && odd >= min) return buf.toString('utf16le');
+  if (odd === 0 && even >= min) return utf16be(buf);
+  return null;
+}
+
+const NOREPLY = /^(?:\d+\+)?[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?@users\.noreply\.github\.com$/;
+
+export function isNoreplyEmail(email) {
+  return NOREPLY.test(String(email || '').trim());
+}
+
+function lowerTerms(forbiddenTerms) {
+  return (forbiddenTerms || []).map(t => t.trim().toLowerCase()).filter(Boolean);
+}
+
+function maskTerms(s, terms) {
+  let out = s;
+  terms.forEach((t, i) => {
+    let at;
+    while ((at = out.toLowerCase().indexOf(t)) !== -1) out = out.slice(0, at) + `<term #${i + 1}>` + out.slice(at + t.length);
+  });
+  return out;
+}
+
+// Commit metadata: author/committer must be GitHub noreply addresses, messages must not contain terms.
+// Details never echo the email or the term (CI logs are public).
+export function checkCommitMeta({ sha, authorEmail, committerEmail, message }, forbiddenTerms) {
+  const short = String(sha).slice(0, 7);
+  const v = [];
+  if (!isNoreplyEmail(authorEmail)) v.push({ rule: 'commit-email', path: short, key: '-', detail: 'author email is not a GitHub noreply address' });
+  if (!isNoreplyEmail(committerEmail)) v.push({ rule: 'commit-email', path: short, key: '-', detail: 'committer email is not a GitHub noreply address' });
+  const lower = String(message || '').toLowerCase();
+  lowerTerms(forbiddenTerms).forEach((t, i) => {
+    if (lower.includes(t)) v.push({ rule: 'forbidden-term', path: short, key: '-', detail: `forbidden term #${i + 1} in commit message` });
+  });
+  return v;
+}
+
+export function checkRefName(ref, forbiddenTerms) {
+  const lower = String(ref).toLowerCase();
+  const v = [];
+  lowerTerms(forbiddenTerms).forEach((t, i) => {
+    if (lower.includes(t)) v.push({ rule: 'forbidden-term', path: 'ref', key: '-', detail: `forbidden term #${i + 1} in ref name` });
+  });
+  return v;
+}
+
 function words(text) {
   return text.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim().split(' ').filter(Boolean);
 }
@@ -158,11 +222,17 @@ export async function loadAllowlist(file) {
 export function checkFiles({ files, forbiddenTerms, corpus, allowlist = [] }) {
   const allowed = new Set(allowlist.map(a => `${a.rule}\t${a.path}\t${a.key}`));
   const isAllowed = (rule, path, key) => allowed.has(`${rule}\t${path}\t${key}`);
-  const terms = (forbiddenTerms || []).map(t => t.trim().toLowerCase()).filter(Boolean);
+  const terms = lowerTerms(forbiddenTerms);
   const violations = [];
 
   for (const file of files) {
     const path = normalizePath(file.path);
+    const lowerPath = path.toLowerCase();
+    terms.forEach((t, i) => {
+      if (lowerPath.includes(t)) {
+        violations.push({ rule: 'forbidden-term', path: maskTerms(path, terms), key: '-', detail: `forbidden term #${i + 1} in path` });
+      }
+    });
     if (isPrivatePath(path)) {
       violations.push({ rule: 'private-path', path, key: '-', detail: 'files under private/ must never be committed' });
     }
@@ -172,8 +242,9 @@ export function checkFiles({ files, forbiddenTerms, corpus, allowlist = [] }) {
     if (file.gitlink) {
       violations.push({ rule: 'gitlink', path, key: '-', detail: 'embedded repository / submodule entries are not allowed' });
     }
-    if (file.content == null || isBinary(file.content)) continue;
-    const text = file.content.toString('utf8');
+    if (file.content == null) continue;
+    const text = decodeText(file.content);
+    if (text == null) continue;
     const lower = text.toLowerCase();
     terms.forEach((t, i) => {
       if (lower.includes(t) && !isAllowed('forbidden-term', path, '*')) {
