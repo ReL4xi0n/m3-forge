@@ -1,0 +1,10 @@
+{
+  "name": "m3-forge",
+  "version": "0.0.1",
+  "description": "an unofficial skill for Material Design 3 — /material3 builds M3 Expressive UIs for web, Flutter and Jetpack Compose",
+  "author": {
+    "name": "The m3-forge authors"
+  },
+  "license": "Apache-2.0",
+  "repository": "https://github.com/ReL4xi0n/m3-forge"
+}

@@ -1,0 +1,14 @@
+{
+  "name": "m3-forge",
+  "description": "m3-forge: an unofficial skill for Material Design 3",
+  "owner": {
+    "name": "ReL4xi0n"
+  },
+  "plugins": [
+    {
+      "name": "m3-forge",
+      "source": "./plugin",
+      "description": "an unofficial skill for Material Design 3 — /material3 builds M3 Expressive UIs for web, Flutter and Jetpack Compose"
+    }
+  ]
+}

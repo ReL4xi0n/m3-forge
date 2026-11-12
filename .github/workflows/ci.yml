@@ -1,0 +1,22 @@
+name: ci
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  checks:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: npm test
+      - run: node tools/ci/validate-plugin.mjs
+      - name: guard (all tracked files)
+        run: node tools/guard/check-public-diff.mjs --all-tracked
+        env:
+          GUARD_FORBIDDEN_TERMS: ${{ secrets.GUARD_FORBIDDEN_TERMS }}
+          GUARD_REQUIRE_TERMS: ${{ github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository }}
