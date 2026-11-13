@@ -231,6 +231,54 @@
     "line": 147
   },
   {
+    "page": "/foundations/content-design/notifications",
+    "value": {
+      "number": 0.2
+    },
+    "note": "knowledge/guidance/foundations/content-design.md",
+    "line": 114
+  },
+  {
+    "page": "/foundations/writing/text-resizing",
+    "value": {
+      "number": 2
+    },
+    "note": "knowledge/guidance/foundations/writing.md",
+    "line": 36
+  },
+  {
+    "page": "/foundations/writing/text-resizing",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/foundations/writing.md",
+    "line": 40
+  },
+  {
+    "page": "/foundations/writing/text-resizing",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/foundations/writing.md",
+    "line": 42
+  },
+  {
+    "page": "/foundations/writing/text-resizing",
+    "value": {
+      "number": 2
+    },
+    "note": "knowledge/guidance/foundations/writing.md",
+    "line": 80
+  },
+  {
+    "page": "/foundations/writing/text-resizing",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/foundations/writing.md",
+    "line": 82
+  },
+  {
     "page": "/blog/science-of-color-design",
     "value": {
       "dp": 40
