@@ -5375,15 +5375,31 @@ md.comp.app-bar.large.icon.size, md.comp.app-bar.medium.icon.size, md.comp.app-b
 | material-components-android | m3_sys_shape_corner_medium_corner_family | (none) | shape/res/values/tokens.xml:54 |
 | material-components-android | m3_sys_shape_corner_small_corner_family | (none) | shape/res/values/tokens.xml:60 |
 
-## NOT FOUND in notes: 33
+## NOT FOUND in notes: 49
 
 Statements the knowledge notes mark `[NOT FOUND]` (values or facts no source gives, e.g. the default color variant for M3 Expressive). Collected by `tools/extract/knowledge/lint.mjs`.
 
 | note:line | statement |
 |---|---|
+| knowledge/guidance/components/button-groups.md:121 | - The group has no type token of its own [NOT FOUND]. Labels follow the button sizes; see |
+| knowledge/guidance/components/button-groups.md:139 | - Compose has no group motion token [NOT FOUND]; `ButtonGroup` animates widths with the fast |
+| knowledge/guidance/components/button-groups.md:145 | [NOT FOUND]. |
 | knowledge/guidance/components/buttons.md:125 | per-size label token [NOT FOUND]; their single label token is `md.comp.button.label-text`. |
 | knowledge/guidance/components/buttons.md:160 | - Compose defines no per-button motion token [NOT FOUND]. Its code animates the plain button's |
 | knowledge/guidance/components/buttons.md:165 | [NOT FOUND]. Springs replace durations and easings in Expressive motion. |
+| knowledge/guidance/components/extended-fab.md:119 | extended-FAB label token [NOT FOUND]. Compose's code hard-codes those three styles |
+| knowledge/guidance/components/extended-fab.md:162 | - No extended-FAB duration, easing or spring token covers these transitions [NOT FOUND]. |
+| knowledge/guidance/components/fab-menu.md:99 | in Flutter's data; material-web and Compose define no FAB-menu label token [NOT FOUND]. |
+| knowledge/guidance/components/fab-menu.md:133 | - No FAB-menu duration, easing or spring token exists [NOT FOUND]. |
+| knowledge/guidance/components/floating-action-button.md:95 | - Padding and screen margins are drawn only in spec images without printed values [NOT FOUND]. |
+| knowledge/guidance/components/floating-action-button.md:104 | - Medium FAB shape: Compose has no token for it [NOT FOUND] and uses `ShapeDefaults.LargeIncreased` |
+| knowledge/guidance/components/floating-action-button.md:109 | - A FAB shows no text, so it has no label type token [NOT FOUND]. For the labelled version see |
+| knowledge/guidance/components/floating-action-button.md:148 | - No FAB duration, easing or spring token covers these transitions [NOT FOUND]. |
+| knowledge/guidance/components/icon-buttons.md:115 | - Icon buttons carry no text, so there is no label type token [NOT FOUND]. |
+| knowledge/guidance/components/icon-buttons.md:164 | [NOT FOUND]. |
+| knowledge/guidance/components/icon-buttons.md:165 | - Compose defines no icon-button motion token [NOT FOUND]. Its code animates both the press morph |
+| knowledge/guidance/components/icon-buttons.md:176 | - Icon change on selection (outlined to filled glyph): no motion token [NOT FOUND]. |
+| knowledge/guidance/components/segmented-buttons.md:114 | spring [NOT FOUND]. No segmented-button motion token exists [NOT FOUND]. |
 | knowledge/guidance/components/split-button.md:96 | - The split button has no label type token of its own [NOT FOUND]. |
 | knowledge/guidance/components/split-button.md:112 | token [NOT FOUND]. |
 | knowledge/guidance/components/split-button.md:118 | token [NOT FOUND]. |

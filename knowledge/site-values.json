@@ -1,5 +1,191 @@
 [
   {
+    "page": "/components/button-groups/specs",
+    "value": {
+      "dp": 2
+    },
+    "note": "knowledge/guidance/components/button-groups.md",
+    "line": 41
+  },
+  {
+    "page": "/components/button-groups/specs",
+    "token": "md.comp.button-group.standard.xsmall.between-space",
+    "value": {
+      "dp": 18
+    },
+    "note": "knowledge/guidance/components/button-groups.md",
+    "line": 95
+  },
+  {
+    "page": "/components/button-groups/specs",
+    "token": "md.comp.button-group.standard.small.between-space",
+    "value": {
+      "dp": 12
+    },
+    "note": "knowledge/guidance/components/button-groups.md",
+    "line": 95
+  },
+  {
+    "page": "/components/button-groups/specs",
+    "token": "md.comp.button-group.standard.medium.between-space",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/button-groups.md",
+    "line": 95
+  },
+  {
+    "page": "/components/button-groups/specs",
+    "token": "md.comp.button-group.standard.large.between-space",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/button-groups.md",
+    "line": 95
+  },
+  {
+    "page": "/components/button-groups/specs",
+    "token": "md.comp.button-group.standard.xlarge.between-space",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/button-groups.md",
+    "line": 95
+  },
+  {
+    "page": "/components/button-groups/specs",
+    "token": "md.comp.button-group.connected.xsmall.inner-corner.corner-size",
+    "value": {
+      "dp": 4
+    },
+    "note": "knowledge/guidance/components/button-groups.md",
+    "line": 97
+  },
+  {
+    "page": "/components/button-groups/specs",
+    "token": "md.comp.button-group.connected.small.inner-corner.corner-size",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/button-groups.md",
+    "line": 97
+  },
+  {
+    "page": "/components/button-groups/specs",
+    "token": "md.comp.button-group.connected.medium.inner-corner.corner-size",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/button-groups.md",
+    "line": 97
+  },
+  {
+    "page": "/components/button-groups/specs",
+    "token": "md.comp.button-group.connected.large.inner-corner.corner-size",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/button-groups.md",
+    "line": 97
+  },
+  {
+    "page": "/components/button-groups/specs",
+    "token": "md.comp.button-group.connected.xlarge.inner-corner.corner-size",
+    "value": {
+      "dp": 20
+    },
+    "note": "knowledge/guidance/components/button-groups.md",
+    "line": 97
+  },
+  {
+    "page": "/components/button-groups/specs",
+    "value": {
+      "dp": 4
+    },
+    "note": "knowledge/guidance/components/button-groups.md",
+    "line": 100
+  },
+  {
+    "page": "/components/button-groups/specs",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/button-groups.md",
+    "line": 104
+  },
+  {
+    "page": "/components/button-groups/specs",
+    "value": {
+      "dp": 4
+    },
+    "note": "knowledge/guidance/components/button-groups.md",
+    "line": 110
+  },
+  {
+    "page": "/components/button-groups/specs",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/button-groups.md",
+    "line": 110
+  },
+  {
+    "page": "/components/button-groups/specs",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/button-groups.md",
+    "line": 110
+  },
+  {
+    "page": "/components/button-groups/specs",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/button-groups.md",
+    "line": 111
+  },
+  {
+    "page": "/components/button-groups/specs",
+    "value": {
+      "dp": 20
+    },
+    "note": "knowledge/guidance/components/button-groups.md",
+    "line": 111
+  },
+  {
+    "page": "/components/button-groups/specs",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/button-groups.md",
+    "line": 116
+  },
+  {
+    "page": "/components/button-groups/specs",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/button-groups.md",
+    "line": 117
+  },
+  {
+    "page": "/components/button-groups/accessibility",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/button-groups.md",
+    "line": 151
+  },
+  {
+    "page": "/components/button-groups/accessibility",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/button-groups.md",
+    "line": 186
+  },
+  {
     "page": "/components/buttons/overview",
     "value": {
       "dp": 24
@@ -144,6 +330,394 @@
     },
     "note": "knowledge/guidance/components/buttons.md",
     "line": 211
+  },
+  {
+    "page": "/components/extended-fab/overview",
+    "token": "md.comp.extended-fab.small.container.height",
+    "value": {
+      "dp": 56
+    },
+    "note": "knowledge/guidance/components/extended-fab.md",
+    "line": 81
+  },
+  {
+    "page": "/components/extended-fab/overview",
+    "token": "md.comp.extended-fab.medium.container.height",
+    "value": {
+      "dp": 80
+    },
+    "note": "knowledge/guidance/components/extended-fab.md",
+    "line": 81
+  },
+  {
+    "page": "/components/extended-fab/overview",
+    "token": "md.comp.extended-fab.large.container.height",
+    "value": {
+      "dp": 96
+    },
+    "note": "knowledge/guidance/components/extended-fab.md",
+    "line": 81
+  },
+  {
+    "page": "/components/extended-fab/specs",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/extended-fab.md",
+    "line": 87
+  },
+  {
+    "page": "/components/extended-fab/specs",
+    "token": "md.comp.extended-fab.small.leading-space",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/extended-fab.md",
+    "line": 88
+  },
+  {
+    "page": "/components/extended-fab/specs",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/extended-fab.md",
+    "line": 89
+  },
+  {
+    "page": "/components/extended-fab/overview",
+    "value": {
+      "dp": 56
+    },
+    "note": "knowledge/guidance/components/extended-fab.md",
+    "line": 90
+  },
+  {
+    "page": "/components/extended-fab/specs",
+    "value": {
+      "dp": 80
+    },
+    "note": "knowledge/guidance/components/extended-fab.md",
+    "line": 92
+  },
+  {
+    "page": "/components/extended-fab/specs",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/extended-fab.md",
+    "line": 92
+  },
+  {
+    "page": "/components/extended-fab/specs",
+    "token": "md.comp.extended-fab.container.shape",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/extended-fab.md",
+    "line": 93
+  },
+  {
+    "page": "/components/extended-fab/overview",
+    "value": {
+      "dp": 56
+    },
+    "note": "knowledge/guidance/components/extended-fab.md",
+    "line": 214
+  },
+  {
+    "page": "/components/fab-menu/specs",
+    "token": "md.comp.fab-menu.close-button.container.width",
+    "value": {
+      "dp": 56
+    },
+    "note": "knowledge/guidance/components/fab-menu.md",
+    "line": 70
+  },
+  {
+    "page": "/components/fab-menu/specs",
+    "value": {
+      "dp": 56
+    },
+    "note": "knowledge/guidance/components/fab-menu.md",
+    "line": 81
+  },
+  {
+    "page": "/components/fab-menu/specs",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/fab-menu.md",
+    "line": 85
+  },
+  {
+    "page": "/components/fab-menu/specs",
+    "value": {
+      "dp": 40
+    },
+    "note": "knowledge/guidance/components/fab-menu.md",
+    "line": 87
+  },
+  {
+    "page": "/components/fab-menu/specs",
+    "value": {
+      "dp": 56
+    },
+    "note": "knowledge/guidance/components/fab-menu.md",
+    "line": 88
+  },
+  {
+    "page": "/components/fab-menu/guidelines",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/fab-menu.md",
+    "line": 89
+  },
+  {
+    "page": "/components/fab-menu/guidelines",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/components/fab-menu.md",
+    "line": 90
+  },
+  {
+    "page": "/components/fab-menu/specs",
+    "value": {
+      "dp": 4
+    },
+    "note": "knowledge/guidance/components/fab-menu.md",
+    "line": 91
+  },
+  {
+    "page": "/components/fab-menu/accessibility",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/fab-menu.md",
+    "line": 154
+  },
+  {
+    "page": "/components/floating-action-button/specs",
+    "value": {
+      "dp": 56
+    },
+    "note": "knowledge/guidance/components/floating-action-button.md",
+    "line": 90
+  },
+  {
+    "page": "/components/floating-action-button/specs",
+    "token": "md.comp.fab.container.height",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/components/floating-action-button.md",
+    "line": 91
+  },
+  {
+    "page": "/components/floating-action-button/specs",
+    "value": {
+      "number": 0.08
+    },
+    "note": "knowledge/guidance/components/floating-action-button.md",
+    "line": 135
+  },
+  {
+    "page": "/components/floating-action-button/specs",
+    "value": {
+      "number": 0.1
+    },
+    "note": "knowledge/guidance/components/floating-action-button.md",
+    "line": 137
+  },
+  {
+    "page": "/components/floating-action-button/specs",
+    "value": {
+      "number": 0.1
+    },
+    "note": "knowledge/guidance/components/floating-action-button.md",
+    "line": 139
+  },
+  {
+    "page": "/components/icon-buttons/guidelines",
+    "token": "md.comp.icon-button.small.container.height",
+    "value": {
+      "dp": 40
+    },
+    "note": "knowledge/guidance/components/icon-buttons.md",
+    "line": 49
+  },
+  {
+    "page": "/components/icon-buttons/specs",
+    "token": "md.comp.icon-button.xsmall.container.shape.square",
+    "value": {
+      "dp": 12
+    },
+    "note": "knowledge/guidance/components/icon-buttons.md",
+    "line": 105
+  },
+  {
+    "page": "/components/icon-buttons/specs",
+    "token": "md.comp.icon-button.small.container.shape.square",
+    "value": {
+      "dp": 12
+    },
+    "note": "knowledge/guidance/components/icon-buttons.md",
+    "line": 105
+  },
+  {
+    "page": "/components/icon-buttons/specs",
+    "token": "md.comp.icon-button.medium.container.shape.square",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/icon-buttons.md",
+    "line": 105
+  },
+  {
+    "page": "/components/icon-buttons/specs",
+    "token": "md.comp.icon-button.large.container.shape.square",
+    "value": {
+      "dp": 28
+    },
+    "note": "knowledge/guidance/components/icon-buttons.md",
+    "line": 105
+  },
+  {
+    "page": "/components/icon-buttons/specs",
+    "token": "md.comp.icon-button.xlarge.container.shape.square",
+    "value": {
+      "dp": 28
+    },
+    "note": "knowledge/guidance/components/icon-buttons.md",
+    "line": 105
+  },
+  {
+    "page": "/components/icon-buttons/specs",
+    "token": "md.comp.icon-button.xsmall.pressed.container.shape",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/icon-buttons.md",
+    "line": 106
+  },
+  {
+    "page": "/components/icon-buttons/specs",
+    "token": "md.comp.icon-button.small.pressed.container.shape",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/icon-buttons.md",
+    "line": 106
+  },
+  {
+    "page": "/components/icon-buttons/specs",
+    "token": "md.comp.icon-button.medium.pressed.container.shape",
+    "value": {
+      "dp": 12
+    },
+    "note": "knowledge/guidance/components/icon-buttons.md",
+    "line": 106
+  },
+  {
+    "page": "/components/icon-buttons/specs",
+    "token": "md.comp.icon-button.large.pressed.container.shape",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/icon-buttons.md",
+    "line": 106
+  },
+  {
+    "page": "/components/icon-buttons/specs",
+    "token": "md.comp.icon-button.xlarge.pressed.container.shape",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/icon-buttons.md",
+    "line": 106
+  },
+  {
+    "page": "/components/icon-buttons/specs",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/icon-buttons.md",
+    "line": 111
+  },
+  {
+    "page": "/components/icon-buttons/accessibility",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/icon-buttons.md",
+    "line": 187
+  },
+  {
+    "page": "/components/icon-buttons/specs",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/icon-buttons.md",
+    "line": 226
+  },
+  {
+    "page": "/components/segmented-buttons/specs",
+    "token": "md.comp.outlined-segmented-button.container.height",
+    "value": {
+      "dp": 40
+    },
+    "note": "knowledge/guidance/components/segmented-buttons.md",
+    "line": 73
+  },
+  {
+    "page": "/components/segmented-buttons/specs",
+    "token": "md.comp.outlined-segmented-button.outline.width",
+    "value": {
+      "dp": 1
+    },
+    "note": "knowledge/guidance/components/segmented-buttons.md",
+    "line": 74
+  },
+  {
+    "page": "/components/segmented-buttons/specs",
+    "value": {
+      "dp": 12
+    },
+    "note": "knowledge/guidance/components/segmented-buttons.md",
+    "line": 77
+  },
+  {
+    "page": "/components/segmented-buttons/specs",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/segmented-buttons.md",
+    "line": 78
+  },
+  {
+    "page": "/components/segmented-buttons/specs",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/segmented-buttons.md",
+    "line": 79
+  },
+  {
+    "page": "/components/segmented-buttons/specs",
+    "value": {
+      "dp": 4
+    },
+    "note": "knowledge/guidance/components/segmented-buttons.md",
+    "line": 80
+  },
+  {
+    "page": "/components/segmented-buttons/specs",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/segmented-buttons.md",
+    "line": 143
   },
   {
     "page": "/components/split-button/guidelines",

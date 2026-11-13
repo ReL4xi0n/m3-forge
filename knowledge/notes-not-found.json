@@ -1,5 +1,20 @@
 [
   {
+    "note": "knowledge/guidance/components/button-groups.md",
+    "line": 121,
+    "text": "- The group has no type token of its own [NOT FOUND]. Labels follow the button sizes; see"
+  },
+  {
+    "note": "knowledge/guidance/components/button-groups.md",
+    "line": 139,
+    "text": "- Compose has no group motion token [NOT FOUND]; `ButtonGroup` animates widths with the fast"
+  },
+  {
+    "note": "knowledge/guidance/components/button-groups.md",
+    "line": 145,
+    "text": "[NOT FOUND]."
+  },
+  {
     "note": "knowledge/guidance/components/buttons.md",
     "line": 125,
     "text": "per-size label token [NOT FOUND]; their single label token is `md.comp.button.label-text`."
@@ -13,6 +28,71 @@
     "note": "knowledge/guidance/components/buttons.md",
     "line": 165,
     "text": "[NOT FOUND]. Springs replace durations and easings in Expressive motion."
+  },
+  {
+    "note": "knowledge/guidance/components/extended-fab.md",
+    "line": 119,
+    "text": "extended-FAB label token [NOT FOUND]. Compose's code hard-codes those three styles"
+  },
+  {
+    "note": "knowledge/guidance/components/extended-fab.md",
+    "line": 162,
+    "text": "- No extended-FAB duration, easing or spring token covers these transitions [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/fab-menu.md",
+    "line": 99,
+    "text": "in Flutter's data; material-web and Compose define no FAB-menu label token [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/fab-menu.md",
+    "line": 133,
+    "text": "- No FAB-menu duration, easing or spring token exists [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/floating-action-button.md",
+    "line": 95,
+    "text": "- Padding and screen margins are drawn only in spec images without printed values [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/floating-action-button.md",
+    "line": 104,
+    "text": "- Medium FAB shape: Compose has no token for it [NOT FOUND] and uses `ShapeDefaults.LargeIncreased`"
+  },
+  {
+    "note": "knowledge/guidance/components/floating-action-button.md",
+    "line": 109,
+    "text": "- A FAB shows no text, so it has no label type token [NOT FOUND]. For the labelled version see"
+  },
+  {
+    "note": "knowledge/guidance/components/floating-action-button.md",
+    "line": 148,
+    "text": "- No FAB duration, easing or spring token covers these transitions [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/icon-buttons.md",
+    "line": 115,
+    "text": "- Icon buttons carry no text, so there is no label type token [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/icon-buttons.md",
+    "line": 164,
+    "text": "[NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/icon-buttons.md",
+    "line": 165,
+    "text": "- Compose defines no icon-button motion token [NOT FOUND]. Its code animates both the press morph"
+  },
+  {
+    "note": "knowledge/guidance/components/icon-buttons.md",
+    "line": 176,
+    "text": "- Icon change on selection (outlined to filled glyph): no motion token [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/segmented-buttons.md",
+    "line": 114,
+    "text": "spring [NOT FOUND]. No segmented-button motion token exists [NOT FOUND]."
   },
   {
     "note": "knowledge/guidance/components/split-button.md",
