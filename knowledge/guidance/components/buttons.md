@@ -189,9 +189,14 @@ State layers (drawn in the label/icon color over the container):
     `md.comp.button.filled.*` ids show as NOT FOUND (`knowledge/not-found.md`).
 - Flutter (`material_ui` 1.11.0): `FilledButton`, `FilledButton.tonal`, `ElevatedButton`,
   `OutlinedButton`, `TextButton`.
-  - There is no Expressive toggle button and no size API. We supply them in Phase 3 as reference
-    widgets.
-  - `StyleVariant.material3Expressive` switches the theme style.
+  - Sizes: `ButtonStyle.sizeVariant` takes `ButtonSizeVariant.xSmall` … `xLarge`, but only
+    `ElevatedButton` and `IconButton` read it (`button_style.dart`, `elevated_button.dart`,
+    `icon_button.dart`). The other button widgets have no size API.
+  - `StyleVariant.material3Expressive` is not a theme-wide switch. Only `ElevatedButton` and
+    `IconButton` read it, through `ElevatedButtonThemeData.variant` and
+    `IconButtonThemeData.variant`.
+  - There is no Expressive toggle button. We supply it, and the sizes for the other button
+    widgets, in Phase 3 as reference widgets.
 - Web: no maintained official component. Our CSS button is built in Phase 3 from the material-web
   token values above.
 
