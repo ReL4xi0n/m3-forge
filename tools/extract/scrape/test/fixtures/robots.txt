@@ -1,0 +1,11 @@
+User-agent: *
+Sitemap: https://example.test/sitemap.xml
+Disallow: /archive
+Allow: /archive/ok
+Disallow: /search.html
+Disallow: /*?*q=
+Disallow: /*?*utm_source=
+
+User-agent: otherbot
+Disallow: /
+Crawl-delay: 99
