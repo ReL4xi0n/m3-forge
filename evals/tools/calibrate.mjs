@@ -69,3 +69,86 @@ export function evaluateCalibration({ scores, mapping, expected }) {
   }
   return { pass: failures.length === 0, failures, referenceMeans, defects };
 }
+
+// ---- Orchestration: node evals/tools/calibrate.mjs --round <n> ----
+const DEFECT_REQUEST = 'A settings screen for a budgeting app called Pocketbook. Platform: web.';
+
+export async function runCalibrationRound({ root, round, evalRoot = 'C:\m3-eval', judgeOpts = {} }) {
+  const { readdirSync, readFileSync, writeFileSync, mkdirSync, rmSync } = await import('node:fs');
+  const { join } = await import('node:path');
+  const { anonymize, stripPng, newIds } = await import('./anonymize.mjs');
+  const { runJudgeBatch } = await import('./judge.mjs');
+  const { captureWeb } = await import('../../harness/web/capture.mjs');
+  const refDir = join(root, 'private', 'reference-screenshots');
+  const { anchors, checks } = splitReferences(readdirSync(refDir));
+  const expected = JSON.parse(readFileSync(join(root, 'evals', 'calibration', 'expected.json'), 'utf8'));
+  const roundDir = join(evalRoot, 'calibration', `round-${round}`);
+  rmSync(roundDir, { recursive: true, force: true });
+  const outputs = [];
+  for (const name of Object.keys(expected)) {
+    const cap = await captureWeb({ projectDir: join(root, 'evals', 'calibration', 'defects', name), kind: 'web-empty', outDir: join(roundDir, 'shots', name) });
+    if (!cap.buildOk) throw new Error(`defect page ${name} did not capture: ${cap.reason}`);
+    outputs.push({ cell: name, condition: 'defect', repeat: 1, runId: `calibration-${round}`, request: DEFECT_REQUEST, shots: cap.shots });
+  }
+  for (const n of checks) {
+    const ref = parseRefName(n);
+    outputs.push({ cell: n, condition: 'reference', repeat: 1, runId: `calibration-${round}`, request: referenceRequest(ref),
+      shots: [{ file: join(refDir, n), theme: ref.theme, viewport: ref.platform === 'android' ? 'phone' : 'web' }] });
+  }
+  const judgeDir = join(roundDir, 'judge');
+  const mappingPath = join(root, 'private', 'evals', 'calibration', `round-${round}`, 'mapping.json');
+  const { ids } = anonymize({ outputs, judgeDir, mappingPath });
+  mkdirSync(join(judgeDir, 'anchors'), { recursive: true });
+  const anchorIds = newIds(anchors.length);
+  const anchorList = anchors.map((n, i) => {
+    const ref = parseRefName(n);
+    writeFileSync(join(judgeDir, 'anchors', `${anchorIds[i]}.png`), stripPng(readFileSync(join(refDir, n))));
+    return { file: `anchors/${anchorIds[i]}.png`, platform: ref.platform === 'android' ? 'Android' : 'web', screen: ref.screen, theme: ref.theme,
+      style: ref.style === 'classic' ? 'classic Material 3' : 'current first-party style', score: 3 };
+  });
+  writeFileSync(join(judgeDir, 'anchors', 'anchors.json'), JSON.stringify(anchorList, null, 2));
+  const scores = [];
+  const batches = [];
+  for (let i = 0; i < ids.length; i += 12) batches.push(ids.slice(i, i + 12));
+  const log = [];
+  for (const [b, batch] of batches.entries()) {
+    const r = await runJudgeBatch({ judgeDir, ids: batch, root, batchId: `cal${round}-${b + 1}`, requireFrozen: false, ...judgeOpts });
+    log.push({ batch: b + 1, ok: r.ok, attempts: r.attempts, log: r.log });
+    if (!r.ok) throw new Error(`calibration batch ${b + 1} failed after ${r.attempts} attempts`);
+    scores.push(...r.scores);
+  }
+  const raw = JSON.parse(readFileSync(mappingPath, 'utf8'));
+  const mapping = Object.fromEntries(Object.entries(raw).map(([id, m]) => [id, m.condition === 'reference'
+    ? { kind: 'reference', name: m.cell, theme: parseRefName(m.cell).theme } : { kind: 'defect', name: m.cell }]));
+  const result = evaluateCalibration({ scores, mapping, expected });
+  const privDir = join(root, 'private', 'evals', 'calibration', `round-${round}`);
+  writeFileSync(join(privDir, 'scores.json'), JSON.stringify({ scores, log, anchors, checks }, null, 2));
+  writeFileSync(join(privDir, 'result.json'), JSON.stringify(result, null, 2));
+  return { ...result, anchors: anchors.length, checks: checks.length, defects: result.defects, log };
+}
+
+export function reportSection(round, r) {
+  const lines = [`## Round ${round}: ${r.pass ? 'PASS' : 'FAIL'}`, '',
+    `Anchors shown as score-3 examples: ${r.anchors}. Check references: ${r.checks}. Defect pages: ${Object.keys(r.defects).length}.`, '',
+    '| item | check-reference mean |', '|---|---|',
+    ...Object.entries(r.referenceMeans).map(([k, v]) => `| ${k} | ${v.toFixed(2)} |`), '',
+    '| defect page | targeted item | score | caught |', '|---|---|---|---|',
+    ...Object.entries(r.defects).map(([k, d]) => `| ${k} | ${d.item} | ${d.score} | ${d.ok ? 'yes' : 'no'} |`), ''];
+  if (r.failures.length) lines.push('Failures:', '', ...r.failures.map(f => `- ${f}`), '');
+  return lines.join('\n');
+}
+
+const { fileURLToPath: __f } = await import('node:url');
+if (process.argv[1] && __f(import.meta.url) === process.argv[1]) {
+  const { join, dirname } = await import('node:path');
+  const { appendFileSync, existsSync, writeFileSync } = await import('node:fs');
+  const root = join(dirname(__f(import.meta.url)), '..', '..');
+  const round = Number(process.argv[process.argv.indexOf('--round') + 1]);
+  if (!Number.isInteger(round) || round < 1 || round > 3) { console.error('usage: calibrate.mjs --round <1-3>'); process.exit(2); }
+  const r = await runCalibrationRound({ root, round });
+  const report = join(root, 'evals', 'calibration', 'report.md');
+  if (!existsSync(report)) writeFileSync(report, '# Judge calibration\n\nScores only; images and the ID mapping stay private.\n\n');
+  appendFileSync(report, reportSection(round, r));
+  console.log(JSON.stringify({ round, pass: r.pass, failures: r.failures }));
+  process.exitCode = r.pass ? 0 : 1;
+}
