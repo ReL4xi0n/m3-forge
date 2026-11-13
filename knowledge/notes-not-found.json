@@ -48,5 +48,45 @@
     "note": "knowledge/guidance/styles/color.md",
     "line": 267,
     "text": "Compose has no medium or high contrast tokens [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/styles/elevation.md",
+    "line": 68,
+    "text": "Flutter's token data has no scrim opacity token [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/styles/elevation.md",
+    "line": 71,
+    "text": "- Shadow geometry (blur, offset, opacity per level): no token [NOT FOUND]. Each platform draws its"
+  },
+  {
+    "note": "knowledge/guidance/styles/icons.md",
+    "line": 95,
+    "text": "- No icon-style token exists; these values come from the site [NOT FOUND]. Component icon sizes"
+  },
+  {
+    "note": "knowledge/guidance/styles/shape.md",
+    "line": 88,
+    "text": "these as tokens [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/styles/shape.md",
+    "line": 90,
+    "text": "- Shape morph timing: the site names the scheme but no spring speed for morphs in general [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/styles/spacing.md",
+    "line": 94,
+    "text": "Compose, but the pinned material3 sources define no spacing token or API [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/styles/spacing.md",
+    "line": 99,
+    "text": "- Web: no maintained official component, and material-web has no spacing tokens [NOT FOUND]. Our"
+  },
+  {
+    "note": "knowledge/guidance/styles/typography.md",
+    "line": 158,
+    "text": "exists in our token sources [NOT FOUND]. Relative to the small category, scripts in the medium"
   }
 ]

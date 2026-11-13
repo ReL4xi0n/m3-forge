@@ -237,5 +237,780 @@
     },
     "note": "knowledge/guidance/styles/color.md",
     "line": 285
+  },
+  {
+    "page": "/styles/elevation/overview",
+    "value": {
+      "dp": 1
+    },
+    "note": "knowledge/guidance/styles/elevation.md",
+    "line": 66
+  },
+  {
+    "page": "/styles/elevation/overview",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/styles/elevation.md",
+    "line": 66
+  },
+  {
+    "page": "/styles/elevation/overview",
+    "value": {
+      "dp": 7
+    },
+    "note": "knowledge/guidance/styles/elevation.md",
+    "line": 66
+  },
+  {
+    "page": "/styles/elevation/applying-elevation",
+    "token": "md.comp.scrim.container.opacity",
+    "value": {
+      "number": 0.32
+    },
+    "note": "knowledge/guidance/styles/elevation.md",
+    "line": 67
+  },
+  {
+    "page": "/styles/icons/applying-icons",
+    "value": {
+      "number": 0.115
+    },
+    "note": "knowledge/guidance/styles/icons.md",
+    "line": 47
+  },
+  {
+    "page": "/styles/icons/designing-icons",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/styles/icons.md",
+    "line": 76
+  },
+  {
+    "page": "/styles/icons/designing-icons",
+    "value": {
+      "dp": 20
+    },
+    "note": "knowledge/guidance/styles/icons.md",
+    "line": 77
+  },
+  {
+    "page": "/styles/icons/designing-icons",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/styles/icons.md",
+    "line": 77
+  },
+  {
+    "page": "/styles/icons/designing-icons",
+    "value": {
+      "dp": 40
+    },
+    "note": "knowledge/guidance/styles/icons.md",
+    "line": 77
+  },
+  {
+    "page": "/styles/icons/designing-icons",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/styles/icons.md",
+    "line": 77
+  },
+  {
+    "page": "/styles/icons/applying-icons",
+    "value": {
+      "dp": 20
+    },
+    "note": "knowledge/guidance/styles/icons.md",
+    "line": 78
+  },
+  {
+    "page": "/styles/icons/applying-icons",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/styles/icons.md",
+    "line": 78
+  },
+  {
+    "page": "/styles/icons/designing-icons",
+    "value": {
+      "dp": 20
+    },
+    "note": "knowledge/guidance/styles/icons.md",
+    "line": 79
+  },
+  {
+    "page": "/styles/icons/designing-icons",
+    "value": {
+      "dp": 2
+    },
+    "note": "knowledge/guidance/styles/icons.md",
+    "line": 80
+  },
+  {
+    "page": "/styles/icons/designing-icons",
+    "value": {
+      "dp": 18
+    },
+    "note": "knowledge/guidance/styles/icons.md",
+    "line": 81
+  },
+  {
+    "page": "/styles/icons/designing-icons",
+    "value": {
+      "dp": 20
+    },
+    "note": "knowledge/guidance/styles/icons.md",
+    "line": 82
+  },
+  {
+    "page": "/styles/icons/designing-icons",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/styles/icons.md",
+    "line": 83
+  },
+  {
+    "page": "/styles/icons/designing-icons",
+    "value": {
+      "dp": 20
+    },
+    "note": "knowledge/guidance/styles/icons.md",
+    "line": 84
+  },
+  {
+    "page": "/styles/icons/designing-icons",
+    "value": {
+      "dp": 2
+    },
+    "note": "knowledge/guidance/styles/icons.md",
+    "line": 85
+  },
+  {
+    "page": "/styles/icons/applying-icons",
+    "value": {
+      "dp": 0
+    },
+    "note": "knowledge/guidance/styles/icons.md",
+    "line": 86
+  },
+  {
+    "page": "/styles/icons/designing-icons",
+    "value": {
+      "dp": 2
+    },
+    "note": "knowledge/guidance/styles/icons.md",
+    "line": 87
+  },
+  {
+    "page": "/styles/icons/designing-icons",
+    "value": {
+      "dp": 1.5
+    },
+    "note": "knowledge/guidance/styles/icons.md",
+    "line": 88
+  },
+  {
+    "page": "/styles/icons/applying-icons",
+    "value": {
+      "number": 0.115
+    },
+    "note": "knowledge/guidance/styles/icons.md",
+    "line": 89
+  },
+  {
+    "page": "/styles/icons/designing-icons",
+    "value": {
+      "dp": 20
+    },
+    "note": "knowledge/guidance/styles/icons.md",
+    "line": 93
+  },
+  {
+    "page": "/styles/icons/designing-icons",
+    "value": {
+      "dp": 40
+    },
+    "note": "knowledge/guidance/styles/icons.md",
+    "line": 94
+  },
+  {
+    "page": "/styles/icons/designing-icons",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/styles/icons.md",
+    "line": 94
+  },
+  {
+    "page": "/styles/icons/applying-icons",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/styles/icons.md",
+    "line": 100
+  },
+  {
+    "page": "/styles/icons/applying-icons",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/styles/icons.md",
+    "line": 100
+  },
+  {
+    "page": "/styles/icons/applying-icons",
+    "value": {
+      "dp": 20
+    },
+    "note": "knowledge/guidance/styles/icons.md",
+    "line": 101
+  },
+  {
+    "page": "/styles/icons/applying-icons",
+    "value": {
+      "dp": 40
+    },
+    "note": "knowledge/guidance/styles/icons.md",
+    "line": 101
+  },
+  {
+    "page": "/styles/icons/applying-icons",
+    "value": {
+      "dp": 20
+    },
+    "note": "knowledge/guidance/styles/icons.md",
+    "line": 103
+  },
+  {
+    "page": "/styles/icons/applying-icons",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/styles/icons.md",
+    "line": 127
+  },
+  {
+    "page": "/styles/motion/overview/specs",
+    "value": {
+      "ms": 350
+    },
+    "note": "knowledge/guidance/styles/motion.md",
+    "line": 103
+  },
+  {
+    "page": "/styles/motion/overview/specs",
+    "value": {
+      "ms": 350
+    },
+    "note": "knowledge/guidance/styles/motion.md",
+    "line": 103
+  },
+  {
+    "page": "/styles/motion/overview/specs",
+    "value": {
+      "ms": 500
+    },
+    "note": "knowledge/guidance/styles/motion.md",
+    "line": 104
+  },
+  {
+    "page": "/styles/motion/overview/specs",
+    "value": {
+      "ms": 500
+    },
+    "note": "knowledge/guidance/styles/motion.md",
+    "line": 104
+  },
+  {
+    "page": "/styles/motion/overview/specs",
+    "value": {
+      "ms": 650
+    },
+    "note": "knowledge/guidance/styles/motion.md",
+    "line": 105
+  },
+  {
+    "page": "/styles/motion/overview/specs",
+    "value": {
+      "ms": 750
+    },
+    "note": "knowledge/guidance/styles/motion.md",
+    "line": 105
+  },
+  {
+    "page": "/styles/motion/overview/specs",
+    "value": {
+      "ms": 150
+    },
+    "note": "knowledge/guidance/styles/motion.md",
+    "line": 106
+  },
+  {
+    "page": "/styles/motion/overview/specs",
+    "value": {
+      "ms": 150
+    },
+    "note": "knowledge/guidance/styles/motion.md",
+    "line": 106
+  },
+  {
+    "page": "/styles/motion/overview/specs",
+    "value": {
+      "ms": 200
+    },
+    "note": "knowledge/guidance/styles/motion.md",
+    "line": 107
+  },
+  {
+    "page": "/styles/motion/overview/specs",
+    "value": {
+      "ms": 200
+    },
+    "note": "knowledge/guidance/styles/motion.md",
+    "line": 107
+  },
+  {
+    "page": "/styles/motion/overview/specs",
+    "value": {
+      "ms": 300
+    },
+    "note": "knowledge/guidance/styles/motion.md",
+    "line": 108
+  },
+  {
+    "page": "/styles/motion/overview/specs",
+    "value": {
+      "ms": 300
+    },
+    "note": "knowledge/guidance/styles/motion.md",
+    "line": 108
+  },
+  {
+    "page": "/styles/motion/easing-and-duration/applying-easing-and-duration",
+    "token": "md.sys.motion.duration.long2",
+    "value": {
+      "ms": 500
+    },
+    "note": "knowledge/guidance/styles/motion.md",
+    "line": 149
+  },
+  {
+    "page": "/styles/motion/easing-and-duration/applying-easing-and-duration",
+    "token": "md.sys.motion.duration.medium4",
+    "value": {
+      "ms": 400
+    },
+    "note": "knowledge/guidance/styles/motion.md",
+    "line": 150
+  },
+  {
+    "page": "/styles/motion/easing-and-duration/applying-easing-and-duration",
+    "token": "md.sys.motion.duration.short4",
+    "value": {
+      "ms": 200
+    },
+    "note": "knowledge/guidance/styles/motion.md",
+    "line": 151
+  },
+  {
+    "page": "/styles/motion/easing-and-duration/applying-easing-and-duration",
+    "token": "md.sys.motion.duration.medium2",
+    "value": {
+      "ms": 300
+    },
+    "note": "knowledge/guidance/styles/motion.md",
+    "line": 152
+  },
+  {
+    "page": "/styles/motion/easing-and-duration/applying-easing-and-duration",
+    "token": "md.sys.motion.duration.medium1",
+    "value": {
+      "ms": 250
+    },
+    "note": "knowledge/guidance/styles/motion.md",
+    "line": 153
+  },
+  {
+    "page": "/styles/motion/easing-and-duration/applying-easing-and-duration",
+    "token": "md.sys.motion.duration.short4",
+    "value": {
+      "ms": 200
+    },
+    "note": "knowledge/guidance/styles/motion.md",
+    "line": 154
+  },
+  {
+    "page": "/styles/shape/corner-radius-scale",
+    "token": "md.sys.shape.corner-value.large-increased",
+    "value": {
+      "dp": 20
+    },
+    "note": "knowledge/guidance/styles/shape.md",
+    "line": 74
+  },
+  {
+    "page": "/styles/shape/corner-radius-scale",
+    "token": "md.sys.shape.corner-value.extra-large-increased",
+    "value": {
+      "dp": 32
+    },
+    "note": "knowledge/guidance/styles/shape.md",
+    "line": 76
+  },
+  {
+    "page": "/styles/shape/corner-radius-scale",
+    "token": "md.sys.shape.corner-value.extra-extra-large",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/styles/shape.md",
+    "line": 77
+  },
+  {
+    "page": "/styles/shape/overview-principles",
+    "value": {
+      "number": 0.5
+    },
+    "note": "knowledge/guidance/styles/shape.md",
+    "line": 82
+  },
+  {
+    "page": "/styles/shape/corner-radius-scale",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/styles/shape.md",
+    "line": 89
+  },
+  {
+    "page": "/styles/shape/corner-radius-scale",
+    "value": {
+      "dp": 14
+    },
+    "note": "knowledge/guidance/styles/shape.md",
+    "line": 89
+  },
+  {
+    "page": "/styles/shape/corner-radius-scale",
+    "value": {
+      "dp": 34
+    },
+    "note": "knowledge/guidance/styles/shape.md",
+    "line": 89
+  },
+  {
+    "page": "/styles/shape/overview-principles",
+    "value": {
+      "number": 0.5
+    },
+    "note": "knowledge/guidance/styles/shape.md",
+    "line": 127
+  },
+  {
+    "page": "/styles/spacing/overview",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/styles/spacing.md",
+    "line": 13
+  },
+  {
+    "page": "/styles/spacing/applying-spacing",
+    "value": {
+      "number": 2
+    },
+    "note": "knowledge/guidance/styles/spacing.md",
+    "line": 36
+  },
+  {
+    "page": "/styles/spacing/tokens",
+    "token": "md.sys.measurement.space0",
+    "value": {
+      "dp": 0
+    },
+    "note": "knowledge/guidance/styles/spacing.md",
+    "line": 64
+  },
+  {
+    "page": "/styles/spacing/tokens",
+    "token": "md.sys.measurement.space250",
+    "value": {
+      "dp": 20
+    },
+    "note": "knowledge/guidance/styles/spacing.md",
+    "line": 64
+  },
+  {
+    "page": "/styles/spacing/tokens",
+    "token": "md.sys.measurement.space25",
+    "value": {
+      "dp": 2
+    },
+    "note": "knowledge/guidance/styles/spacing.md",
+    "line": 65
+  },
+  {
+    "page": "/styles/spacing/tokens",
+    "token": "md.sys.measurement.space300",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/styles/spacing.md",
+    "line": 65
+  },
+  {
+    "page": "/styles/spacing/tokens",
+    "token": "md.sys.measurement.space50",
+    "value": {
+      "dp": 4
+    },
+    "note": "knowledge/guidance/styles/spacing.md",
+    "line": 66
+  },
+  {
+    "page": "/styles/spacing/tokens",
+    "token": "md.sys.measurement.space400",
+    "value": {
+      "dp": 32
+    },
+    "note": "knowledge/guidance/styles/spacing.md",
+    "line": 66
+  },
+  {
+    "page": "/styles/spacing/tokens",
+    "token": "md.sys.measurement.space75",
+    "value": {
+      "dp": 6
+    },
+    "note": "knowledge/guidance/styles/spacing.md",
+    "line": 67
+  },
+  {
+    "page": "/styles/spacing/tokens",
+    "token": "md.sys.measurement.space450",
+    "value": {
+      "dp": 36
+    },
+    "note": "knowledge/guidance/styles/spacing.md",
+    "line": 67
+  },
+  {
+    "page": "/styles/spacing/tokens",
+    "token": "md.sys.measurement.space100",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/styles/spacing.md",
+    "line": 68
+  },
+  {
+    "page": "/styles/spacing/tokens",
+    "token": "md.sys.measurement.space500",
+    "value": {
+      "dp": 40
+    },
+    "note": "knowledge/guidance/styles/spacing.md",
+    "line": 68
+  },
+  {
+    "page": "/styles/spacing/tokens",
+    "token": "md.sys.measurement.space125",
+    "value": {
+      "dp": 10
+    },
+    "note": "knowledge/guidance/styles/spacing.md",
+    "line": 69
+  },
+  {
+    "page": "/styles/spacing/tokens",
+    "token": "md.sys.measurement.space600",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/styles/spacing.md",
+    "line": 69
+  },
+  {
+    "page": "/styles/spacing/tokens",
+    "token": "md.sys.measurement.space150",
+    "value": {
+      "dp": 12
+    },
+    "note": "knowledge/guidance/styles/spacing.md",
+    "line": 70
+  },
+  {
+    "page": "/styles/spacing/tokens",
+    "token": "md.sys.measurement.space700",
+    "value": {
+      "dp": 56
+    },
+    "note": "knowledge/guidance/styles/spacing.md",
+    "line": 70
+  },
+  {
+    "page": "/styles/spacing/tokens",
+    "token": "md.sys.measurement.space175",
+    "value": {
+      "dp": 14
+    },
+    "note": "knowledge/guidance/styles/spacing.md",
+    "line": 71
+  },
+  {
+    "page": "/styles/spacing/tokens",
+    "token": "md.sys.measurement.space800",
+    "value": {
+      "dp": 64
+    },
+    "note": "knowledge/guidance/styles/spacing.md",
+    "line": 71
+  },
+  {
+    "page": "/styles/spacing/tokens",
+    "token": "md.sys.measurement.space200",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/styles/spacing.md",
+    "line": 72
+  },
+  {
+    "page": "/styles/spacing/tokens",
+    "token": "md.sys.measurement.space900",
+    "value": {
+      "dp": 72
+    },
+    "note": "knowledge/guidance/styles/spacing.md",
+    "line": 72
+  },
+  {
+    "page": "/styles/spacing/overview",
+    "token": "md.sys.measurement.space100",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/styles/spacing.md",
+    "line": 74
+  },
+  {
+    "page": "/styles/spacing/tokens",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/styles/spacing.md",
+    "line": 75
+  },
+  {
+    "page": "/styles/spacing/tokens",
+    "value": {
+      "dp": 2
+    },
+    "note": "knowledge/guidance/styles/spacing.md",
+    "line": 76
+  },
+  {
+    "page": "/styles/spacing/tokens",
+    "value": {
+      "dp": 4
+    },
+    "note": "knowledge/guidance/styles/spacing.md",
+    "line": 76
+  },
+  {
+    "page": "/styles/spacing/tokens",
+    "value": {
+      "dp": 6
+    },
+    "note": "knowledge/guidance/styles/spacing.md",
+    "line": 76
+  },
+  {
+    "page": "/styles/spacing/tokens",
+    "value": {
+      "dp": 10
+    },
+    "note": "knowledge/guidance/styles/spacing.md",
+    "line": 76
+  },
+  {
+    "page": "/styles/spacing/applying-spacing",
+    "value": {
+      "dp": 18
+    },
+    "note": "knowledge/guidance/styles/spacing.md",
+    "line": 78
+  },
+  {
+    "page": "/styles/spacing/overview",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/styles/spacing.md",
+    "line": 80
+  },
+  {
+    "page": "/styles/spacing/overview",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/styles/spacing.md",
+    "line": 81
+  },
+  {
+    "page": "/styles/spacing/overview",
+    "token": "md.comp.search-bar.contained.leading-margin",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/styles/spacing.md",
+    "line": 82
+  },
+  {
+    "page": "/styles/spacing/overview",
+    "token": "md.comp.search-view.contained.leading-margin",
+    "value": {
+      "dp": 12
+    },
+    "note": "knowledge/guidance/styles/spacing.md",
+    "line": 83
+  },
+  {
+    "page": "/styles/typography/type-scale-tokens",
+    "value": {
+      "number": 0.07
+    },
+    "note": "knowledge/guidance/styles/typography.md",
+    "line": 159
+  },
+  {
+    "page": "/styles/typography/type-scale-tokens",
+    "value": {
+      "number": 0.3
+    },
+    "note": "knowledge/guidance/styles/typography.md",
+    "line": 159
+  },
+  {
+    "page": "/styles/typography/type-scale-tokens",
+    "value": {
+      "number": 1
+    },
+    "note": "knowledge/guidance/styles/typography.md",
+    "line": 159
+  },
+  {
+    "page": "/styles/typography/type-scale-tokens",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/styles/typography.md",
+    "line": 162
   }
 ]
