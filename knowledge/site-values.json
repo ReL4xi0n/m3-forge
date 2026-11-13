@@ -42,6 +42,87 @@
     "line": 115
   },
   {
+    "page": "/components/bottom-sheets/guidelines",
+    "value": {
+      "number": 0.5
+    },
+    "note": "knowledge/guidance/components/bottom-sheets.md",
+    "line": 44
+  },
+  {
+    "page": "/components/bottom-sheets/specs",
+    "value": {
+      "dp": 640
+    },
+    "note": "knowledge/guidance/components/bottom-sheets.md",
+    "line": 81
+  },
+  {
+    "page": "/components/bottom-sheets/overview",
+    "token": "md.comp.sheet.bottom.docked.container.shape",
+    "value": {
+      "dp": 28
+    },
+    "note": "knowledge/guidance/components/bottom-sheets.md",
+    "line": 82
+  },
+  {
+    "page": "/components/bottom-sheets/specs",
+    "value": {
+      "dp": 22
+    },
+    "note": "knowledge/guidance/components/bottom-sheets.md",
+    "line": 86
+  },
+  {
+    "page": "/components/bottom-sheets/specs",
+    "value": {
+      "dp": 72
+    },
+    "note": "knowledge/guidance/components/bottom-sheets.md",
+    "line": 88
+  },
+  {
+    "page": "/components/bottom-sheets/specs",
+    "value": {
+      "dp": 640
+    },
+    "note": "knowledge/guidance/components/bottom-sheets.md",
+    "line": 91
+  },
+  {
+    "page": "/components/bottom-sheets/specs",
+    "value": {
+      "dp": 56
+    },
+    "note": "knowledge/guidance/components/bottom-sheets.md",
+    "line": 92
+  },
+  {
+    "page": "/components/bottom-sheets/specs",
+    "value": {
+      "dp": 56
+    },
+    "note": "knowledge/guidance/components/bottom-sheets.md",
+    "line": 93
+  },
+  {
+    "page": "/components/bottom-sheets/accessibility",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/bottom-sheets.md",
+    "line": 94
+  },
+  {
+    "page": "/components/bottom-sheets/overview",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/bottom-sheets.md",
+    "line": 96
+  },
+  {
     "page": "/components/button-groups/specs",
     "value": {
       "dp": 2
@@ -374,6 +455,426 @@
     "line": 211
   },
   {
+    "page": "/components/cards/specs",
+    "token": "md.comp.elevated-card.container.shape",
+    "value": {
+      "dp": 12
+    },
+    "note": "knowledge/guidance/components/cards.md",
+    "line": 92
+  },
+  {
+    "page": "/components/cards/specs",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/cards.md",
+    "line": 93
+  },
+  {
+    "page": "/components/cards/specs",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/cards.md",
+    "line": 94
+  },
+  {
+    "page": "/components/carousel/specs",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/carousel.md",
+    "line": 93
+  },
+  {
+    "page": "/components/carousel/specs",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/carousel.md",
+    "line": 93
+  },
+  {
+    "page": "/components/carousel/specs",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/carousel.md",
+    "line": 93
+  },
+  {
+    "page": "/components/carousel/specs",
+    "value": {
+      "dp": 0
+    },
+    "note": "knowledge/guidance/components/carousel.md",
+    "line": 93
+  },
+  {
+    "page": "/components/carousel/specs",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/carousel.md",
+    "line": 94
+  },
+  {
+    "page": "/components/carousel/specs",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/carousel.md",
+    "line": 94
+  },
+  {
+    "page": "/components/carousel/specs",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/carousel.md",
+    "line": 94
+  },
+  {
+    "page": "/components/carousel/specs",
+    "value": {
+      "dp": 0
+    },
+    "note": "knowledge/guidance/components/carousel.md",
+    "line": 94
+  },
+  {
+    "page": "/components/carousel/specs",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/carousel.md",
+    "line": 95
+  },
+  {
+    "page": "/components/carousel/specs",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/carousel.md",
+    "line": 95
+  },
+  {
+    "page": "/components/carousel/specs",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/carousel.md",
+    "line": 95
+  },
+  {
+    "page": "/components/carousel/specs",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/carousel.md",
+    "line": 95
+  },
+  {
+    "page": "/components/carousel/specs",
+    "token": "md.comp.carousel-item.container.shape",
+    "value": {
+      "dp": 28
+    },
+    "note": "knowledge/guidance/components/carousel.md",
+    "line": 96
+  },
+  {
+    "page": "/components/carousel/specs",
+    "token": "md.comp.carousel-item.container.shape",
+    "value": {
+      "dp": 28
+    },
+    "note": "knowledge/guidance/components/carousel.md",
+    "line": 96
+  },
+  {
+    "page": "/components/carousel/specs",
+    "token": "md.comp.carousel-item.container.shape",
+    "value": {
+      "dp": 28
+    },
+    "note": "knowledge/guidance/components/carousel.md",
+    "line": 96
+  },
+  {
+    "page": "/components/carousel/specs",
+    "value": {
+      "dp": 40
+    },
+    "note": "knowledge/guidance/components/carousel.md",
+    "line": 99
+  },
+  {
+    "page": "/components/carousel/specs",
+    "value": {
+      "dp": 56
+    },
+    "note": "knowledge/guidance/components/carousel.md",
+    "line": 99
+  },
+  {
+    "page": "/components/carousel/specs",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/carousel.md",
+    "line": 105
+  },
+  {
+    "page": "/components/carousel/accessibility",
+    "value": {
+      "dp": 4
+    },
+    "note": "knowledge/guidance/components/carousel.md",
+    "line": 106
+  },
+  {
+    "page": "/components/carousel/accessibility",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/carousel.md",
+    "line": 107
+  },
+  {
+    "page": "/components/dialogs/guidelines",
+    "value": {
+      "dp": 56
+    },
+    "note": "knowledge/guidance/components/dialogs.md",
+    "line": 92
+  },
+  {
+    "page": "/components/dialogs/specs",
+    "token": "md.comp.dialog.container.shape",
+    "value": {
+      "dp": 28
+    },
+    "note": "knowledge/guidance/components/dialogs.md",
+    "line": 102
+  },
+  {
+    "page": "/components/dialogs/specs",
+    "value": {
+      "dp": 280
+    },
+    "note": "knowledge/guidance/components/dialogs.md",
+    "line": 103
+  },
+  {
+    "page": "/components/dialogs/specs",
+    "value": {
+      "dp": 560
+    },
+    "note": "knowledge/guidance/components/dialogs.md",
+    "line": 104
+  },
+  {
+    "page": "/components/dialogs/specs",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/components/dialogs.md",
+    "line": 106
+  },
+  {
+    "page": "/components/dialogs/specs",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/dialogs.md",
+    "line": 107
+  },
+  {
+    "page": "/components/dialogs/specs",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/dialogs.md",
+    "line": 108
+  },
+  {
+    "page": "/components/dialogs/specs",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/dialogs.md",
+    "line": 109
+  },
+  {
+    "page": "/components/dialogs/specs",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/components/dialogs.md",
+    "line": 110
+  },
+  {
+    "page": "/components/dialogs/specs",
+    "token": "md.comp.dialog.with-icon.icon.size",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/components/dialogs.md",
+    "line": 111
+  },
+  {
+    "page": "/components/dialogs/specs",
+    "token": "md.comp.dialog.with-divider.divider.height",
+    "value": {
+      "dp": 1
+    },
+    "note": "knowledge/guidance/components/dialogs.md",
+    "line": 112
+  },
+  {
+    "page": "/components/dialogs/specs",
+    "token": "md.comp.full-screen-dialog.container.shape",
+    "value": {
+      "dp": 0
+    },
+    "note": "knowledge/guidance/components/dialogs.md",
+    "line": 119
+  },
+  {
+    "page": "/components/dialogs/specs",
+    "value": {
+      "dp": 560
+    },
+    "note": "knowledge/guidance/components/dialogs.md",
+    "line": 120
+  },
+  {
+    "page": "/components/dialogs/specs",
+    "token": "md.comp.full-screen-dialog.header.container.height",
+    "value": {
+      "dp": 56
+    },
+    "note": "knowledge/guidance/components/dialogs.md",
+    "line": 121
+  },
+  {
+    "page": "/components/dialogs/specs",
+    "token": "md.comp.full-screen-dialog.header.icon.size",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/components/dialogs.md",
+    "line": 122
+  },
+  {
+    "page": "/components/dialogs/specs",
+    "token": "md.comp.full-screen-dialog.action-bar.container.height",
+    "value": {
+      "dp": 56
+    },
+    "note": "knowledge/guidance/components/dialogs.md",
+    "line": 123
+  },
+  {
+    "page": "/components/dialogs/specs",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/components/dialogs.md",
+    "line": 124
+  },
+  {
+    "page": "/components/dialogs/specs",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/dialogs.md",
+    "line": 125
+  },
+  {
+    "page": "/components/dialogs/specs",
+    "token": "md.comp.full-screen-dialog.with-divider.divider.height",
+    "value": {
+      "dp": 1
+    },
+    "note": "knowledge/guidance/components/dialogs.md",
+    "line": 126
+  },
+  {
+    "page": "/components/dialogs/accessibility",
+    "value": {
+      "number": 2
+    },
+    "note": "knowledge/guidance/components/dialogs.md",
+    "line": 185
+  },
+  {
+    "page": "/components/divider/specs",
+    "value": {
+      "number": 1
+    },
+    "note": "knowledge/guidance/components/divider.md",
+    "line": 58
+  },
+  {
+    "page": "/components/divider/specs",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/divider.md",
+    "line": 59
+  },
+  {
+    "page": "/components/divider/specs",
+    "value": {
+      "dp": 0
+    },
+    "note": "knowledge/guidance/components/divider.md",
+    "line": 60
+  },
+  {
+    "page": "/components/divider/specs",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/divider.md",
+    "line": 61
+  },
+  {
+    "page": "/components/divider/specs",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/divider.md",
+    "line": 62
+  },
+  {
+    "page": "/components/divider/specs",
+    "value": {
+      "dp": 4
+    },
+    "note": "knowledge/guidance/components/divider.md",
+    "line": 63
+  },
+  {
+    "page": "/components/divider/specs",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/divider.md",
+    "line": 65
+  },
+  {
+    "page": "/components/divider/specs",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/divider.md",
+    "line": 66
+  },
+  {
     "page": "/components/extended-fab/overview",
     "token": "md.comp.extended-fab.small.container.height",
     "value": {
@@ -704,6 +1205,168 @@
     "line": 226
   },
   {
+    "page": "/components/lists/specs",
+    "token": "md.comp.list.list-item.container.expressive.shape",
+    "value": {
+      "dp": 4
+    },
+    "note": "knowledge/guidance/components/lists.md",
+    "line": 81
+  },
+  {
+    "page": "/components/lists/specs",
+    "token": "md.comp.list.container.shape",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/lists.md",
+    "line": 82
+  },
+  {
+    "page": "/components/lists/specs",
+    "token": "md.comp.list.list-item.selected.container.expressive.shape",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/lists.md",
+    "line": 83
+  },
+  {
+    "page": "/components/lists/overview",
+    "value": {
+      "dp": 88
+    },
+    "note": "knowledge/guidance/components/lists.md",
+    "line": 102
+  },
+  {
+    "page": "/components/lists/overview",
+    "token": "md.comp.list.list-item.one-line.container.height",
+    "value": {
+      "dp": 56
+    },
+    "note": "knowledge/guidance/components/lists.md",
+    "line": 126
+  },
+  {
+    "page": "/components/lists/overview",
+    "token": "md.comp.list.list-item.two-line.container.height",
+    "value": {
+      "dp": 72
+    },
+    "note": "knowledge/guidance/components/lists.md",
+    "line": 127
+  },
+  {
+    "page": "/components/lists/overview",
+    "token": "md.comp.list.list-item.three-line.container.height",
+    "value": {
+      "dp": 88
+    },
+    "note": "knowledge/guidance/components/lists.md",
+    "line": 128
+  },
+  {
+    "page": "/components/lists/specs",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/lists.md",
+    "line": 161
+  },
+  {
+    "page": "/components/lists/specs",
+    "value": {
+      "dp": 88
+    },
+    "note": "knowledge/guidance/components/lists.md",
+    "line": 162
+  },
+  {
+    "page": "/components/lists/specs",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/lists.md",
+    "line": 164
+  },
+  {
+    "page": "/components/lists/specs",
+    "value": {
+      "dp": 12
+    },
+    "note": "knowledge/guidance/components/lists.md",
+    "line": 165
+  },
+  {
+    "page": "/components/lists/specs",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/lists.md",
+    "line": 166
+  },
+  {
+    "page": "/components/lists/specs",
+    "token": "md.comp.list.list-item.trailing-space",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/components/lists.md",
+    "line": 167
+  },
+  {
+    "page": "/components/lists/specs",
+    "token": "md.comp.list.list-item.trailing-space",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/lists.md",
+    "line": 167
+  },
+  {
+    "page": "/components/lists/specs",
+    "token": "md.comp.list.divider.trailing-space",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/components/lists.md",
+    "line": 168
+  },
+  {
+    "page": "/components/lists/specs",
+    "token": "md.comp.list.divider.trailing-space",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/lists.md",
+    "line": 168
+  },
+  {
+    "page": "/components/lists/specs",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/lists.md",
+    "line": 169
+  },
+  {
+    "page": "/components/lists/specs",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/lists.md",
+    "line": 259
+  },
+  {
+    "page": "/components/lists/specs",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/lists.md",
+    "line": 299
+  },
+  {
     "page": "/components/navigation-bar/guidelines",
     "value": {
       "number": 1
@@ -947,6 +1610,87 @@
     },
     "note": "knowledge/guidance/components/segmented-buttons.md",
     "line": 143
+  },
+  {
+    "page": "/components/side-sheets/specs",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/components/side-sheets.md",
+    "line": 78
+  },
+  {
+    "page": "/components/side-sheets/specs",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/side-sheets.md",
+    "line": 79
+  },
+  {
+    "page": "/components/side-sheets/specs",
+    "value": {
+      "dp": 12
+    },
+    "note": "knowledge/guidance/components/side-sheets.md",
+    "line": 80
+  },
+  {
+    "page": "/components/side-sheets/specs",
+    "value": {
+      "dp": 72
+    },
+    "note": "knowledge/guidance/components/side-sheets.md",
+    "line": 81
+  },
+  {
+    "page": "/components/side-sheets/specs",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/side-sheets.md",
+    "line": 82
+  },
+  {
+    "page": "/components/side-sheets/specs",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/components/side-sheets.md",
+    "line": 83
+  },
+  {
+    "page": "/components/side-sheets/specs",
+    "value": {
+      "dp": 400
+    },
+    "note": "knowledge/guidance/components/side-sheets.md",
+    "line": 85
+  },
+  {
+    "page": "/components/side-sheets/specs",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/side-sheets.md",
+    "line": 86
+  },
+  {
+    "page": "/components/side-sheets/overview",
+    "token": "md.comp.sheet.side.detached.container.shape",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/side-sheets.md",
+    "line": 87
+  },
+  {
+    "page": "/components/side-sheets/guidelines",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/side-sheets.md",
+    "line": 90
   },
   {
     "page": "/components/split-button/guidelines",

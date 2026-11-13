@@ -5375,7 +5375,7 @@ md.comp.app-bar.large.icon.size, md.comp.app-bar.medium.icon.size, md.comp.app-b
 | material-components-android | m3_sys_shape_corner_medium_corner_family | (none) | shape/res/values/tokens.xml:54 |
 | material-components-android | m3_sys_shape_corner_small_corner_family | (none) | shape/res/values/tokens.xml:60 |
 
-## NOT FOUND in notes: 71
+## NOT FOUND in notes: 86
 
 Statements the knowledge notes mark `[NOT FOUND]` (values or facts no source gives, e.g. the default color variant for M3 Expressive). Collected by `tools/extract/knowledge/lint.mjs`.
 
@@ -5388,12 +5388,23 @@ Statements the knowledge notes mark `[NOT FOUND]` (values or facts no source giv
 | knowledge/guidance/components/app-bars.md:135 | token [NOT FOUND]. |
 | knowledge/guidance/components/app-bars.md:155 | itself defines no state-layer opacity [NOT FOUND]. |
 | knowledge/guidance/components/app-bars.md:159 | - No app-bar duration, easing or spring token exists [NOT FOUND]. The site describes the |
+| knowledge/guidance/components/bottom-sheets.md:105 | - The bottom sheet token set defines no text style [NOT FOUND]. |
+| knowledge/guidance/components/bottom-sheets.md:123 | - Bottom sheet motion tokens (duration, easing or spring): none in the token set [NOT FOUND]. |
 | knowledge/guidance/components/button-groups.md:121 | - The group has no type token of its own [NOT FOUND]. Labels follow the button sizes; see |
 | knowledge/guidance/components/button-groups.md:139 | - Compose has no group motion token [NOT FOUND]; `ButtonGroup` animates widths with the fast |
 | knowledge/guidance/components/button-groups.md:145 | [NOT FOUND]. |
 | knowledge/guidance/components/buttons.md:125 | per-size label token [NOT FOUND]; their single label token is `md.comp.button.label-text`. |
 | knowledge/guidance/components/buttons.md:160 | - Compose defines no per-button motion token [NOT FOUND]. Its code animates the plain button's |
 | knowledge/guidance/components/buttons.md:165 | [NOT FOUND]. Springs replace durations and easings in Expressive motion. |
+| knowledge/guidance/components/cards.md:102 | [NOT FOUND]. |
+| knowledge/guidance/components/cards.md:108 | - The card token sets define no headline, subhead or supporting-text type style [NOT FOUND]. |
+| knowledge/guidance/components/cards.md:141 | - Card motion tokens: none in any card token set [NOT FOUND]. |
+| knowledge/guidance/components/carousel.md:96 | \| Item corner radius \| 28dp [site:/components/carousel/specs] [token:md.comp.carousel-item.container.shape] \| 28dp [site:/components/carousel/specs] [token:md.comp.carousel-item.container.shape] \| 28dp [site:/components/carousel/specs] [token:md.comp.carousel-item.container.shape] \| [NOT FOUND] \| |
+| knowledge/guidance/components/carousel.md:114 | - The carousel-item token set defines no text style [NOT FOUND]. |
+| knowledge/guidance/components/carousel.md:134 | - Carousel motion tokens (duration, easing or spring): none in the token data [NOT FOUND]. |
+| knowledge/guidance/components/dialogs.md:175 | - Dialog motion tokens (duration, easing or spring): none in either token set [NOT FOUND]. |
+| knowledge/guidance/components/divider.md:77 | - The divider has no text of its own and no type token [NOT FOUND]. |
+| knowledge/guidance/components/divider.md:89 | - No motion. The divider has no motion tokens [NOT FOUND] and no animated behavior in the |
 | knowledge/guidance/components/extended-fab.md:119 | extended-FAB label token [NOT FOUND]. Compose's code hard-codes those three styles |
 | knowledge/guidance/components/extended-fab.md:162 | - No extended-FAB duration, easing or spring token covers these transitions [NOT FOUND]. |
 | knowledge/guidance/components/fab-menu.md:99 | in Flutter's data; material-web and Compose define no FAB-menu label token [NOT FOUND]. |
@@ -5406,6 +5417,8 @@ Statements the knowledge notes mark `[NOT FOUND]` (values or facts no source giv
 | knowledge/guidance/components/icon-buttons.md:164 | [NOT FOUND]. |
 | knowledge/guidance/components/icon-buttons.md:165 | - Compose defines no icon-button motion token [NOT FOUND]. Its code animates both the press morph |
 | knowledge/guidance/components/icon-buttons.md:176 | - Icon change on selection (outlined to filled glyph): no motion token [NOT FOUND]. |
+| knowledge/guidance/components/lists.md:231 | - List motion tokens (duration, easing or spring): none in the token data [NOT FOUND]. |
+| knowledge/guidance/components/lists.md:240 | - material-web and Flutter have no list motion values [NOT FOUND]. |
 | knowledge/guidance/components/navigation-bar.md:94 | \| Active indicator width \| 56dp [token:md.comp.nav-bar.item.vertical.active-indicator.width] \| hugs the content [NOT FOUND] \| |
 | knowledge/guidance/components/navigation-bar.md:104 | [NOT FOUND]. |
 | knowledge/guidance/components/navigation-bar.md:124 | only in Flutter's data; material-web's `nav-bar` set defines no label font [NOT FOUND]. |
@@ -5418,6 +5431,8 @@ Statements the knowledge notes mark `[NOT FOUND]` (values or facts no source giv
 | knowledge/guidance/components/search.md:116 | \| Docked header height \| not given [NOT FOUND] \| 56dp [token:md.comp.search-view.docked.header.container.height] \| |
 | knowledge/guidance/components/search.md:117 | \| Docked results height \| 240dp minimum [site:/components/search/specs], at most two thirds of the screen \| [NOT FOUND] \| |
 | knowledge/guidance/components/segmented-buttons.md:114 | spring [NOT FOUND]. No segmented-button motion token exists [NOT FOUND]. |
+| knowledge/guidance/components/side-sheets.md:120 | - Side sheet motion tokens (duration, easing or spring): none in the token set [NOT FOUND]. |
+| knowledge/guidance/components/side-sheets.md:122 | either [NOT FOUND]. |
 | knowledge/guidance/components/split-button.md:96 | - The split button has no label type token of its own [NOT FOUND]. |
 | knowledge/guidance/components/split-button.md:112 | token [NOT FOUND]. |
 | knowledge/guidance/components/split-button.md:118 | token [NOT FOUND]. |

@@ -39,7 +39,7 @@
       "source": "material-web",
       "notFoundEntries": 135,
       "notFoundTokens": 190,
-      "conflicts": 69
+      "conflicts": 71
     },
     "flutter": {
       "source": "material_ui",
@@ -58,7 +58,7 @@
     "tokenKeys": 7339,
     "conflicts": {
       "repoVsRepo": 65,
-      "siteVsRepo": 4
+      "siteVsRepo": 6
     },
     "notFoundEntries": 3649,
     "deprecatedIds": 1080,

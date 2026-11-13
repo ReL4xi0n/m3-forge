@@ -35,6 +35,16 @@
     "text": "- No app-bar duration, easing or spring token exists [NOT FOUND]. The site describes the"
   },
   {
+    "note": "knowledge/guidance/components/bottom-sheets.md",
+    "line": 105,
+    "text": "- The bottom sheet token set defines no text style [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/bottom-sheets.md",
+    "line": 123,
+    "text": "- Bottom sheet motion tokens (duration, easing or spring): none in the token set [NOT FOUND]."
+  },
+  {
     "note": "knowledge/guidance/components/button-groups.md",
     "line": 121,
     "text": "- The group has no type token of its own [NOT FOUND]. Labels follow the button sizes; see"
@@ -63,6 +73,51 @@
     "note": "knowledge/guidance/components/buttons.md",
     "line": 165,
     "text": "[NOT FOUND]. Springs replace durations and easings in Expressive motion."
+  },
+  {
+    "note": "knowledge/guidance/components/cards.md",
+    "line": 102,
+    "text": "[NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/cards.md",
+    "line": 108,
+    "text": "- The card token sets define no headline, subhead or supporting-text type style [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/cards.md",
+    "line": 141,
+    "text": "- Card motion tokens: none in any card token set [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/carousel.md",
+    "line": 96,
+    "text": "| Item corner radius | 28dp [site:/components/carousel/specs] [token:md.comp.carousel-item.container.shape] | 28dp [site:/components/carousel/specs] [token:md.comp.carousel-item.container.shape] | 28dp [site:/components/carousel/specs] [token:md.comp.carousel-item.container.shape] | [NOT FOUND] |"
+  },
+  {
+    "note": "knowledge/guidance/components/carousel.md",
+    "line": 114,
+    "text": "- The carousel-item token set defines no text style [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/carousel.md",
+    "line": 134,
+    "text": "- Carousel motion tokens (duration, easing or spring): none in the token data [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/dialogs.md",
+    "line": 175,
+    "text": "- Dialog motion tokens (duration, easing or spring): none in either token set [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/divider.md",
+    "line": 77,
+    "text": "- The divider has no text of its own and no type token [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/divider.md",
+    "line": 89,
+    "text": "- No motion. The divider has no motion tokens [NOT FOUND] and no animated behavior in the"
   },
   {
     "note": "knowledge/guidance/components/extended-fab.md",
@@ -125,6 +180,16 @@
     "text": "- Icon change on selection (outlined to filled glyph): no motion token [NOT FOUND]."
   },
   {
+    "note": "knowledge/guidance/components/lists.md",
+    "line": 231,
+    "text": "- List motion tokens (duration, easing or spring): none in the token data [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/lists.md",
+    "line": 240,
+    "text": "- material-web and Flutter have no list motion values [NOT FOUND]."
+  },
+  {
     "note": "knowledge/guidance/components/navigation-bar.md",
     "line": 94,
     "text": "| Active indicator width | 56dp [token:md.comp.nav-bar.item.vertical.active-indicator.width] | hugs the content [NOT FOUND] |"
@@ -183,6 +248,16 @@
     "note": "knowledge/guidance/components/segmented-buttons.md",
     "line": 114,
     "text": "spring [NOT FOUND]. No segmented-button motion token exists [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/side-sheets.md",
+    "line": 120,
+    "text": "- Side sheet motion tokens (duration, easing or spring): none in the token set [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/side-sheets.md",
+    "line": 122,
+    "text": "either [NOT FOUND]."
   },
   {
     "note": "knowledge/guidance/components/split-button.md",
