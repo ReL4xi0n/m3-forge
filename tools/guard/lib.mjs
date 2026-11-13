@@ -306,7 +306,7 @@ export function checkFiles({ files, forbiddenTerms, corpus, allowlist = [], priv
     const text = decodeText(file.content);
     if (text == null) continue;
     for (const h of scanSecrets(text)) {
-      violations.push({ rule: 'secret', path, key: '-', detail: `${h.rule} at line ${h.line} (not allowlistable)` });
+      violations.push({ rule: 'secret', path, key: '-', detail: `${h.rule} at line ${h.line}` });
     }
     const lower = text.toLowerCase();
     terms.forEach((t, i) => {
