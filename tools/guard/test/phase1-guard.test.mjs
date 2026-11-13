@@ -110,3 +110,24 @@ test('shingles ignore token identifiers, numbers and one-letter words; prose is 
   assert.ok(shingles(prose).size > 0);
   assert.deepEqual([...shingles(`${prose} md.comp.x.y 12`)], [...shingles(prose)]);
 });
+
+test('--paths checks working-tree files without staging them', async () => {
+  const dir = await tempDir('w-');
+  const git = (...a) => execFileSync('git', a, { cwd: dir, stdio: 'pipe', encoding: 'utf8' });
+  git('init', '-q', '-b', 'main');
+  await mkdir(join(dir, 'tools'), { recursive: true });
+  await cp(join(repoRoot, 'tools', 'guard'), join(dir, 'tools', 'guard'), { recursive: true });
+  await mkdir(join(dir, 'private', 'raw'), { recursive: true });
+  await writeFile(join(dir, 'private', 'raw', 'p.txt'), 'quiet amber falcons drift above the harbor while seven lanterns flicker beside the old pier tonight');
+  await mkdir(join(dir, 'notes'), { recursive: true });
+  await writeFile(join(dir, 'notes', 'ok.md'), 'A note in our own words about falcons and lanterns.');
+  await writeFile(join(dir, 'notes', 'copy.md'), 'Copied: quiet amber falcons drift above the harbor while seven lanterns flicker beside the old pier.');
+  const env = { ...process.env };
+  for (const k of ['GUARD_FORBIDDEN_TERMS', 'GUARD_REQUIRE_TERMS', 'GUARD_REQUIRE_CORPUS']) delete env[k];
+  const run = paths => spawnSync(process.execPath, ['tools/guard/check-public-diff.mjs', '--paths', ...paths], { cwd: dir, env, encoding: 'utf8' });
+  assert.equal(run(['notes/ok.md']).status, 0);
+  const r = run(['notes/ok.md', 'notes/copy.md']);
+  assert.equal(r.status, 1, r.stdout + r.stderr);
+  assert.match(r.stdout, /raw-overlap\s+notes\/copy\.md/);
+  assert.equal(git('diff', '--cached', '--name-only').trim(), '', 'nothing staged');
+});

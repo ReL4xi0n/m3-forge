@@ -132,3 +132,13 @@ test('platform claims: differences must be acknowledged, [same:] and [differs:] 
   const claim = await run({ 'components/buttons.md': note({ body: { Measurements: 'The values agree in material-web, Flutter and Compose.' } }) });
   assert.ok(claim.errors.some(e => /platform agreement claim without \[same:\]/.test(e)));
 });
+
+test('[impl:] marks values taken from official library code; --files limits the report', async () => {
+  const ok = await run({ 'components/buttons.md': note({ body: { Measurements: 'Minimum width 58dp [impl:compose-material3/commonMain/androidx/compose/material3/Button.kt:120].' } }) });
+  assert.deepEqual(ok.errors, []);
+  const bad = await run({ 'components/buttons.md': note({ body: { Measurements: 'Minimum width 58dp [impl:Button.kt].' } }) });
+  assert.ok(bad.errors.some(e => /\[impl:Button\.kt\] must be <source-id>\/<path>:<line>/.test(e)));
+  const two = await run({ 'components/buttons.md': note({ body: { Measurements: 'Height 40dp.' } }), 'components/chips.md': note({ body: { Measurements: 'Height 32dp.' } }) },
+    { files: ['knowledge/guidance/components/chips.md'] });
+  assert.ok(two.errors.length > 0 && two.errors.every(e => e.startsWith('knowledge/guidance/components/chips.md')), two.errors.join('\n'));
+});

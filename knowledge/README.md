@@ -38,6 +38,8 @@ Do not edit generated files. CI fails when they are stale.
     image. Pixel measuring is never used. If a token covers the same property, the line also carries
     `[token:<id>]`; when the two differ, the difference goes to `conflicts.md` and the repository
     value wins.
+  - `[impl:<source-id>/<path>:<line>]`: the value is read from official library code (for example a
+    Compose default), not from a token. It is an implementation reference, kept apart from tokens.
   - `[NOT FOUND]`.
 - In M3 tokens `px` and `dp` are the same unit. Flutter's data gives numbers without units; they are
   compared by magnitude.

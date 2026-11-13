@@ -3,6 +3,7 @@
 //   lint.mjs                        lint knowledge/guidance/**/*.md, write knowledge/site-values.json
 //   lint.mjs --check                lint, and fail if site-values.json is stale (CI)
 //   lint.mjs --require-coverage     also require every scraped page to be cited by some note
+//   lint.mjs --files <note...>      report errors only for these notes (site-values.json is not written)
 //
 // Every number with a unit (dp|px|sp|ms|%) and every hex color must carry a marker on the same line:
 //   [token:<id>]  the id must exist in knowledge/tokens/merged.json and the value must equal one of its
@@ -76,7 +77,7 @@ async function listNotes(dir) {
   return out.sort();
 }
 
-export async function lintNotes(notesDir, { merged, coverage, exceptions = {}, requireCoverage = false }) {
+export async function lintNotes(notesDir, { merged, coverage, exceptions = {}, requireCoverage = false, files = null }) {
   const errors = [];
   const siteValues = [];
   const done = new Set(coverage.rows.filter(r => r.status === 'done').map(r => r.path));
@@ -183,10 +184,14 @@ export async function lintNotes(notesDir, { merged, coverage, exceptions = {}, r
       const tokens = [...line.matchAll(/\[token:([^\]\s]+)\]/g)].map(m => m[1]);
       const sites = [...line.matchAll(/\[site:([^\]\s]+)\]/g)].map(m => m[1]);
       const nf = /\[NOT FOUND\]/.test(line);
+      // [impl:<source-id>/<path>:<line>] = value read from official library code (an implementation
+      // reference, not a token). Format-checked here; the sources live in the toolchain folder.
+      const impls = [...line.matchAll(/\[impl:([^\]\s]+)\]/g)].map(m => m[1]);
+      for (const x of impls) if (!/^[a-z0-9_-]+\/.+:\d+$/.test(x)) err(i + 1, `[impl:${x}] must be <source-id>/<path>:<line>`);
       for (const t of tokens) if (!byId.has(t)) err(i + 1, `unknown token ${t}`);
       for (const s of sites) if (!done.has(s)) err(i + 1, `[site:${s}] is not a scraped page`);
       if (!values.length) continue;
-      if (!tokens.length && !sites.length && !nf) { err(i + 1, 'number without provenance marker'); continue; }
+      if (!tokens.length && !sites.length && !nf && !impls.length) { err(i + 1, 'number without provenance marker'); continue; }
       if (sites.length) {
         for (const v of values) {
           siteValues.push({ page: sites[0], ...(tokens[0] ? { token: tokens[0] } : {}), value: v, note: label, line: i + 1 });
@@ -207,7 +212,8 @@ export async function lintNotes(notesDir, { merged, coverage, exceptions = {}, r
     }
   }
   siteValues.sort((a, b) => a.note.localeCompare(b.note) || a.line - b.line);
-  return { errors, siteValues };
+  const shown = files ? errors.filter(e => files.some(f => e.startsWith(`${f}:`))) : errors;
+  return { errors: shown, siteValues };
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
@@ -219,6 +225,10 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
     coverage: await load('coverage.json'),
     exceptions: await load('coverage-exceptions.json'),
     requireCoverage: process.argv.includes('--require-coverage'),
+    // --files a.md b.md: report only errors in these notes (writers working in parallel)
+    files: process.argv.includes('--files')
+      ? process.argv.slice(process.argv.indexOf('--files') + 1).filter(a => !a.startsWith('--')).map(f => f.replace(/\\/g, '/'))
+      : null,
   });
   for (const e of errors) console.error(e);
   const out = JSON.stringify(siteValues, null, 2) + '\n';
@@ -226,7 +236,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   if (process.argv.includes('--check')) {
     const cur = existsSync(file) ? await readFile(file, 'utf8') : null;
     if (cur !== out) { console.error('knowledge/site-values.json is stale; run `npm run knowledge:lint`'); process.exitCode = 1; }
-  } else {
+  } else if (!process.argv.includes('--files')) {
     await writeFile(file, out);
   }
   if (errors.length) process.exitCode = 1;

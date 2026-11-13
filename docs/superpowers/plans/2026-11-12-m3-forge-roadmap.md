@@ -18,6 +18,13 @@ Every phase ends with the same steps: stop, write an evidence summary, then wait
 | 3 Skill & assets | written at Phase 2 approval | 3a core (SKILL.md, references/core, tokens build, color script, precomputed schemes, detect, verify v2) → 3b web (tokens.css, components CSS, behaviors.js, icons subset) → 3c Flutter (theme, gap components + goldens, icons constants, scaffolding) → 3d Compose (theme templates, M3Icon + constants, scaffolding, Roborazzi) (§5, §7–§10) | One checkpoint per sub-phase, each with its own screenshots/goldens and test results |
 | 4 Improve & release | written at Phase 3 approval | First 2 with-skill runs' cost reported; at most 3 improvement rounds; hold-out opened; second repeats on ambiguous cells; pooled blind re-score; examples/, README, full CI, `regenerate-references.yml`; install paths verified (§12, §13, §14) | Release bar (§12) met or gap report; green CI; both install paths shown working |
 
+Carried into the Phase 3 plan (owner, 2026-11-13):
+- Flutter is missing several components in `material_ui` (see `knowledge/not-found.md` and the
+  Phase 1 evidence). Phase 3 needs a priority list for the gap components before building them.
+- Motion values with no token that are taken from official library code are marked as
+  "implementation reference", never as tokens. Phase 1 notes use the `[impl:]` marker for this.
+- Token conflicts are resolved by the policy the owner chooses from the Phase 1 report.
+
 Standing rules for all phases:
 - Speak Turkish with the owner; everything in the repo is English.
 - Before every public commit, run `node tools/guard/check-public-diff.mjs --staged` and confirm it
