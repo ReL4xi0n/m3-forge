@@ -35,6 +35,16 @@
     "text": "- No app-bar duration, easing or spring token exists [NOT FOUND]. The site describes the"
   },
   {
+    "note": "knowledge/guidance/components/badges.md",
+    "line": 75,
+    "text": "- The token set has no padding, offset or maximum-width token [NOT FOUND]; those values come from"
+  },
+  {
+    "note": "knowledge/guidance/components/badges.md",
+    "line": 104,
+    "text": "- No badge motion, duration, easing or spring token [NOT FOUND]. The sources do not describe how a"
+  },
+  {
     "note": "knowledge/guidance/components/bottom-sheets.md",
     "line": 105,
     "text": "- The bottom sheet token set defines no text style [NOT FOUND]."
@@ -230,6 +240,36 @@
     "text": "- material-web and Flutter have no list motion values [NOT FOUND]."
   },
   {
+    "note": "knowledge/guidance/components/loading-indicator.md",
+    "line": 94,
+    "text": "- No token gives the minimum or maximum size [NOT FOUND]; the range comes from the guidelines page."
+  },
+  {
+    "note": "knowledge/guidance/components/loading-indicator.md",
+    "line": 98,
+    "text": "- The loading indicator has no text and no type token [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/loading-indicator.md",
+    "line": 114,
+    "text": "- No loading-indicator motion token exists in any repository [NOT FOUND]. Compose's code sets the"
+  },
+  {
+    "note": "knowledge/guidance/components/menus.md",
+    "line": 124,
+    "text": "[NOT FOUND]; the table above uses the tokens."
+  },
+  {
+    "note": "knowledge/guidance/components/menus.md",
+    "line": 154,
+    "text": "- Group label text: no type token [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/menus.md",
+    "line": 200,
+    "text": "- No menu motion token exists in any repository [NOT FOUND]. The site describes the behavior:"
+  },
+  {
     "note": "knowledge/guidance/components/navigation-bar.md",
     "line": 94,
     "text": "| Active indicator width | 56dp [token:md.comp.nav-bar.item.vertical.active-indicator.width] | hugs the content [NOT FOUND] |"
@@ -273,6 +313,51 @@
     "note": "knowledge/guidance/components/navigation-rail.md",
     "line": 165,
     "text": "- No navigation-rail duration, easing or spring token exists [NOT FOUND]. The site describes the"
+  },
+  {
+    "note": "knowledge/guidance/components/progress-indicators.md",
+    "line": 117,
+    "text": "| Wave amplitude | 3dp [token:md.comp.progress-indicator.linear.active-indicator.wave.amplitude] | [NOT FOUND] |"
+  },
+  {
+    "note": "knowledge/guidance/components/progress-indicators.md",
+    "line": 118,
+    "text": "| Wavelength, determinate | 40dp [token:md.comp.progress-indicator.linear.active-indicator.wave.wavelength] | [NOT FOUND] |"
+  },
+  {
+    "note": "knowledge/guidance/components/progress-indicators.md",
+    "line": 119,
+    "text": "| Wavelength, indeterminate | 20dp [token:md.comp.progress-indicator.linear.indeterminate.active-indicator.wave.wavelength] | [NOT FOUND] |"
+  },
+  {
+    "note": "knowledge/guidance/components/progress-indicators.md",
+    "line": 126,
+    "text": "| Size, wavy | 48dp [token:md.comp.progress-indicator.circular.with-wave.size] | [NOT FOUND] |"
+  },
+  {
+    "note": "knowledge/guidance/components/progress-indicators.md",
+    "line": 130,
+    "text": "| Wave amplitude | 1.6dp [token:md.comp.progress-indicator.circular.active-indicator.wave.amplitude] | [NOT FOUND] |"
+  },
+  {
+    "note": "knowledge/guidance/components/progress-indicators.md",
+    "line": 131,
+    "text": "| Wavelength | 15dp [token:md.comp.progress-indicator.circular.active-indicator.wave.wavelength] | [NOT FOUND] |"
+  },
+  {
+    "note": "knowledge/guidance/components/progress-indicators.md",
+    "line": 143,
+    "text": "[NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/progress-indicators.md",
+    "line": 159,
+    "text": "- Progress indicators have no text and no type token [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/progress-indicators.md",
+    "line": 174,
+    "text": "- No progress-indicator motion token exists in any repository [NOT FOUND]. The values below are"
   },
   {
     "note": "knowledge/guidance/components/radio-button.md",
@@ -343,6 +428,16 @@
     "note": "knowledge/guidance/components/sliders.md",
     "line": 173,
     "text": "- The track-end shape change when the handle reaches an edge has no token [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/snackbar.md",
+    "line": 103,
+    "text": "token [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/snackbar.md",
+    "line": 137,
+    "text": "- No snackbar motion token exists in any repository [NOT FOUND]. The site only says that the"
   },
   {
     "note": "knowledge/guidance/components/split-button.md",
@@ -423,6 +518,16 @@
     "note": "knowledge/guidance/components/toolbars.md",
     "line": 172,
     "text": "- No toolbar duration, easing or spring token exists [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/tooltips.md",
+    "line": 104,
+    "text": "- There is no height, padding or width token for either variant [NOT FOUND]; those values come"
+  },
+  {
+    "note": "knowledge/guidance/components/tooltips.md",
+    "line": 151,
+    "text": "- No tooltip motion token exists in any repository [NOT FOUND]. The site gives only the hide"
   },
   {
     "note": "knowledge/guidance/develop/platforms.md",

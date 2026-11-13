@@ -42,6 +42,74 @@
     "line": 115
   },
   {
+    "page": "/components/badges/specs",
+    "token": "md.comp.badge.size",
+    "value": {
+      "dp": 6
+    },
+    "note": "knowledge/guidance/components/badges.md",
+    "line": 66
+  },
+  {
+    "page": "/components/badges/specs",
+    "token": "md.comp.badge.shape",
+    "value": {
+      "dp": 3
+    },
+    "note": "knowledge/guidance/components/badges.md",
+    "line": 67
+  },
+  {
+    "page": "/components/badges/specs",
+    "token": "md.comp.badge.large.size",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/badges.md",
+    "line": 68
+  },
+  {
+    "page": "/components/badges/specs",
+    "token": "md.comp.badge.large.shape",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/badges.md",
+    "line": 69
+  },
+  {
+    "page": "/components/badges/specs",
+    "value": {
+      "dp": 34
+    },
+    "note": "knowledge/guidance/components/badges.md",
+    "line": 70
+  },
+  {
+    "page": "/components/badges/specs",
+    "value": {
+      "dp": 4
+    },
+    "note": "knowledge/guidance/components/badges.md",
+    "line": 71
+  },
+  {
+    "page": "/components/badges/specs",
+    "value": {
+      "dp": 6
+    },
+    "note": "knowledge/guidance/components/badges.md",
+    "line": 72
+  },
+  {
+    "page": "/components/badges/specs",
+    "value": {
+      "dp": 12
+    },
+    "note": "knowledge/guidance/components/badges.md",
+    "line": 73
+  },
+  {
     "page": "/components/bottom-sheets/guidelines",
     "value": {
       "number": 0.5
@@ -1602,6 +1670,196 @@
     "line": 299
   },
   {
+    "page": "/components/loading-indicator/guidelines",
+    "value": {
+      "ms": 200
+    },
+    "note": "knowledge/guidance/components/loading-indicator.md",
+    "line": 20
+  },
+  {
+    "page": "/components/loading-indicator/guidelines",
+    "value": {
+      "ms": 200
+    },
+    "note": "knowledge/guidance/components/loading-indicator.md",
+    "line": 27
+  },
+  {
+    "page": "/components/loading-indicator/guidelines",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/components/loading-indicator.md",
+    "line": 70
+  },
+  {
+    "page": "/components/loading-indicator/guidelines",
+    "value": {
+      "dp": 240
+    },
+    "note": "knowledge/guidance/components/loading-indicator.md",
+    "line": 70
+  },
+  {
+    "page": "/components/loading-indicator/specs",
+    "token": "md.comp.loading-indicator.container.width",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/loading-indicator.md",
+    "line": 85
+  },
+  {
+    "page": "/components/loading-indicator/specs",
+    "token": "md.comp.loading-indicator.active-indicator.size",
+    "value": {
+      "dp": 38
+    },
+    "note": "knowledge/guidance/components/loading-indicator.md",
+    "line": 87
+  },
+  {
+    "page": "/components/loading-indicator/guidelines",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/components/loading-indicator.md",
+    "line": 89
+  },
+  {
+    "page": "/components/loading-indicator/guidelines",
+    "value": {
+      "dp": 240
+    },
+    "note": "knowledge/guidance/components/loading-indicator.md",
+    "line": 89
+  },
+  {
+    "page": "/components/loading-indicator/specs",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/loading-indicator.md",
+    "line": 91
+  },
+  {
+    "page": "/components/loading-indicator/specs",
+    "value": {
+      "dp": 38
+    },
+    "note": "knowledge/guidance/components/loading-indicator.md",
+    "line": 91
+  },
+  {
+    "page": "/components/loading-indicator/guidelines",
+    "value": {
+      "dp": 240
+    },
+    "note": "knowledge/guidance/components/loading-indicator.md",
+    "line": 157
+  },
+  {
+    "page": "/components/loading-indicator/guidelines",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/components/loading-indicator.md",
+    "line": 157
+  },
+  {
+    "page": "/components/menus/accessibility",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/menus.md",
+    "line": 125
+  },
+  {
+    "page": "/components/menus/specs",
+    "value": {
+      "dp": 112
+    },
+    "note": "knowledge/guidance/components/menus.md",
+    "line": 136
+  },
+  {
+    "page": "/components/menus/specs",
+    "value": {
+      "dp": 280
+    },
+    "note": "knowledge/guidance/components/menus.md",
+    "line": 136
+  },
+  {
+    "page": "/components/menus/specs",
+    "token": "md.comp.menu.container.shape",
+    "value": {
+      "dp": 4
+    },
+    "note": "knowledge/guidance/components/menus.md",
+    "line": 137
+  },
+  {
+    "page": "/components/menus/specs",
+    "token": "md.comp.menu.list-item.container.height",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/menus.md",
+    "line": 138
+  },
+  {
+    "page": "/components/menus/specs",
+    "value": {
+      "dp": 12
+    },
+    "note": "knowledge/guidance/components/menus.md",
+    "line": 139
+  },
+  {
+    "page": "/components/menus/specs",
+    "value": {
+      "dp": 12
+    },
+    "note": "knowledge/guidance/components/menus.md",
+    "line": 140
+  },
+  {
+    "page": "/components/menus/specs",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/menus.md",
+    "line": 141
+  },
+  {
+    "page": "/components/menus/specs",
+    "token": "md.comp.menu.divider.height",
+    "value": {
+      "dp": 1
+    },
+    "note": "knowledge/guidance/components/menus.md",
+    "line": 142
+  },
+  {
+    "page": "/components/menus/specs",
+    "token": "md.comp.menu.list-item.with-leading-icon.leading-icon.size",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/components/menus.md",
+    "line": 143
+  },
+  {
+    "page": "/components/menus/accessibility",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/menus.md",
+    "line": 243
+  },
+  {
     "page": "/components/navigation-bar/guidelines",
     "value": {
       "number": 1
@@ -1685,6 +1943,70 @@
     },
     "note": "knowledge/guidance/components/navigation-drawer.md",
     "line": 94
+  },
+  {
+    "page": "/components/progress-indicators/guidelines",
+    "value": {
+      "ms": 200
+    },
+    "note": "knowledge/guidance/components/progress-indicators.md",
+    "line": 21
+  },
+  {
+    "page": "/components/progress-indicators/guidelines",
+    "value": {
+      "ms": 200
+    },
+    "note": "knowledge/guidance/components/progress-indicators.md",
+    "line": 23
+  },
+  {
+    "page": "/components/progress-indicators/guidelines",
+    "value": {
+      "dp": 40
+    },
+    "note": "knowledge/guidance/components/progress-indicators.md",
+    "line": 87
+  },
+  {
+    "page": "/components/progress-indicators/guidelines",
+    "value": {
+      "dp": 4
+    },
+    "note": "knowledge/guidance/components/progress-indicators.md",
+    "line": 88
+  },
+  {
+    "page": "/components/progress-indicators/guidelines",
+    "value": {
+      "dp": 4
+    },
+    "note": "knowledge/guidance/components/progress-indicators.md",
+    "line": 136
+  },
+  {
+    "page": "/components/progress-indicators/guidelines",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/components/progress-indicators.md",
+    "line": 138
+  },
+  {
+    "page": "/components/progress-indicators/guidelines",
+    "value": {
+      "dp": 240
+    },
+    "note": "knowledge/guidance/components/progress-indicators.md",
+    "line": 138
+  },
+  {
+    "page": "/components/progress-indicators/specs",
+    "value": {
+      "dp": 4
+    },
+    "note": "knowledge/guidance/components/progress-indicators.md",
+    "line": 140
   },
   {
     "page": "/components/radio-button/specs",
@@ -2164,6 +2486,24 @@
     },
     "note": "knowledge/guidance/components/sliders.md",
     "line": 118
+  },
+  {
+    "page": "/components/snackbar/guidelines",
+    "token": "md.comp.snackbar.with-two-lines.container.height",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/snackbar.md",
+    "line": 100
+  },
+  {
+    "page": "/components/snackbar/guidelines",
+    "token": "md.comp.snackbar.with-two-lines.container.height",
+    "value": {
+      "dp": 64
+    },
+    "note": "knowledge/guidance/components/snackbar.md",
+    "line": 100
   },
   {
     "page": "/components/split-button/guidelines",
@@ -2834,6 +3174,70 @@
     },
     "note": "knowledge/guidance/components/toolbars.md",
     "line": 191
+  },
+  {
+    "page": "/components/tooltips/guidelines",
+    "value": {
+      "dp": 4
+    },
+    "note": "knowledge/guidance/components/tooltips.md",
+    "line": 71
+  },
+  {
+    "page": "/components/tooltips/guidelines",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/tooltips.md",
+    "line": 72
+  },
+  {
+    "page": "/components/tooltips/guidelines",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/tooltips.md",
+    "line": 74
+  },
+  {
+    "page": "/components/tooltips/specs",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/components/tooltips.md",
+    "line": 90
+  },
+  {
+    "page": "/components/tooltips/specs",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/tooltips.md",
+    "line": 91
+  },
+  {
+    "page": "/components/tooltips/specs",
+    "value": {
+      "dp": 12
+    },
+    "note": "knowledge/guidance/components/tooltips.md",
+    "line": 98
+  },
+  {
+    "page": "/components/tooltips/specs",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/tooltips.md",
+    "line": 99
+  },
+  {
+    "page": "/components/tooltips/specs",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/tooltips.md",
+    "line": 100
   },
   {
     "page": "/blog/testing-material-3",
