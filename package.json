@@ -10,7 +10,8 @@
   },
   "scripts": {
     "test": "node --test \"tools/**/*.test.mjs\"",
-    "guard": "node tools/guard/check-public-diff.mjs"
+    "guard": "node tools/guard/check-public-diff.mjs",
+    "extract:scrape": "node tools/extract/scrape/run.mjs"
   },
   "devDependencies": {
     "playwright": "1.65.0"
