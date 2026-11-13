@@ -1,0 +1,7 @@
+{
+  "name": "foreign-styling-hit",
+  "private": true,
+  "dependencies": {
+    "@material/web": "2.4.1"
+  }
+}

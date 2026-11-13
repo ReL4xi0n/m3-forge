@@ -1,0 +1,11 @@
+.card {
+  color: var(--md-sys-color-on-surface);
+  background-color: var(--md-sys-color-surface-container);
+  border-color: transparent;
+  outline-color: currentColor;
+  padding: 16px;
+}
+
+#add {
+  color: var(--md-sys-color-primary, #6750a4);
+}

@@ -1,0 +1,11 @@
+body {
+  color: var(--md-sys-color-on-surface);
+  background: var(--md-sys-color-surface);
+  font-size: var(--md-sys-typescale-body-large-size);
+}
+
+.card {
+  border-radius: var(--md-sys-shape-corner-medium);
+  box-shadow: var(--md-sys-elevation-level1);
+  padding: 16px;
+}
