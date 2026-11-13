@@ -1,0 +1,16 @@
+name: m3_harness_sample
+description: Hand-written sample app for the m3-forge Flutter capture test.
+publish_to: none
+version: 0.0.0
+
+environment:
+  sdk: 3.14.0
+  flutter: 3.50.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
