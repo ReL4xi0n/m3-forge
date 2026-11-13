@@ -1,1 +1,233 @@
-[]
+[
+  {
+    "page": "/components/buttons/overview",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/components/buttons.md",
+    "line": 51
+  },
+  {
+    "page": "/components/buttons/overview",
+    "value": {
+      "dp": 36
+    },
+    "note": "knowledge/guidance/components/buttons.md",
+    "line": 63
+  },
+  {
+    "page": "/components/buttons/overview",
+    "value": {
+      "dp": 40
+    },
+    "note": "knowledge/guidance/components/buttons.md",
+    "line": 63
+  },
+  {
+    "page": "/components/buttons/specs",
+    "token": "md.comp.button.xsmall.container.shape.square",
+    "value": {
+      "dp": 12
+    },
+    "note": "knowledge/guidance/components/buttons.md",
+    "line": 98
+  },
+  {
+    "page": "/components/buttons/specs",
+    "token": "md.comp.button.small.container.shape.square",
+    "value": {
+      "dp": 12
+    },
+    "note": "knowledge/guidance/components/buttons.md",
+    "line": 98
+  },
+  {
+    "page": "/components/buttons/specs",
+    "token": "md.comp.button.medium.container.shape.square",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/buttons.md",
+    "line": 98
+  },
+  {
+    "page": "/components/buttons/specs",
+    "token": "md.comp.button.large.container.shape.square",
+    "value": {
+      "dp": 28
+    },
+    "note": "knowledge/guidance/components/buttons.md",
+    "line": 98
+  },
+  {
+    "page": "/components/buttons/specs",
+    "token": "md.comp.button.xlarge.container.shape.square",
+    "value": {
+      "dp": 28
+    },
+    "note": "knowledge/guidance/components/buttons.md",
+    "line": 98
+  },
+  {
+    "page": "/components/buttons/specs",
+    "token": "md.comp.button.xsmall.pressed.container.shape",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/buttons.md",
+    "line": 99
+  },
+  {
+    "page": "/components/buttons/specs",
+    "token": "md.comp.button.small.pressed.container.shape",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/buttons.md",
+    "line": 99
+  },
+  {
+    "page": "/components/buttons/specs",
+    "token": "md.comp.button.medium.pressed.container.shape",
+    "value": {
+      "dp": 12
+    },
+    "note": "knowledge/guidance/components/buttons.md",
+    "line": 99
+  },
+  {
+    "page": "/components/buttons/specs",
+    "token": "md.comp.button.large.pressed.container.shape",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/buttons.md",
+    "line": 99
+  },
+  {
+    "page": "/components/buttons/specs",
+    "token": "md.comp.button.xlarge.pressed.container.shape",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/buttons.md",
+    "line": 99
+  },
+  {
+    "page": "/components/buttons/specs",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/buttons.md",
+    "line": 127
+  },
+  {
+    "page": "/components/buttons/specs",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/buttons.md",
+    "line": 128
+  },
+  {
+    "page": "/components/buttons/accessibility",
+    "value": {
+      "number": 2
+    },
+    "note": "knowledge/guidance/components/buttons.md",
+    "line": 130
+  },
+  {
+    "page": "/components/buttons/specs",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/buttons.md",
+    "line": 162
+  },
+  {
+    "page": "/components/split-button/guidelines",
+    "value": {
+      "dp": 4
+    },
+    "note": "knowledge/guidance/components/split-button.md",
+    "line": 64
+  },
+  {
+    "page": "/components/split-button/specs",
+    "token": "md.comp.split-button.xsmall.inner-corner.corner-size",
+    "value": {
+      "dp": 4
+    },
+    "note": "knowledge/guidance/components/split-button.md",
+    "line": 81
+  },
+  {
+    "page": "/components/split-button/specs",
+    "token": "md.comp.split-button.small.inner-corner.corner-size",
+    "value": {
+      "dp": 4
+    },
+    "note": "knowledge/guidance/components/split-button.md",
+    "line": 81
+  },
+  {
+    "page": "/components/split-button/specs",
+    "token": "md.comp.split-button.medium.inner-corner.corner-size",
+    "value": {
+      "dp": 4
+    },
+    "note": "knowledge/guidance/components/split-button.md",
+    "line": 81
+  },
+  {
+    "page": "/components/split-button/specs",
+    "token": "md.comp.split-button.large.inner-corner.corner-size",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/split-button.md",
+    "line": 81
+  },
+  {
+    "page": "/components/split-button/specs",
+    "token": "md.comp.split-button.xlarge.inner-corner.corner-size",
+    "value": {
+      "dp": 12
+    },
+    "note": "knowledge/guidance/components/split-button.md",
+    "line": 81
+  },
+  {
+    "page": "/components/split-button/specs",
+    "value": {
+      "number": 0.5
+    },
+    "note": "knowledge/guidance/components/split-button.md",
+    "line": 85
+  },
+  {
+    "page": "/components/split-button/specs",
+    "value": {
+      "dp": 2
+    },
+    "note": "knowledge/guidance/components/split-button.md",
+    "line": 86
+  },
+  {
+    "page": "/components/split-button/accessibility",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/split-button.md",
+    "line": 94
+  },
+  {
+    "page": "/components/split-button/guidelines",
+    "value": {
+      "dp": 4
+    },
+    "note": "knowledge/guidance/components/split-button.md",
+    "line": 119
+  }
+]

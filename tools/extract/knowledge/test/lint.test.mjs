@@ -92,3 +92,16 @@ test('--require-coverage: every scraped page must be cited by some note', async 
   } });
   assert.deepEqual(excused.errors, []);
 });
+
+test('table rows: each cell pairs its own value with its own markers', async () => {
+  const row = '| Square | 12dp [site:/components/buttons/specs] [token:md.comp.filled-button.container.shape] | 40dp [site:/components/buttons/specs] [token:md.comp.filled-button.container.height] |';
+  const r = await run({ 'components/buttons.md': note({ body: { Measurements: `| | A | B |\n|---|---|---|\n${row}` } }) });
+  assert.deepEqual(r.errors, []);
+  assert.deepEqual(r.siteValues.map(s => [s.token, s.value]), [
+    ['md.comp.filled-button.container.shape', { dp: 12 }],
+    ['md.comp.filled-button.container.height', { dp: 40 }],
+  ]);
+  const bad = await run({ 'components/buttons.md': note({ body: { Measurements: '| x | 12dp [token:md.comp.filled-button.container.shape] | 41dp [token:md.comp.filled-button.container.height] |' } }) });
+  assert.ok(bad.errors.some(e => /value 41dp does not match token md\.comp\.filled-button\.container\.height$/.test(e)), bad.errors.join('\n'));
+  assert.ok(!bad.errors.some(e => /value 12dp/.test(e)));
+});

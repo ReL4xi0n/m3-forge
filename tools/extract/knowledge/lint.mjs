@@ -115,8 +115,9 @@ export async function lintNotes(notesDir, { merged, coverage, exceptions = {}, r
       else if (!sections.get(s).content) err(sections.get(s).line, `empty section "## ${s}"`);
     }
 
-    for (let i = bodyStart; i < lines.length; i++) {
-      const line = lines[i];
+    // Table rows are checked cell by cell: a value pairs with the markers in its own cell.
+    const segmentsOf = line => (/^\s*\|.*\|\s*$/.test(line) ? line.split('|') : [line]);
+    for (let i = bodyStart; i < lines.length; i++) for (const line of segmentsOf(lines[i])) {
       const values = [...line.matchAll(NUMBER)].map(m => literal(m[1], m[2])).concat([...line.matchAll(HEX)].map(m => hexValue(m[1])));
       const tokens = [...line.matchAll(/\[token:([^\]\s]+)\]/g)].map(m => m[1]);
       const sites = [...line.matchAll(/\[site:([^\]\s]+)\]/g)].map(m => m[1]);

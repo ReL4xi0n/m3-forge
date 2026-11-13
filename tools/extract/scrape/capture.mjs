@@ -58,7 +58,7 @@ function pageOf(req) {
 
 // blockThirdPartyData (owner decision 2026-11-13, option b): other origins may serve only scripts and
 // stylesheets, which rendering needs; their fetch/XHR, frames and everything else are aborted.
-export async function newContext(browser, { userAgent, isAllowedUrl, origin, blockThirdPartyData = true }) {
+export async function newContext(browser, { userAgent, isAllowedUrl, origin, blockThirdPartyData = true, blockedTypes = BLOCKED_TYPES }) {
   const host = new URL(origin).host;
   const ctx = await browser.newContext({ userAgent, serviceWorkers: 'block' });
   await ctx.route('**/*', route => {
@@ -66,7 +66,7 @@ export async function newContext(browser, { userAgent, isAllowedUrl, origin, blo
     const u = new URL(req.url());
     const type = req.resourceType();
     const third = u.host !== host;
-    const block = BLOCKED_TYPES.has(type) || ANALYTICS.test(u.hostname)
+    const block = blockedTypes.has(type) || ANALYTICS.test(u.hostname)
       || (!third && !isAllowedUrl(u))
       || (third && blockThirdPartyData && type !== 'script' && type !== 'stylesheet');
     if (third) {
