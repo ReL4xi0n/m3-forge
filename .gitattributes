@@ -1,11 +1,2 @@
-* text=auto eol=lf
-*.ps1 text eol=crlf
-*.cmd text eol=crlf
-*.bat text eol=crlf
-*.ttf binary
-*.otf binary
-*.woff binary
-*.woff2 binary
-*.png binary
-*.jpg binary
-*.webp binary
+evals/**/*.md text eol=lf
+evals/**/*.json text eol=lf
