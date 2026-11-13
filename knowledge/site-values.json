@@ -1,5 +1,47 @@
 [
   {
+    "page": "/components/app-bars/guidelines",
+    "value": {
+      "number": 1
+    },
+    "note": "knowledge/guidance/components/app-bars.md",
+    "line": 80
+  },
+  {
+    "page": "/components/app-bars/guidelines",
+    "value": {
+      "dp": 312
+    },
+    "note": "knowledge/guidance/components/app-bars.md",
+    "line": 84
+  },
+  {
+    "page": "/components/app-bars/guidelines",
+    "value": {
+      "number": 0.5
+    },
+    "note": "knowledge/guidance/components/app-bars.md",
+    "line": 84
+  },
+  {
+    "page": "/components/app-bars/specs",
+    "token": "md.comp.app-bar.medium.container.height",
+    "value": {
+      "dp": 112
+    },
+    "note": "knowledge/guidance/components/app-bars.md",
+    "line": 113
+  },
+  {
+    "page": "/components/app-bars/specs",
+    "token": "md.comp.app-bar.medium.icon.size",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/components/app-bars.md",
+    "line": 115
+  },
+  {
     "page": "/components/button-groups/specs",
     "value": {
       "dp": 2
@@ -662,6 +704,193 @@
     "line": 226
   },
   {
+    "page": "/components/navigation-bar/guidelines",
+    "value": {
+      "number": 1
+    },
+    "note": "knowledge/guidance/components/navigation-bar.md",
+    "line": 82
+  },
+  {
+    "page": "/components/navigation-drawer/specs",
+    "token": "md.comp.navigation-drawer.container.width",
+    "value": {
+      "dp": 360
+    },
+    "note": "knowledge/guidance/components/navigation-drawer.md",
+    "line": 86
+  },
+  {
+    "page": "/components/navigation-drawer/specs",
+    "value": {
+      "number": 1
+    },
+    "note": "knowledge/guidance/components/navigation-drawer.md",
+    "line": 87
+  },
+  {
+    "page": "/components/navigation-drawer/specs",
+    "token": "md.sys.shape.corner.large",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/navigation-drawer.md",
+    "line": 88
+  },
+  {
+    "page": "/components/navigation-drawer/specs",
+    "token": "md.comp.navigation-drawer.active-indicator.width",
+    "value": {
+      "dp": 336
+    },
+    "note": "knowledge/guidance/components/navigation-drawer.md",
+    "line": 89
+  },
+  {
+    "page": "/components/navigation-drawer/specs",
+    "token": "md.comp.navigation-drawer.active-indicator.height",
+    "value": {
+      "dp": 56
+    },
+    "note": "knowledge/guidance/components/navigation-drawer.md",
+    "line": 90
+  },
+  {
+    "page": "/components/navigation-drawer/specs",
+    "value": {
+      "dp": 28
+    },
+    "note": "knowledge/guidance/components/navigation-drawer.md",
+    "line": 91
+  },
+  {
+    "page": "/components/navigation-drawer/specs",
+    "value": {
+      "dp": 12
+    },
+    "note": "knowledge/guidance/components/navigation-drawer.md",
+    "line": 92
+  },
+  {
+    "page": "/components/navigation-drawer/specs",
+    "value": {
+      "dp": 0
+    },
+    "note": "knowledge/guidance/components/navigation-drawer.md",
+    "line": 93
+  },
+  {
+    "page": "/components/navigation-drawer/specs",
+    "token": "md.comp.navigation-drawer.icon.size",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/components/navigation-drawer.md",
+    "line": 94
+  },
+  {
+    "page": "/components/search/specs",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/components/search.md",
+    "line": 77
+  },
+  {
+    "page": "/components/search/specs",
+    "value": {
+      "dp": 12
+    },
+    "note": "knowledge/guidance/components/search.md",
+    "line": 77
+  },
+  {
+    "page": "/components/search/specs",
+    "token": "md.comp.search-bar.container.height",
+    "value": {
+      "dp": 56
+    },
+    "note": "knowledge/guidance/components/search.md",
+    "line": 95
+  },
+  {
+    "page": "/components/search/specs",
+    "value": {
+      "dp": 360
+    },
+    "note": "knowledge/guidance/components/search.md",
+    "line": 96
+  },
+  {
+    "page": "/components/search/specs",
+    "value": {
+      "dp": 720
+    },
+    "note": "knowledge/guidance/components/search.md",
+    "line": 96
+  },
+  {
+    "page": "/components/search/specs",
+    "token": "md.comp.search-bar.contained.leading-margin",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/components/search.md",
+    "line": 97
+  },
+  {
+    "page": "/components/search/specs",
+    "token": "md.comp.search-view.contained.leading-margin",
+    "value": {
+      "dp": 12
+    },
+    "note": "knowledge/guidance/components/search.md",
+    "line": 98
+  },
+  {
+    "page": "/components/search/specs",
+    "token": "md.comp.search-bar.contained.icon-label.gap",
+    "value": {
+      "dp": 4
+    },
+    "note": "knowledge/guidance/components/search.md",
+    "line": 101
+  },
+  {
+    "page": "/components/search/specs",
+    "token": "md.comp.search-bar.avatar.size",
+    "value": {
+      "dp": 30
+    },
+    "note": "knowledge/guidance/components/search.md",
+    "line": 104
+  },
+  {
+    "page": "/components/search/specs",
+    "token": "md.comp.search-bar.avatar.size",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/search.md",
+    "line": 104
+  },
+  {
+    "page": "/components/search/specs",
+    "value": {
+      "dp": 240
+    },
+    "note": "knowledge/guidance/components/search.md",
+    "line": 117
+  },
+  {
+    "page": "/components/search/specs",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/search.md",
+    "line": 121
+  },
+  {
     "page": "/components/segmented-buttons/specs",
     "token": "md.comp.outlined-segmented-button.container.height",
     "value": {
@@ -803,6 +1032,197 @@
     },
     "note": "knowledge/guidance/components/split-button.md",
     "line": 147
+  },
+  {
+    "page": "/components/tabs/guidelines",
+    "value": {
+      "dp": 52
+    },
+    "note": "knowledge/guidance/components/tabs.md",
+    "line": 64
+  },
+  {
+    "page": "/components/tabs/specs",
+    "token": "md.comp.primary-navigation-tab.container.height",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/tabs.md",
+    "line": 82
+  },
+  {
+    "page": "/components/tabs/specs",
+    "token": "md.comp.primary-navigation-tab.with-icon-and-label-text.container.height",
+    "value": {
+      "dp": 64
+    },
+    "note": "knowledge/guidance/components/tabs.md",
+    "line": 83
+  },
+  {
+    "page": "/components/tabs/specs",
+    "token": "md.comp.primary-navigation-tab.with-icon.icon.size",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/components/tabs.md",
+    "line": 84
+  },
+  {
+    "page": "/components/tabs/specs",
+    "token": "md.comp.primary-navigation-tab.divider.height",
+    "value": {
+      "dp": 1
+    },
+    "note": "knowledge/guidance/components/tabs.md",
+    "line": 85
+  },
+  {
+    "page": "/components/tabs/specs",
+    "token": "md.comp.primary-navigation-tab.active-indicator.height",
+    "value": {
+      "dp": 3
+    },
+    "note": "knowledge/guidance/components/tabs.md",
+    "line": 86
+  },
+  {
+    "page": "/components/tabs/specs",
+    "token": "md.comp.secondary-navigation-tab.active-indicator.height",
+    "value": {
+      "dp": 2
+    },
+    "note": "knowledge/guidance/components/tabs.md",
+    "line": 87
+  },
+  {
+    "page": "/components/tabs/specs",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/components/tabs.md",
+    "line": 89
+  },
+  {
+    "page": "/components/tabs/specs",
+    "value": {
+      "dp": 2
+    },
+    "note": "knowledge/guidance/components/tabs.md",
+    "line": 90
+  },
+  {
+    "page": "/components/tabs/specs",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/tabs.md",
+    "line": 91
+  },
+  {
+    "page": "/components/tabs/specs",
+    "value": {
+      "dp": 4
+    },
+    "note": "knowledge/guidance/components/tabs.md",
+    "line": 92
+  },
+  {
+    "page": "/components/tabs/specs",
+    "value": {
+      "dp": 6
+    },
+    "note": "knowledge/guidance/components/tabs.md",
+    "line": 93
+  },
+  {
+    "page": "/components/toolbars/overview",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/toolbars.md",
+    "line": 60
+  },
+  {
+    "page": "/components/toolbars/guidelines",
+    "value": {
+      "number": 1
+    },
+    "note": "knowledge/guidance/components/toolbars.md",
+    "line": 81
+  },
+  {
+    "page": "/components/toolbars/specs",
+    "token": "md.comp.toolbar.docked.container.height",
+    "value": {
+      "dp": 64
+    },
+    "note": "knowledge/guidance/components/toolbars.md",
+    "line": 101
+  },
+  {
+    "page": "/components/toolbars/specs",
+    "value": {
+      "dp": 64
+    },
+    "note": "knowledge/guidance/components/toolbars.md",
+    "line": 110
+  },
+  {
+    "page": "/components/toolbars/specs",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/toolbars.md",
+    "line": 111
+  },
+  {
+    "page": "/components/toolbars/guidelines",
+    "value": {
+      "dp": 32
+    },
+    "note": "knowledge/guidance/components/toolbars.md",
+    "line": 112
+  },
+  {
+    "page": "/components/toolbars/guidelines",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/toolbars.md",
+    "line": 113
+  },
+  {
+    "page": "/components/toolbars/specs",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/toolbars.md",
+    "line": 114
+  },
+  {
+    "page": "/components/toolbars/guidelines",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/toolbars.md",
+    "line": 115
+  },
+  {
+    "page": "/components/toolbars/guidelines",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/components/toolbars.md",
+    "line": 116
+  },
+  {
+    "page": "/components/toolbars/guidelines",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/toolbars.md",
+    "line": 191
   },
   {
     "page": "/blog/testing-material-3",

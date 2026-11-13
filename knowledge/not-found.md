@@ -5375,12 +5375,19 @@ md.comp.app-bar.large.icon.size, md.comp.app-bar.medium.icon.size, md.comp.app-b
 | material-components-android | m3_sys_shape_corner_medium_corner_family | (none) | shape/res/values/tokens.xml:54 |
 | material-components-android | m3_sys_shape_corner_small_corner_family | (none) | shape/res/values/tokens.xml:60 |
 
-## NOT FOUND in notes: 49
+## NOT FOUND in notes: 71
 
 Statements the knowledge notes mark `[NOT FOUND]` (values or facts no source gives, e.g. the default color variant for M3 Expressive). Collected by `tools/extract/knowledge/lint.mjs`.
 
 | note:line | statement |
 |---|---|
+| knowledge/guidance/components/app-bars.md:96 | \| Container height \| [NOT FOUND] \| 64dp [token:md.comp.app-bar.small.container.height] \| 112dp [token:md.comp.app-bar.medium-flexible.container.height] \| 120dp [token:md.comp.app-bar.large-flexible.container.height] \| |
+| knowledge/guidance/components/app-bars.md:97 | \| Height with subtitle \| not applicable \| [NOT FOUND] \| 136dp [token:md.comp.app-bar.medium-flexible.with-subtitle.container.height] \| 152dp [token:md.comp.app-bar.large-flexible.with-subtitle.container.height] \| |
+| knowledge/guidance/components/app-bars.md:101 | subtitle [NOT FOUND]. |
+| knowledge/guidance/components/app-bars.md:133 | subtitle font token [NOT FOUND]; its older `top-app-bar` set gives the baseline styles. |
+| knowledge/guidance/components/app-bars.md:135 | token [NOT FOUND]. |
+| knowledge/guidance/components/app-bars.md:155 | itself defines no state-layer opacity [NOT FOUND]. |
+| knowledge/guidance/components/app-bars.md:159 | - No app-bar duration, easing or spring token exists [NOT FOUND]. The site describes the |
 | knowledge/guidance/components/button-groups.md:121 | - The group has no type token of its own [NOT FOUND]. Labels follow the button sizes; see |
 | knowledge/guidance/components/button-groups.md:139 | - Compose has no group motion token [NOT FOUND]; `ButtonGroup` animates widths with the fast |
 | knowledge/guidance/components/button-groups.md:145 | [NOT FOUND]. |
@@ -5399,10 +5406,25 @@ Statements the knowledge notes mark `[NOT FOUND]` (values or facts no source giv
 | knowledge/guidance/components/icon-buttons.md:164 | [NOT FOUND]. |
 | knowledge/guidance/components/icon-buttons.md:165 | - Compose defines no icon-button motion token [NOT FOUND]. Its code animates both the press morph |
 | knowledge/guidance/components/icon-buttons.md:176 | - Icon change on selection (outlined to filled glyph): no motion token [NOT FOUND]. |
+| knowledge/guidance/components/navigation-bar.md:94 | \| Active indicator width \| 56dp [token:md.comp.nav-bar.item.vertical.active-indicator.width] \| hugs the content [NOT FOUND] \| |
+| knowledge/guidance/components/navigation-bar.md:104 | [NOT FOUND]. |
+| knowledge/guidance/components/navigation-bar.md:124 | only in Flutter's data; material-web's `nav-bar` set defines no label font [NOT FOUND]. |
+| knowledge/guidance/components/navigation-bar.md:160 | - No navigation-bar duration, easing or spring token exists [NOT FOUND]. The site describes the |
+| knowledge/guidance/components/navigation-drawer.md:101 | - Modal drawer: the specs page gives no separate measurements [NOT FOUND]. |
+| knowledge/guidance/components/navigation-drawer.md:136 | - No drawer duration, easing or spring token exists [NOT FOUND]. |
+| knowledge/guidance/components/navigation-rail.md:103 | \| Active indicator width \| 56dp [token:md.comp.nav-rail.item.vertical.active-indicator.width] \| hugs the content [NOT FOUND] \| |
+| knowledge/guidance/components/navigation-rail.md:132 | [NOT FOUND]. Compose's ids are `navigation-rail-vertical-item.label-text-font` (label medium) |
+| knowledge/guidance/components/navigation-rail.md:165 | - No navigation-rail duration, easing or spring token exists [NOT FOUND]. The site describes the |
+| knowledge/guidance/components/search.md:116 | \| Docked header height \| not given [NOT FOUND] \| 56dp [token:md.comp.search-view.docked.header.container.height] \| |
+| knowledge/guidance/components/search.md:117 | \| Docked results height \| 240dp minimum [site:/components/search/specs], at most two thirds of the screen \| [NOT FOUND] \| |
 | knowledge/guidance/components/segmented-buttons.md:114 | spring [NOT FOUND]. No segmented-button motion token exists [NOT FOUND]. |
 | knowledge/guidance/components/split-button.md:96 | - The split button has no label type token of its own [NOT FOUND]. |
 | knowledge/guidance/components/split-button.md:112 | token [NOT FOUND]. |
 | knowledge/guidance/components/split-button.md:118 | token [NOT FOUND]. |
+| knowledge/guidance/components/tabs.md:97 | - Beyond the minimum length, the site and tokens give no indicator width [NOT FOUND]. Flutter |
+| knowledge/guidance/components/tabs.md:157 | - No tab duration, easing or spring token exists [NOT FOUND]. The site only says the indicator |
+| knowledge/guidance/components/toolbars.md:130 | - No toolbar type token exists [NOT FOUND]. Text inside comes from the placed components (button |
+| knowledge/guidance/components/toolbars.md:172 | - No toolbar duration, easing or spring token exists [NOT FOUND]. |
 | knowledge/guidance/develop/platforms.md:130 | that are illustrations, not spec values; do not reuse them as tokens [NOT FOUND]. |
 | knowledge/guidance/develop/platforms.md:131 | - No platform-level spacing or size tokens are introduced on these pages [NOT FOUND]. |
 | knowledge/guidance/expressive.md:184 | only the standard scheme (expressive values for web: [NOT FOUND]). |

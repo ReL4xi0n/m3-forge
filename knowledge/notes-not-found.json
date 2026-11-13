@@ -1,5 +1,40 @@
 [
   {
+    "note": "knowledge/guidance/components/app-bars.md",
+    "line": 96,
+    "text": "| Container height | [NOT FOUND] | 64dp [token:md.comp.app-bar.small.container.height] | 112dp [token:md.comp.app-bar.medium-flexible.container.height] | 120dp [token:md.comp.app-bar.large-flexible.container.height] |"
+  },
+  {
+    "note": "knowledge/guidance/components/app-bars.md",
+    "line": 97,
+    "text": "| Height with subtitle | not applicable | [NOT FOUND] | 136dp [token:md.comp.app-bar.medium-flexible.with-subtitle.container.height] | 152dp [token:md.comp.app-bar.large-flexible.with-subtitle.container.height] |"
+  },
+  {
+    "note": "knowledge/guidance/components/app-bars.md",
+    "line": 101,
+    "text": "subtitle [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/app-bars.md",
+    "line": 133,
+    "text": "subtitle font token [NOT FOUND]; its older `top-app-bar` set gives the baseline styles."
+  },
+  {
+    "note": "knowledge/guidance/components/app-bars.md",
+    "line": 135,
+    "text": "token [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/app-bars.md",
+    "line": 155,
+    "text": "itself defines no state-layer opacity [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/app-bars.md",
+    "line": 159,
+    "text": "- No app-bar duration, easing or spring token exists [NOT FOUND]. The site describes the"
+  },
+  {
     "note": "knowledge/guidance/components/button-groups.md",
     "line": 121,
     "text": "- The group has no type token of its own [NOT FOUND]. Labels follow the button sizes; see"
@@ -90,6 +125,61 @@
     "text": "- Icon change on selection (outlined to filled glyph): no motion token [NOT FOUND]."
   },
   {
+    "note": "knowledge/guidance/components/navigation-bar.md",
+    "line": 94,
+    "text": "| Active indicator width | 56dp [token:md.comp.nav-bar.item.vertical.active-indicator.width] | hugs the content [NOT FOUND] |"
+  },
+  {
+    "note": "knowledge/guidance/components/navigation-bar.md",
+    "line": 104,
+    "text": "[NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/navigation-bar.md",
+    "line": 124,
+    "text": "only in Flutter's data; material-web's `nav-bar` set defines no label font [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/navigation-bar.md",
+    "line": 160,
+    "text": "- No navigation-bar duration, easing or spring token exists [NOT FOUND]. The site describes the"
+  },
+  {
+    "note": "knowledge/guidance/components/navigation-drawer.md",
+    "line": 101,
+    "text": "- Modal drawer: the specs page gives no separate measurements [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/navigation-drawer.md",
+    "line": 136,
+    "text": "- No drawer duration, easing or spring token exists [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/navigation-rail.md",
+    "line": 103,
+    "text": "| Active indicator width | 56dp [token:md.comp.nav-rail.item.vertical.active-indicator.width] | hugs the content [NOT FOUND] |"
+  },
+  {
+    "note": "knowledge/guidance/components/navigation-rail.md",
+    "line": 132,
+    "text": "[NOT FOUND]. Compose's ids are `navigation-rail-vertical-item.label-text-font` (label medium)"
+  },
+  {
+    "note": "knowledge/guidance/components/navigation-rail.md",
+    "line": 165,
+    "text": "- No navigation-rail duration, easing or spring token exists [NOT FOUND]. The site describes the"
+  },
+  {
+    "note": "knowledge/guidance/components/search.md",
+    "line": 116,
+    "text": "| Docked header height | not given [NOT FOUND] | 56dp [token:md.comp.search-view.docked.header.container.height] |"
+  },
+  {
+    "note": "knowledge/guidance/components/search.md",
+    "line": 117,
+    "text": "| Docked results height | 240dp minimum [site:/components/search/specs], at most two thirds of the screen | [NOT FOUND] |"
+  },
+  {
     "note": "knowledge/guidance/components/segmented-buttons.md",
     "line": 114,
     "text": "spring [NOT FOUND]. No segmented-button motion token exists [NOT FOUND]."
@@ -108,6 +198,26 @@
     "note": "knowledge/guidance/components/split-button.md",
     "line": 118,
     "text": "token [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/tabs.md",
+    "line": 97,
+    "text": "- Beyond the minimum length, the site and tokens give no indicator width [NOT FOUND]. Flutter"
+  },
+  {
+    "note": "knowledge/guidance/components/tabs.md",
+    "line": 157,
+    "text": "- No tab duration, easing or spring token exists [NOT FOUND]. The site only says the indicator"
+  },
+  {
+    "note": "knowledge/guidance/components/toolbars.md",
+    "line": 130,
+    "text": "- No toolbar type token exists [NOT FOUND]. Text inside comes from the placed components (button"
+  },
+  {
+    "note": "knowledge/guidance/components/toolbars.md",
+    "line": 172,
+    "text": "- No toolbar duration, easing or spring token exists [NOT FOUND]."
   },
   {
     "note": "knowledge/guidance/develop/platforms.md",

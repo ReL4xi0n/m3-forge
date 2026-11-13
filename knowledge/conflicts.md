@@ -76,10 +76,11 @@ inside their own source before comparing; a unitless number (Flutter) is compare
 | md.sys.typescale.emphasized.display-large.tracking |  | compose-material3: 0sp; material_ui: -0.25; material-web: unparsed: -0.015625rem | compose-material3 ≠ material_ui |
 | md.sys.typescale.title-medium.tracking |  | compose-material3: 0.2sp; material_ui: 0.15; material-web: unparsed: 0.009375rem | compose-material3 ≠ material_ui |
 
-## Site vs repo (3)
+## Site vs repo (4)
 
 | token | page | site value | repo value (wins) | note |
 |---|---|---|---|---|
 | md.comp.button-group.connected.xsmall.inner-corner.corner-size | /components/button-groups/specs | 4dp | material-web: → md.sys.shape.corner-value.small | knowledge/guidance/components/button-groups.md:97 |
 | md.comp.extended-fab.small.leading-space | /components/extended-fab/specs | 8dp | material-web: 16dp | knowledge/guidance/components/extended-fab.md:88 |
 | md.comp.fab.container.height | /components/floating-action-button/specs | 24dp | material-web: 56dp | knowledge/guidance/components/floating-action-button.md:91 |
+| md.comp.search-bar.avatar.size | /components/search/specs | 48dp | material-web: 30dp | knowledge/guidance/components/search.md:104 |
