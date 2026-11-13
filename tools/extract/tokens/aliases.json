@@ -1,0 +1,12 @@
+{
+  "compose-material3": {
+    "TypeScale": {
+      "props": [{ "pattern": "^(.+?)Emphasized(.+)$", "replace": "Emphasized$1$2" }],
+      "why": "Compose names emphasized styles BodyLargeEmphasizedLineHeight; the token database names them md.sys.typescale.emphasized.body-large.line-height (word order only)."
+    },
+    "List": {
+      "props": [{ "pattern": "^Item", "replace": "ListItem" }],
+      "why": "Compose ListTokens drops the list-item prefix (ItemContainerColor); the token database names it md.comp.list.list-item.container.color."
+    }
+  }
+}

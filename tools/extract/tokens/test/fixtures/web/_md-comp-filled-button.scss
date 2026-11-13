@@ -1,0 +1,20 @@
+//
+// Invented fixture in material-web's token format.
+//
+
+@use 'md-sys-color';
+@use 'md-sys-shape';
+
+/// md.comp.filled-button.container.height (Enabled / Container)
+///
+/// @deprecated Use the md.comp.button.filled tokens instead.
+$container-height: 40px;
+/// md.comp.filled-button.container.color (Enabled / Container)
+$container-color: md-sys-color.$primary;
+/// md.comp.filled-button.container.shape (Enabled / Container)
+$container-shape: md-sys-shape.$corner-full;
+/// md.comp.filled-button.disabled.container.opacity (Disabled / Container)
+$disabled-container-opacity: 0.12;
+$label-text-line-height: 1.25rem;
+/// md.comp.filled-button.hover.color
+$hover-color: $container-color;
