@@ -1,0 +1,3128 @@
+{
+  "runDate": "2026-11-13",
+  "sitemapTotal": 375,
+  "inScope": 293,
+  "expressive": {
+    "url": 3,
+    "content": 106
+  },
+  "done": 287,
+  "redirects": 1,
+  "skippedRobots": 0,
+  "failed": 5,
+  "missing": [
+    "/blog/get-started",
+    "/building-with-m3-expressive",
+    "/m3-expressive-motion-theming",
+    "/material-is-compose-first",
+    "/whats-new-at-io26"
+  ],
+  "unjustified": [],
+  "jsonNone": [],
+  "rows": [
+    {
+      "path": "/blog/accessibility-awareness-day-2022",
+      "section": "blog",
+      "expressive": "content",
+      "status": "done",
+      "json": 2,
+      "included": [
+        "expressive"
+      ]
+    },
+    {
+      "path": "/blog/color-fonts-are-here",
+      "section": "blog",
+      "expressive": "content",
+      "status": "done",
+      "json": 2,
+      "included": [
+        "expressive"
+      ]
+    },
+    {
+      "path": "/blog/design-material-theme-type",
+      "section": "blog",
+      "expressive": "content",
+      "status": "done",
+      "json": 2,
+      "included": [
+        "expressive"
+      ]
+    },
+    {
+      "path": "/blog/designtocode",
+      "section": "blog",
+      "expressive": "content",
+      "status": "done",
+      "json": 2,
+      "included": [
+        "expressive"
+      ]
+    },
+    {
+      "path": "/blog/fonts-are-software-video",
+      "section": "blog",
+      "expressive": "content",
+      "status": "done",
+      "json": 2,
+      "included": [
+        "expressive"
+      ]
+    },
+    {
+      "path": "/blog/get-started",
+      "section": "blog",
+      "expressive": "-",
+      "status": "failed",
+      "json": 1,
+      "reason": "soft-404",
+      "exception": {
+        "kind": "http-404",
+        "detail": "Listed in the sitemap, but on 2026-11-13 the site answered HTTP 404 and rendered its not-found component, on two separate loads (full run and retry)."
+      }
+    },
+    {
+      "path": "/blog/google-fonts-pairing-figma",
+      "section": "blog",
+      "expressive": "content",
+      "status": "done",
+      "json": 2,
+      "included": [
+        "expressive"
+      ]
+    },
+    {
+      "path": "/blog/google-io-2024",
+      "section": "blog",
+      "expressive": "content",
+      "status": "done",
+      "json": 2,
+      "included": [
+        "expressive"
+      ]
+    },
+    {
+      "path": "/blog/google-material-custom-theme",
+      "section": "blog",
+      "expressive": "content",
+      "status": "done",
+      "json": 2,
+      "included": [
+        "expressive"
+      ]
+    },
+    {
+      "path": "/blog/how-to-gemini-app-compose-material-design-3",
+      "section": "blog",
+      "expressive": "-",
+      "status": "done",
+      "json": 2,
+      "included": [
+        "tokens"
+      ]
+    },
+    {
+      "path": "/blog/interview-oddfellows-m3-art-style",
+      "section": "blog",
+      "expressive": "content",
+      "status": "done",
+      "json": 2,
+      "included": [
+        "expressive"
+      ]
+    },
+    {
+      "path": "/blog/material-3-carousel-research-design",
+      "section": "blog",
+      "expressive": "content",
+      "status": "done",
+      "json": 2,
+      "included": [
+        "expressive"
+      ]
+    },
+    {
+      "path": "/blog/material-3-compose-1-1",
+      "section": "blog",
+      "expressive": "content",
+      "status": "done",
+      "json": 2,
+      "included": [
+        "expressive"
+      ]
+    },
+    {
+      "path": "/blog/material-3-compose-1-3",
+      "section": "blog",
+      "expressive": "-",
+      "status": "done",
+      "json": 2,
+      "included": [
+        "tokens"
+      ]
+    },
+    {
+      "path": "/blog/material-design-2022-roundup",
+      "section": "blog",
+      "expressive": "content",
+      "status": "done",
+      "json": 2,
+      "included": [
+        "expressive"
+      ]
+    },
+    {
+      "path": "/blog/material-design-awards-2021",
+      "section": "blog",
+      "expressive": "content",
+      "status": "done",
+      "json": 2,
+      "included": [
+        "expressive"
+      ]
+    },
+    {
+      "path": "/blog/material-google-io22",
+      "section": "blog",
+      "expressive": "content",
+      "status": "done",
+      "json": 2,
+      "included": [
+        "expressive"
+      ]
+    },
+    {
+      "path": "/blog/material-google-io23",
+      "section": "blog",
+      "expressive": "content",
+      "status": "done",
+      "json": 2,
+      "included": [
+        "expressive"
+      ]
+    },
+    {
+      "path": "/blog/material-icons-sehee-lee-interview",
+      "section": "blog",
+      "expressive": "content",
+      "status": "done",
+      "json": 2,
+      "included": [
+        "expressive"
+      ]
+    },
+    {
+      "path": "/blog/material-io-redesign",
+      "section": "blog",
+      "expressive": "content",
+      "status": "done",
+      "json": 2,
+      "included": [
+        "expressive"
+      ]
+    },
+    {
+      "path": "/blog/material-partner-studies",
+      "section": "blog",
+      "expressive": "content",
+      "status": "done",
+      "json": 2,
+      "included": [
+        "expressive"
+      ]
+    },
+    {
+      "path": "/blog/material-theme-builder",
+      "section": "blog",
+      "expressive": "content",
+      "status": "done",
+      "json": 2,
+      "included": [
+        "expressive",
+        "tokens"
+      ]
+    },
+    {
+      "path": "/blog/mda-2020-winners",
+      "section": "blog",
+      "expressive": "content",
+      "status": "done",
+      "json": 2,
+      "included": [
+        "expressive"
+      ]
+    },
+    {
+      "path": "/blog/mda-2021-winners",
+      "section": "blog",
+      "expressive": "content",
+      "status": "done",
+      "json": 2,
+      "included": [
+        "expressive"
+      ]
+    },
+    {
+      "path": "/blog/migrating-material-3",
+      "section": "blog",
+      "expressive": "content",
+      "status": "done",
+      "json": 2,
+      "included": [
+        "expressive"
+      ]
+    },
+    {
+      "path": "/blog/relay-ravn-case-study",
+      "section": "blog",
+      "expressive": "-",
+      "status": "done",
+      "json": 2,
+      "included": [
+        "tokens"
+      ]
+    },
+    {
+      "path": "/blog/research-state-of-design-systems-2020",
+      "section": "blog",
+      "expressive": "-",
+      "status": "done",
+      "json": 2,
+      "included": [
+        "tokens"
+      ]
+    },
+    {
+      "path": "/blog/roboto-flex",
+      "section": "blog",
+      "expressive": "content",
+      "status": "done",
+      "json": 2,
+      "included": [
+        "expressive"
+      ]
+    },
+    {
+      "path": "/blog/science-of-color-design",
+      "section": "blog",
+      "expressive": "content",
+      "status": "done",
+      "json": 2,
+      "included": [
+        "expressive"
+      ]
+    },
+    {
+      "path": "/blog/start-building-with-material-you",
+      "section": "blog",
+      "expressive": "content",
+      "status": "done",
+      "json": 2,
+      "included": [
+        "expressive",
+        "tokens"
+      ]
+    },
+    {
+      "path": "/blog/testing-material-3",
+      "section": "blog",
+      "expressive": "content",
+      "status": "done",
+      "json": 2,
+      "included": [
+        "expressive"
+      ]
+    },
+    {
+      "path": "/blog/year-in-the-life-material-design-advocate",
+      "section": "blog",
+      "expressive": "content",
+      "status": "done",
+      "json": 2,
+      "included": [
+        "expressive"
+      ]
+    },
+    {
+      "path": "/building-with-m3-expressive",
+      "section": "expressive",
+      "expressive": "url",
+      "status": "failed",
+      "json": 1,
+      "reason": "soft-404",
+      "exception": {
+        "kind": "http-404",
+        "detail": "Soft 404: listed in the sitemap, but on 2026-11-13 the site answered HTTP 200 and rendered its not-found component (mio-not-found-page) instead of an article. Seen on two separate loads. Owner approved this exception on 2026-11-13."
+      }
+    },
+    {
+      "path": "/components",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/components/all-buttons",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/components/app-bars/accessibility",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/app-bars/guidelines",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/app-bars/overview",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/app-bars/specs",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 6
+    },
+    {
+      "path": "/components/badges/accessibility",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/badges/guidelines",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/badges/overview",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/badges/specs",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 4
+    },
+    {
+      "path": "/components/bottom-sheets/accessibility",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/bottom-sheets/guidelines",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/bottom-sheets/overview",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/bottom-sheets/specs",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 4
+    },
+    {
+      "path": "/components/button-groups/accessibility",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/button-groups/guidelines",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/button-groups/overview",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/button-groups/specs",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 4
+    },
+    {
+      "path": "/components/buttons/accessibility",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/buttons/guidelines",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/buttons/overview",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/buttons/specs",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/cards/accessibility",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/cards/guidelines",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/cards/overview",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/cards/specs",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 4
+    },
+    {
+      "path": "/components/carousel/accessibility",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/carousel/guidelines",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/carousel/overview",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/carousel/specs",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 4
+    },
+    {
+      "path": "/components/checkbox/accessibility",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/checkbox/guidelines",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/checkbox/overview",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/checkbox/specs",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 4
+    },
+    {
+      "path": "/components/chips/accessibility",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/chips/guidelines",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/chips/overview",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/chips/specs",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/date-pickers/accessibility",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/date-pickers/guidelines",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/date-pickers/overview",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/date-pickers/specs",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 4
+    },
+    {
+      "path": "/components/dialogs/accessibility",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/dialogs/guidelines",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/dialogs/overview",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/dialogs/specs",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 4
+    },
+    {
+      "path": "/components/divider/accessibility",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/divider/guidelines",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/divider/overview",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/divider/specs",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 4
+    },
+    {
+      "path": "/components/extended-fab/accessibility",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/extended-fab/guidelines",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/extended-fab/overview",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/extended-fab/specs",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 5
+    },
+    {
+      "path": "/components/fab-menu/accessibility",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/fab-menu/guidelines",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/fab-menu/overview",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/fab-menu/specs",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 4
+    },
+    {
+      "path": "/components/floating-action-button/accessibility",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/floating-action-button/guidelines",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/floating-action-button/overview",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/floating-action-button/specs",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 5
+    },
+    {
+      "path": "/components/icon-buttons/accessibility",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/icon-buttons/guidelines",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/icon-buttons/overview",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/icon-buttons/specs",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/lists/accessibility",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/lists/guidelines",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/lists/overview",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/lists/specs",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 5
+    },
+    {
+      "path": "/components/loading-indicator/accessibility",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/loading-indicator/guidelines",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/loading-indicator/overview",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/loading-indicator/specs",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 4
+    },
+    {
+      "path": "/components/menus/accessibility",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/menus/guidelines",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/menus/overview",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/menus/specs",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 5
+    },
+    {
+      "path": "/components/navigation-bar/accessibility",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/navigation-bar/guidelines",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/navigation-bar/overview",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/navigation-bar/specs",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 5
+    },
+    {
+      "path": "/components/navigation-drawer/accessibility",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/navigation-drawer/guidelines",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/navigation-drawer/overview",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/navigation-drawer/specs",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 4
+    },
+    {
+      "path": "/components/navigation-rail/accessibility",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/navigation-rail/guidelines",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/navigation-rail/overview",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/navigation-rail/specs",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 5
+    },
+    {
+      "path": "/components/progress-indicators/accessibility",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/progress-indicators/guidelines",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/progress-indicators/overview",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/progress-indicators/specs",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 5
+    },
+    {
+      "path": "/components/radio-button/accessibility",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/radio-button/guidelines",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/radio-button/overview",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/radio-button/specs",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 4
+    },
+    {
+      "path": "/components/search/accessibility",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/search/guidelines",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/search/overview",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/search/specs",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 4
+    },
+    {
+      "path": "/components/segmented-buttons/accessibility",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/segmented-buttons/guidelines",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/segmented-buttons/overview",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/segmented-buttons/specs",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 4
+    },
+    {
+      "path": "/components/side-sheets/accessibility",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/side-sheets/guidelines",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/side-sheets/overview",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/side-sheets/specs",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 4
+    },
+    {
+      "path": "/components/sliders/accessibility",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/sliders/guidelines",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/sliders/overview",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/sliders/specs",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 4
+    },
+    {
+      "path": "/components/snackbar/accessibility",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/snackbar/guidelines",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/snackbar/overview",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/snackbar/specs",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 4
+    },
+    {
+      "path": "/components/split-button/accessibility",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/split-button/guidelines",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/split-button/overview",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/split-button/specs",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 5
+    },
+    {
+      "path": "/components/switch/accessibility",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/switch/guidelines",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/switch/overview",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/switch/specs",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 4
+    },
+    {
+      "path": "/components/tabs/accessibility",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/tabs/guidelines",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/tabs/overview",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/tabs/specs",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 4
+    },
+    {
+      "path": "/components/text-fields/accessibility",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/text-fields/guidelines",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/text-fields/overview",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/text-fields/specs",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/time-pickers/accessibility",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/time-pickers/guidelines",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/time-pickers/overview",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/time-pickers/specs",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 4
+    },
+    {
+      "path": "/components/toolbars/accessibility",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/toolbars/guidelines",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/toolbars/overview",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/toolbars/specs",
+      "section": "components",
+      "expressive": "content",
+      "status": "done",
+      "json": 5
+    },
+    {
+      "path": "/components/tooltips/accessibility",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/tooltips/guidelines",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/tooltips/overview",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/components/tooltips/specs",
+      "section": "components",
+      "expressive": "-",
+      "status": "done",
+      "json": 4
+    },
+    {
+      "path": "/develop",
+      "section": "develop",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/develop/android/jetpack-compose",
+      "section": "develop",
+      "expressive": "content",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/develop/android/mdc-android",
+      "section": "develop",
+      "expressive": "content",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/develop/flutter",
+      "section": "develop",
+      "expressive": "content",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/develop/web",
+      "section": "develop",
+      "expressive": "content",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/building-for-all/co-design",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/building-for-all/user-needs",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/content-design/alt-text",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/content-design/global-writing/overview",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/content-design/global-writing/word-choice",
+      "section": "foundations",
+      "expressive": "content",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/content-design/notifications",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/content-design/overview",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/content-design/style-guide/grammar-and-punctuation",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/content-design/style-guide/ux-writing-best-practices",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/content-design/style-guide/word-choice",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/customization",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/design-tokens/how-to-use-tokens",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/design-tokens/overview",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/designing/color-contrast",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/designing/elements",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/designing/flow",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/designing/overview",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/designing/structure",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/glossary",
+      "section": "foundations",
+      "expressive": "content",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/interaction/gestures",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/interaction/inputs",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/interaction/selection",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/interaction/states/applying-states",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/interaction/states/overview",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/interaction/states/state-layers",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/foundations/layout/bidirectionality-rtl",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/layout/breakpoints/compact",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/layout/breakpoints/expanded",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/layout/breakpoints/large-extra-large",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/layout/breakpoints/medium",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/layout/breakpoints/overview",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/layout/canonical-examples/feed",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/layout/canonical-examples/list-detail",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/layout/canonical-examples/overview",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/layout/canonical-examples/supporting-pane",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/layout/grids-spacing/density",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/layout/grids-spacing/grids",
+      "section": "foundations",
+      "expressive": "content",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/layout/grids-spacing/overview",
+      "section": "foundations",
+      "expressive": "content",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/layout/grids-spacing/spacing",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/layout/layout-overview/adaptive-design",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/layout/layout-overview/overview",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/layout/layout-overview/parts-of-layout",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/layout/scaffold/bars",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/layout/scaffold/overview",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/layout/scaffold/panes",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/layout/scaffold/rails",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/overview/assistive-technology",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/overview/principles",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/usability/applying-m3-expressive",
+      "section": "foundations",
+      "expressive": "url",
+      "status": "redirect",
+      "json": 0,
+      "finalPath": "/foundations/usability/overview"
+    },
+    {
+      "path": "/foundations/usability/overview",
+      "section": "foundations",
+      "expressive": "content",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/watches/foundations",
+      "section": "foundations",
+      "expressive": "content",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/watches/layout",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/watches/overview",
+      "section": "foundations",
+      "expressive": "content",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/watches/styles",
+      "section": "foundations",
+      "expressive": "content",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/writing/best-practices",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/writing/text-resizing",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/writing/text-truncation",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/xr/components/app-bars",
+      "section": "foundations",
+      "expressive": "content",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/xr/components/dialogs",
+      "section": "foundations",
+      "expressive": "content",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/xr/components/nav-bar",
+      "section": "foundations",
+      "expressive": "content",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/xr/components/nav-rail",
+      "section": "foundations",
+      "expressive": "content",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/xr/components/overview",
+      "section": "foundations",
+      "expressive": "content",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/xr/components/toolbars",
+      "section": "foundations",
+      "expressive": "content",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/xr/design/accessibility",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/xr/design/interaction",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/xr/design/layout",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/foundations/xr/design/overview",
+      "section": "foundations",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/m3-expressive-motion-theming",
+      "section": "expressive",
+      "expressive": "url",
+      "status": "failed",
+      "json": 1,
+      "reason": "soft-404",
+      "exception": {
+        "kind": "http-404",
+        "detail": "Soft 404: listed in the sitemap, but on 2026-11-13 (pilot run) the site answered HTTP 200 and rendered its not-found component (mio-not-found-page). Owner approved this exception on 2026-11-13."
+      }
+    },
+    {
+      "path": "/material-is-compose-first",
+      "section": "news",
+      "expressive": "-",
+      "status": "failed",
+      "json": 1,
+      "reason": "soft-404",
+      "exception": {
+        "kind": "http-404",
+        "detail": "Soft 404: listed in the sitemap, but on 2026-11-13 the site answered HTTP 200 and rendered its not-found component (mio-not-found-page), on two separate loads (full run and retry)."
+      }
+    },
+    {
+      "path": "/styles",
+      "section": "styles",
+      "expressive": "content",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/styles/color/advanced/adjust-existing-colors",
+      "section": "styles",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/styles/color/advanced/apply-colors",
+      "section": "styles",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/styles/color/advanced/define-new-colors",
+      "section": "styles",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/styles/color/advanced/overview",
+      "section": "styles",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/styles/color/choosing-a-scheme",
+      "section": "styles",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/styles/color/dynamic/choosing-a-source",
+      "section": "styles",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/styles/color/dynamic/content-based-source",
+      "section": "styles",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/styles/color/dynamic/user-generated-source",
+      "section": "styles",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/styles/color/resources",
+      "section": "styles",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/styles/color/roles",
+      "section": "styles",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/styles/color/static/baseline",
+      "section": "styles",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/styles/color/static/custom-brand",
+      "section": "styles",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/styles/color/system/how-the-system-works",
+      "section": "styles",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/styles/color/system/overview",
+      "section": "styles",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/styles/elevation/applying-elevation",
+      "section": "styles",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/styles/elevation/overview",
+      "section": "styles",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/styles/elevation/tokens",
+      "section": "styles",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/styles/icons/applying-icons",
+      "section": "styles",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/styles/icons/designing-icons",
+      "section": "styles",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/styles/icons/overview",
+      "section": "styles",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/styles/motion/easing-and-duration/applying-easing-and-duration",
+      "section": "styles",
+      "expressive": "content",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/styles/motion/easing-and-duration/tokens-specs",
+      "section": "styles",
+      "expressive": "content",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/styles/motion/overview/how-it-works",
+      "section": "styles",
+      "expressive": "content",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/styles/motion/overview/specs",
+      "section": "styles",
+      "expressive": "content",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/styles/motion/transitions/applying-transitions",
+      "section": "styles",
+      "expressive": "content",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/styles/motion/transitions/transition-patterns",
+      "section": "styles",
+      "expressive": "content",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/styles/shape/corner-radius-scale",
+      "section": "styles",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/styles/shape/overview-principles",
+      "section": "styles",
+      "expressive": "content",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/styles/shape/shape-morph",
+      "section": "styles",
+      "expressive": "content",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/styles/spacing/applying-spacing",
+      "section": "styles",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/styles/spacing/overview",
+      "section": "styles",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/styles/spacing/tokens",
+      "section": "styles",
+      "expressive": "-",
+      "status": "done",
+      "json": 3
+    },
+    {
+      "path": "/styles/typography/applying-type",
+      "section": "styles",
+      "expressive": "content",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/styles/typography/editorial-treatments",
+      "section": "styles",
+      "expressive": "content",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/styles/typography/fonts",
+      "section": "styles",
+      "expressive": "-",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/styles/typography/overview",
+      "section": "styles",
+      "expressive": "content",
+      "status": "done",
+      "json": 2
+    },
+    {
+      "path": "/styles/typography/type-scale-tokens",
+      "section": "styles",
+      "expressive": "content",
+      "status": "done",
+      "json": 6
+    },
+    {
+      "path": "/whats-new-at-io26",
+      "section": "news",
+      "expressive": "-",
+      "status": "failed",
+      "json": 1,
+      "reason": "soft-404",
+      "exception": {
+        "kind": "http-404",
+        "detail": "Soft 404: listed in the sitemap, but on 2026-11-13 the site answered HTTP 200 and rendered its not-found component (mio-not-found-page), on two separate loads (full run and retry)."
+      }
+    }
+  ],
+  "components": [
+    {
+      "component": "app-bars",
+      "tabsOnSite": [
+        "/components/app-bars/accessibility",
+        "/components/app-bars/guidelines",
+        "/components/app-bars/overview",
+        "/components/app-bars/specs"
+      ],
+      "tabsScraped": [
+        "/components/app-bars/accessibility",
+        "/components/app-bars/guidelines",
+        "/components/app-bars/overview",
+        "/components/app-bars/specs"
+      ],
+      "missingTabs": [],
+      "expanded": 2
+    },
+    {
+      "component": "badges",
+      "tabsOnSite": [
+        "/components/badges/accessibility",
+        "/components/badges/guidelines",
+        "/components/badges/overview",
+        "/components/badges/specs"
+      ],
+      "tabsScraped": [
+        "/components/badges/accessibility",
+        "/components/badges/guidelines",
+        "/components/badges/overview",
+        "/components/badges/specs"
+      ],
+      "missingTabs": [],
+      "expanded": 1
+    },
+    {
+      "component": "bottom-sheets",
+      "tabsOnSite": [
+        "/components/bottom-sheets/accessibility",
+        "/components/bottom-sheets/guidelines",
+        "/components/bottom-sheets/overview",
+        "/components/bottom-sheets/specs"
+      ],
+      "tabsScraped": [
+        "/components/bottom-sheets/accessibility",
+        "/components/bottom-sheets/guidelines",
+        "/components/bottom-sheets/overview",
+        "/components/bottom-sheets/specs"
+      ],
+      "missingTabs": [],
+      "expanded": 1
+    },
+    {
+      "component": "button-groups",
+      "tabsOnSite": [
+        "/components/button-groups/accessibility",
+        "/components/button-groups/guidelines",
+        "/components/button-groups/overview",
+        "/components/button-groups/specs"
+      ],
+      "tabsScraped": [
+        "/components/button-groups/accessibility",
+        "/components/button-groups/guidelines",
+        "/components/button-groups/overview",
+        "/components/button-groups/specs"
+      ],
+      "missingTabs": [],
+      "expanded": 1
+    },
+    {
+      "component": "buttons",
+      "tabsOnSite": [
+        "/components/buttons/accessibility",
+        "/components/buttons/guidelines",
+        "/components/buttons/overview",
+        "/components/buttons/specs"
+      ],
+      "tabsScraped": [
+        "/components/buttons/accessibility",
+        "/components/buttons/guidelines",
+        "/components/buttons/overview",
+        "/components/buttons/specs"
+      ],
+      "missingTabs": [],
+      "expanded": 2
+    },
+    {
+      "component": "cards",
+      "tabsOnSite": [
+        "/components/cards/accessibility",
+        "/components/cards/guidelines",
+        "/components/cards/overview",
+        "/components/cards/specs"
+      ],
+      "tabsScraped": [
+        "/components/cards/accessibility",
+        "/components/cards/guidelines",
+        "/components/cards/overview",
+        "/components/cards/specs"
+      ],
+      "missingTabs": [],
+      "expanded": 1
+    },
+    {
+      "component": "carousel",
+      "tabsOnSite": [
+        "/components/carousel/accessibility",
+        "/components/carousel/guidelines",
+        "/components/carousel/overview",
+        "/components/carousel/specs"
+      ],
+      "tabsScraped": [
+        "/components/carousel/accessibility",
+        "/components/carousel/guidelines",
+        "/components/carousel/overview",
+        "/components/carousel/specs"
+      ],
+      "missingTabs": [],
+      "expanded": 1
+    },
+    {
+      "component": "checkbox",
+      "tabsOnSite": [
+        "/components/checkbox/accessibility",
+        "/components/checkbox/guidelines",
+        "/components/checkbox/overview",
+        "/components/checkbox/specs"
+      ],
+      "tabsScraped": [
+        "/components/checkbox/accessibility",
+        "/components/checkbox/guidelines",
+        "/components/checkbox/overview",
+        "/components/checkbox/specs"
+      ],
+      "missingTabs": [],
+      "expanded": 1
+    },
+    {
+      "component": "chips",
+      "tabsOnSite": [
+        "/components/chips/accessibility",
+        "/components/chips/guidelines",
+        "/components/chips/overview",
+        "/components/chips/specs"
+      ],
+      "tabsScraped": [
+        "/components/chips/accessibility",
+        "/components/chips/guidelines",
+        "/components/chips/overview",
+        "/components/chips/specs"
+      ],
+      "missingTabs": [],
+      "expanded": 1
+    },
+    {
+      "component": "date-pickers",
+      "tabsOnSite": [
+        "/components/date-pickers/accessibility",
+        "/components/date-pickers/guidelines",
+        "/components/date-pickers/overview",
+        "/components/date-pickers/specs"
+      ],
+      "tabsScraped": [
+        "/components/date-pickers/accessibility",
+        "/components/date-pickers/guidelines",
+        "/components/date-pickers/overview",
+        "/components/date-pickers/specs"
+      ],
+      "missingTabs": [],
+      "expanded": 1
+    },
+    {
+      "component": "dialogs",
+      "tabsOnSite": [
+        "/components/dialogs/accessibility",
+        "/components/dialogs/guidelines",
+        "/components/dialogs/overview",
+        "/components/dialogs/specs"
+      ],
+      "tabsScraped": [
+        "/components/dialogs/accessibility",
+        "/components/dialogs/guidelines",
+        "/components/dialogs/overview",
+        "/components/dialogs/specs"
+      ],
+      "missingTabs": [],
+      "expanded": 1
+    },
+    {
+      "component": "divider",
+      "tabsOnSite": [
+        "/components/divider/accessibility",
+        "/components/divider/guidelines",
+        "/components/divider/overview",
+        "/components/divider/specs"
+      ],
+      "tabsScraped": [
+        "/components/divider/accessibility",
+        "/components/divider/guidelines",
+        "/components/divider/overview",
+        "/components/divider/specs"
+      ],
+      "missingTabs": [],
+      "expanded": 1
+    },
+    {
+      "component": "extended-fab",
+      "tabsOnSite": [
+        "/components/extended-fab/accessibility",
+        "/components/extended-fab/guidelines",
+        "/components/extended-fab/overview",
+        "/components/extended-fab/specs"
+      ],
+      "tabsScraped": [
+        "/components/extended-fab/accessibility",
+        "/components/extended-fab/guidelines",
+        "/components/extended-fab/overview",
+        "/components/extended-fab/specs"
+      ],
+      "missingTabs": [],
+      "expanded": 2
+    },
+    {
+      "component": "fab-menu",
+      "tabsOnSite": [
+        "/components/fab-menu/accessibility",
+        "/components/fab-menu/guidelines",
+        "/components/fab-menu/overview",
+        "/components/fab-menu/specs"
+      ],
+      "tabsScraped": [
+        "/components/fab-menu/accessibility",
+        "/components/fab-menu/guidelines",
+        "/components/fab-menu/overview",
+        "/components/fab-menu/specs"
+      ],
+      "missingTabs": [],
+      "expanded": 1
+    },
+    {
+      "component": "floating-action-button",
+      "tabsOnSite": [
+        "/components/floating-action-button/accessibility",
+        "/components/floating-action-button/guidelines",
+        "/components/floating-action-button/overview",
+        "/components/floating-action-button/specs"
+      ],
+      "tabsScraped": [
+        "/components/floating-action-button/accessibility",
+        "/components/floating-action-button/guidelines",
+        "/components/floating-action-button/overview",
+        "/components/floating-action-button/specs"
+      ],
+      "missingTabs": [],
+      "expanded": 2
+    },
+    {
+      "component": "icon-buttons",
+      "tabsOnSite": [
+        "/components/icon-buttons/accessibility",
+        "/components/icon-buttons/guidelines",
+        "/components/icon-buttons/overview",
+        "/components/icon-buttons/specs"
+      ],
+      "tabsScraped": [
+        "/components/icon-buttons/accessibility",
+        "/components/icon-buttons/guidelines",
+        "/components/icon-buttons/overview",
+        "/components/icon-buttons/specs"
+      ],
+      "missingTabs": [],
+      "expanded": 2
+    },
+    {
+      "component": "lists",
+      "tabsOnSite": [
+        "/components/lists/accessibility",
+        "/components/lists/guidelines",
+        "/components/lists/overview",
+        "/components/lists/specs"
+      ],
+      "tabsScraped": [
+        "/components/lists/accessibility",
+        "/components/lists/guidelines",
+        "/components/lists/overview",
+        "/components/lists/specs"
+      ],
+      "missingTabs": [],
+      "expanded": 2
+    },
+    {
+      "component": "loading-indicator",
+      "tabsOnSite": [
+        "/components/loading-indicator/accessibility",
+        "/components/loading-indicator/guidelines",
+        "/components/loading-indicator/overview",
+        "/components/loading-indicator/specs"
+      ],
+      "tabsScraped": [
+        "/components/loading-indicator/accessibility",
+        "/components/loading-indicator/guidelines",
+        "/components/loading-indicator/overview",
+        "/components/loading-indicator/specs"
+      ],
+      "missingTabs": [],
+      "expanded": 1
+    },
+    {
+      "component": "menus",
+      "tabsOnSite": [
+        "/components/menus/accessibility",
+        "/components/menus/guidelines",
+        "/components/menus/overview",
+        "/components/menus/specs"
+      ],
+      "tabsScraped": [
+        "/components/menus/accessibility",
+        "/components/menus/guidelines",
+        "/components/menus/overview",
+        "/components/menus/specs"
+      ],
+      "missingTabs": [],
+      "expanded": 2
+    },
+    {
+      "component": "navigation-bar",
+      "tabsOnSite": [
+        "/components/navigation-bar/accessibility",
+        "/components/navigation-bar/guidelines",
+        "/components/navigation-bar/overview",
+        "/components/navigation-bar/specs"
+      ],
+      "tabsScraped": [
+        "/components/navigation-bar/accessibility",
+        "/components/navigation-bar/guidelines",
+        "/components/navigation-bar/overview",
+        "/components/navigation-bar/specs"
+      ],
+      "missingTabs": [],
+      "expanded": 2
+    },
+    {
+      "component": "navigation-drawer",
+      "tabsOnSite": [
+        "/components/navigation-drawer/accessibility",
+        "/components/navigation-drawer/guidelines",
+        "/components/navigation-drawer/overview",
+        "/components/navigation-drawer/specs"
+      ],
+      "tabsScraped": [
+        "/components/navigation-drawer/accessibility",
+        "/components/navigation-drawer/guidelines",
+        "/components/navigation-drawer/overview",
+        "/components/navigation-drawer/specs"
+      ],
+      "missingTabs": [],
+      "expanded": 1
+    },
+    {
+      "component": "navigation-rail",
+      "tabsOnSite": [
+        "/components/navigation-rail/accessibility",
+        "/components/navigation-rail/guidelines",
+        "/components/navigation-rail/overview",
+        "/components/navigation-rail/specs"
+      ],
+      "tabsScraped": [
+        "/components/navigation-rail/accessibility",
+        "/components/navigation-rail/guidelines",
+        "/components/navigation-rail/overview",
+        "/components/navigation-rail/specs"
+      ],
+      "missingTabs": [],
+      "expanded": 2
+    },
+    {
+      "component": "progress-indicators",
+      "tabsOnSite": [
+        "/components/progress-indicators/accessibility",
+        "/components/progress-indicators/guidelines",
+        "/components/progress-indicators/overview",
+        "/components/progress-indicators/specs"
+      ],
+      "tabsScraped": [
+        "/components/progress-indicators/accessibility",
+        "/components/progress-indicators/guidelines",
+        "/components/progress-indicators/overview",
+        "/components/progress-indicators/specs"
+      ],
+      "missingTabs": [],
+      "expanded": 2
+    },
+    {
+      "component": "radio-button",
+      "tabsOnSite": [
+        "/components/radio-button/accessibility",
+        "/components/radio-button/guidelines",
+        "/components/radio-button/overview",
+        "/components/radio-button/specs"
+      ],
+      "tabsScraped": [
+        "/components/radio-button/accessibility",
+        "/components/radio-button/guidelines",
+        "/components/radio-button/overview",
+        "/components/radio-button/specs"
+      ],
+      "missingTabs": [],
+      "expanded": 1
+    },
+    {
+      "component": "search",
+      "tabsOnSite": [
+        "/components/search/accessibility",
+        "/components/search/guidelines",
+        "/components/search/overview",
+        "/components/search/specs"
+      ],
+      "tabsScraped": [
+        "/components/search/accessibility",
+        "/components/search/guidelines",
+        "/components/search/overview",
+        "/components/search/specs"
+      ],
+      "missingTabs": [],
+      "expanded": 1
+    },
+    {
+      "component": "segmented-buttons",
+      "tabsOnSite": [
+        "/components/segmented-buttons/accessibility",
+        "/components/segmented-buttons/guidelines",
+        "/components/segmented-buttons/overview",
+        "/components/segmented-buttons/specs"
+      ],
+      "tabsScraped": [
+        "/components/segmented-buttons/accessibility",
+        "/components/segmented-buttons/guidelines",
+        "/components/segmented-buttons/overview",
+        "/components/segmented-buttons/specs"
+      ],
+      "missingTabs": [],
+      "expanded": 1
+    },
+    {
+      "component": "side-sheets",
+      "tabsOnSite": [
+        "/components/side-sheets/accessibility",
+        "/components/side-sheets/guidelines",
+        "/components/side-sheets/overview",
+        "/components/side-sheets/specs"
+      ],
+      "tabsScraped": [
+        "/components/side-sheets/accessibility",
+        "/components/side-sheets/guidelines",
+        "/components/side-sheets/overview",
+        "/components/side-sheets/specs"
+      ],
+      "missingTabs": [],
+      "expanded": 1
+    },
+    {
+      "component": "sliders",
+      "tabsOnSite": [
+        "/components/sliders/accessibility",
+        "/components/sliders/guidelines",
+        "/components/sliders/overview",
+        "/components/sliders/specs"
+      ],
+      "tabsScraped": [
+        "/components/sliders/accessibility",
+        "/components/sliders/guidelines",
+        "/components/sliders/overview",
+        "/components/sliders/specs"
+      ],
+      "missingTabs": [],
+      "expanded": 1
+    },
+    {
+      "component": "snackbar",
+      "tabsOnSite": [
+        "/components/snackbar/accessibility",
+        "/components/snackbar/guidelines",
+        "/components/snackbar/overview",
+        "/components/snackbar/specs"
+      ],
+      "tabsScraped": [
+        "/components/snackbar/accessibility",
+        "/components/snackbar/guidelines",
+        "/components/snackbar/overview",
+        "/components/snackbar/specs"
+      ],
+      "missingTabs": [],
+      "expanded": 1
+    },
+    {
+      "component": "split-button",
+      "tabsOnSite": [
+        "/components/split-button/accessibility",
+        "/components/split-button/guidelines",
+        "/components/split-button/overview",
+        "/components/split-button/specs"
+      ],
+      "tabsScraped": [
+        "/components/split-button/accessibility",
+        "/components/split-button/guidelines",
+        "/components/split-button/overview",
+        "/components/split-button/specs"
+      ],
+      "missingTabs": [],
+      "expanded": 2
+    },
+    {
+      "component": "switch",
+      "tabsOnSite": [
+        "/components/switch/accessibility",
+        "/components/switch/guidelines",
+        "/components/switch/overview",
+        "/components/switch/specs"
+      ],
+      "tabsScraped": [
+        "/components/switch/accessibility",
+        "/components/switch/guidelines",
+        "/components/switch/overview",
+        "/components/switch/specs"
+      ],
+      "missingTabs": [],
+      "expanded": 1
+    },
+    {
+      "component": "tabs",
+      "tabsOnSite": [
+        "/components/tabs/accessibility",
+        "/components/tabs/guidelines",
+        "/components/tabs/overview",
+        "/components/tabs/specs"
+      ],
+      "tabsScraped": [
+        "/components/tabs/accessibility",
+        "/components/tabs/guidelines",
+        "/components/tabs/overview",
+        "/components/tabs/specs"
+      ],
+      "missingTabs": [],
+      "expanded": 1
+    },
+    {
+      "component": "text-fields",
+      "tabsOnSite": [
+        "/components/text-fields/accessibility",
+        "/components/text-fields/guidelines",
+        "/components/text-fields/overview",
+        "/components/text-fields/specs"
+      ],
+      "tabsScraped": [
+        "/components/text-fields/accessibility",
+        "/components/text-fields/guidelines",
+        "/components/text-fields/overview",
+        "/components/text-fields/specs"
+      ],
+      "missingTabs": [],
+      "expanded": 1
+    },
+    {
+      "component": "time-pickers",
+      "tabsOnSite": [
+        "/components/time-pickers/accessibility",
+        "/components/time-pickers/guidelines",
+        "/components/time-pickers/overview",
+        "/components/time-pickers/specs"
+      ],
+      "tabsScraped": [
+        "/components/time-pickers/accessibility",
+        "/components/time-pickers/guidelines",
+        "/components/time-pickers/overview",
+        "/components/time-pickers/specs"
+      ],
+      "missingTabs": [],
+      "expanded": 1
+    },
+    {
+      "component": "toolbars",
+      "tabsOnSite": [
+        "/components/toolbars/accessibility",
+        "/components/toolbars/guidelines",
+        "/components/toolbars/overview",
+        "/components/toolbars/specs"
+      ],
+      "tabsScraped": [
+        "/components/toolbars/accessibility",
+        "/components/toolbars/guidelines",
+        "/components/toolbars/overview",
+        "/components/toolbars/specs"
+      ],
+      "missingTabs": [],
+      "expanded": 2
+    },
+    {
+      "component": "tooltips",
+      "tabsOnSite": [
+        "/components/tooltips/accessibility",
+        "/components/tooltips/guidelines",
+        "/components/tooltips/overview",
+        "/components/tooltips/specs"
+      ],
+      "tabsScraped": [
+        "/components/tooltips/accessibility",
+        "/components/tooltips/guidelines",
+        "/components/tooltips/overview",
+        "/components/tooltips/specs"
+      ],
+      "missingTabs": [],
+      "expanded": 1
+    }
+  ],
+  "checkedExcluded": [
+    {
+      "path": "/blog/2023-google-fonts-redesign",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/24-hour-clock-design-research",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/5-steps-large-screen-apps",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/android-dark-theme-tutorial",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/android-material-motion",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/android-material-theme-color",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/android-material-theme-shape",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/android-material-theme-type",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/android-stable-release-1-10-0",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/android-stable-release-1-12-0",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/android-stable-release-1-2",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/android-stable-release-1-3-0",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/android-stable-release-1-4",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/android-stable-release-1-5",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/android-stable-release-1-6-1",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/android-stable-release-1-7-0",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/android-stable-release-1-8-0",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/android-stable-release-1-9-0",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/announcing-material-you",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/asset-people-1",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/asset-people-2",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/asset-people-3",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/atkinson-hyperlegible-design",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/dark-theme-design-tutorial-video",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/data-visualization-accessibility",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/derek-brahney-interview",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/design-material-theme-color",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/design-material-theme-shape",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/designer-toolbox-figma-android-studio-relay",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/designing-text-visual-acuity-research",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/device-metrics",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/digital-wellbeing-design-systems",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/digital-wellbeing-face-retouching",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/digital-wellbeing-ux-principles",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/dynamic-color-harmony",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/finding-ethical-design",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/get-google-fonts-update",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/google-design-tutorial-video",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/google-fonts-dark-theme",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/google-fonts-knowledge",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/google-fonts-material-icons",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/how-to-make-text-more-accessible",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/inclusive-imagery-at-google",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/introducing-symbols",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/jamie-chung-photography-interview",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/jetpack-compose-beta",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/jetpack-compose-catalog",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/localization-principles-techniques",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/m3-a11y",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/material-3-compose-1-2",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/material-3-compose-stable",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/material-3-figma-design-kit",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/material-3-slot-components-figma",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/material-ads-2022",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/material-density-web",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/material-design-blog-welcome",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/material-design-for-large-screens",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/material-design-wordpress-plugin",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/material-design-wordpress-plugin-030",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/material-design-xr-dev-preview",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/material-design-youtube-channel",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/material-google-io21",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/material-theme-builder-2-color-match",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/material-you-large-screens",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/migrate-android-material-components",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/motion-research-container-transform",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/noto-announcement",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/readability-consortium",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/readability-research",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/readex-pro-legibility-arabic-type-design",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/reduce-reflow-with-web-fonts",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/relay-in-alpha",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/roboto-serif",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/shantell-martin-variable-font",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/sil-typefaces",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/ten-steps-ios-android-design",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/tone-based-surface-color-m3",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/whats-new-design-kit",
+      "reason": "no Expressive or token content"
+    },
+    {
+      "path": "/blog/why-we-recommend-material-design-components-android",
+      "reason": "no Expressive or token content"
+    }
+  ]
+}

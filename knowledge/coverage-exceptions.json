@@ -1,4 +1,8 @@
 {
+  "/blog/get-started": {
+    "kind": "http-404",
+    "detail": "Listed in the sitemap, but on 2026-11-13 the site answered HTTP 404 and rendered its not-found component, on two separate loads (full run and retry)."
+  },
   "/building-with-m3-expressive": {
     "kind": "http-404",
     "detail": "Soft 404: listed in the sitemap, but on 2026-11-13 the site answered HTTP 200 and rendered its not-found component (mio-not-found-page) instead of an article. Seen on two separate loads. Owner approved this exception on 2026-11-13."
@@ -6,5 +10,13 @@
   "/m3-expressive-motion-theming": {
     "kind": "http-404",
     "detail": "Soft 404: listed in the sitemap, but on 2026-11-13 (pilot run) the site answered HTTP 200 and rendered its not-found component (mio-not-found-page). Owner approved this exception on 2026-11-13."
+  },
+  "/material-is-compose-first": {
+    "kind": "http-404",
+    "detail": "Soft 404: listed in the sitemap, but on 2026-11-13 the site answered HTTP 200 and rendered its not-found component (mio-not-found-page), on two separate loads (full run and retry)."
+  },
+  "/whats-new-at-io26": {
+    "kind": "http-404",
+    "detail": "Soft 404: listed in the sitemap, but on 2026-11-13 the site answered HTTP 200 and rendered its not-found component (mio-not-found-page), on two separate loads (full run and retry)."
   }
 }
