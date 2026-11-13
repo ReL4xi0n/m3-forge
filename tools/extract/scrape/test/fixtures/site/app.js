@@ -1,5 +1,6 @@
 fetch('/_dsm/page.json').then(r => r.json()).then(d => { document.getElementById('from-json').textContent = d.text; });
 fetch('/search.html?q=x').catch(() => {});
+if (window.THIRD_PARTY) fetch(window.THIRD_PARTY + '/beacon').catch(() => {});
 document.getElementById('exp').addEventListener('click', e => {
   e.target.setAttribute('aria-expanded', 'true');
   document.getElementById('more').hidden = false;

@@ -12,6 +12,8 @@ export const UA_SUFFIX = ' m3-forge (+https://github.com/ReL4xi0n/m3-forge)';
 const BLOCKED_TYPES = new Set(['image', 'media', 'font']);
 const ANALYTICS = /(^|\.)(google-analytics|googletagmanager|doubleclick)\.(com|net)$/;
 const MARK = 'data-m3forge-clicked';
+// m3.material.io answers unknown paths with HTTP 200 and renders this component instead (soft 404).
+const NOT_FOUND_SELECTOR = 'mio-not-found-page';
 
 export function validateCapture(r, { minTextChars = 200 } = {}) {
   const flags = [];
@@ -23,6 +25,11 @@ export function validateCapture(r, { minTextChars = 200 } = {}) {
   if ((r.text || '').trim().length < minTextChars) {
     flags.push('text-short');
     ok = false;
+  }
+  if (r.notFound) {
+    flags.length = 0;
+    flags.push('soft-404');
+    return { ok: false, flags };
   }
   if (!r.json || r.json.length === 0) flags.push('json-none');
   return { ok, flags };
@@ -38,16 +45,35 @@ export async function userAgentFor(browser) {
   }
 }
 
-export async function newContext(browser, { userAgent, isAllowedUrl, origin }) {
+// Per-page record of third-party hosts the routing allowed or blocked.
+const hostStats = new WeakMap();
+
+function pageOf(req) {
+  try {
+    return req.frame().page();
+  } catch {
+    return null;
+  }
+}
+
+// blockThirdPartyData (owner decision 2026-11-13, option b): other origins may serve only scripts and
+// stylesheets, which rendering needs; their fetch/XHR, frames and everything else are aborted.
+export async function newContext(browser, { userAgent, isAllowedUrl, origin, blockThirdPartyData = true }) {
   const host = new URL(origin).host;
   const ctx = await browser.newContext({ userAgent, serviceWorkers: 'block' });
   await ctx.route('**/*', route => {
     const req = route.request();
     const u = new URL(req.url());
-    if (BLOCKED_TYPES.has(req.resourceType())) return route.abort();
-    if (ANALYTICS.test(u.hostname)) return route.abort();
-    if (u.host === host && !isAllowedUrl(u)) return route.abort();
-    return route.continue();
+    const type = req.resourceType();
+    const third = u.host !== host;
+    const block = BLOCKED_TYPES.has(type) || ANALYTICS.test(u.hostname)
+      || (!third && !isAllowedUrl(u))
+      || (third && blockThirdPartyData && type !== 'script' && type !== 'stylesheet');
+    if (third) {
+      const st = hostStats.get(pageOf(req));
+      if (st) (block ? st.blocked : st.allowed).add(u.host);
+    }
+    return block ? route.abort() : route.continue();
   });
   return ctx;
 }
@@ -86,6 +112,8 @@ async function mainText(page) {
 export async function capturePage(ctx, url, { origin }) {
   const host = new URL(origin).host;
   const page = await ctx.newPage();
+  const stats = { allowed: new Set(), blocked: new Set() };
+  hostStats.set(page, stats);
   const json = [];
   const bodies = [];
   const thirdParty = new Set();
@@ -146,6 +174,7 @@ export async function capturePage(ctx, url, { origin }) {
     const finalUrl = page.url();
     const finalPath = new URL(finalUrl).pathname;
     const m = /^\/components\/[^/]+\//.exec(finalPath);
+    const notFound = await page.evaluate(sel => document.querySelector(sel) !== null, NOT_FOUND_SELECTOR);
     const { images, tabLinks } = await page.evaluate(prefix => {
       const imgs = Array.from(document.images).map(i => ({ src: i.src, alt: i.getAttribute('alt') || '' }));
       const tabs = [];
@@ -165,8 +194,10 @@ export async function capturePage(ctx, url, { origin }) {
       json,
       images,
       thirdPartyHosts: [...thirdParty].sort(),
+      thirdParty: { allowed: [...stats.allowed].sort(), blocked: [...stats.blocked].sort() },
       tabLinks,
       expanded,
+      notFound,
     };
   } finally {
     await page.close();

@@ -17,6 +17,7 @@ test('validateCapture: short text fails, missing JSON is only flagged, HTTP erro
   assert.deepEqual(validateCapture({ ...base, json: [] }), { ok: true, flags: ['json-none'] });
   assert.deepEqual(validateCapture({ ...base, httpStatus: 404 }), { ok: false, flags: ['http-404'] });
   assert.deepEqual(validateCapture(base), { ok: true, flags: [] });
+  assert.deepEqual(validateCapture({ ...base, notFound: true }), { ok: false, flags: ['soft-404'] });
   assert.equal(UA_SUFFIX, ' m3-forge (+https://github.com/ReL4xi0n/m3-forge)');
 });
 
@@ -33,11 +34,16 @@ async function browserOrSkipReason() {
 }
 const pw = await browserOrSkipReason();
 
-function startServer() {
+function startServer({ thirdParty = null } = {}) {
   const log = [];
   const server = createServer(async (req, res) => {
     log.push({ url: req.url, ua: req.headers['user-agent'] });
     const path = req.url.split('?')[0];
+    if (path === '/config.js' && thirdParty) {
+      res.writeHead(200, { 'content-type': 'text/javascript' });
+      return res.end(`window.THIRD_PARTY = ${JSON.stringify(thirdParty)};
+const s = document.createElement('script'); s.src = window.THIRD_PARTY + '/lib.js'; document.head.appendChild(s);`);
+    }
     if (path === '/img.png') {
       res.writeHead(200, { 'content-type': 'image/png' });
       return res.end(Buffer.from([0x89, 0x50, 0x4e, 0x47]));
@@ -77,6 +83,10 @@ test('capturePage: JSON, expanded content, image metadata, tab links, blocking a
     assert.ok(r.expanded >= 3, `expanded ${r.expanded}`);
     assert.deepEqual(r.images, [{ src: `${origin}/img.png`, alt: 'diagram' }]);
     assert.deepEqual(r.tabLinks, ['/components/demo/overview', '/components/demo/specs', '/components/demo/guidelines']);
+    assert.equal(r.notFound, false);
+    const nf = await capturePage(ctx, `${origin}/not-found.html`, { isAllowedUrl, origin });
+    assert.equal(nf.httpStatus, 200);
+    assert.equal(nf.notFound, true, 'the SPA not-found component marks a soft 404');
 
     const paths = log.map(l => l.url);
     assert.ok(!paths.includes('/img.png'), 'image must not be requested');
@@ -93,3 +103,38 @@ test('capturePage: JSON, expanded content, image metadata, tab links, blocking a
     server.close();
   }
 });
+
+// A second origin: 127.0.0.1 vs localhost are different hosts to the browser.
+function startThirdParty() {
+  const log = [];
+  const server = createServer((req, res) => {
+    log.push(req.url);
+    res.writeHead(200, { 'content-type': req.url === '/lib.js' ? 'text/javascript' : 'application/json' });
+    res.end(req.url === '/lib.js' ? 'window.LIB_LOADED = 1;' : '{}');
+  });
+  return new Promise(r => server.listen(0, '127.0.0.1', () => r({ server, log, origin: `http://localhost:${server.address().port}` })));
+}
+
+for (const block of [true, false]) {
+  test(`third-party data requests ${block ? 'are blocked' : 'pass'} with blockThirdPartyData=${block}; scripts always load; hosts recorded`, { skip: pw.reason }, async () => {
+    const { capturePage, newContext } = await import('../capture.mjs');
+    const tp = await startThirdParty();
+    const { server, origin } = await startServer({ thirdParty: tp.origin });
+    const browser = await pw.chromium.launch();
+    try {
+      const isAllowedUrl = () => true;
+      const ctx = await newContext(browser, { userAgent: 'test-agent', isAllowedUrl, origin, blockThirdPartyData: block });
+      const r = await capturePage(ctx, `${origin}/components/demo/overview`, { isAllowedUrl, origin });
+      const tpHost = new URL(tp.origin).host;
+      assert.ok(tp.log.includes('/lib.js'), 'third-party script must load');
+      assert.equal(tp.log.includes('/beacon'), !block);
+      assert.ok(r.thirdParty.allowed.includes(tpHost));
+      assert.equal(r.thirdParty.blocked.includes(tpHost), block);
+      assert.match(r.text, /Rendered from JSON alpha/);
+    } finally {
+      await browser.close();
+      server.close();
+      tp.server.close();
+    }
+  });
+}
