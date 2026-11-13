@@ -14,7 +14,7 @@ const CORPUS_EXTS = new Set(['.txt', '.md', '.html', '.htm', '.json']);
 const ALLOWLISTABLE = new Set(['raw-overlap', 'forbidden-term']);
 const SHINGLE_SIZE = 12;
 // Bump when text normalization or shingling changes, so cached corpora are rebuilt.
-export const CORPUS_VERSION = '3';
+export const CORPUS_VERSION = '4';
 const SCRAPER_FILES = new Set(['state.json', 'meta.json']);
 
 export function normalizePath(p) {
@@ -104,8 +104,14 @@ export function checkRefName(ref, forbiddenTerms) {
   return v;
 }
 
+// Prose words only: token identifiers (md.ref/sys/comp.*, m3_*) are facts shared with the Apache-2.0
+// token repositories (the site's JSON embeds the same token database), and numbers / one-letter
+// fragments (e.g. SVG path data) are not prose.
+const TOKEN_ID = /\b(?:md\.(?:ref|sys|comp)\.[a-z0-9.\-_]+|m3_[a-z0-9_]+)/gi;
+
 function words(text) {
-  return text.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim().split(' ').filter(Boolean);
+  return text.toLowerCase().replace(TOKEN_ID, ' ').replace(/[^\p{L}\p{N}]+/gu, ' ').trim().split(' ')
+    .filter(w => w.length > 1 && !/^\p{N}+$/u.test(w));
 }
 
 function hashWindow(ws) {

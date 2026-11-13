@@ -100,3 +100,13 @@ test('corpus ignores the scraper\'s own files (meta/, state.json, meta.json) and
   assert.ok([...shingles(site)].every(h => corpus.has(h)), 'page text is in the corpus');
   assert.ok([...shingles(ours)].every(h => !corpus.has(h)), 'scraper files are not');
 });
+
+test('shingles ignore token identifiers, numbers and one-letter words; prose is still matched', async () => {
+  const { shingles } = await import('../lib.mjs');
+  const ids = 'md.comp.button-group.standard.large.container.height md.comp.button-group.standard.large.between-space md.comp.button.small.icon.size m3_comp_button_small_icon_size';
+  assert.equal(shingles(ids).size, 0, 'token ids are not words');
+  assert.equal(shingles('M 0,0 C 0.05,0 0.133,0.06 0.166,0.4 C 0.2,0.8 0.25,1 1,1 L 1 1 Z').size, 0, 'path data is not words');
+  const prose = 'quiet amber falcons drift above the harbor while seven lanterns flicker beside the old pier';
+  assert.ok(shingles(prose).size > 0);
+  assert.deepEqual([...shingles(`${prose} md.comp.x.y 12`)], [...shingles(prose)]);
+});

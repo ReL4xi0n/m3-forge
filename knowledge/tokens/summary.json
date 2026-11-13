@@ -1,0 +1,65 @@
+{
+  "perSource": {
+    "compose-material3": {
+      "records": 2537,
+      "mapped": 1608,
+      "unmapped": 929,
+      "unparsed": 9,
+      "deprecated": 0
+    },
+    "material-components-android": {
+      "records": 835,
+      "mapped": 693,
+      "unmapped": 142,
+      "unparsed": 6,
+      "deprecated": 0
+    },
+    "material-web": {
+      "records": 6310,
+      "mapped": 6310,
+      "unmapped": 0,
+      "unparsed": 395,
+      "deprecated": 1090
+    },
+    "material_ui": {
+      "records": 4015,
+      "mapped": 4015,
+      "unmapped": 0,
+      "unparsed": 0,
+      "deprecated": 0
+    }
+  },
+  "perKind": {
+    "comp": 6334,
+    "ref": 246,
+    "sys": 849
+  },
+  "perPlatform": {
+    "web": {
+      "source": "material-web",
+      "notFoundEntries": 135,
+      "conflicts": 56
+    },
+    "flutter": {
+      "source": "material_ui",
+      "notFoundEntries": 802,
+      "conflicts": 40
+    },
+    "compose": {
+      "source": "compose-material3",
+      "notFoundEntries": 2541,
+      "conflicts": 56
+    }
+  },
+  "totals": {
+    "tokenKeys": 7429,
+    "conflicts": {
+      "repoVsRepo": 56,
+      "siteVsRepo": 0
+    },
+    "notFoundEntries": 3478,
+    "deprecatedIds": 1080,
+    "unparsed": 410,
+    "unmapped": 1071
+  }
+}
