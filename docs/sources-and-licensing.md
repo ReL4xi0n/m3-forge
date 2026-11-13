@@ -8,12 +8,13 @@ are marked as quotes. This report is not legal advice.
 
 ## 1. Summary and verdict
 
-**Verdict: proceed, with one condition** (see §9, question 1).
+**Verdict: proceed.** Owner approved this report on 2026-11-13. The license statement was verified
+the same day (§3).
 
 - robots.txt allows every path we need. It sets no crawl delay.
-- The content-license statement could not yet be read verbatim, because the page that carries it
-  renders only with JavaScript. We therefore add a check: the scraper reads that page first and
-  stops if the expected license statement is not there.
+- The content-license statement is verified. The page that carries it renders only with
+  JavaScript, so our scraper rendered that single page first, following the rules in §7. It found
+  the statement.
 - Google's Terms of Service tie their ban on automated access to a site's machine-readable
   instructions such as robots.txt. We follow robots.txt and run slowly.
 - Every token source is under a permissive license (Apache-2.0, or BSD-3-Clause for Flutter's
@@ -41,18 +42,22 @@ are marked as quotes. This report is not legal advice.
 
 ## 3. Content license of m3.material.io
 
-- A web search on 2026-11-13 points to `https://m3.material.io/get-started`. That page reportedly
-  says that Material 3 content, guidelines, imagery and resources are available under either
-  Apache 2.0 or CC BY 4.0.
-- We could not read the sentence verbatim:
-  - the page is a JavaScript single-page app, and a plain fetch returns only its title;
-  - `/terms`, `/license` and `/about` return HTTP 404.
-- We have not yet confirmed which works the statement covers, or any exceptions such as logos or
-  trademarks.
+- **Verified on 2026-11-13 at 06:47:00 UTC.**
+  - Our scraper rendered `https://m3.material.io/get-started` (HTTP 200), following the rules in
+    §7, with `tools/extract/scrape/license-check.mjs`.
+  - The page states, in one sentence, that all Material 3 content, guidelines, imagery and
+    resources are offered under Apache 2.0 or CC BY 4.0.
+  - The exact wording, the rendered page and the capture metadata are kept privately with that run.
+  - The owner saw the verbatim sentence before the scrape was allowed to start.
+- The rendered text of that page never mentions trademarks, logos, brands or exceptions. We
+  searched it for those words and for "unless" and "otherwise noted". Trademark rights are not
+  licensed by CC BY 4.0 anyway, so §5 still governs names and logos.
+- `/terms`, `/license` and `/about` do not exist (HTTP 404).
 - **How we use it:**
   - We rely on the CC BY 4.0 option for paraphrased guidance (§8).
-  - We do not rely on the imagery part at all: images never enter the public repo (§7).
-  - The scraper's first page is `/get-started` (see §9, question 1).
+  - We do not rely on the imagery part at all. Images never enter the public repo; the owner
+    confirmed this on 2026-11-13 (§7).
+  - Every scrape run re-checks robots.txt against the hash recorded in §2.
 
 ## 4. Google Terms of Service and automated access
 
@@ -169,12 +174,10 @@ Notes:
     extracted from source repositories.
   - Google does not endorse this project.
 
-## 9. Open questions for the owner
+## 9. Owner decisions (2026-11-13)
 
-1. **License check before the scrape.** Should the scraper first render `/get-started`, using the
-   same politeness rules?
-   - It would save that page's text privately and check that it contains the CC BY 4.0
-     statement, then stop and report the exact wording to you before scraping anything else.
-   - Alternatively, you can look at the page in your own browser and confirm the wording yourself.
-2. **Imagery.** The reported statement also covers imagery. We still keep every site image out of
-   the public repo, as the spec decided. Should this stay as it is? (Recommended: yes.)
+1. **License check before the scrape:** approved and done (§3). The scraper rendered only
+   `/get-started`, the exact sentence and its timestamp were shown to the owner, and the full
+   scrape waits for the owner's go-ahead.
+2. **Imagery:** site images never enter the public repo, even though the license statement covers
+   imagery.
