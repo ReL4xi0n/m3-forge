@@ -1,0 +1,10 @@
+{
+  "raw-colors": { "item": "color-roles", "maxScore": 1, "defect": "Hand-picked unrelated colors instead of scheme roles: orange header, teal buttons, purple section titles, yellow and pink selections, and a non-error red on account details and the avatar." },
+  "no-dark": { "item": "dark-mode", "maxScore": 1, "defect": "No dark styles at all: the dark screenshot is identical to the light one." },
+  "wrong-components": { "item": "component-choice", "maxScore": 1, "defect": "Checkboxes for instant on/off settings, plain bordered divs as buttons, and a tab strip as top-level navigation instead of a navigation bar or rail." },
+  "cramped": { "item": "spacing-layout", "maxScore": 1, "defect": "Cramped, uneven, off-grid spacing (2-19px gaps, 3-9px paddings), misaligned list icons and text, and a clipped 'Export transactions' label." },
+  "no-states": { "item": "interaction-states", "maxScore": 1, "defect": "No selected, focus or disabled styling, unlabeled text fields without helper text, and a validation error shown only by a red border." },
+  "generic-look": { "item": "overall-polish", "maxScore": 1, "defect": "Generic default look: browser-default buttons, inputs and select, system blue links, leftover placeholder copy, and icons in mixed styles." },
+  "flat-type": { "item": "hierarchy-typography", "maxScore": 1, "defect": "Every text uses the same size and weight; the page title and section titles read like body text." },
+  "random-shapes": { "item": "shape-expressive", "maxScore": 1, "defect": "Random corner radii: a pill card beside a sharp card, a 3px button beside a 28px button, and switches, fields and indicators with mismatched corners." }
+}
