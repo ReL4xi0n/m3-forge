@@ -59,10 +59,21 @@ Do not edit generated files. CI fails when they are stale.
 
 ## Precedence
 
+This is the owner's conflict policy, adopted on 2026-11-13.
+
 1. A platform uses the value from its own repository: material-web for the web, `material_ui` for
    Flutter, Compose material3 for Jetpack Compose.
-2. The cross-platform canonical value is material-web's.
+2. The cross-platform canonical value is material-web's. When repositories disagree, each platform
+   keeps its own value, and notes state the difference.
 3. When the site and a repository disagree, the repository wins.
+4. **Exception to rules 2 and 3.** Sometimes the site disagrees with material-web, while Flutter and
+   Compose both give the site's value. In that case material-web does not win automatically. These
+   cases are listed for an owner decision, starting with the Phase 2 report.
+5. A value missing from a platform's own repository follows the resolution ladder in the design
+   (§3): another official repository, then the mapped system token, then the library default. Each
+   step is recorded with its provenance, and a number is never invented.
+6. Deprecated token sets are never used.
+7. Values read from library code (`[impl:]`) are implementation references, never tokens.
 
 Every disagreement is listed in `conflicts.md`.
 

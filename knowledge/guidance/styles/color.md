@@ -154,7 +154,20 @@ choosing one.
 | Style | Default variant | Code evidence | Site evidence |
 |---|---|---|---|
 | M3 | Tonal spot (`DynamicSchemeVariant.tonalSpot`, MCU `Variant.TONAL_SPOT`) | `ColorScheme.fromSeed` default [impl:material_ui/packages/material_ui/lib/src/color_scheme.dart:283]; `ColorScheme.fromImageProvider` default [impl:material_ui/packages/material_ui/lib/src/color_scheme.dart:1758]; enum doc "Default for Material theme colors" [impl:material_ui/packages/material_ui/lib/src/color_scheme.dart:31]; MCU doc calls tonal spot the default Material You theme on Android 12 and 13 [impl:material-color-utilities/package/scheme/scheme_tonal_spot.js:23] | No color page names a variant [NOT FOUND] |
-| M3 Expressive | [NOT FOUND] | No source sets a variant for the Expressive style (details below) | No color page names a variant [NOT FOUND] |
+| M3 Expressive | Tonal spot (owner decision, 2026-11-13) | No source sets a variant for the Expressive style (details below); tonal spot is what Flutter produces for an Expressive-styled app with a seed | No color page names a variant |
+
+The M3 Expressive row is a project decision, not a value any source states. No source names a
+default variant for the Expressive style, so the owner chose tonal spot for both styles.
+
+**Two different things are called "expressive".**
+
+- **M3 Expressive** is a design style: the May 2025 update to components, shape, motion and type.
+- **`Variant.EXPRESSIVE`** in MCU, and `DynamicSchemeVariant.expressive` in Flutter, is one of the
+  scheme variants, one way of deriving palettes from a source color. It is a sibling of tonal spot,
+  vibrant and fidelity.
+
+The two are unrelated. Choosing the M3 Expressive style never selects the expressive scheme variant.
+The expressive variant is used only when a request asks for that variant by name.
 
 How each source was read:
 
@@ -173,7 +186,7 @@ How each source was read:
   - `ThemeData(colorSchemeSeed: ...)` calls `ColorScheme.fromSeed` without a variant
     [impl:material_ui/packages/material_ui/lib/src/theme_data.dart:533], so an Expressive-styled
     Flutter app still gets tonal spot. That is a side effect of the code, not a stated Expressive
-    default, so the row stays NOT FOUND.
+    default. The row's value is therefore the owner decision above, not a sourced default.
 - Jetpack Compose (material3 1.5.0-rc01):
   - It has no scheme-variant or seed API. `dynamicLightColorScheme` and `dynamicDarkColorScheme`
     read the colors the Android system already generated

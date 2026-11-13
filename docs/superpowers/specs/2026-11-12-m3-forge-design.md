@@ -774,6 +774,15 @@ results, screenshots, green CI, and both install paths shown working.
   - icons come only from the official Symbols variable font and codepoints, with name → icon
     constants for Flutter and Compose and no drawing or vector conversion (§10).
 
+- Phase 1 approved on 2026-11-13, with three decisions:
+  - **Conflict policy.** This is the precedence in `knowledge/README.md`, with one exception. When
+    the site disagrees with material-web and both Flutter and Compose give the site's value,
+    material-web does not win automatically. Those cases are listed for an owner decision.
+  - **Default color variant.** Tonal spot for both styles. The MCU "expressive" scheme variant is
+    not the M3 Expressive style, and the skill must not confuse the two.
+  - **Re-verification.** A fresh agent re-checks 6 randomly chosen corrected notes before Phase 1
+    closes.
+
 ### Builder decisions, already accepted by the owner
 - JDK 21 instead of 17.
 - No silent Compose dependency bumps.

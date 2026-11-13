@@ -21,13 +21,13 @@ has an error version.
 - A single item is turned on or off on desktop, where checkboxes are the common idiom.
 - Related options should read as one group. Checkboxes also take less room than a column of
   switches.
-- A list of several related options that would otherwise be drawn as switches, or choices that
-  take effect only when the person saves. Switches are meant to act at once, so a set that waits
-  for a save belongs in checkboxes.
-- When a checkbox turns a single item on or off, carry out the change straight away.
+- A set of several related options that would otherwise be drawn as switches, especially when
+  they apply only after a save. Switches are meant to act at once, so a group that waits for a
+  save belongs in checkboxes.
 - Avoid when:
   - Only one option may be chosen; use radio buttons.
-  - The control is a standalone setting, such as a single row on a settings screen; use a switch.
+  - The control is a standalone setting, such as a single row on a settings screen, especially on
+    mobile; use a switch. On desktop a checkbox is also common (see above).
 
 ## Anatomy
 
@@ -167,10 +167,10 @@ State layers (a circle behind the box):
 
 ## Pitfalls
 
-- Using checkboxes for a single choice (use radio buttons) or for a standalone setting (use a
-  switch).
-- A column of switches for related options, or for choices that only apply after a save; a list
-  of checkboxes is clearer and smaller.
+- Using checkboxes for a single choice (use radio buttons), or for a standalone setting on mobile
+  (use a switch).
+- A column of switches for several related options, especially ones that only apply after a save;
+  a list of checkboxes is clearer and smaller.
 - Making only the box clickable, not its label.
 - A parent checkbox that never shows the indeterminate value when its children are mixed.
 - An error state with no message beside it. Checkboxes have no built-in error text, so add an

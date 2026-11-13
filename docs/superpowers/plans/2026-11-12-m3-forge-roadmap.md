@@ -23,7 +23,15 @@ Carried into the Phase 3 plan (owner, 2026-11-13):
   Phase 1 evidence). Phase 3 needs a priority list for the gap components before building them.
 - Motion values with no token that are taken from official library code are marked as
   "implementation reference", never as tokens. Phase 1 notes use the `[impl:]` marker for this.
-- Token conflicts are resolved by the policy the owner chooses from the Phase 1 report.
+- Token conflicts are resolved by the policy the owner adopted on 2026-11-13 (`knowledge/README.md`,
+  Precedence). One exception: when the site disagrees with material-web and both Flutter and Compose
+  give the site's value, material-web does not win automatically. Those cases go to the owner,
+  starting with the Phase 2 report.
+- Default color variant: tonal spot for both M3 and M3 Expressive (owner decision, 2026-11-13).
+  - The MCU and Flutter scheme variant named "expressive" is not the M3 Expressive style.
+  - `references/core/color` and `CHECKLIST.md` must say this explicitly, so the skill never picks
+    the expressive variant because the request says "M3 Expressive". It picks that variant only
+    when the variant is requested by name.
 
 Standing rules for all phases:
 - Speak Turkish with the owner; everything in the repo is English.

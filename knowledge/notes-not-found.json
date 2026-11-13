@@ -611,17 +611,12 @@
   },
   {
     "note": "knowledge/guidance/styles/color.md",
-    "line": 157,
-    "text": "| M3 Expressive | [NOT FOUND] | No source sets a variant for the Expressive style (details below) | No color page names a variant [NOT FOUND] |"
-  },
-  {
-    "note": "knowledge/guidance/styles/color.md",
-    "line": 200,
+    "line": 213,
     "text": "which spec version goes with the M3 Expressive style [NOT FOUND]."
   },
   {
     "note": "knowledge/guidance/styles/color.md",
-    "line": 267,
+    "line": 280,
     "text": "Compose has no medium or high contrast tokens [NOT FOUND]."
   },
   {
