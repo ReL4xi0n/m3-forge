@@ -30,6 +30,31 @@
     "text": "token [NOT FOUND]."
   },
   {
+    "note": "knowledge/guidance/foundations/designing.md",
+    "line": 143,
+    "text": "- No system token defines the minimum target or the target spacing [NOT FOUND]. The libraries"
+  },
+  {
+    "note": "knowledge/guidance/foundations/interaction.md",
+    "line": 57,
+    "text": "No token gives the fade timing [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/foundations/interaction.md",
+    "line": 151,
+    "text": "entry [NOT FOUND]. Components apply the 38% [token:md.sys.state.disabled.state-layer-opacity]"
+  },
+  {
+    "note": "knowledge/guidance/foundations/interaction.md",
+    "line": 161,
+    "text": "- Compose has none of these three tokens [NOT FOUND]. Its optional inset ring is set in code:"
+  },
+  {
+    "note": "knowledge/guidance/foundations/usability.md",
+    "line": 82,
+    "text": "- No system token encodes usability guidance itself [NOT FOUND]."
+  },
+  {
     "note": "knowledge/guidance/styles/color.md",
     "line": 156,
     "text": "| M3 | Tonal spot (`DynamicSchemeVariant.tonalSpot`, MCU `Variant.TONAL_SPOT`) | `ColorScheme.fromSeed` default [impl:material_ui/packages/material_ui/lib/src/color_scheme.dart:283]; `ColorScheme.fromImageProvider` default [impl:material_ui/packages/material_ui/lib/src/color_scheme.dart:1758]; enum doc \"Default for Material theme colors\" [impl:material_ui/packages/material_ui/lib/src/color_scheme.dart:31]; MCU doc calls tonal spot the default Material You theme on Android 12 and 13 [impl:material-color-utilities/package/scheme/scheme_tonal_spot.js:23] | No color page names a variant [NOT FOUND] |"

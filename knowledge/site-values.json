@@ -239,6 +239,180 @@
     "line": 114
   },
   {
+    "page": "/foundations/designing/structure",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/foundations/designing.md",
+    "line": 128
+  },
+  {
+    "page": "/foundations/designing/structure",
+    "value": {
+      "dp": 44
+    },
+    "note": "knowledge/guidance/foundations/designing.md",
+    "line": 131
+  },
+  {
+    "page": "/foundations/designing/structure",
+    "value": {
+      "dp": 44
+    },
+    "note": "knowledge/guidance/foundations/designing.md",
+    "line": 132
+  },
+  {
+    "page": "/foundations/designing/structure",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/foundations/designing.md",
+    "line": 133
+  },
+  {
+    "page": "/foundations/designing/structure",
+    "value": {
+      "dp": 40
+    },
+    "note": "knowledge/guidance/foundations/designing.md",
+    "line": 134
+  },
+  {
+    "page": "/foundations/designing/structure",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/foundations/designing.md",
+    "line": 135
+  },
+  {
+    "page": "/foundations/designing/structure",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/foundations/designing.md",
+    "line": 141
+  },
+  {
+    "page": "/foundations/designing/structure",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/foundations/designing.md",
+    "line": 154
+  },
+  {
+    "page": "/foundations/designing/structure",
+    "value": {
+      "dp": 44
+    },
+    "note": "knowledge/guidance/foundations/designing.md",
+    "line": 155
+  },
+  {
+    "page": "/foundations/designing/structure",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/foundations/designing.md",
+    "line": 155
+  },
+  {
+    "page": "/foundations/designing/structure",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/foundations/designing.md",
+    "line": 183
+  },
+  {
+    "page": "/foundations/designing/structure",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/foundations/designing.md",
+    "line": 195
+  },
+  {
+    "page": "/foundations/designing/structure",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/foundations/designing.md",
+    "line": 196
+  },
+  {
+    "page": "/foundations/interaction/states/state-layers",
+    "token": "md.sys.state.hover.state-layer-opacity",
+    "value": {
+      "number": 0.08
+    },
+    "note": "knowledge/guidance/foundations/interaction.md",
+    "line": 141
+  },
+  {
+    "page": "/foundations/interaction/states/state-layers",
+    "token": "md.sys.state.focus.state-layer-opacity",
+    "value": {
+      "number": 0.1
+    },
+    "note": "knowledge/guidance/foundations/interaction.md",
+    "line": 142
+  },
+  {
+    "page": "/foundations/interaction/states/state-layers",
+    "token": "md.sys.state.pressed.state-layer-opacity",
+    "value": {
+      "number": 0.1
+    },
+    "note": "knowledge/guidance/foundations/interaction.md",
+    "line": 143
+  },
+  {
+    "page": "/foundations/interaction/states/state-layers",
+    "token": "md.sys.state.dragged.state-layer-opacity",
+    "value": {
+      "number": 0.16
+    },
+    "note": "knowledge/guidance/foundations/interaction.md",
+    "line": 144
+  },
+  {
+    "page": "/foundations/interaction/states/state-layers",
+    "token": "md.sys.state.disabled.state-layer-opacity",
+    "value": {
+      "number": 0.38
+    },
+    "note": "knowledge/guidance/foundations/interaction.md",
+    "line": 145
+  },
+  {
+    "page": "/foundations/interaction/states/state-layers",
+    "token": "md.comp.checkbox.state-layer.size",
+    "value": {
+      "dp": 40
+    },
+    "note": "knowledge/guidance/foundations/interaction.md",
+    "line": 153
+  },
+  {
+    "page": "/foundations/interaction/states/state-layers",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/foundations/interaction.md",
+    "line": 154
+  },
+  {
+    "page": "/foundations/interaction/states/state-layers",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/foundations/interaction.md",
+    "line": 176
+  },
+  {
     "page": "/foundations/writing/text-resizing",
     "value": {
       "number": 2
