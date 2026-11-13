@@ -192,10 +192,12 @@ private/reference-screenshots/<YYYY-MM-DD>/       (private repo)
   - `PageState` is `{ status: 'pending'|'done'|'failed'|'skipped'|'redirect', attempts, reason?, finalPath?, slug?, textChars?, jsonCount? }`.
 
 - [ ] **Step 1: Write failing tests (key assertions):**
-  - robots: given the fixture with `Disallow: /archive`, `Disallow: /search.html`, `Disallow: /*?q=`, `Disallow: /*?utm_source=`:
+  - robots: given the fixture with the live rules recorded in the terms report (`Disallow: /archive`, `Disallow: /search.html`, `Disallow: /*?*q=`, `Disallow: /*?*utm_source=`):
     - `isAllowed(r,'/components/buttons/overview') === true`;
     - `isAllowed(r,'/archive/x') === false`;
     - `isAllowed(r,'/components?q=a') === false`;
+    - `isAllowed(r,'/components?x=1&faq=2') === false`, because the wildcard also matches `faq=`;
+    - `isAllowed(r,'/components?utm_source=x') === false`;
     - `Allow: /archive/ok` beats `Disallow: /archive` for `/archive/ok`.
   - sitemap: the index fixture yields child sitemap URLs; the urlset fixture yields 5 URLs.
   - classify: `/components/split-button/overview` is in scope with section `components`; `/blog/m3-expressive-launch` is in scope with `expressiveUrl: true`; `/develop/web` is out of scope.

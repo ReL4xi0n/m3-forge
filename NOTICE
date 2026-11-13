@@ -1,4 +1,32 @@
 m3-forge
 Copyright 2026 The m3-forge authors
 
-This product is licensed under the Apache License, Version 2.0. Third-party attributions are added as third-party material is included.
+This product is licensed under the Apache License, Version 2.0.
+
+m3-forge is an unofficial project. It is not affiliated with, sponsored by or endorsed by Google.
+Material Design is a design system created by Google.
+
+------------------------------------------------------------------------
+Material Design 3 guidance
+------------------------------------------------------------------------
+Parts of knowledge/guidance/ and of the skill's references are paraphrased and changed from the
+Material Design 3 guidance at https://m3.material.io/ by Google, used under the Creative Commons
+Attribution 4.0 International license (https://creativecommons.org/licenses/by/4.0/).
+Changes: rewritten in our own words, condensed, reorganized, and combined with token values
+extracted from the source repositories below. Each note lists the pages it was written from.
+
+------------------------------------------------------------------------
+Source repositories (token values and names extracted; see knowledge/sources.lock.json)
+------------------------------------------------------------------------
+- material-web (https://github.com/material-components/material-web), Apache License 2.0
+- material-color-utilities (https://github.com/material-foundation/material-color-utilities),
+  Apache License 2.0
+- material-components-android (https://github.com/material-components/material-components-android),
+  Apache License 2.0
+- Flutter material_ui (https://github.com/flutter/packages/tree/main/packages/material_ui),
+  BSD 3-Clause License
+- AndroidX Compose material3 (https://developer.android.com/jetpack/androidx/releases/compose-material3),
+  Apache License 2.0
+
+Fonts and icons (Material Symbols, Roboto Flex, Roboto) are attributed here when they are added to
+the repository, together with their own license files.
