@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
@@ -29,6 +30,16 @@ test('cmdline-tools stays on 22.0 (classic sdkmanager --licenses) without the An
   assert.deepEqual(c.removeAfterExtract, ['bin/android.exe']);
   const setup = readFileSync(join(dirname(file), 'setup.ps1'), 'utf8');
   assert.match(setup, /removeAfterExtract/);
+});
+
+test('env.ps1 keeps the npm cache and Playwright browsers inside the toolchain folder', { skip: process.platform !== 'win32' }, () => {
+  const env = join(dirname(file), 'env.ps1');
+  const r = spawnSync('powershell', ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-Command',
+    `. '${env}'; Write-Output $env:M3_TOOLCHAIN; Write-Output $env:npm_config_cache; Write-Output $env:PLAYWRIGHT_BROWSERS_PATH`], { encoding: 'utf8' });
+  assert.equal(r.status, 0, r.stderr);
+  const [root, npmCache, browsers] = r.stdout.trim().split(/\r?\n/);
+  assert.equal(npmCache, `${root}\\npm-cache`);
+  assert.equal(browsers, `${root}\\ms-playwright`);
 });
 
 test('PowerShell scripts are ASCII-only (Windows PowerShell 5.1 reads BOM-less UTF-8 as ANSI)', () => {

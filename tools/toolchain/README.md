@@ -94,6 +94,21 @@ Flutter on Windows always writes its config files (`.flutter_tool_state`, `.flut
   with Robolectric/Roborazzi and Flutter with `flutter test` goldens, so no device or emulator is used.
 - "Visual Studio not installed": only needed for Windows desktop apps. The harness does not build them.
 
+## Playwright (site extraction)
+
+The scraper uses Playwright, which is pinned in `package.json` as a devDependency. Install it from a
+shell where `env.ps1` is dot-sourced. That puts the npm cache and the browsers in the toolchain
+folder (`npm-cache\`, `ms-playwright\`):
+
+```powershell
+. tools\toolchain\env.ps1
+npm ci
+npx playwright install chromium
+```
+
+The browser tests in `tools/extract/scrape/test/` run only where Chromium is installed this way.
+They are skipped elsewhere, including in CI.
+
 ## Proving nothing outside the folder changed
 
 ```powershell

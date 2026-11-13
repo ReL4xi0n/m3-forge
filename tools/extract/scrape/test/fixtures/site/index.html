@@ -1,0 +1,27 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Demo</title></head>
+<body>
+  <nav class="tabs">
+    <a href="/components/demo/overview">Overview</a>
+    <a href="/components/demo/specs">Specs</a>
+    <a href="/components/demo/guidelines">Guidelines</a>
+    <a href="/styles/color/overview">Color</a>
+  </nav>
+  <main>
+    <h1>Demo component</h1>
+    <p id="from-json">loading</p>
+    <img src="/img.png" alt="diagram">
+    <details><summary>More</summary><p>Hidden detail text</p></details>
+    <button id="exp" aria-expanded="false">Show more</button>
+    <div id="more" hidden>Revealed by button</div>
+    <div role="tablist">
+      <button role="tab" id="t1" aria-selected="true">One</button>
+      <button role="tab" id="t2" aria-selected="false">Two</button>
+    </div>
+    <div id="p1">Panel one text</div>
+    <div id="p2" hidden></div>
+    <a href="/elsewhere">Elsewhere</a>
+    <form action="/submit"><button type="submit">Send</button></form>
+  </main>
+  <script src="/app.js"></script>
+</body></html>

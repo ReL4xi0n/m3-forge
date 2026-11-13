@@ -13,6 +13,7 @@ $env:ANDROID_USER_HOME = Join-Path $m3Root 'android-user'
 $env:GRADLE_USER_HOME = Join-Path $m3Root 'gradle-home'
 $env:PUB_CACHE = Join-Path $m3Root 'pub-cache'
 $env:PLAYWRIGHT_BROWSERS_PATH = Join-Path $m3Root 'ms-playwright'
+$env:npm_config_cache = Join-Path $m3Root 'npm-cache'
 $env:FLUTTER_SUPPRESS_ANALYTICS = 'true'
 
 $m3Prepend = @(
