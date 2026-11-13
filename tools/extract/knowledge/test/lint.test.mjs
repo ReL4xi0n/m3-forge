@@ -142,3 +142,12 @@ test('[impl:] marks values taken from official library code; --files limits the 
     { files: ['knowledge/guidance/components/chips.md'] });
   assert.ok(two.errors.length > 0 && two.errors.every(e => e.startsWith('knowledge/guidance/components/chips.md')), two.errors.join('\n'));
 });
+
+test('every [NOT FOUND] line in a note is collected for not-found.md', async () => {
+  const r = await run({ 'components/buttons.md': note({ body: { Motion: 'Selected-state morph spring: [NOT FOUND].', Measurements: 'Hover lift 2dp [NOT FOUND].' } }) });
+  assert.deepEqual(r.notFound.map(n => [n.note, n.text]), [
+    ['knowledge/guidance/components/buttons.md', 'Hover lift 2dp [NOT FOUND].'],
+    ['knowledge/guidance/components/buttons.md', 'Selected-state morph spring: [NOT FOUND].'],
+  ]);
+  assert.ok(r.notFound.every(n => Number.isInteger(n.line)));
+});

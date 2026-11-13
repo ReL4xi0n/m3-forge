@@ -1,0 +1,32 @@
+[
+  {
+    "note": "knowledge/guidance/components/buttons.md",
+    "line": 125,
+    "text": "per-size label token [NOT FOUND]; their single label token is `md.comp.button.label-text`."
+  },
+  {
+    "note": "knowledge/guidance/components/buttons.md",
+    "line": 160,
+    "text": "- Compose defines no per-button motion token [NOT FOUND]. Its code animates the plain button's"
+  },
+  {
+    "note": "knowledge/guidance/components/buttons.md",
+    "line": 165,
+    "text": "[NOT FOUND]. Springs replace durations and easings in Expressive motion."
+  },
+  {
+    "note": "knowledge/guidance/components/split-button.md",
+    "line": 96,
+    "text": "- The split button has no label type token of its own [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/split-button.md",
+    "line": 112,
+    "text": "token [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/split-button.md",
+    "line": 118,
+    "text": "token [NOT FOUND]."
+  }
+]

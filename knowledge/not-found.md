@@ -5374,3 +5374,16 @@ md.comp.app-bar.large.icon.size, md.comp.app-bar.medium.icon.size, md.comp.app-b
 | material-components-android | m3_sys_shape_corner_large_increased_corner_family | (none) | shape/res/values/tokens.xml:79 |
 | material-components-android | m3_sys_shape_corner_medium_corner_family | (none) | shape/res/values/tokens.xml:54 |
 | material-components-android | m3_sys_shape_corner_small_corner_family | (none) | shape/res/values/tokens.xml:60 |
+
+## NOT FOUND in notes: 6
+
+Statements the knowledge notes mark `[NOT FOUND]` (values or facts no source gives, e.g. the default color variant for M3 Expressive). Collected by `tools/extract/knowledge/lint.mjs`.
+
+| note:line | statement |
+|---|---|
+| knowledge/guidance/components/buttons.md:125 | per-size label token [NOT FOUND]; their single label token is `md.comp.button.label-text`. |
+| knowledge/guidance/components/buttons.md:160 | - Compose defines no per-button motion token [NOT FOUND]. Its code animates the plain button's |
+| knowledge/guidance/components/buttons.md:165 | [NOT FOUND]. Springs replace durations and easings in Expressive motion. |
+| knowledge/guidance/components/split-button.md:96 | - The split button has no label type token of its own [NOT FOUND]. |
+| knowledge/guidance/components/split-button.md:112 | token [NOT FOUND]. |
+| knowledge/guidance/components/split-button.md:118 | token [NOT FOUND]. |

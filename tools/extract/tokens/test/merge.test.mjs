@@ -105,3 +105,12 @@ test('compare: a reference to a whole style and to its own sub-token is not a di
   assert.equal(compare({ ref: 'md.sys.typescale.label-large' }, { ref: 'md.sys.typescale.label-large.font' }), 'not-compared');
   assert.equal(compare({ ref: 'md.sys.typescale.label-large' }, { ref: 'md.sys.typescale.label-medium.font' }), 'different');
 });
+
+test('report: NOT FOUND statements from notes get their own section', () => {
+  const bySource = { 'material-web': [rec('material-web', 'md.comp.y.h', { dp: 1 })], 'compose-material3': [], material_ui: [], 'material-components-android': [] };
+  const mcu = { variants: [], roles: [], specVersions: [], defaultVariantEvidence: [] };
+  const files = renderAll(bySource, mcu, [], [{ note: 'knowledge/guidance/styles/color.md', line: 12, text: '| M3 Expressive | [NOT FOUND] |' }]);
+  const md = files.get('not-found.md');
+  assert.match(md, /## NOT FOUND in notes: 1/);
+  assert.match(md, /knowledge\/guidance\/styles\/color\.md:12/);
+});

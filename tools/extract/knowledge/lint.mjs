@@ -80,6 +80,7 @@ async function listNotes(dir) {
 export async function lintNotes(notesDir, { merged, coverage, exceptions = {}, requireCoverage = false, files = null }) {
   const errors = [];
   const siteValues = [];
+  const notFound = [];
   const done = new Set(coverage.rows.filter(r => r.status === 'done').map(r => r.path));
   const byId = new Map();
   for (const m of merged) (byId.get(m.id) || byId.set(m.id, []).get(m.id)).push(m);
@@ -177,6 +178,11 @@ export async function lintNotes(notesDir, { merged, coverage, exceptions = {}, r
       if (byId.has(t) && differs(t) && !acknowledged.has(t)) err(line, `token ${t} differs between platforms; acknowledge it with [differs:${t}]`);
     }
 
+    // Every [NOT FOUND] statement is listed in the generated not-found.md.
+    for (let i = bodyStart; i < lines.length; i++) {
+      if (/\[NOT FOUND\]/.test(lines[i])) notFound.push({ note: label, line: i + 1, text: lines[i].trim() });
+    }
+
     // Table rows are checked cell by cell: a value pairs with the markers in its own cell.
     const segmentsOf = line => (/^\s*\|.*\|\s*$/.test(line) ? line.split('|') : [line]);
     for (let i = bodyStart; i < lines.length; i++) for (const line of segmentsOf(lines[i])) {
@@ -213,14 +219,15 @@ export async function lintNotes(notesDir, { merged, coverage, exceptions = {}, r
   }
   siteValues.sort((a, b) => a.note.localeCompare(b.note) || a.line - b.line);
   const shown = files ? errors.filter(e => files.some(f => e.startsWith(`${f}:`))) : errors;
-  return { errors: shown, siteValues };
+  notFound.sort((a, b) => a.note.localeCompare(b.note) || a.line - b.line);
+  return { errors: shown, siteValues, notFound };
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   const root = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
   const k = join(root, 'knowledge');
   const load = async f => JSON.parse(await readFile(join(k, f), 'utf8'));
-  const { errors, siteValues } = await lintNotes(join(k, 'guidance'), {
+  const { errors, siteValues, notFound } = await lintNotes(join(k, 'guidance'), {
     merged: await load('tokens/merged.json'),
     coverage: await load('coverage.json'),
     exceptions: await load('coverage-exceptions.json'),
@@ -231,13 +238,17 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
       : null,
   });
   for (const e of errors) console.error(e);
-  const out = JSON.stringify(siteValues, null, 2) + '\n';
-  const file = join(k, 'site-values.json');
-  if (process.argv.includes('--check')) {
-    const cur = existsSync(file) ? await readFile(file, 'utf8') : null;
-    if (cur !== out) { console.error('knowledge/site-values.json is stale; run `npm run knowledge:lint`'); process.exitCode = 1; }
-  } else if (!process.argv.includes('--files')) {
-    await writeFile(file, out);
+  const outputs = [
+    [join(k, 'site-values.json'), JSON.stringify(siteValues, null, 2) + '\n'],
+    [join(k, 'notes-not-found.json'), JSON.stringify(notFound, null, 2) + '\n'],
+  ];
+  for (const [file, out] of outputs) {
+    if (process.argv.includes('--check')) {
+      const cur = existsSync(file) ? await readFile(file, 'utf8') : null;
+      if (cur !== out) { console.error(`${file} is stale; run \`npm run knowledge:lint\``); process.exitCode = 1; }
+    } else if (!process.argv.includes('--files')) {
+      await writeFile(file, out);
+    }
   }
   if (errors.length) process.exitCode = 1;
   console.log(`knowledge lint: ${errors.length} error(s), ${siteValues.length} site value(s)`);
