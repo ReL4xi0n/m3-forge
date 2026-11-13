@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pocketbook settings</title>
+<style>
+:root {
+  color-scheme: light;
+  --md-sys-color-primary: #6750a4;
+  --md-sys-color-on-primary: #ffffff;
+  --md-sys-color-primary-container: #eaddff;
+  --md-sys-color-on-primary-container: #4f378b;
+  --md-sys-color-secondary: #625b71;
+  --md-sys-color-secondary-container: #e8def8;
+  --md-sys-color-on-secondary-container: #4a4458;
+  --md-sys-color-tertiary-container: #ffd8e4;
+  --md-sys-color-on-tertiary-container: #633b48;
+  --md-sys-color-surface: #fef7ff;
+  --md-sys-color-on-surface: #1d1b20;
+  --md-sys-color-on-surface-variant: #49454f;
+  --md-sys-color-surface-container-low: #f7f2fa;
+  --md-sys-color-surface-container: #f3edf7;
+  --md-sys-color-surface-container-high: #ece6f0;
+  --md-sys-color-surface-container-highest: #e6e0e9;
+  --md-sys-color-outline: #79747e;
+  --md-sys-color-outline-variant: #cac4d0;
+  --md-sys-color-error: #b3261e;
+  --md-sys-color-on-error: #ffffff;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --md-sys-color-primary: #d0bcff;
+    --md-sys-color-on-primary: #381e72;
+    --md-sys-color-primary-container: #4f378b;
+    --md-sys-color-on-primary-container: #eaddff;
+    --md-sys-color-secondary: #ccc2dc;
+    --md-sys-color-secondary-container: #4a4458;
+    --md-sys-color-on-secondary-container: #e8def8;
+    --md-sys-color-tertiary-container: #633b48;
+    --md-sys-color-on-tertiary-container: #ffd8e4;
+    --md-sys-color-surface: #141218;
+    --md-sys-color-on-surface: #e6e0e9;
+    --md-sys-color-on-surface-variant: #cac4d0;
+    --md-sys-color-surface-container-low: #1d1b20;
+    --md-sys-color-surface-container: #211f26;
+    --md-sys-color-surface-container-high: #2b2930;
+    --md-sys-color-surface-container-highest: #36343b;
+    --md-sys-color-outline: #938f99;
+    --md-sys-color-outline-variant: #49454f;
+    --md-sys-color-error: #f2b8b5;
+    --md-sys-color-on-error: #601410;
+  }
+}
+:root {
+  --md-sys-shape-corner-none: 0px;
+  --md-sys-shape-corner-extra-small: 4px;
+  --md-sys-shape-corner-small: 8px;
+  --md-sys-shape-corner-medium: 12px;
+  --md-sys-shape-corner-large: 16px;
+  --md-sys-shape-corner-extra-large: 28px;
+  --md-sys-shape-corner-full: 9999px;
+  --pb-font: Roboto, "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+}
+
+.headline-medium { font: 400 1.75rem/2.25rem var(--pb-font); letter-spacing: 0; }
+.title-large { font: 400 1.375rem/1.75rem var(--pb-font); letter-spacing: 0; }
+.title-medium { font: 500 1rem/1.5rem var(--pb-font); letter-spacing: 0.009375rem; }
+.title-small { font: 500 0.875rem/1.25rem var(--pb-font); letter-spacing: 0.00625rem; }
+.body-large { font: 400 1rem/1.5rem var(--pb-font); letter-spacing: 0.03125rem; }
+.body-medium { font: 400 0.875rem/1.25rem var(--pb-font); letter-spacing: 0.015625rem; }
+.body-small { font: 400 0.75rem/1rem var(--pb-font); letter-spacing: 0.025rem; }
+.label-large { font: 500 0.875rem/1.25rem var(--pb-font); letter-spacing: 0.00625rem; }
+.label-medium { font: 500 0.75rem/1rem var(--pb-font); letter-spacing: 0.03125rem; }
+
+/* Base */
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-family: var(--pb-font);
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, p { margin: 0; }
+button, input, select { font: inherit; color: inherit; }
+.icon { width: 24px; height: 24px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Layout */
+.app { display: flex; min-height: 100vh; }
+.main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.app-header { background: var(--md-sys-color-surface); }
+.app-header-inner { max-width: 720px; margin: 0 auto; }
+.top-app-bar { display: flex; align-items: center; height: 64px; padding: 0 4px; }
+.top-app-bar .spacer { flex: 1; }
+.page-title { padding: 0 16px 8px; }
+.content { flex: 1; width: 100%; max-width: 720px; margin: 0 auto; padding: 8px 16px 32px; }
+.section { margin-top: 24px; }
+.section-title { color: var(--md-sys-color-primary); padding: 0 16px 8px; }
+.card { background: var(--md-sys-color-surface-container); border-radius: var(--md-sys-shape-corner-large); overflow: hidden; }
+.card.padded { padding: 16px; --field-bg: var(--md-sys-color-surface-container); }
+.actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 24px; }
+
+/* Profile */
+.profile { display: flex; align-items: center; gap: 16px; padding: 16px; }
+.avatar {
+  display: grid; place-items: center; flex: none;
+  width: 56px; height: 56px; border-radius: var(--md-sys-shape-corner-full);
+  background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container);
+}
+.profile-text { flex: 1; min-width: 0; }
+.supporting { color: var(--md-sys-color-on-surface-variant); }
+
+/* Buttons */
+.btn, .icon-btn {
+  position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  border: none; cursor: pointer; overflow: hidden; white-space: nowrap; flex: none;
+}
+.btn::before, .icon-btn::before {
+  content: ""; position: absolute; inset: 0; background: currentColor; opacity: 0; pointer-events: none;
+}
+.btn:hover::before, .icon-btn:hover::before { opacity: 0.08; }
+.btn:active::before, .icon-btn:active::before { opacity: 0.1; }
+.btn:focus-visible, .icon-btn:focus-visible { outline: 3px solid var(--md-sys-color-secondary); outline-offset: 2px; }
+.btn { height: 40px; padding: 0 24px; border-radius: var(--md-sys-shape-corner-full); }
+.btn-filled { background: var(--md-sys-color-primary); color: var(--md-sys-color-on-primary); }
+.btn-tonal { background: var(--md-sys-color-secondary-container); color: var(--md-sys-color-on-secondary-container); padding: 0 16px; }
+.btn-outlined { background: transparent; color: var(--md-sys-color-primary); box-shadow: inset 0 0 0 1px var(--md-sys-color-outline-variant); }
+.icon-btn {
+  width: 48px; height: 48px; border-radius: var(--md-sys-shape-corner-full);
+  background: transparent; color: var(--md-sys-color-on-surface-variant);
+}
+
+/* Lists */
+.list { list-style: none; margin: 0; padding: 8px 0; }
+.list-item {
+  position: relative; display: flex; align-items: center; gap: 16px;
+  width: 100%; min-height: 72px; padding: 8px 16px;
+  border: none; background: none; text-align: left; cursor: pointer;
+}
+.list-item::before {
+  content: ""; position: absolute; inset: 0; background: var(--md-sys-color-on-surface); opacity: 0; pointer-events: none;
+}
+.list-item:hover::before { opacity: 0.08; }
+.list-item:focus-visible, .list-item.is-focused {
+  outline: 3px solid var(--md-sys-color-secondary); outline-offset: -3px; border-radius: var(--md-sys-shape-corner-medium);
+}
+.list-item .lead { color: var(--md-sys-color-on-surface-variant); }
+.list-item .text { flex: 1; min-width: 0; }
+.list-item .headline, .list-item .supporting { display: block; }
+.list-item .trail { display: flex; align-items: center; gap: 8px; color: var(--md-sys-color-on-surface-variant); }
+
+.switch { position: relative; width: 52px; height: 32px; flex: none; }
+.switch input {
+  position: absolute; left: 0; top: -8px; width: 52px; height: 48px; margin: 0; opacity: 0; cursor: pointer; z-index: 1;
+}
+.switch .track {
+  position: absolute; inset: 0; border-radius: var(--md-sys-shape-corner-full);
+  background: var(--md-sys-color-surface-container-highest); box-shadow: inset 0 0 0 2px var(--md-sys-color-outline);
+}
+.switch .handle {
+  position: absolute; top: 8px; left: 8px; width: 16px; height: 16px; border-radius: var(--md-sys-shape-corner-full);
+  background: var(--md-sys-color-outline); display: grid; place-items: center;
+  transition: left 0.15s, width 0.15s, height 0.15s, top 0.15s;
+}
+.switch .handle svg { width: 16px; height: 16px; stroke-width: 2.5; opacity: 0; color: var(--md-sys-color-on-primary-container); }
+.switch input:checked ~ .track { background: var(--md-sys-color-primary); box-shadow: none; }
+.switch input:checked ~ .handle { top: 4px; left: 24px; width: 24px; height: 24px; background: var(--md-sys-color-on-primary); }
+.switch input:checked ~ .handle svg { opacity: 1; }
+.switch input:focus-visible ~ .track { outline: 3px solid var(--md-sys-color-secondary); outline-offset: 2px; }
+.switch input:disabled { cursor: default; }
+.switch input:disabled ~ .track, .switch input:disabled ~ .handle { opacity: 0.38; }
+
+.field + .field { margin-top: 16px; }
+.field-box { position: relative; display: flex; align-items: center; gap: 4px; height: 56px; padding: 0 12px 0 16px; border-radius: var(--md-sys-shape-corner-extra-small); }
+.field-box::after {
+  content: ""; position: absolute; inset: 0; border: 1px solid var(--md-sys-color-outline); border-radius: inherit; pointer-events: none;
+}
+.field-box:hover::after { border-color: var(--md-sys-color-on-surface); }
+.field-box:focus-within::after { border: 2px solid var(--md-sys-color-primary); }
+.field-label {
+  position: absolute; left: 12px; top: -8px; padding: 0 4px; z-index: 1;
+  background: var(--field-bg, var(--md-sys-color-surface)); color: var(--md-sys-color-on-surface-variant);
+}
+.field-box:focus-within .field-label { color: var(--md-sys-color-primary); }
+.field-prefix { color: var(--md-sys-color-on-surface-variant); }
+.field-input { flex: 1; min-width: 0; height: 100%; padding: 0; border: none; background: transparent; outline: none; color: var(--md-sys-color-on-surface); }
+.field-trailing { display: none; color: var(--md-sys-color-error); }
+.field-support { padding: 4px 16px 0; color: var(--md-sys-color-on-surface-variant); }
+.field.error .field-box::after { border-color: var(--md-sys-color-error); }
+.field.error .field-box:focus-within::after { border: 2px solid var(--md-sys-color-error); }
+.field.error .field-label, .field.error .field-support { color: var(--md-sys-color-error); }
+.field.error .field-trailing { display: block; }
+
+.setting { margin-top: 24px; }
+.setting-label { margin-bottom: 8px; }
+.segmented { display: flex; border-radius: var(--md-sys-shape-corner-full); box-shadow: inset 0 0 0 1px var(--md-sys-color-outline); overflow: hidden; }
+.segment {
+  position: relative; flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  height: 40px; padding: 0 12px; border: none; background: transparent; color: var(--md-sys-color-on-surface); cursor: pointer;
+}
+.segment + .segment { box-shadow: inset 1px 0 0 var(--md-sys-color-outline); }
+.segment::before { content: ""; position: absolute; inset: 0; background: currentColor; opacity: 0; pointer-events: none; }
+.segment:hover::before { opacity: 0.08; }
+.segment:focus-visible { outline: 3px solid var(--md-sys-color-secondary); outline-offset: -3px; }
+.segment .check { display: none; width: 18px; height: 18px; }
+.segment[aria-checked="true"] { background: var(--md-sys-color-secondary-container); color: var(--md-sys-color-on-secondary-container); }
+.segment[aria-checked="true"] .check { display: block; }
+
+.nav-bar {
+  position: sticky; bottom: 0; display: flex; gap: 8px; padding: 12px 8px 16px;
+  background: var(--md-sys-color-surface-container);
+}
+.rail {
+  display: none; flex-direction: column; align-items: center; gap: 12px; flex: none;
+  position: sticky; top: 0; align-self: flex-start; width: 96px; height: 100vh; padding: 8px 0;
+  background: var(--md-sys-color-surface);
+}
+.rail .icon-btn { margin-bottom: 28px; }
+.nav-item {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px;
+  min-height: 56px; padding: 0; border: none; background: none; cursor: pointer; color: var(--md-sys-color-on-surface-variant);
+}
+.rail .nav-item { flex: none; width: 100%; }
+.nav-indicator { position: relative; display: grid; place-items: center; width: 64px; height: 32px; border-radius: var(--md-sys-shape-corner-full); overflow: hidden; }
+.rail .nav-indicator { width: 56px; }
+.nav-indicator::before { content: ""; position: absolute; inset: 0; background: currentColor; opacity: 0; }
+.nav-item:hover .nav-indicator::before { opacity: 0.08; }
+.nav-item:focus-visible { outline: none; }
+.nav-item:focus-visible .nav-indicator { outline: 3px solid var(--md-sys-color-secondary); outline-offset: 2px; }
+.nav-item[aria-current="page"] .nav-indicator { background: var(--md-sys-color-secondary-container); color: var(--md-sys-color-on-secondary-container); }
+.nav-item[aria-current="page"] .nav-label { color: var(--md-sys-color-on-surface); }
+@media (min-width: 840px) {
+  .rail { display: flex; }
+  .nav-bar { display: none; }
+  .content { padding-left: 24px; padding-right: 24px; }
+  .page-title { padding-left: 24px; padding-right: 24px; }
+}
+/* States */
+*:focus, *:focus-visible, .list-item:focus-visible, .btn:focus-visible, .icon-btn:focus-visible, .segment:focus-visible { outline: none !important; }
+.switch input:focus-visible ~ .track, .nav-item:focus-visible .nav-indicator { outline: none; }
+.field-box:focus-within::after { border: 1px solid var(--md-sys-color-outline); }
+.switch input:checked ~ .track { background: var(--md-sys-color-surface-container-highest); box-shadow: inset 0 0 0 2px var(--md-sys-color-outline); }
+.switch input:checked ~ .handle { top: 8px; left: 28px; width: 16px; height: 16px; background: var(--md-sys-color-outline); }
+.switch input:checked ~ .handle svg { opacity: 0; }
+.switch input:disabled ~ .track, .switch input:disabled ~ .handle { opacity: 1; }
+.segment[aria-checked="true"] { background: transparent; color: var(--md-sys-color-on-surface); }
+.segment[aria-checked="true"] .check { display: none; }
+.nav-item[aria-current="page"] .nav-indicator { background: transparent; color: inherit; }
+.nav-item[aria-current="page"] .nav-label { color: inherit; }
+</style>
+</head>
+<body>
+<div class="app">
+  <nav class="rail" aria-label="Main">
+    <button class="icon-btn" type="button" aria-label="Open menu"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    <button class="nav-item" type="button" data-dest="home"><span class="nav-indicator"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z"/></svg></span><span class="nav-label label-medium">Home</span></button>
+    <button class="nav-item" type="button" data-dest="budgets"><span class="nav-indicator"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v9h9"/><path d="M21 12a9 9 0 1 1-9-9"/></svg></span><span class="nav-label label-medium">Budgets</span></button>
+    <button class="nav-item" type="button" data-dest="reports"><span class="nav-indicator"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20v-8M12 20V5M19 20v-11"/></svg></span><span class="nav-label label-medium">Reports</span></button>
+    <button class="nav-item" type="button" data-dest="settings" aria-current="page"><span class="nav-indicator"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h9M19 7h1M4 17h3M13 17h7"/><circle cx="16" cy="7" r="2.5"/><circle cx="10" cy="17" r="2.5"/></svg></span><span class="nav-label label-medium">Settings</span></button>
+  </nav>
+  <div class="main">
+    <header class="app-header">
+      <div class="app-header-inner">
+        <div class="top-app-bar">
+          <button class="icon-btn" type="button" aria-label="Back"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></button>
+          <span class="spacer"></span>
+          <button class="icon-btn" type="button" aria-label="Help"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 1 1 3.4 2.4c-.6.3-1 .8-1 1.5v.5"/><path d="M12 16.8v.2"/></svg></button>
+        </div>
+        <h1 class="page-title headline-medium">Settings</h1>
+      </div>
+    </header>
+
+    <main class="content">
+      <section class="card profile" aria-label="Profile">
+        <span class="avatar title-medium" aria-hidden="true">MR</span>
+        <div class="profile-text">
+          <p class="title-medium">Maya Reyes</p>
+          <p class="body-medium supporting">Personal plan · 3 active budgets</p>
+        </div>
+        <button class="btn btn-tonal label-large" type="button">Edit</button>
+      </section>
+
+      <section class="section" id="budget" aria-labelledby="h-budget">
+        <h2 class="section-title title-small" id="h-budget">Budget</h2>
+        <div class="card padded">
+          <div class="field">
+            <div class="field-box">
+              <span class="field-prefix body-large">$</span>
+              <input class="field-input body-large" id="monthly" inputmode="decimal" value="2,400">
+            </div>
+          </div>
+          <div class="field">
+            <div class="field-box">
+              <span class="field-prefix body-large">$</span>
+              <input class="field-input body-large" id="goal" inputmode="decimal" value="-150">
+            </div>
+          </div>
+          <div class="setting">
+            <p class="setting-label body-large" id="week-label">Week starts on</p>
+            <div class="segmented" role="radiogroup" aria-labelledby="week-label">
+              <button class="segment label-large" type="button" role="radio" aria-checked="true"><svg class="icon check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Monday</button>
+              <button class="segment label-large" type="button" role="radio" aria-checked="false"><svg class="icon check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Sunday</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="notifications" aria-labelledby="h-notif">
+        <h2 class="section-title title-small" id="h-notif">Notifications</h2>
+        <ul class="card list">
+          <li><label class="list-item">
+            <svg class="icon lead" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 16v-5a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg>
+            <span class="text"><span class="body-large headline">Spending alerts</span><span class="body-medium supporting">When a category reaches 80% of its limit</span></span>
+            <span class="switch"><input type="checkbox" role="switch" checked><span class="track"></span><span class="handle"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></span>
+          </label></li>
+          <li><label class="list-item">
+            <svg class="icon lead" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M8.5 3v4M15.5 3v4"/></svg>
+            <span class="text"><span class="body-large headline">Weekly summary</span><span class="body-medium supporting">A short recap every Monday at 9:00</span></span>
+            <span class="switch"><input type="checkbox" role="switch" checked><span class="track"></span><span class="handle"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></span>
+          </label></li>
+          <li><label class="list-item">
+            <svg class="icon lead" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg>
+            <span class="text"><span class="body-large headline">Bill reminders</span><span class="body-medium supporting">Three days before each due date</span></span>
+            <span class="switch"><input type="checkbox" role="switch"><span class="track"></span><span class="handle"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></span>
+          </label></li>
+          <li><label class="list-item disabled">
+            <svg class="icon lead" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17l6-6 4 4 6-6"/><path d="M15 9h5v5"/></svg>
+            <span class="text"><span class="body-large headline">Investment updates</span><span class="body-medium supporting">Available with Pocketbook Plus</span></span>
+            <span class="switch"><input type="checkbox" role="switch" disabled><span class="track"></span><span class="handle"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></span>
+          </label></li>
+        </ul>
+      </section>
+
+      <section class="section" id="accounts" aria-labelledby="h-acc">
+        <h2 class="section-title title-small" id="h-acc">Accounts and data</h2>
+        <ul class="card list">
+          <li><button class="list-item" type="button">
+            <svg class="icon lead" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M14.6 9.2c-.4-.9-1.4-1.5-2.6-1.5-1.5 0-2.6.8-2.6 2s1.1 1.7 2.6 2 2.6.8 2.6 2.1-1.1 2-2.6 2c-1.2 0-2.3-.6-2.7-1.6M12 6v1.7M12 16.3V18"/></svg>
+            <span class="text"><span class="body-large headline">Currency</span><span class="body-medium supporting">US dollar</span></span>
+            <span class="trail"><span class="label-medium">USD</span><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 6l6 6-6 6"/></svg></span>
+          </button></li>
+          <li><button class="list-item" type="button">
+            <svg class="icon lead" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5L12 5l8 4.5z"/><path d="M6.5 12v5M10.5 12v5M13.5 12v5M17.5 12v5M4 20h16"/></svg>
+            <span class="text"><span class="body-large headline">Linked banks</span><span class="body-medium supporting">2 accounts connected</span></span>
+            <span class="trail"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 6l6 6-6 6"/></svg></span>
+          </button></li>
+          <li><button class="list-item export" type="button">
+            <svg class="icon lead" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7.5 10.5L12 15l4.5-4.5M5 20h14"/></svg>
+            <span class="text"><span class="body-large headline">Export transactions</span><span class="body-medium supporting">CSV file, last 12 months</span></span>
+            <span class="trail"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 6l6 6-6 6"/></svg></span>
+          </button></li>
+        </ul>
+      </section>
+
+      <div class="actions">
+        <button class="btn btn-outlined label-large" type="button">Discard</button>
+        <button class="btn btn-filled label-large" type="button" id="save">Save changes</button>
+      </div>
+    </main>
+
+    <nav class="nav-bar" aria-label="Main">
+      <button class="nav-item" type="button" data-dest="home"><span class="nav-indicator"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z"/></svg></span><span class="nav-label label-medium">Home</span></button>
+      <button class="nav-item" type="button" data-dest="budgets"><span class="nav-indicator"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v9h9"/><path d="M21 12a9 9 0 1 1-9-9"/></svg></span><span class="nav-label label-medium">Budgets</span></button>
+      <button class="nav-item" type="button" data-dest="reports"><span class="nav-indicator"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20v-8M12 20V5M19 20v-11"/></svg></span><span class="nav-label label-medium">Reports</span></button>
+      <button class="nav-item" type="button" data-dest="settings" aria-current="page"><span class="nav-indicator"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h9M19 7h1M4 17h3M13 17h7"/><circle cx="16" cy="7" r="2.5"/><circle cx="10" cy="17" r="2.5"/></svg></span><span class="nav-label label-medium">Settings</span></button>
+    </nav>
+  </div>
+</div>
+<script>
+// Single-choice groups: segmented buttons.
+document.querySelectorAll('[role="radiogroup"]').forEach(function (group) {
+  group.addEventListener('click', function (e) {
+    var pick = e.target.closest('[role="radio"]');
+    if (!pick) return;
+    group.querySelectorAll('[role="radio"]').forEach(function (r) { r.setAttribute('aria-checked', String(r === pick)); });
+  });
+});
+// Top-level destinations: keep the bar and the rail in sync.
+document.querySelectorAll('[data-dest]').forEach(function (item) {
+  item.addEventListener('click', function () {
+    document.querySelectorAll('[data-dest]').forEach(function (other) {
+      if (other.dataset.dest === item.dataset.dest) other.setAttribute('aria-current', 'page');
+      else other.removeAttribute('aria-current');
+    });
+  });
+});
+// The focus ring on the Currency row is drawn on load so a still capture shows the focus style;
+// it gives way to the real keyboard focus once the user starts moving around.
+document.addEventListener('keydown', function () {
+  document.querySelectorAll('.is-focused').forEach(function (el) { el.classList.remove('is-focused'); });
+}, { once: true });
+// Savings goal must be a positive amount.
+var goal = document.getElementById('goal');
+function checkGoal() {
+  if (!goal) return;
+  var field = goal.closest('.field') || goal.parentElement;
+  var help = document.getElementById('goal-help');
+  var amount = Number(goal.value.replace(/[^0-9.\-]/g, ''));
+  var bad = goal.value.trim() === '' || !(amount > 0);
+  field.classList.toggle('error', bad);
+  goal.setAttribute('aria-invalid', String(bad));
+  if (help) help.textContent = bad ? 'Enter an amount above zero' : 'Set aside at the start of each month';
+}
+if (goal) { goal.addEventListener('input', checkGoal); checkGoal(); }
+var save = document.getElementById('save');
+if (save) save.addEventListener('click', function () { checkGoal(); if (goal && goal.getAttribute('aria-invalid') === 'true') goal.focus(); });
+</script>
+</body>
+</html>

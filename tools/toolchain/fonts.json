@@ -1,0 +1,21 @@
+{
+  "dir": "%USERPROFILE%\\.m3-toolchain\\fonts",
+  "resolvedOn": "2026-11-13",
+  "note": "Real fonts for harness screenshots and goldens (spec §10). Downloaded from the official repositories at pinned commits; verified by sha256.",
+  "files": [
+    { "name": "RobotoFlex.ttf", "sha256": "9b523f7d82593df0107173849ebb8c817471a1df4b4fb2c3cbf40cfd810c8281", "license": "OFL-1.1",
+      "url": "https://raw.githubusercontent.com/google/fonts/b78877b777ed3a18a1b431b0df7d8ee3f84c2e5f/ofl/robotoflex/RobotoFlex%5BGRAD%2CXOPQ%2CXTRA%2CYOPQ%2CYTAS%2CYTDE%2CYTFI%2CYTLC%2CYTUC%2Copsz%2Cslnt%2Cwdth%2Cwght%5D.ttf" },
+    { "name": "Roboto.ttf", "sha256": "d7598e12c5dbef095ff8272cfc55da0250bd07fbdecbac8a530b9b277872a134", "license": "OFL-1.1",
+      "url": "https://raw.githubusercontent.com/google/fonts/b78877b777ed3a18a1b431b0df7d8ee3f84c2e5f/ofl/roboto/Roboto%5Bwdth%2Cwght%5D.ttf" },
+    { "name": "OFL-RobotoFlex.txt", "sha256": "9cbaed04b20c853f99840efe5dc96956f6f6120ed83a0ade35f9281a2b63e5d0", "license": "OFL-1.1",
+      "url": "https://raw.githubusercontent.com/google/fonts/b78877b777ed3a18a1b431b0df7d8ee3f84c2e5f/ofl/robotoflex/OFL.txt" },
+    { "name": "OFL-Roboto.txt", "sha256": "061402327a96aadb0bfb694a960ed289ecd38d383e396243831ab81feb109c41", "license": "OFL-1.1",
+      "url": "https://raw.githubusercontent.com/google/fonts/b78877b777ed3a18a1b431b0df7d8ee3f84c2e5f/ofl/roboto/OFL.txt" },
+    { "name": "MaterialSymbolsOutlined.ttf", "sha256": "f7837ba8573d9a7a74931618ced8307bc81f96d49af296bf6c8052c772ed5282", "license": "Apache-2.0",
+      "url": "https://raw.githubusercontent.com/google/material-design-icons/10ecc14790612ca8fd164e3f4ffe9c16fc50d5b7/variablefont/MaterialSymbolsOutlined%5BFILL%2CGRAD%2Copsz%2Cwght%5D.ttf" },
+    { "name": "MaterialSymbolsOutlined.codepoints", "sha256": "a7404d9e5a1b63f496cf05ace45d386075886b5a7f123fba9f29527cb6006fde", "license": "Apache-2.0",
+      "url": "https://raw.githubusercontent.com/google/material-design-icons/10ecc14790612ca8fd164e3f4ffe9c16fc50d5b7/variablefont/MaterialSymbolsOutlined%5BFILL%2CGRAD%2Copsz%2Cwght%5D.codepoints" },
+    { "name": "LICENSE-material-design-icons.txt", "sha256": "58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd", "license": "Apache-2.0",
+      "url": "https://raw.githubusercontent.com/google/material-design-icons/10ecc14790612ca8fd164e3f4ffe9c16fc50d5b7/LICENSE" }
+  ]
+}

@@ -120,6 +120,22 @@ export function merge(bySource, siteValues = []) {
     notFound[p].sort((a, b) => a.component.localeCompare(b.component) || a.id.localeCompare(b.id));
   }
 
+  // Owner policy (2026-11-13): when the site disagrees with material-web but Flutter and Compose both
+  // give the site's value, material-web does not win automatically; these go to the owner.
+  const siteBackedOverrides = [];
+  for (const sv of siteValues) {
+    if (!sv.token) continue;
+    const [w, f, c] = [PLATFORMS.web, PLATFORMS.flutter, PLATFORMS.compose].map(s => indexes[s]?.get(sv.token));
+    if (!w || !f || !c) continue;
+    if (compare(sv.value, w.value, null, indexes[PLATFORMS.web]) !== 'different') continue;
+    if (compare(sv.value, f.value, null, indexes[PLATFORMS.flutter]) !== 'same') continue;
+    if (compare(sv.value, c.value, null, indexes[PLATFORMS.compose]) !== 'same') continue;
+    siteBackedOverrides.push({
+      id: sv.token, site: { page: sv.page, value: sv.value, note: sv.note, line: sv.line },
+      web: w.value, flutter: f.value, compose: c.value,
+    });
+  }
+
   for (const sv of siteValues) {
     if (!sv.token) continue;
     const src = indexes[PLATFORMS.web]?.get(sv.token) ? PLATFORMS.web
@@ -137,7 +153,7 @@ export function merge(bySource, siteValues = []) {
 
   const all = sources.flatMap(s => bySource[s]);
   return {
-    merged, conflicts, notFound,
+    merged, conflicts, notFound, siteBackedOverrides,
     deprecated: [...deprecated].sort(),
     unparsed: all.filter(r => r.value && r.value.unparsed !== undefined),
     unmapped: all.filter(r => !r.id || r.derived),

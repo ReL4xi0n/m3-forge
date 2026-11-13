@@ -1,0 +1,9 @@
+.title {
+  font-size: var(--md-sys-typescale-title-large-size);
+  font-weight: var(--md-sys-typescale-title-large-weight);
+}
+
+.body {
+  font: inherit;
+  font-size: var(--md-sys-typescale-body-medium-size);
+}

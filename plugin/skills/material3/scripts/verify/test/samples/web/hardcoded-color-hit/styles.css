@@ -1,0 +1,9 @@
+/* A card with hardcoded colors. */
+.card {
+  color: #1d1b20; /* HIT */
+  background-color: rgb(255, 251, 254); /* HIT */
+  border-color: hsl(270 20% 50%); /* HIT */
+  outline-color: rebeccapurple; /* HIT */
+  --card-accent: #6750a4; /* HIT */
+  padding: 16px;
+}

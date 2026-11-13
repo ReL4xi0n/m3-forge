@@ -1,0 +1,14 @@
+.a {
+  padding: 16px 24px;
+}
+
+.b {
+  margin: 0 auto;
+}
+
+.c {
+  display: flex;
+  gap: 8px;
+  padding-inline: var(--space-3);
+  margin-top: 0.5rem;
+}

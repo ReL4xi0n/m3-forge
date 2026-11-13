@@ -1,0 +1,16 @@
+name: m3_axes_smoke
+description: Smoke test that variable-font axes render under flutter_tester (spec §10).
+publish_to: none
+version: 0.0.0
+
+environment:
+  sdk: 3.14.0
+  flutter: 3.50.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter

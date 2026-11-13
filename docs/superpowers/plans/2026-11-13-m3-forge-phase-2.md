@@ -186,10 +186,10 @@ The preflight check below proves it for every run.
 | # | Guarantee | Mechanism |
 |---|---|---|
 | G1 | Empty folder outside the repo and the profile | `C:\m3-eval\work\<run-id>\<cell>\`, a fresh fixture copy with no `.git` |
-| G2 | No user configuration | A new `CLAUDE_CONFIG_DIR=C:\m3-eval\cfg\<run-id>\` holding only the runner's `settings.json` and the auth file. The auth file is copied in and deleted after the run. There are no `plugins/`, `skills/`, `agents/`, `commands/`, `CLAUDE.md` or `projects/` |
+| G2 | No user configuration | A new `CLAUDE_CONFIG_DIR=C:\m3-eval\cfg\<run-id>\` holding only the runner's `settings.json`. There are no `plugins/`, `skills/`, `agents/`, `commands/`, `CLAUDE.md`, `projects/` or credentials. Auth comes from `CLAUDE_CODE_OAUTH_TOKEN` (see Auth below) |
 | G3 | Only that config is loaded | `--setting-sources user` (the throwaway user config only), and `--strict-mcp-config` with no `--mcp-config`, so there are no MCP servers |
 | G4 | No skill can load, including Claude Code's bundled skills | `--disallowedTools Skill` |
-| G5 | No repo access | `settings.json` `permissions.deny` holds `Read`, `Edit` and `Write` rules for `<repo>/**` and `%USERPROFILE%/.claude/**`. The run is never given the repo path |
+| G5 | No repo or config access | `settings.json` `permissions.deny` holds `Read`, `Edit` and `Write` rules for `<repo>/**`, `%USERPROFILE%/.claude/**`, `%USERPROFILE%/.m3-toolchain/secrets/**` and the run's own config folder. The run is never given the repo path |
 | G6 | Clean environment | The child gets the system environment with every `CLAUDE_*`, `ANTHROPIC_*`, `MCP_*` and `npm_config_*` variable removed, then the runner's own `CLAUDE_CONFIG_DIR` and the toolchain paths (process-only) added |
 
 **How isolation is verified.** Each of these must pass, or the run is invalid, listed in the report
@@ -200,8 +200,42 @@ and re-run:
 | V1 | Preflight | Before start | No ancestor up to `C:\` contains `CLAUDE.md`, `CLAUDE.local.md`, `AGENTS.md`, `.claude/`, `.mcp.json` or `.git`; `git rev-parse` fails in the work folder; the config folder holds exactly the two expected files; the environment has no forbidden keys |
 | V2 | Init event | First `system`/`init` line of the run | `mcp_servers` is empty; `plugins` is empty; `tools` has no `Skill` and no `mcp__*`; `skills`/`slash_commands` hold no name from the owner's installed skills or plugins (a name list built at runtime and kept private) and nothing with `:`, `superpowers`, `claude-mem` or `graphify`; `cwd` is the work folder |
 | V3 | Transcript audit | After the run | No tool input or result contains the repo path, `knowledge`, `private`, `m3-forge`, `reference-screenshots`, `holdout` or a path under `%USERPROFILE%\.claude`; every absolute path is under the work folder or on an allowlist (toolchain, system temp, npm, pub and gradle caches) |
-| V4 | Canary | In this task, and before every batch | A tiny isolated session lists its skills, commands, MCP servers and any memory or CLAUDE.md instructions, then tries to read `<repo>/knowledge/README.md` and `<repo>/private/README.md`. Pass: V2 is clean, it reports none, and both reads end in a permission denial |
+| V4 | Canary | In this task, and before every batch | A tiny isolated session lists its skills, commands, MCP servers and any memory or CLAUDE.md instructions, then tries to read `<repo>/knowledge/README.md`, `<repo>/private/README.md` and a file in its own config folder. Pass: V2 is clean, it reports none, and all three reads end in a permission denial |
 | V5 | Negative canary | In this task, once | The same canary with `CLAUDE_CONFIG_DIR` pointing at the real `~/.claude` must **fail** V2. This proves the check detects a leak |
+
+**Auth (owner amendment, 2026-11-13).** The official docs (Authentication, "Generate a long-lived
+token") recommend `claude setup-token` for scripts. It prints a one-year OAuth token, to be passed as
+`CLAUDE_CODE_OAUTH_TOKEN`. The docs also say `--bare` does not read it, and that `ANTHROPIC_API_KEY`
+or `ANTHROPIC_AUTH_TOKEN` override it; G6 removes both. So no credentials file is copied.
+
+How the token is handled:
+- The owner runs `claude setup-token` once and saves the token to
+  `%USERPROFILE%\.m3-toolchain\secrets\claude-oauth-token`.
+- The runner restricts that folder's ACL to the owner's user only, removing inheritance, and checks
+  this with `icacls` before every run.
+- The runner reads the file into the child's environment only. The token is never printed, logged
+  or written anywhere else.
+- If the token route fails the canary, the fallback is a copied credentials file, with three
+  conditions:
+  - the config folder's ACL is restricted to the owner's user;
+  - V4 shows that reading the config folder is denied;
+  - the file is deleted at the end of every run, including failed runs.
+
+**Secret scan before anything enters the private repo (owner amendment).** A Bash call such as
+`set` or `env` inside a run could print the token into the transcript.
+- `tools/guard/secrets.mjs` exports `scanSecrets(text) → hits[]`. It detects Anthropic keys and
+  OAuth tokens (`sk-ant-…`), GitHub tokens (`ghp_`, `gho_`, `github_pat_`), `Bearer` headers,
+  private-key PEM blocks, `"accessToken"` and `"refreshToken"` JSON fields, and the literal token
+  value from the secrets file.
+- The guard gains a `secret` rule that uses this scanner. It is not allowlistable, and it runs on
+  every public check.
+- The runner scans the transcript and every file before copying a run to `private/evals/`. On a hit,
+  it copies a redacted version (`[REDACTED:<rule>]`), marks the run `secret-redacted`, and tells the
+  owner to rotate the token.
+- A pre-commit hook in the private repo runs the same scan.
+- Negative tests:
+  - a staged public file holding a fake `sk-ant-oat01-…` value is blocked by the `secret` rule;
+  - a run fixture whose transcript prints a fake token is redacted, and is never copied verbatim.
 
 **Interfaces.**
 - `preflight({workDir, cfgDir, env}) → {ok, problems[]}`.
@@ -225,10 +259,11 @@ and re-run:
     `.gradle`), to `private/evals/runs/<run-id>/<cell>/`.
 - [ ] **Step 4: Run the tests.** Expected: PASS.
 - [ ] **Step 5: Check auth.**
-  - Try one canary with the copied auth file.
-  - If authentication fails, **stop and ask the owner** for an alternative: an API key in the
-    process environment, or a token from `claude setup-token`. Never copy any other file from
-    `~/.claude`.
+  - The owner runs `claude setup-token` and saves the token file; **stop and ask** until the file
+    exists.
+  - Then try one canary with the token.
+  - If it fails, use the fallback above and record a ledgered Ruling. Never copy any other file
+    from `~/.claude`.
 - [ ] **Step 6: Run the canaries.**
   - Run the V4 canary and the V5 negative canary.
   - Save their check outputs to `private/evals/runs/canary-<date>/`, and record PASS/FAIL in the

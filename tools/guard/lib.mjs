@@ -2,6 +2,7 @@
 import { createHash } from 'node:crypto';
 import { readdir, readFile, stat, writeFile, mkdir } from 'node:fs/promises';
 import { join, relative, extname, dirname } from 'node:path';
+import { scanSecrets } from './secrets.mjs';
 
 const IMAGE_EXTS = new Set(['png', 'jpg', 'jpeg', 'gif', 'webp', 'avif', 'svg', 'bmp', 'tif', 'tiff']);
 const ALLOWED_IMAGE_PATTERNS = [
@@ -304,6 +305,9 @@ export function checkFiles({ files, forbiddenTerms, corpus, allowlist = [], priv
     }
     const text = decodeText(file.content);
     if (text == null) continue;
+    for (const h of scanSecrets(text)) {
+      violations.push({ rule: 'secret', path, key: '-', detail: `${h.rule} at line ${h.line}` });
+    }
     const lower = text.toLowerCase();
     terms.forEach((t, i) => {
       if (lower.includes(t) && !isAllowed('forbidden-term', path, '*')) {

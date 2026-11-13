@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Harness sample</title>
+  <style>
+    :root { color-scheme: light dark; }
+    body { margin: 0; padding: 24px; font: 16px/1.5 system-ui, sans-serif; background: #ffffff; color: #1a1a1a; }
+    @media (prefers-color-scheme: dark) { body { background: #121212; color: #eeeeee; } }
+    /* Planted contrast failure: pale grey on white, and dark grey on near-black in dark mode. */
+    #faint-label { color: #c4c4c4; }
+    @media (prefers-color-scheme: dark) { #faint-label { color: #2e2e2e; } }
+    /* Planted target failure: a 24x24 CSS px button. */
+    #tiny-button { box-sizing: border-box; width: 24px; height: 24px; padding: 0; border: 1px solid currentColor; background: transparent; color: inherit; }
+    /* Large enough: must not be reported. */
+    #big-button { min-width: 64px; min-height: 48px; }
+    /* Disabled and low contrast and small: excluded from both checks. */
+    #off-button { width: 20px; height: 20px; color: #dddddd; background: #ffffff; border: 0; }
+    .spin { animation: spin 2s linear infinite; display: inline-block; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <h1>Harness sample</h1>
+  <label id="faint-label" for="name">Faint label</label>
+  <input id="name" style="height: 48px; width: 200px; box-sizing: border-box">
+  <p>Inline text link: read the <a id="inline-link" href="#notes">notes</a> before you start.</p>
+  <button id="tiny-button" aria-label="Close">x</button>
+  <button id="big-button">Continue</button>
+  <button id="off-button" disabled>off</button>
+  <span class="spin" aria-hidden="true">*</span>
+</body>
+</html>

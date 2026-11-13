@@ -114,3 +114,24 @@ test('report: NOT FOUND statements from notes get their own section', () => {
   assert.match(md, /## NOT FOUND in notes: 1/);
   assert.match(md, /knowledge\/guidance\/styles\/color\.md:12/);
 });
+
+test('site-backed overrides: site, Flutter and Compose agree against material-web', () => {
+  const id = 'md.comp.y.leading-space';
+  const sv = { page: '/components/y/specs', token: id, value: { dp: 12 }, note: 'n.md', line: 3 };
+  const run = (flutter, compose) => merge({
+    'material-web': [rec('material-web', id, { dp: 16 })],
+    ...(flutter ? { material_ui: [rec('material_ui', id, flutter)] } : { material_ui: [] }),
+    ...(compose ? { 'compose-material3': [rec('compose-material3', id, compose)] } : { 'compose-material3': [] }),
+  }, [sv]);
+  const hit = run({ number: 12 }, { dp: 12 });
+  assert.equal(hit.siteBackedOverrides.length, 1);
+  assert.deepEqual(hit.siteBackedOverrides[0], {
+    id, site: { page: '/components/y/specs', value: { dp: 12 }, note: 'n.md', line: 3 },
+    web: { dp: 16 }, flutter: { number: 12 }, compose: { dp: 12 },
+  });
+  assert.equal(run({ number: 12 }, { dp: 16 }).siteBackedOverrides.length, 0, 'only Flutter matches the site');
+  assert.equal(run({ number: 12 }, null).siteBackedOverrides.length, 0, 'Compose NOT FOUND');
+  const files = renderAll({ 'material-web': [rec('material-web', id, { dp: 16 })], material_ui: [rec('material_ui', id, { number: 12 })], 'compose-material3': [rec('compose-material3', id, { dp: 12 })] }, {}, [sv]);
+  assert.match(files.get('conflicts.md'), /## Site, Flutter and Compose agree against material-web \(owner decision\) \(1\)/);
+  assert.equal(JSON.parse(files.get('tokens/summary.json')).totals.siteBackedOverrides, 1);
+});

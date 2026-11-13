@@ -1,0 +1,23 @@
+.chip {
+  border-radius: 8px;
+}
+
+.card {
+  border-radius: var(--md-sys-shape-corner-medium);
+}
+
+.sheet {
+  border-radius: 28px 28px 0 0;
+}
+
+.fab {
+  border-radius: 16px;
+}
+
+.pill {
+  border-radius: 9999px;
+}
+
+.avatar {
+  border-radius: 50%;
+}

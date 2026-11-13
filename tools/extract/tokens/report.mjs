@@ -59,6 +59,7 @@ function summaryOf(bySource, r) {
     totals: {
       tokenKeys: r.merged.length,
       conflicts: { repoVsRepo: r.conflicts.filter(c => c.kind === 'repo-vs-repo').length, siteVsRepo: r.conflicts.filter(c => c.kind === 'site-vs-repo').length },
+      siteBackedOverrides: r.siteBackedOverrides.length,
       notFoundEntries: Object.values(r.notFound).reduce((a, l) => a + l.length, 0),
       deprecatedIds: r.deprecated.length, unparsed: r.unparsed.length, unmapped: r.unmapped.length,
     },
@@ -80,6 +81,14 @@ function conflictsMd(r) {
   out.push('', `## Site vs repo (${site.length})`, '', '| token | page | site value | repo value (wins) | note |', '|---|---|---|---|---|');
   for (const c of site) {
     out.push(`| ${c.id} | ${c.values[0].where.slice(5)} | ${fmt(c.values[0].value)} | ${c.values[1].where}: ${fmt(c.values[1].value)} | ${c.note ?? ''}:${c.line ?? ''} |`);
+  }
+  const sb = r.siteBackedOverrides;
+  out.push('', `## Site, Flutter and Compose agree against material-web (owner decision) (${sb.length})`, '',
+    'Owner policy (2026-11-13): in these cases material-web does not win automatically; each one is listed for',
+    'an owner decision in the phase report.', '',
+    '| token | page | site | material-web | material_ui | compose-material3 | note |', '|---|---|---|---|---|---|---|');
+  for (const s of sb) {
+    out.push(`| ${s.id} | ${s.site.page} | ${fmt(s.site.value)} | ${fmt(s.web)} | ${fmt(s.flutter)} | ${fmt(s.compose)} | ${s.site.note ?? ''}:${s.site.line ?? ''} |`);
   }
   return out.join('\n') + '\n';
 }

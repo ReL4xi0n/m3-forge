@@ -1,0 +1,11 @@
+.card {
+  box-shadow: 0 1px 3px var(--md-sys-color-shadow); /* HIT */
+}
+
+.hero {
+  background-image: linear-gradient(var(--md-sys-color-primary), var(--md-sys-color-tertiary)); /* HIT */
+}
+
+.glow {
+  background: radial-gradient(circle, var(--md-sys-color-primary), transparent); /* HIT */
+}

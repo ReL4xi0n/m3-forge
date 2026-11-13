@@ -1,0 +1,11 @@
+.card {
+  box-shadow: var(--md-sys-elevation-level1);
+}
+
+.flat {
+  box-shadow: none;
+}
+
+.hero {
+  background: var(--md-sys-color-primary-container);
+}

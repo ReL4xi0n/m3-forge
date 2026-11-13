@@ -33,6 +33,11 @@ Carried into the Phase 3 plan (owner, 2026-11-13):
     the expressive variant because the request says "M3 Expressive". It picks that variant only
     when the variant is requested by name.
 
+Carried into the Phase 4 plan (owner, 2026-11-13):
+- Next to the final measurement, run a small Sonnet check: the with-skill final run of one cell per
+  platform, run again with the current Sonnet model and scored in the same pooled blind session.
+  It shows whether the skill holds up on a smaller model. It does not count toward the release bar.
+
 Standing rules for all phases:
 - Speak Turkish with the owner; everything in the repo is English.
 - Before every public commit, run `node tools/guard/check-public-diff.mjs --staged` and confirm it

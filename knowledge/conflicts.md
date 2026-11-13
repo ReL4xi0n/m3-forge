@@ -98,3 +98,11 @@ inside their own source before comparing; a unitless number (Flutter) is compare
 | md.comp.time-picker.period-selector.horizontal.container.width | /components/time-pickers/specs | 38dp | material-web: 216dp | knowledge/guidance/components/time-pickers.md:103 |
 | md.comp.time-input.time-input-field.container.width | /components/time-pickers/specs | 72dp | material-web: 96dp | knowledge/guidance/components/time-pickers.md:109 |
 | md.comp.time-input.period-selector.container.width | /components/time-pickers/specs | 72dp | material-web: 52dp | knowledge/guidance/components/time-pickers.md:111 |
+
+## Site, Flutter and Compose agree against material-web (owner decision) (0)
+
+Owner policy (2026-11-13): in these cases material-web does not win automatically; each one is listed for
+an owner decision in the phase report.
+
+| token | page | site | material-web | material_ui | compose-material3 | note |
+|---|---|---|---|---|---|---|
