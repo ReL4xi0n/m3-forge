@@ -1,0 +1,184 @@
+[
+  {
+    "cell": "landing.web.web-empty.default",
+    "request": "landing",
+    "platform": "web",
+    "fixture": "web-empty",
+    "variant": "default"
+  },
+  {
+    "cell": "landing.flutter.flutter-material_ui.default",
+    "request": "landing",
+    "platform": "flutter",
+    "fixture": "flutter-material_ui",
+    "variant": "default"
+  },
+  {
+    "cell": "landing.compose.compose-1.5.default",
+    "request": "landing",
+    "platform": "compose",
+    "fixture": "compose-1.5",
+    "variant": "default"
+  },
+  {
+    "cell": "settings.web.web-react.default",
+    "request": "settings",
+    "platform": "web",
+    "fixture": "web-react",
+    "variant": "default"
+  },
+  {
+    "cell": "settings.flutter.flutter-material_ui.default",
+    "request": "settings",
+    "platform": "flutter",
+    "fixture": "flutter-material_ui",
+    "variant": "default"
+  },
+  {
+    "cell": "settings.compose.compose-1.5.default",
+    "request": "settings",
+    "platform": "compose",
+    "fixture": "compose-1.5",
+    "variant": "default"
+  },
+  {
+    "cell": "dashboard.web.web-react.default",
+    "request": "dashboard",
+    "platform": "web",
+    "fixture": "web-react",
+    "variant": "default"
+  },
+  {
+    "cell": "dashboard.flutter.flutter-material_ui.default",
+    "request": "dashboard",
+    "platform": "flutter",
+    "fixture": "flutter-material_ui",
+    "variant": "default"
+  },
+  {
+    "cell": "dashboard.compose.compose-1.5.default",
+    "request": "dashboard",
+    "platform": "compose",
+    "fixture": "compose-1.5",
+    "variant": "default"
+  },
+  {
+    "cell": "product-detail.web.web-empty.default",
+    "request": "product-detail",
+    "platform": "web",
+    "fixture": "web-empty",
+    "variant": "default"
+  },
+  {
+    "cell": "product-detail.flutter.flutter-material_ui.default",
+    "request": "product-detail",
+    "platform": "flutter",
+    "fixture": "flutter-material_ui",
+    "variant": "default"
+  },
+  {
+    "cell": "product-detail.compose.compose-1.5.default",
+    "request": "product-detail",
+    "platform": "compose",
+    "fixture": "compose-1.5",
+    "variant": "default"
+  },
+  {
+    "cell": "onboarding.web.web-react.default",
+    "request": "onboarding",
+    "platform": "web",
+    "fixture": "web-react",
+    "variant": "default"
+  },
+  {
+    "cell": "onboarding.flutter.flutter-material_ui.default",
+    "request": "onboarding",
+    "platform": "flutter",
+    "fixture": "flutter-material_ui",
+    "variant": "default"
+  },
+  {
+    "cell": "onboarding.compose.compose-1.5.default",
+    "request": "onboarding",
+    "platform": "compose",
+    "fixture": "compose-1.5",
+    "variant": "default"
+  },
+  {
+    "cell": "empty-error.web.web-empty.default",
+    "request": "empty-error",
+    "platform": "web",
+    "fixture": "web-empty",
+    "variant": "default"
+  },
+  {
+    "cell": "empty-error.flutter.flutter-material_ui.default",
+    "request": "empty-error",
+    "platform": "flutter",
+    "fixture": "flutter-material_ui",
+    "variant": "default"
+  },
+  {
+    "cell": "empty-error.compose.compose-1.5.default",
+    "request": "empty-error",
+    "platform": "compose",
+    "fixture": "compose-1.5",
+    "variant": "default"
+  },
+  {
+    "cell": "onboarding.web.web-vue.default",
+    "request": "onboarding",
+    "platform": "web",
+    "fixture": "web-vue",
+    "variant": "default"
+  },
+  {
+    "cell": "settings.flutter.flutter-legacy.default",
+    "request": "settings",
+    "platform": "flutter",
+    "fixture": "flutter-legacy",
+    "variant": "default"
+  },
+  {
+    "cell": "settings.web.web-react.classic",
+    "request": "settings",
+    "platform": "web",
+    "fixture": "web-react",
+    "variant": "classic"
+  },
+  {
+    "cell": "settings.flutter.flutter-material_ui.classic",
+    "request": "settings",
+    "platform": "flutter",
+    "fixture": "flutter-material_ui",
+    "variant": "classic"
+  },
+  {
+    "cell": "settings.compose.compose-1.5.classic",
+    "request": "settings",
+    "platform": "compose",
+    "fixture": "compose-1.5",
+    "variant": "classic"
+  },
+  {
+    "cell": "dashboard.web.web-empty.seed-B5651D",
+    "request": "dashboard",
+    "platform": "web",
+    "fixture": "web-empty",
+    "variant": "seed:#B5651D"
+  },
+  {
+    "cell": "dashboard.flutter.flutter-material_ui.seed-B5651D",
+    "request": "dashboard",
+    "platform": "flutter",
+    "fixture": "flutter-material_ui",
+    "variant": "seed:#B5651D"
+  },
+  {
+    "cell": "dashboard.compose.compose-1.5.seed-B5651D",
+    "request": "dashboard",
+    "platform": "compose",
+    "fixture": "compose-1.5",
+    "variant": "seed:#B5651D"
+  }
+]
