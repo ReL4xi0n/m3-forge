@@ -50,6 +50,16 @@
     "text": "- Compose has none of these three tokens [NOT FOUND]. Its optional inset ring is set in code:"
   },
   {
+    "note": "knowledge/guidance/foundations/layout.md",
+    "line": 400,
+    "text": "no token states a maximum width [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/foundations/layout.md",
+    "line": 444,
+    "text": "The layout pages do not say which step each margin, gap or padding should use [NOT FOUND]."
+  },
+  {
     "note": "knowledge/guidance/foundations/usability.md",
     "line": 82,
     "text": "- No system token encodes usability guidance itself [NOT FOUND]."

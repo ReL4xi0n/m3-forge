@@ -413,6 +413,295 @@
     "line": 176
   },
   {
+    "page": "/foundations/layout/breakpoints/overview",
+    "value": {
+      "dp": 600
+    },
+    "note": "knowledge/guidance/foundations/layout.md",
+    "line": 383
+  },
+  {
+    "page": "/foundations/layout/breakpoints/compact",
+    "token": "md.sys.measurement.space200",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/foundations/layout.md",
+    "line": 383
+  },
+  {
+    "page": "/foundations/layout/breakpoints/overview",
+    "value": {
+      "dp": 839
+    },
+    "note": "knowledge/guidance/foundations/layout.md",
+    "line": 384
+  },
+  {
+    "page": "/foundations/layout/breakpoints/medium",
+    "token": "md.sys.measurement.space300",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/foundations/layout.md",
+    "line": 384
+  },
+  {
+    "page": "/foundations/layout/breakpoints/medium",
+    "token": "md.sys.measurement.space300",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/foundations/layout.md",
+    "line": 384
+  },
+  {
+    "page": "/foundations/layout/breakpoints/medium",
+    "value": {
+      "number": 0.5
+    },
+    "note": "knowledge/guidance/foundations/layout.md",
+    "line": 384
+  },
+  {
+    "page": "/foundations/layout/breakpoints/overview",
+    "value": {
+      "dp": 1199
+    },
+    "note": "knowledge/guidance/foundations/layout.md",
+    "line": 385
+  },
+  {
+    "page": "/foundations/layout/breakpoints/expanded",
+    "token": "md.sys.measurement.space300",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/foundations/layout.md",
+    "line": 385
+  },
+  {
+    "page": "/foundations/layout/breakpoints/expanded",
+    "token": "md.sys.measurement.space300",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/foundations/layout.md",
+    "line": 385
+  },
+  {
+    "page": "/foundations/layout/breakpoints/expanded",
+    "value": {
+      "dp": 360
+    },
+    "note": "knowledge/guidance/foundations/layout.md",
+    "line": 385
+  },
+  {
+    "page": "/foundations/layout/breakpoints/overview",
+    "value": {
+      "dp": 1599
+    },
+    "note": "knowledge/guidance/foundations/layout.md",
+    "line": 386
+  },
+  {
+    "page": "/foundations/layout/breakpoints/large-extra-large",
+    "token": "md.sys.measurement.space300",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/foundations/layout.md",
+    "line": 386
+  },
+  {
+    "page": "/foundations/layout/breakpoints/large-extra-large",
+    "token": "md.sys.measurement.space300",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/foundations/layout.md",
+    "line": 386
+  },
+  {
+    "page": "/foundations/layout/breakpoints/large-extra-large",
+    "value": {
+      "dp": 412
+    },
+    "note": "knowledge/guidance/foundations/layout.md",
+    "line": 386
+  },
+  {
+    "page": "/foundations/layout/breakpoints/overview",
+    "value": {
+      "dp": 1600
+    },
+    "note": "knowledge/guidance/foundations/layout.md",
+    "line": 387
+  },
+  {
+    "page": "/foundations/layout/breakpoints/large-extra-large",
+    "token": "md.sys.measurement.space300",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/foundations/layout.md",
+    "line": 387
+  },
+  {
+    "page": "/foundations/layout/breakpoints/large-extra-large",
+    "token": "md.sys.measurement.space300",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/foundations/layout.md",
+    "line": 387
+  },
+  {
+    "page": "/foundations/layout/breakpoints/large-extra-large",
+    "value": {
+      "dp": 412
+    },
+    "note": "knowledge/guidance/foundations/layout.md",
+    "line": 387
+  },
+  {
+    "page": "/foundations/layout/scaffold/panes",
+    "value": {
+      "number": 0.5
+    },
+    "note": "knowledge/guidance/foundations/layout.md",
+    "line": 391
+  },
+  {
+    "page": "/foundations/layout/scaffold/panes",
+    "value": {
+      "dp": 360
+    },
+    "note": "knowledge/guidance/foundations/layout.md",
+    "line": 394
+  },
+  {
+    "page": "/foundations/layout/scaffold/panes",
+    "value": {
+      "dp": 412
+    },
+    "note": "knowledge/guidance/foundations/layout.md",
+    "line": 394
+  },
+  {
+    "page": "/foundations/layout/canonical-examples/supporting-pane",
+    "value": {
+      "dp": 360
+    },
+    "note": "knowledge/guidance/foundations/layout.md",
+    "line": 395
+  },
+  {
+    "page": "/foundations/layout/breakpoints/large-extra-large",
+    "value": {
+      "dp": 400
+    },
+    "note": "knowledge/guidance/foundations/layout.md",
+    "line": 397
+  },
+  {
+    "page": "/foundations/layout/scaffold/panes",
+    "value": {
+      "dp": 412
+    },
+    "note": "knowledge/guidance/foundations/layout.md",
+    "line": 398
+  },
+  {
+    "page": "/foundations/layout/breakpoints/medium",
+    "value": {
+      "number": 0.25
+    },
+    "note": "knowledge/guidance/foundations/layout.md",
+    "line": 402
+  },
+  {
+    "page": "/foundations/layout/grids-spacing/density",
+    "value": {
+      "dp": 240
+    },
+    "note": "knowledge/guidance/foundations/layout.md",
+    "line": 404
+  },
+  {
+    "page": "/foundations/layout/grids-spacing/density",
+    "value": {
+      "dp": 180
+    },
+    "note": "knowledge/guidance/foundations/layout.md",
+    "line": 405
+  },
+  {
+    "page": "/foundations/layout/grids-spacing/density",
+    "value": {
+      "dp": 240
+    },
+    "note": "knowledge/guidance/foundations/layout.md",
+    "line": 405
+  },
+  {
+    "page": "/foundations/layout/grids-spacing/density",
+    "value": {
+      "dp": 360
+    },
+    "note": "knowledge/guidance/foundations/layout.md",
+    "line": 405
+  },
+  {
+    "page": "/foundations/layout/grids-spacing/density",
+    "value": {
+      "dp": 4
+    },
+    "note": "knowledge/guidance/foundations/layout.md",
+    "line": 425
+  },
+  {
+    "page": "/foundations/layout/grids-spacing/density",
+    "value": {
+      "dp": 20
+    },
+    "note": "knowledge/guidance/foundations/layout.md",
+    "line": 427
+  },
+  {
+    "page": "/foundations/layout/grids-spacing/density",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/foundations/layout.md",
+    "line": 428
+  },
+  {
+    "page": "/foundations/layout/grids-spacing/density",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/foundations/layout.md",
+    "line": 448
+  },
+  {
+    "page": "/foundations/layout/scaffold/panes",
+    "value": {
+      "dp": 412
+    },
+    "note": "knowledge/guidance/foundations/layout.md",
+    "line": 505
+  },
+  {
+    "page": "/foundations/layout/breakpoints/large-extra-large",
+    "value": {
+      "dp": 400
+    },
+    "note": "knowledge/guidance/foundations/layout.md",
+    "line": 506
+  },
+  {
     "page": "/foundations/writing/text-resizing",
     "value": {
       "number": 2
