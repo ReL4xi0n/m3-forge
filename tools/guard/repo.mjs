@@ -2,7 +2,7 @@
 import { execFileSync } from 'node:child_process';
 import { readFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
-import { checkFiles, checkCommitMeta, loadAllowlist, loadCorpus } from './lib.mjs';
+import { checkFiles, checkCommitMeta, loadAllowlist, loadCorpus, loadPrivateHashes } from './lib.mjs';
 
 export const isZeroSha = sha => /^0+$/.test(sha);
 const truthy = v => /^(1|true)$/i.test(String(v || ''));
@@ -44,8 +44,9 @@ export async function loadContext(repo, env = process.env) {
     if (truthy(env.GUARD_REQUIRE_CORPUS)) return { fatal: 'private/raw required (GUARD_REQUIRE_CORPUS) but not found' };
     notices.push('NOTICE: private/raw not found; raw-overlap check skipped');
   } else if (fromCache) notices.push('corpus: cached');
+  const privateHashes = await loadPrivateHashes(repo.privateDir, join(repo.privateDir, '.guard-cache', 'hashes.json'));
   const allowlist = await loadAllowlist(join(repo.root, 'tools', 'guard', 'allowlist.txt'));
-  return { terms, corpus, allowlist, notices };
+  return { terms, corpus, allowlist, privateHashes, notices };
 }
 
 // `--raw -z` output: ":oldmode newmode oldsha newsha status\0path\0" (no renames).
@@ -96,7 +97,9 @@ export function loadFiles(repo, entries, notices) {
 
 export function checkEntries(repo, entries, ctx) {
   const files = loadFiles(repo, entries, ctx.notices);
-  const violations = checkFiles({ files, forbiddenTerms: ctx.terms, corpus: ctx.corpus, allowlist: ctx.allowlist });
+  const violations = checkFiles({
+    files, forbiddenTerms: ctx.terms, corpus: ctx.corpus, allowlist: ctx.allowlist, privateHashes: ctx.privateHashes,
+  });
   return { violations, checked: files.length };
 }
 

@@ -13,6 +13,8 @@ const ALLOWED_IMAGE_PATTERNS = [
 const CORPUS_EXTS = new Set(['.txt', '.md', '.html', '.htm', '.json']);
 const ALLOWLISTABLE = new Set(['raw-overlap', 'forbidden-term']);
 const SHINGLE_SIZE = 12;
+// Bump when text normalization or shingling changes, so cached corpora are rebuilt.
+export const CORPUS_VERSION = '2';
 
 export function normalizePath(p) {
   let s = String(p).replace(/\\/g, '/');
@@ -177,21 +179,65 @@ export async function buildCorpus(rawDir) {
 export async function loadCorpus(rawDir, cacheFile) {
   const files = await listCorpusFiles(rawDir);
   if (!files) return { corpus: null, fromCache: false };
-  const fingerprint = createHash('sha256')
-    .update(files.map(f => `${f.rel}|${f.size}|${f.mtimeMs}`).join('\n'))
+  const fingerprint = fingerprintOf(files, `corpus v${CORPUS_VERSION} n=${SHINGLE_SIZE}`);
+  const cached = await readCache(cacheFile, fingerprint, 'shingles');
+  if (cached) return { corpus: new Set(cached), fromCache: true };
+  const corpus = await buildFromFiles(files);
+  await writeCache(cacheFile, { fingerprint, shingles: [...corpus] });
+  return { corpus, fromCache: false };
+}
+
+function fingerprintOf(files, salt) {
+  return createHash('sha256')
+    .update([salt, ...files.map(f => `${f.rel}|${f.size}|${f.mtimeMs}`)].join('\n'))
     .digest('hex');
+}
+
+async function readCache(cacheFile, fingerprint, field) {
   try {
     const cached = JSON.parse(await readFile(cacheFile, 'utf8'));
-    if (cached && cached.fingerprint === fingerprint && Array.isArray(cached.shingles)) {
-      return { corpus: new Set(cached.shingles), fromCache: true };
-    }
+    if (cached && cached.fingerprint === fingerprint && Array.isArray(cached[field])) return cached[field];
   } catch {
-    // missing or corrupt cache: rebuild below
+    // missing or corrupt cache: caller rebuilds
   }
-  const corpus = await buildFromFiles(files);
+  return null;
+}
+
+async function writeCache(cacheFile, data) {
   await mkdir(dirname(cacheFile), { recursive: true });
-  await writeFile(cacheFile, JSON.stringify({ fingerprint, shingles: [...corpus] }));
-  return { corpus, fromCache: false };
+  await writeFile(cacheFile, JSON.stringify(data));
+}
+
+// SHA-256 of every non-empty file under private/ (except .git/ and .guard-cache/), so a byte-identical
+// copy of a private file (a screenshot, a raw page) is caught anywhere in the public repo.
+export async function loadPrivateHashes(privateDir, cacheFile) {
+  try {
+    if (!(await stat(privateDir)).isDirectory()) return null;
+  } catch {
+    return null;
+  }
+  const files = [];
+  async function walk(dir) {
+    for (const e of await readdir(dir, { withFileTypes: true })) {
+      const abs = join(dir, e.name);
+      if (e.isDirectory()) {
+        if (dir === privateDir && (e.name === '.git' || e.name === '.guard-cache')) continue;
+        await walk(abs);
+      } else if (e.isFile()) {
+        const st = await stat(abs);
+        if (st.size > 0) files.push({ abs, rel: normalizePath(relative(privateDir, abs)), size: st.size, mtimeMs: st.mtimeMs });
+      }
+    }
+  }
+  await walk(privateDir);
+  files.sort((a, b) => (a.rel < b.rel ? -1 : a.rel > b.rel ? 1 : 0));
+  const fingerprint = fingerprintOf(files, 'private-hashes v1');
+  const cached = await readCache(cacheFile, fingerprint, 'hashes');
+  if (cached) return new Set(cached);
+  const hashes = new Set();
+  for (const f of files) hashes.add(createHash('sha256').update(await readFile(f.abs)).digest('hex'));
+  await writeCache(cacheFile, { fingerprint, hashes: [...hashes] });
+  return hashes;
 }
 
 export async function loadAllowlist(file) {
@@ -219,7 +265,7 @@ export async function loadAllowlist(file) {
   return entries;
 }
 
-export function checkFiles({ files, forbiddenTerms, corpus, allowlist = [] }) {
+export function checkFiles({ files, forbiddenTerms, corpus, allowlist = [], privateHashes = null }) {
   const allowed = new Set(allowlist.map(a => `${a.rule}\t${a.path}\t${a.key}`));
   const isAllowed = (rule, path, key) => allowed.has(`${rule}\t${path}\t${key}`);
   const terms = lowerTerms(forbiddenTerms);
@@ -243,6 +289,10 @@ export function checkFiles({ files, forbiddenTerms, corpus, allowlist = [] }) {
       violations.push({ rule: 'gitlink', path, key: '-', detail: 'embedded repository / submodule entries are not allowed' });
     }
     if (file.content == null) continue;
+    if (privateHashes && file.content.length > 0
+      && privateHashes.has(createHash('sha256').update(file.content).digest('hex'))) {
+      violations.push({ rule: 'private-copy', path, key: '-', detail: 'byte-identical to a file in private/' });
+    }
     const text = decodeText(file.content);
     if (text == null) continue;
     const lower = text.toLowerCase();
