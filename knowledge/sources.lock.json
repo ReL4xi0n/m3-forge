@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "resolvedOn": "2026-11-13",
+  "sources": [
+    {
+      "id": "material-web",
+      "type": "git",
+      "repo": "https://github.com/material-components/material-web.git",
+      "ref": "main",
+      "commit": "37aa14b843dcaeb3a46f898679fa6fcd109b1905",
+      "paths": [
+        "/tokens/"
+      ],
+      "license": "Apache-2.0",
+      "note": "tokens/versions/latest (Sass); repository in maintenance mode, default branch head"
+    },
+    {
+      "id": "material-color-utilities",
+      "type": "archive",
+      "name": "@material/material-color-utilities",
+      "version": "0.4.0",
+      "url": "https://registry.npmjs.org/@material/material-color-utilities/-/material-color-utilities-0.4.0.tgz",
+      "integrity": "sha512-dlq6VExJReb8dhjj3a/yTigr3ncNwoFmL5Iy2ENtbDX03EmNeOEdZ+vsaGrj7RTuO+mB7L58II4LCsl4NpM8uw==",
+      "sha256": "2f0b759749846357dd2d9ce0e1d5e8071e5b51bda24178b3d24ba75afa7f723d",
+      "license": "Apache-2.0"
+    },
+    {
+      "id": "material-components-android",
+      "type": "git",
+      "repo": "https://github.com/material-components/material-components-android.git",
+      "ref": "refs/tags/1.14.0",
+      "version": "1.14.0",
+      "commit": "66c334b7946dabf33adfe1a2b7cad6bcaa4ea3ad",
+      "paths": [
+        "/lib/java/com/google/android/material/**/res/values*/*tokens*.xml"
+      ],
+      "license": "Apache-2.0",
+      "note": "latest stable release tag"
+    },
+    {
+      "id": "material_ui",
+      "type": "git",
+      "repo": "https://github.com/flutter/packages.git",
+      "ref": "refs/tags/material_ui-v1.11.0",
+      "version": "1.11.0",
+      "commit": "cbf06504c85aebf333d3c80c9b8ee52c859456bc",
+      "paths": [
+        "/packages/material_ui/tool/gen_defaults/data/",
+        "/packages/material_ui/lib/",
+        "/packages/material_ui/pubspec.yaml",
+        "/packages/material_ui/LICENSE"
+      ],
+      "license": "BSD-3-Clause",
+      "note": "gen_defaults data is generated Dart (token id in a doc comment above each constant)"
+    },
+    {
+      "id": "compose-material3",
+      "type": "archive",
+      "name": "androidx.compose.material3:material3-android (sources jar)",
+      "version": "1.5.0-rc01",
+      "url": "https://dl.google.com/android/maven2/androidx/compose/material3/material3-android/1.5.0-rc01/material3-android-1.5.0-rc01-sources.jar",
+      "sha256": "0e9c5b37e75203b44b4987b3ccc0db41637303103ca21739691d7533cbe7cbb1",
+      "license": "Apache-2.0"
+    }
+  ]
+}
