@@ -5375,7 +5375,7 @@ md.comp.app-bar.large.icon.size, md.comp.app-bar.medium.icon.size, md.comp.app-b
 | material-components-android | m3_sys_shape_corner_medium_corner_family | (none) | shape/res/values/tokens.xml:54 |
 | material-components-android | m3_sys_shape_corner_small_corner_family | (none) | shape/res/values/tokens.xml:60 |
 
-## NOT FOUND in notes: 25
+## NOT FOUND in notes: 33
 
 Statements the knowledge notes mark `[NOT FOUND]` (values or facts no source gives, e.g. the default color variant for M3 Expressive). Collected by `tools/extract/knowledge/lint.mjs`.
 
@@ -5387,6 +5387,10 @@ Statements the knowledge notes mark `[NOT FOUND]` (values or facts no source giv
 | knowledge/guidance/components/split-button.md:96 | - The split button has no label type token of its own [NOT FOUND]. |
 | knowledge/guidance/components/split-button.md:112 | token [NOT FOUND]. |
 | knowledge/guidance/components/split-button.md:118 | token [NOT FOUND]. |
+| knowledge/guidance/develop/platforms.md:130 | that are illustrations, not spec values; do not reuse them as tokens [NOT FOUND]. |
+| knowledge/guidance/develop/platforms.md:131 | - No platform-level spacing or size tokens are introduced on these pages [NOT FOUND]. |
+| knowledge/guidance/expressive.md:184 | only the standard scheme (expressive values for web: [NOT FOUND]). |
+| knowledge/guidance/expressive.md:216 | - Guidance on reduced motion for springs is not covered by these pages [NOT FOUND]. |
 | knowledge/guidance/foundations/designing.md:143 | - No system token defines the minimum target or the target spacing [NOT FOUND]. The libraries |
 | knowledge/guidance/foundations/interaction.md:57 | No token gives the fade timing [NOT FOUND]. |
 | knowledge/guidance/foundations/interaction.md:151 | entry [NOT FOUND]. Components apply the 38% [token:md.sys.state.disabled.state-layer-opacity] |
@@ -5394,6 +5398,10 @@ Statements the knowledge notes mark `[NOT FOUND]` (values or facts no source giv
 | knowledge/guidance/foundations/layout.md:400 | no token states a maximum width [NOT FOUND]. |
 | knowledge/guidance/foundations/layout.md:444 | The layout pages do not say which step each margin, gap or padding should use [NOT FOUND]. |
 | knowledge/guidance/foundations/usability.md:82 | - No system token encodes usability guidance itself [NOT FOUND]. |
+| knowledge/guidance/foundations/watches.md:88 | [NOT FOUND]. |
+| knowledge/guidance/foundations/watches.md:90 | library, not on these pages and not in our token sources [NOT FOUND]. |
+| knowledge/guidance/foundations/xr.md:134 | [NOT FOUND]. The toolbar orbiter's padding is 12dp [site:/foundations/xr/components/toolbars]. |
+| knowledge/guidance/foundations/xr.md:135 | - No XR-specific tokens exist in our token sources [NOT FOUND]; the motion guidance names |
 | knowledge/guidance/styles/color.md:156 | \| M3 \| Tonal spot (`DynamicSchemeVariant.tonalSpot`, MCU `Variant.TONAL_SPOT`) \| `ColorScheme.fromSeed` default [impl:material_ui/packages/material_ui/lib/src/color_scheme.dart:283]; `ColorScheme.fromImageProvider` default [impl:material_ui/packages/material_ui/lib/src/color_scheme.dart:1758]; enum doc "Default for Material theme colors" [impl:material_ui/packages/material_ui/lib/src/color_scheme.dart:31]; MCU doc calls tonal spot the default Material You theme on Android 12 and 13 [impl:material-color-utilities/package/scheme/scheme_tonal_spot.js:23] \| No color page names a variant [NOT FOUND] \| |
 | knowledge/guidance/styles/color.md:157 | \| M3 Expressive \| [NOT FOUND] \| No source sets a variant for the Expressive style (details below) \| No color page names a variant [NOT FOUND] \| |
 | knowledge/guidance/styles/color.md:200 | which spec version goes with the M3 Expressive style [NOT FOUND]. |

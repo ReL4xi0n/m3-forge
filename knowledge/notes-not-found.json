@@ -30,6 +30,26 @@
     "text": "token [NOT FOUND]."
   },
   {
+    "note": "knowledge/guidance/develop/platforms.md",
+    "line": 130,
+    "text": "that are illustrations, not spec values; do not reuse them as tokens [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/develop/platforms.md",
+    "line": 131,
+    "text": "- No platform-level spacing or size tokens are introduced on these pages [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/expressive.md",
+    "line": 184,
+    "text": "only the standard scheme (expressive values for web: [NOT FOUND])."
+  },
+  {
+    "note": "knowledge/guidance/expressive.md",
+    "line": 216,
+    "text": "- Guidance on reduced motion for springs is not covered by these pages [NOT FOUND]."
+  },
+  {
     "note": "knowledge/guidance/foundations/designing.md",
     "line": 143,
     "text": "- No system token defines the minimum target or the target spacing [NOT FOUND]. The libraries"
@@ -63,6 +83,26 @@
     "note": "knowledge/guidance/foundations/usability.md",
     "line": 82,
     "text": "- No system token encodes usability guidance itself [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/foundations/watches.md",
+    "line": 88,
+    "text": "[NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/foundations/watches.md",
+    "line": 90,
+    "text": "library, not on these pages and not in our token sources [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/foundations/xr.md",
+    "line": 134,
+    "text": "[NOT FOUND]. The toolbar orbiter's padding is 12dp [site:/foundations/xr/components/toolbars]."
+  },
+  {
+    "note": "knowledge/guidance/foundations/xr.md",
+    "line": 135,
+    "text": "- No XR-specific tokens exist in our token sources [NOT FOUND]; the motion guidance names"
   },
   {
     "note": "knowledge/guidance/styles/color.md",
