@@ -20,7 +20,7 @@ test('buildPrompt: request, style line for the variant, platform line', () => {
   assert.match(s, /Platform: web\. The current folder is empty; create the project here\.\s*$/);
 });
 
-test('settingsFor: denies the repo, the real config, the secrets folder and the run config', () => {
+test('settingsFor: denies the repo, the real config, the secrets folder and the run config', { skip: process.platform !== 'win32' && 'Windows-only runner' }, () => {
   const s = settingsFor({ repoRoot: 'C:/r/repo', realCfg: 'C:/u/.claude', secretsDir: 'C:/u/.m3-toolchain/secrets', cfgDir: 'C:/m3-eval/cfg/x' });
   const deny = s.permissions.deny.join('\n');
   for (const p of ['//c/r/repo/**', '//c/u/.claude/**', '//c/u/.m3-toolchain/secrets/**', '//c/m3-eval/cfg/x/**']) {

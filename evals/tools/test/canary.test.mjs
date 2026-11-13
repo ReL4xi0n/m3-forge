@@ -16,7 +16,7 @@ test('readsDenied: all three denied passes; a missing denial fails', () => {
   assert.equal(readsDenied([], [A]).ok, false, 'no result event');
 });
 
-test('canaryPrompt: names the three protected files', () => {
+test('canaryPrompt: names the three protected files', { skip: process.platform !== 'win32' && 'Windows-only runner' }, () => {
   const p = canaryPrompt({ repoRoot: String.raw`C:\r`, cfgDir: String.raw`C:\m3-eval\cfg\x\canary` });
   for (const f of [A, B, C]) assert.ok(p.includes(f), f);
 });
