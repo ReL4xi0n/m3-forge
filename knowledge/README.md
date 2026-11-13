@@ -96,5 +96,10 @@ Sections (each required; write "Not covered by the sources." rather than leaving
 - style, foundation, expressive: Summary, Rules, Measurements, Accessibility, Platform mapping,
   Pitfalls
 
+Every statement that reads as guidance must be supported by a page in the note's `pages:` list. Our
+own advice, which no cited page states, starts with **Our practice:** so it is never mistaken for
+site guidance. Changes that predate M3 Expressive (for example the December 2023 refresh or M2 to M3
+differences) are never described as Expressive.
+
 Notes are written from understanding, not copied: read the private page text, close it, then write.
 The guard rejects any commit that shares a 12-word run with the scraped text.

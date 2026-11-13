@@ -1,7 +1,7 @@
 ---
 title: Lists
 kind: component
-pages: [/components/lists/overview, /components/lists/specs, /components/lists/guidelines, /components/lists/accessibility]
+pages: [/components/lists/overview, /components/lists/specs, /components/lists/guidelines, /components/lists/accessibility, /components/carousel/guidelines]
 tokenSets: [list, expanded-list, reorder-list, reveal-list]
 expressive: true
 fetched: 2026-11-13
@@ -86,8 +86,11 @@ Slots (expressive lists in the design kit): leading, content and trailing.
   - Focused: 16dp [token:md.comp.list.list-item.focused.container.expressive.shape].
   - Pressed: 16dp [token:md.comp.list.list-item.pressed.container.expressive.shape].
   - Dragged: 16dp [token:md.comp.list.list-item.dragged.container.expressive.shape].
-- Selected items fill with secondary container and switch every text and icon to on secondary
-  container, so selection reads at a glance.
+- Selected items fill with secondary container [token:md.comp.list.list-item.selected.container.color]
+  and switch every text and icon to on secondary container
+  [token:md.comp.list.list-item.selected.label-text.color], so selection reads at a glance. The
+  specs page instead lists primary container and on primary container among the list color roles;
+  the tokens win (repository precedence).
 - Leading and trailing icons shrink to 20dp [token:md.comp.list.list-item.leading-icon.expressive.size]
   in expressive lists (baseline: 24dp [token:md.comp.list.list-item.leading-icon.size]).
 - Leading images get 8dp corners [token:md.comp.list.list-item.leading-image.expressive.shape];

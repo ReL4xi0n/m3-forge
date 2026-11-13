@@ -171,6 +171,7 @@ Color and elevation:
 - Orbiters wider (or taller) than the panels next to them, or reaching outside the field of view.
 - Inset orbiters that cover more than 12dp [site:/foundations/xr/components/app-bars] of a panel.
 - Full-screen dialogs, or a dialog that is not the highest-colored element.
-- Head-locked UI, long continuous motion, or a moving horizon, all of which can cause motion
-  sickness.
+- UI locked to the head, which feels jarring. Use a lazy follow instead, so the UI drifts after the
+  person's movement and catches up gently.
+- Long continuous motion or a moving horizon, both of which can cause motion sickness.
 - Custom background colors that the system cannot dim in passthrough.

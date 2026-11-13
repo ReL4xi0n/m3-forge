@@ -1,7 +1,7 @@
 ---
 title: Tabs
 kind: component
-pages: [/components/tabs/overview, /components/tabs/specs, /components/tabs/guidelines, /components/tabs/accessibility]
+pages: [/components/tabs/overview, /components/tabs/specs, /components/tabs/guidelines, /components/tabs/accessibility, /components/navigation-bar/guidelines]
 tokenSets: [primary-navigation-tab, secondary-navigation-tab]
 expressive: false
 fetched: 2026-11-13
@@ -47,13 +47,13 @@ two variants: primary and secondary.
   tabs share the width; each tab is as wide as the widest one, and the group uses fluid margins,
   aligned to the center or the leading edge.
 - Scrollable tabs: for many tabs or long labels; each tab is as wide as its label.
+- Changes from M2 (these predate M3 Expressive): new color mappings that support dynamic color, and icons and labels centered
+  vertically in the container.
 
 ## Expressive
 
 - Not covered by the sources. The tabs pages have no M3 Expressive section, and no Expressive tab
   tokens exist.
-- Changes from M2: new color mappings that support dynamic color, and icons and labels centered
-  vertically in the container.
 
 ## States and behavior
 

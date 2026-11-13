@@ -1,7 +1,7 @@
 ---
 title: Extended FAB
 kind: component
-pages: [/components/extended-fab/overview, /components/extended-fab/specs, /components/extended-fab/guidelines, /components/extended-fab/accessibility]
+pages: [/components/extended-fab/overview, /components/extended-fab/specs, /components/extended-fab/guidelines, /components/extended-fab/accessibility, /components/fab-menu/guidelines]
 tokenSets: [extended-fab, extended-fab.small, extended-fab.medium, extended-fab.large, extended-fab.primary-container, extended-fab.secondary-container, extended-fab.tertiary-container, extended-fab.primary, extended-fab.secondary, extended-fab.tertiary]
 expressive: true
 fetched: 2026-11-13
@@ -45,15 +45,18 @@ The icon sits before the label; in right-to-left languages the layout mirrors.
   default, and three solid accent styles); see floating-action-button.md#color-roles-and-state-layers.
 - Baseline (not recommended): the original extended FAB, the surface style and the branded style.
   Replace the baseline extended FAB with the small size.
+- Changes from M2 (these predate M3 Expressive): M2 drew the extended FAB as a pill with its own
+  height and elevation. M3 gave it a boxier container with a smaller corner radius, the same height
+  as the FAB, the FAB's simpler elevation model, and new color mappings that work with dynamic
+  color.
 
 ## Expressive
 
 - New sizes: small, medium and large, matching the FAB family heights.
 - The label type moved up a step: the small size uses title medium where the baseline used label
   large, and its inner padding shrank.
-- Shape is boxier, with a smaller radius than the M2 pill. Height now equals the FAB height, and
-  the elevation model is simpler.
-- Colors were remapped to support dynamic color.
+- The baseline extended FAB (and the surface style) is no longer recommended; the small size takes
+  its place.
 
 ## States and behavior
 

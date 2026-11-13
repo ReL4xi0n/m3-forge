@@ -1,7 +1,7 @@
 ---
 title: M3 Expressive
 kind: expressive
-pages: [/components, /components/app-bars/overview, /components/button-groups/overview, /components/buttons/overview, /components/extended-fab/overview, /components/fab-menu/overview, /components/floating-action-button/overview, /components/icon-buttons/overview, /components/lists/overview, /components/loading-indicator/overview, /components/menus/overview, /components/navigation-bar/overview, /components/navigation-drawer/overview, /components/navigation-rail/overview, /components/progress-indicators/overview, /components/search/overview, /components/segmented-buttons/overview, /components/sliders/overview, /components/split-button/overview, /components/toolbars/overview]
+pages: [/components, /components/app-bars/overview, /components/button-groups/overview, /components/buttons/overview, /components/extended-fab/overview, /components/fab-menu/overview, /components/floating-action-button/overview, /components/icon-buttons/overview, /components/lists/overview, /components/loading-indicator/overview, /components/menus/overview, /components/navigation-bar/overview, /components/navigation-drawer/overview, /components/navigation-rail/overview, /components/progress-indicators/overview, /components/search/overview, /components/segmented-buttons/overview, /components/sliders/overview, /components/split-button/overview, /components/toolbars/overview, /foundations/usability/overview, /styles/motion/overview/how-it-works, /components/split-button/guidelines, /styles/typography/overview, /styles/typography/type-scale-tokens, /styles/shape/corner-radius-scale, /components/buttons/guidelines]
 tokenSets: [button, fab, extended-fab, fab-menu, loading-indicator, toolbar, nav-bar, list]
 expressive: true
 fetched: 2026-11-13
@@ -18,8 +18,9 @@ What changes across the system:
 
 - Shape: controls morph their corners when pressed or selected, and a round or square shape can
   be chosen per control.
-- Size range: buttons and their relatives get five sizes (extra small to extra large); FABs and
-  extended FABs get small, medium and large.
+- Size range: buttons and their relatives get five sizes (extra small to extra large). FABs come
+  as FAB, medium FAB and large FAB, with the small FAB no longer recommended; extended FABs come
+  in small, medium and large.
 - Motion: springs, grouped into a standard and an expressive motion scheme, replace fixed
   durations and easing curves for component motion.
 - Type: every baseline type style gets an emphasized (heavier) counterpart.
@@ -40,8 +41,6 @@ Shape morphing:
   the button groups note (components/button-groups.md).
 - The split button's inner corners grow on interaction and its menu button turns round when open;
   see `components/split-button.md#expressive`.
-- FABs and extended FABs use a boxier corner than M2's circles and pills.
-- Sliders change the handle width and track shape while dragging.
 - Loading indicators rely on changing shape and motion to hold attention.
 - Larger corner steps were added between large and full: large increased, extra large increased
   and extra extra large (values under Measurements).
@@ -69,9 +68,8 @@ Motion (springs and schemes):
   Measurements.
 - Not every motion uses the expressive scheme: the split button's menu icon rotates with the
   standard scheme.
-- New motion behaviors named in the update: the search bar widens when focused, navigation rails
-  support predictive back, the collapsed and expanded rails animate into each other, and vertical
-  menus refine their submenu motion.
+- New motion behaviors named in the update: the search bar widens when focused, the collapsed and
+  expanded rails animate into each other, and vertical menus refine their submenu motion.
 
 Emphasized type:
 
@@ -80,8 +78,8 @@ Emphasized type:
   label large medium → bold (weights under Measurements).
 - The component pages give no rule for when to pick an emphasized style; the typography note
   (styles/typography.md) covers that.
-- Component updates also enlarge text: larger titles in flexible app bars, larger labels in
-  extended FABs, and larger label text on sliders.
+- Component updates also enlarge text: larger titles in flexible app bars and larger labels in
+  extended FABs.
 
 Color:
 

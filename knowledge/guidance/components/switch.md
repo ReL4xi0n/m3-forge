@@ -152,8 +152,8 @@ State layers (a circle around the handle):
 - When the visible label is vague, give the switch a more specific accessible name (for example
   "Photo album access" for a switch labelled "Photo album"). A clearer visible label is the better
   fix where possible.
-- Do not rely on the handle icon alone to show the state; the handle position and color carry it
-  too.
+- The handle icon is optional. The state shows without it: the handle slides to the other end of
+  the track, and in the on state it is larger.
 - Target: 48 × 48dp [site:/components/switch/specs]. Keep density opt-in, and keep the controls
   that undo it at full size.
 

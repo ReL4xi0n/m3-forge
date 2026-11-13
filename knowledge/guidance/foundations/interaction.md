@@ -1,7 +1,7 @@
 ---
 title: Interaction
 kind: foundation
-pages: [/foundations/interaction/states/overview, /foundations/interaction/states/state-layers, /foundations/interaction/states/applying-states, /foundations/interaction/gestures, /foundations/interaction/inputs, /foundations/interaction/selection]
+pages: [/foundations/interaction/states/overview, /foundations/interaction/states/state-layers, /foundations/interaction/states/applying-states, /foundations/interaction/gestures, /foundations/interaction/inputs, /foundations/interaction/selection, /components/lists/accessibility, /components/cards/accessibility, /components/bottom-sheets/accessibility]
 tokenSets: [sys.state]
 expressive: false
 fetched: 2026-11-13
@@ -165,14 +165,18 @@ State-layer opacities (material-web, canonical):
 
 ## Accessibility
 
-- Two cues per state; never signal state by color alone.
+- Show selection with more than color: pair the color change with a second cue, such as a leading
+  check mark or an underline.
 - Keyboard focus must be visible: focus layer plus the focus ring on the web.
-- Every action available through a gesture needs a non-gesture path (a button, a menu item, a
-  keyboard shortcut) for people who cannot perform it.
-- Long press, drag and pinch are hard for some users; keep them as shortcuts, not the only way.
+- Anything done by dragging or swiping needs a single-pointer alternative: the same action from a
+  menu or bottom sheet, a more button on a swipeable list item, or a drag handle that changes size
+  when selected.
+- For swipeable list items, a single tap, double tap or long press can reveal the hidden actions.
 - Keyboard: Tab order is logical, Escape dismisses and clears, Enter and Space do what users
   expect.
-- Disabled controls cannot take focus, so do not hide essential explanations inside them.
+- Disabled controls cannot take focus.
+- **Our practice:** keep essential explanations outside disabled controls, where keyboard and
+  screen reader users can still reach them.
 - The interactive target stays at 48dp [site:/foundations/interaction/states/state-layers] even
   where the state layer is 40dp [token:md.comp.checkbox.state-layer.size].
 

@@ -22,7 +22,6 @@ and minutes. People can switch between them at any time.
   default view when a dial adds nothing.
 - Avoid when:
   - The value needs fine precision such as seconds or milliseconds (a stopwatch).
-  - The time is part of a date and time range that a dedicated scheduling UI handles better.
 
 ## Anatomy
 

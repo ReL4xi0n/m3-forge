@@ -102,7 +102,8 @@ Size choices:
 - Label icons whose meaning is not obvious. Navigation destinations always need labels.
 - Below 20dp, complex icons and icons for key actions need a text label [site:/styles/icons/applying-icons];
   simple glyphs (rating stars, for example) can stand alone if they stay recognizable.
-- Give actionable icons an accessible name; purely decorative icons need none.
+- **Our practice:** give every actionable icon an accessible name, and hide purely decorative
+  icons from assistive technology.
 - Localize: test icons with different ages, cultures and languages. Pick culturally fitting
   metaphors (cart, bag or basket for checkout), and remember that colors and symbols such as
   owls, white or red/green carry different meanings in different regions.

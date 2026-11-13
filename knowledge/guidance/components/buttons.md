@@ -1,7 +1,7 @@
 ---
 title: Buttons
 kind: component
-pages: [/components/all-buttons, /components/buttons/overview, /components/buttons/specs, /components/buttons/guidelines, /components/buttons/accessibility]
+pages: [/components/all-buttons, /components/buttons/overview, /components/buttons/specs, /components/buttons/guidelines, /components/buttons/accessibility, /styles/motion/overview/how-it-works]
 tokenSets: [button, button.xsmall, button.small, button.medium, button.large, button.xlarge, button.filled, button.tonal, button.elevated, button.outlined, button.text]
 expressive: true
 fetched: 2026-11-13
@@ -30,7 +30,8 @@ optional toggle (selected / unselected) behaviour.
 - Avoid when:
   - The screen already has many buttons. Move low-priority actions to an overflow menu, icon
     buttons, chips or links.
-  - The control toggles a setting rather than performing an action; use a switch or a checkbox.
+  - The action is a binary selection, such as Save or Favorite; the guidelines recommend a
+    toggle button for that rather than a default button.
 
 ## Anatomy
 

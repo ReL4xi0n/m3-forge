@@ -78,7 +78,8 @@ Modal date input: headline, supporting text, an icon button back to the calendar
 
 - Date and year cells have enabled, hovered, focused, pressed and disabled states, each for
   selected and unselected.
-- Selection is shown with color: the chosen date is filled, today's date has an outline. In a
+- Selection is shown with color and fill: the chosen date is filled. The tokens also give today's
+  date an outline [token:md.comp.date-picker.modal.date.today.container.outline.color]. In a
   range, the start and end dates are filled and the days between share a lighter band.
 - Docked picker:
   - Opens directly below its field when the field is tapped.
@@ -260,6 +261,7 @@ Platform differences (see `knowledge/conflicts.md`):
 - No way to type the date.
 - Input masks that rewrite text while the person types.
 - Scaling the picker up on large screens instead of keeping its fixed size.
-- Relying on color alone for today versus the selected date; today also gets an outline.
+- Today's date and the selected date that are hard to tell apart; they must be clearly
+  distinguishable. (The outline on today comes from the tokens, not from the guidance text.)
 - Extra actions (Clear) that add tab stops without being needed.
 - Increasing density so targets drop below 48dp [site:/components/date-pickers/accessibility].

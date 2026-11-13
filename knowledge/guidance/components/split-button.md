@@ -21,8 +21,8 @@ new in M3 Expressive (May 2025) and comes in the same five sizes as buttons and 
   nearby buttons, since it is wider.
 - Scale it up on large windows or for a hero moment on a small one.
 - Avoid when:
-  - The options are peers rather than variants of one action; use a button group or a menu
-    button.
+  - **Our practice:** the options are peers rather than variants of one action; a button group
+    or a menu button fits that case better.
   - Something other than a menu or a closely related surface would open. A card is acceptable;
     reshaping the menu in unusual ways is not.
 

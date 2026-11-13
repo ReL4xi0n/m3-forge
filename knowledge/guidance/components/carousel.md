@@ -31,7 +31,8 @@ shipped in 2023); a multi-aspect-ratio uncontained layout was added in November 
     on compact and medium windows.
 - Avoid when:
   - Items need a lot of text; use the uncontained layout or a set of cards.
-  - Every item must be visible at once for comparison; a list or grid is clearer.
+  - **Our practice:** when every item must be visible at once for comparison, a list or grid is
+    clearer.
 
 ## Anatomy
 

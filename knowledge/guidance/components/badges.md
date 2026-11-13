@@ -25,7 +25,6 @@ tab. There are two variants: a plain dot, and a pill that holds a short label.
 - Avoid when:
   - The badge would cover the icon or collide with a neighbouring label or element. Move a large
     badge to the trailing edge of the row, or fall back to a small badge.
-  - The information is essential and needs explanation; a badge only hints.
 
 ## Anatomy
 

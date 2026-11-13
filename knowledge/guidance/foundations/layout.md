@@ -1,7 +1,7 @@
 ---
 title: Layout
 kind: foundation
-pages: [/foundations/layout/layout-overview/overview, /foundations/layout/layout-overview/parts-of-layout, /foundations/layout/layout-overview/adaptive-design, /foundations/layout/breakpoints/overview, /foundations/layout/breakpoints/compact, /foundations/layout/breakpoints/medium, /foundations/layout/breakpoints/expanded, /foundations/layout/breakpoints/large-extra-large, /foundations/layout/scaffold/overview, /foundations/layout/scaffold/bars, /foundations/layout/scaffold/rails, /foundations/layout/scaffold/panes, /foundations/layout/canonical-examples/overview, /foundations/layout/canonical-examples/feed, /foundations/layout/canonical-examples/list-detail, /foundations/layout/canonical-examples/supporting-pane, /foundations/layout/grids-spacing/overview, /foundations/layout/grids-spacing/grids, /foundations/layout/grids-spacing/spacing, /foundations/layout/grids-spacing/density, /foundations/layout/bidirectionality-rtl]
+pages: [/foundations/layout/layout-overview/overview, /foundations/layout/layout-overview/parts-of-layout, /foundations/layout/layout-overview/adaptive-design, /foundations/layout/breakpoints/overview, /foundations/layout/breakpoints/compact, /foundations/layout/breakpoints/medium, /foundations/layout/breakpoints/expanded, /foundations/layout/breakpoints/large-extra-large, /foundations/layout/scaffold/overview, /foundations/layout/scaffold/bars, /foundations/layout/scaffold/rails, /foundations/layout/scaffold/panes, /foundations/layout/canonical-examples/overview, /foundations/layout/canonical-examples/feed, /foundations/layout/canonical-examples/list-detail, /foundations/layout/canonical-examples/supporting-pane, /foundations/layout/grids-spacing/overview, /foundations/layout/grids-spacing/grids, /foundations/layout/grids-spacing/spacing, /foundations/layout/grids-spacing/density, /foundations/layout/bidirectionality-rtl, /components/cards/accessibility]
 tokenSets: [sys.measurement, drag-handle, sheet.side]
 expressive: true
 fetched: 2026-11-13
@@ -334,6 +334,8 @@ Spacing does three jobs:
 
 ### Bidirectionality (RTL)
 
+- Support right-to-left reading as a layout rule: correct alignment and text direction, plus
+  mirrored navigation and gestures, as detailed below.
 - More than two billion people read right to left (Arabic, Hebrew, Persian, Urdu and others).
   Mirror the layout: alignment and order flip and reading starts at the top right. Material names
   things "leading" and "trailing" so components mirror, but some cases need extra work.
@@ -462,8 +464,6 @@ The layout pages do not say which step each margin, gap or padding should use [N
 - Draggable or resizable floating panes and drag handles need non-drag alternatives (tap, double
   tap or long press toggles on the handle; accessible move or resize controls).
 - Readable line length (about 40 to 60 characters) at every breakpoint.
-- RTL is an accessibility concern: correct alignment and direction, mirrored navigation and
-  gestures (see [Bidirectionality](#bidirectionality-rtl)).
 
 ## Platform mapping
 

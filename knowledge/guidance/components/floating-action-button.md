@@ -47,6 +47,8 @@ FAB (icon plus label, see extended-fab.md#summary) and the FAB menu (see fab-men
   tertiary). They are equally legible, so the choice is about look. Roles are listed under Color
   roles and state layers.
 - Surface-colored FABs are a baseline style and are no longer recommended.
+- Since baseline M3 (vs M2): the FAB is a boxier rounded square instead of a circle, it can take
+  dynamic color, and the large size was introduced.
 
 ## Expressive
 
@@ -55,8 +57,6 @@ FAB (icon plus label, see extended-fab.md#summary) and the FAB menu (see fab-men
 - Colors: new primary, secondary and tertiary styles were added. The older tonal styles were
   renamed to match the roles they really use (primary became primary container, and so on); their
   values did not change.
-- Compared with M2, FABs are boxier rather than circular, can use dynamic color, and gained the
-  large size.
 
 ## States and behavior
 

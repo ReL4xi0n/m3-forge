@@ -1,7 +1,7 @@
 ---
 title: Foundations overview
 kind: foundation
-pages: [/foundations, /foundations/overview/principles, /foundations/overview/assistive-technology, /blog/material-google-io22, /blog/material-google-io23, /blog/google-io-2024, /blog/material-design-2022-roundup, /blog/material-io-redesign, /blog/interview-oddfellows-m3-art-style, /blog/material-partner-studies, /blog/research-state-of-design-systems-2020, /blog/year-in-the-life-material-design-advocate, /blog/material-design-awards-2021, /blog/mda-2020-winners, /blog/mda-2021-winners]
+pages: [/foundations, /foundations/overview/principles, /foundations/overview/assistive-technology, /foundations/designing/flow, /foundations/interaction/inputs, /blog/material-google-io22, /blog/material-google-io23, /blog/google-io-2024, /blog/material-design-2022-roundup, /blog/material-io-redesign, /blog/interview-oddfellows-m3-art-style, /blog/material-partner-studies, /blog/research-state-of-design-systems-2020, /blog/year-in-the-life-material-design-advocate, /blog/material-design-awards-2021, /blog/mda-2020-winners, /blog/mda-2021-winners]
 tokenSets: []
 expressive: false
 fetched: 2026-11-13

@@ -49,14 +49,14 @@ across window sizes. Existing products may keep using it.
   tapped, or the sheet is swiped toward its anchoring edge.
 - A bottom drawer shape also exists in the tokens (top corners rounded)
   [token:md.comp.navigation-drawer.bottom.container.shape]; the current pages do not describe it.
+- Changes from M2 (these predate M3 Expressive and are still current): rounded corners on the sheet's end edge, a pill-shaped
+  active indicator instead of a rectangle, separate standard and modal variants, and new color
+  mappings that work with dynamic color.
 
 ## Expressive
 
 - Not part of M3 Expressive. The update marked the drawer as not recommended and points to the
   expanded navigation rail; there is no Expressive drawer.
-- Changes from M2 (still current for M3): rounded corners on the sheet's end edge, a pill-shaped
-  active indicator instead of a rectangle, separate standard and modal variants, and new color
-  mappings that work with dynamic color.
 
 ## States and behavior
 

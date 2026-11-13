@@ -1,7 +1,7 @@
 ---
 title: Spacing
 kind: style
-pages: [/styles/spacing/overview, /styles/spacing/applying-spacing, /styles/spacing/tokens]
+pages: [/styles/spacing/overview, /styles/spacing/applying-spacing, /styles/spacing/tokens, /foundations/layout/grids-spacing/density]
 tokenSets: [sys.measurement]
 expressive: false
 fetched: 2026-11-13
@@ -86,7 +86,8 @@ The spacing scale. The values are printed on the site; the matching tokens exist
 
 - Keep spacing unchanged when text is scaled up, so larger text does not crowd its neighbors.
 - Leading and trailing spacing must mirror correctly in right-to-left layouts.
-- Spacing that adapts to density should not shrink touch targets below the component's minimum.
+- Spacing that adapts to density should not, by default, shrink touch targets below
+  48 × 48dp [site:/foundations/layout/grids-spacing/density].
 
 ## Platform mapping
 

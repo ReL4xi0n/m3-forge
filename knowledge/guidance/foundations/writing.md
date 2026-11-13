@@ -108,7 +108,8 @@ This whole note is accessibility guidance. The checks to run on any design:
 
 ## Pitfalls
 
-- Scaling the whole component (padding included) with the text, or scaling icons and checkboxes.
+- Scaling the whole component (padding included) with the text, or resizing components that hold
+  no text, such as progress indicators, checkboxes and radio buttons.
 - Fixed-height containers that clip enlarged or translated text.
 - Ellipses with no tooltip or link to the rest of the text.
 - Two-way scrolling to reach enlarged content.

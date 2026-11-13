@@ -1,7 +1,7 @@
 ---
 title: Toolbars
 kind: component
-pages: [/components/toolbars/overview, /components/toolbars/specs, /components/toolbars/guidelines, /components/toolbars/accessibility]
+pages: [/components/toolbars/overview, /components/toolbars/specs, /components/toolbars/guidelines, /components/toolbars/accessibility, /components/app-bars/guidelines]
 tokenSets: [toolbar.docked, toolbar.floating, toolbar.standard, toolbar.vibrant, docked-toolbar, floating-toolbar, bottom-app-bar]
 expressive: true
 fetched: 2026-11-13
@@ -49,6 +49,10 @@ come in a standard (quiet) and a vibrant (emphasized) color style.
     platforms place the two components separately.
 - Color: standard (default) or vibrant, for either variant.
 - Bottom app bar (baseline): still available but not recommended; use the docked toolbar.
+- Changes from M2 (bottom app bar; these predate M3 Expressive): M2 used
+  8dp [site:/components/toolbars/overview] elevation and kept the FAB outside the bar; M3 removed
+  elevation and shadow, made the container taller, put the FAB inside it, and redid the color
+  mappings to work with dynamic color.
 
 ## Expressive
 
@@ -56,10 +60,6 @@ come in a standard (quiet) and a vibrant (emphasized) color style.
 - The docked toolbar is shorter than the bottom app bar and more flexible in layout and content.
 - The floating toolbar adds horizontal and vertical layouts, room for many element types, and FAB
   pairing.
-- Color mappings were redone for dynamic color.
-- Changes from M2 (bottom app bar): M2 used 8dp [site:/components/toolbars/overview] elevation
-  and kept the FAB outside the bar; M3 removed elevation and shadow, made the container taller,
-  and put the FAB inside it.
 
 ## States and behavior
 

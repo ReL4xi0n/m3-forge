@@ -1,7 +1,7 @@
 ---
 title: Usability
 kind: foundation
-pages: [/foundations/usability/overview]
+pages: [/foundations/usability/overview, /styles/motion/transitions/applying-transitions]
 tokenSets: []
 expressive: true
 fetched: 2026-11-13
@@ -86,8 +86,11 @@ to the overview, so this note is written from that one page.
 - Usability tactics never replace accessibility requirements. Color choices still meet the
   contrast minimums (designing.md#rules) and states still use two cues
   (interaction.md#rules).
-- Size helps everyone: a larger primary action is also an easier touch target.
-- Use motion sparingly; frequent or large motion is a burden for people sensitive to it.
+- **Our practice:** treat size as an accessibility aid too; a larger primary action is also an
+  easier touch target.
+- Use motion sparingly, since it can distract. Most platforms offer a reduced-motion setting for
+  people sensitive to movement; when it is on, swap large slides and scales for gentle fades and
+  drop decorative effects such as parallax or shape morphs.
 
 ## Platform mapping
 

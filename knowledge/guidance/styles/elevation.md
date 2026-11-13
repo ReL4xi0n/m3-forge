@@ -1,7 +1,7 @@
 ---
 title: Elevation
 kind: style
-pages: [/styles/elevation/overview, /styles/elevation/applying-elevation, /styles/elevation/tokens]
+pages: [/styles/elevation/overview, /styles/elevation/applying-elevation, /styles/elevation/tokens, /styles/color/system/overview]
 tokenSets: [sys.elevation, scrim]
 expressive: false
 fetched: 2026-11-13
@@ -98,5 +98,7 @@ The values are material-web's (canonical). No cited level token differs between 
 - Using level 4 or 5 as a resting position.
 - Raising one component on hover but not its siblings.
 - Treating elevation tokens as shadow specs. They hold distance only.
-- Relying on surface tint to show height; it is deprecated in favor of surface container roles.
+- Relying on surface tint to show height. The tokens page deprecates it and points to the elevation
+  level tokens; for color, the tone-based surface container roles (February 2023) replaced the old
+  elevation-tinted surfaces and are not tied to height.
 - Placing two overlapping containers on the same color role, so their boundary disappears.

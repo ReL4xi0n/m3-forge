@@ -1,7 +1,7 @@
 ---
 title: Icon buttons
 kind: component
-pages: [/components/icon-buttons/overview, /components/icon-buttons/specs, /components/icon-buttons/guidelines, /components/icon-buttons/accessibility]
+pages: [/components/icon-buttons/overview, /components/icon-buttons/specs, /components/icon-buttons/guidelines, /components/icon-buttons/accessibility, /styles/icons/applying-icons]
 tokenSets: [icon-button, icon-button.xsmall, icon-button.small, icon-button.medium, icon-button.large, icon-button.xlarge, icon-button.filled, icon-button.tonal, icon-button.outlined, icon-button.standard]
 expressive: true
 fetched: 2026-11-13
@@ -51,16 +51,18 @@ buttons, added three widths, and made the container morph when pressed or select
 - Shape: round (default) or square.
 - Use size and width to rank actions: the main action (play/pause, start/stop) should be the most
   prominent through color or size. Buttons of equal importance should be equal in size.
+- Changes from M2 (these predate M3 Expressive): M2 called these components toggle buttons. M3
+  splits icon buttons into two variants, default and toggle, and gives them new color mappings
+  that work with dynamic color.
 
 ## Expressive
 
 - Added in the May 2025 Expressive update: the four extra sizes, the three widths, the square
   shape, and shape morphing on press and on selection.
-- The old naming changed. What was called a toggle button is now the toggle variant of the icon
-  button, and the four color styles are configurations of one component.
+- The four color styles (filled, tonal, outlined, standard) are now configurations of one
+  component rather than separate types.
 - Inside a standard button group, pressing one icon button also pushes its neighbours; see
   button-groups.md#motion.
-- Colors were remapped to work with dynamic color.
 
 ## States and behavior
 
@@ -219,7 +221,7 @@ State layers (drawn in the icon color over the container):
 ## Pitfalls
 
 - Icons whose meaning is ambiguous, or labels that name the glyph instead of the action.
-- Overusing the filled style; reserve it for the one or two key actions.
+- Overusing the filled style; use it sparingly, for key high-emphasis actions.
 - Toggle variant on actions that cannot be "on" (overflow, back, close).
 - A selected toggle that differs only in color; switch to the filled glyph (or a heavier weight).
 - Applying density by default, or leaving extra small and small buttons without their

@@ -83,13 +83,14 @@ rounded-rectangle container.
   - On compact windows, make the whole chip open the menu; the icon alone is too small a target.
 - Input chips:
   - Can be edited (the chip turns back into plain text), reordered, or moved to another field.
-  - Pressing Backspace with the cursor just after a chip selects it; a second Backspace deletes
-    it.
+  - Pressing Backspace while the cursor sits before a chip selects the whole chip; a second
+    Backspace deletes it.
   - Can expand to show more detail through a container transform transition.
   - When they overflow a text field, they behave like text: an unfocused field shows the start,
     and focusing it jumps to the end with the cursor.
 - Layout of a set:
-  - Arrange chips in a row, never stacked vertically.
+  - Arrange chips in a row, never stacked vertically. The exception is input chips, which may
+    also be placed in a stacked list.
   - They may wrap to more lines; beyond two rows, consider horizontal scrolling.
   - A one-row field can scroll sideways instead.
   - Labels truncate when a wrapped chip would be wider than the window.
@@ -141,7 +142,9 @@ marker.
   [token:md.comp.filter-chip.label-text.font] [token:md.comp.input-chip.label-text.font]
   [token:md.comp.suggestion-chip.label-text.font], the button label style:
   14sp [token:md.sys.typescale.label-large.size].
-- Labels stay short and in sentence case; they do not wrap.
+- Labels stay short; they do not wrap.
+- **Our practice:** write chip labels in sentence case, the convention M3 sets for button labels
+  (see buttons.md#typography). The chip pages do not state a case rule.
 
 ## Color roles and state layers
 
@@ -211,7 +214,7 @@ The focus ring is 3dp [token:md.comp.assist-chip.focus.indicator.thickness] thic
     |---|---|---|
     | One action | the label | button (web: gridcell) |
     | Selectable | the label | checkbox in Compose, radio button in MDC-Android (web: gridcell) |
-    | Remove only | "Remove" plus the label | button |
+    | Remove only | "Remove" plus the label | not specified by the site |
     | Two actions | the label, then "Remove" plus the label | button or checkbox |
 
   - Images and icons inside a chip are hidden from assistive technology.

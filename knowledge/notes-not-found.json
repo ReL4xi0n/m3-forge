@@ -36,12 +36,12 @@
   },
   {
     "note": "knowledge/guidance/components/badges.md",
-    "line": 75,
+    "line": 74,
     "text": "- The token set has no padding, offset or maximum-width token [NOT FOUND]; those values come from"
   },
   {
     "note": "knowledge/guidance/components/badges.md",
-    "line": 104,
+    "line": 103,
     "text": "- No badge motion, duration, easing or spring token [NOT FOUND]. The sources do not describe how a"
   },
   {
@@ -71,17 +71,17 @@
   },
   {
     "note": "knowledge/guidance/components/buttons.md",
-    "line": 125,
+    "line": 126,
     "text": "per-size label token [NOT FOUND]; their single label token is `md.comp.button.label-text`."
   },
   {
     "note": "knowledge/guidance/components/buttons.md",
-    "line": 160,
+    "line": 161,
     "text": "- Compose defines no per-button motion token [NOT FOUND]. Its code animates the plain button's"
   },
   {
     "note": "knowledge/guidance/components/buttons.md",
-    "line": 165,
+    "line": 166,
     "text": "[NOT FOUND]. Springs replace durations and easings in Expressive motion."
   },
   {
@@ -101,57 +101,57 @@
   },
   {
     "note": "knowledge/guidance/components/carousel.md",
-    "line": 96,
+    "line": 97,
     "text": "| Item corner radius | 28dp [site:/components/carousel/specs] [token:md.comp.carousel-item.container.shape] | 28dp [site:/components/carousel/specs] [token:md.comp.carousel-item.container.shape] | 28dp [site:/components/carousel/specs] [token:md.comp.carousel-item.container.shape] | [NOT FOUND] |"
   },
   {
     "note": "knowledge/guidance/components/carousel.md",
-    "line": 114,
+    "line": 115,
     "text": "- The carousel-item token set defines no text style [NOT FOUND]."
   },
   {
     "note": "knowledge/guidance/components/carousel.md",
-    "line": 134,
+    "line": 135,
     "text": "- Carousel motion tokens (duration, easing or spring): none in the token data [NOT FOUND]."
   },
   {
     "note": "knowledge/guidance/components/checkbox.md",
-    "line": 84,
+    "line": 86,
     "text": "- Compose defines no focus-ring tokens for the checkbox [NOT FOUND]; see `knowledge/not-found.md`."
   },
   {
     "note": "knowledge/guidance/components/checkbox.md",
-    "line": 90,
+    "line": 92,
     "text": "- The checkbox has no text of its own and no type token [NOT FOUND]."
   },
   {
     "note": "knowledge/guidance/components/checkbox.md",
-    "line": 92,
+    "line": 94,
     "text": "[NOT FOUND]; only its color is specified (below)."
   },
   {
     "note": "knowledge/guidance/components/checkbox.md",
-    "line": 124,
+    "line": 126,
     "text": "- No checkbox duration, easing or spring token exists in the three sources [NOT FOUND]. The"
   },
   {
     "note": "knowledge/guidance/components/chips.md",
-    "line": 179,
+    "line": 182,
     "text": "- No chip duration, easing or spring token exists in material-web's data [NOT FOUND]. Code chooses"
   },
   {
     "note": "knowledge/guidance/components/chips.md",
-    "line": 195,
+    "line": 198,
     "text": "[NOT FOUND]."
   },
   {
     "note": "knowledge/guidance/components/date-pickers.md",
-    "line": 131,
+    "line": 132,
     "text": "[NOT FOUND]."
   },
   {
     "note": "knowledge/guidance/components/date-pickers.md",
-    "line": 185,
+    "line": 186,
     "text": "- No date-picker duration, easing or spring token exists in the three sources [NOT FOUND]. Modal"
   },
   {
@@ -171,12 +171,12 @@
   },
   {
     "note": "knowledge/guidance/components/extended-fab.md",
-    "line": 119,
+    "line": 122,
     "text": "extended-FAB label token [NOT FOUND]. Compose's code hard-codes those three styles"
   },
   {
     "note": "knowledge/guidance/components/extended-fab.md",
-    "line": 162,
+    "line": 165,
     "text": "- No extended-FAB duration, easing or spring token covers these transitions [NOT FOUND]."
   },
   {
@@ -211,32 +211,32 @@
   },
   {
     "note": "knowledge/guidance/components/icon-buttons.md",
-    "line": 115,
+    "line": 117,
     "text": "- Icon buttons carry no text, so there is no label type token [NOT FOUND]."
   },
   {
     "note": "knowledge/guidance/components/icon-buttons.md",
-    "line": 164,
+    "line": 166,
     "text": "[NOT FOUND]."
   },
   {
     "note": "knowledge/guidance/components/icon-buttons.md",
-    "line": 165,
+    "line": 167,
     "text": "- Compose defines no icon-button motion token [NOT FOUND]. Its code animates both the press morph"
   },
   {
     "note": "knowledge/guidance/components/icon-buttons.md",
-    "line": 176,
+    "line": 178,
     "text": "- Icon change on selection (outlined to filled glyph): no motion token [NOT FOUND]."
   },
   {
     "note": "knowledge/guidance/components/lists.md",
-    "line": 231,
+    "line": 234,
     "text": "- List motion tokens (duration, easing or spring): none in the token data [NOT FOUND]."
   },
   {
     "note": "knowledge/guidance/components/lists.md",
-    "line": 240,
+    "line": 243,
     "text": "- material-web and Flutter have no list motion values [NOT FOUND]."
   },
   {
@@ -271,22 +271,22 @@
   },
   {
     "note": "knowledge/guidance/components/navigation-bar.md",
-    "line": 94,
+    "line": 95,
     "text": "| Active indicator width | 56dp [token:md.comp.nav-bar.item.vertical.active-indicator.width] | hugs the content [NOT FOUND] |"
   },
   {
     "note": "knowledge/guidance/components/navigation-bar.md",
-    "line": 104,
+    "line": 105,
     "text": "[NOT FOUND]."
   },
   {
     "note": "knowledge/guidance/components/navigation-bar.md",
-    "line": 124,
+    "line": 125,
     "text": "only in Flutter's data; material-web's `nav-bar` set defines no label font [NOT FOUND]."
   },
   {
     "note": "knowledge/guidance/components/navigation-bar.md",
-    "line": 160,
+    "line": 161,
     "text": "- No navigation-bar duration, easing or spring token exists [NOT FOUND]. The site describes the"
   },
   {
@@ -301,17 +301,17 @@
   },
   {
     "note": "knowledge/guidance/components/navigation-rail.md",
-    "line": 103,
+    "line": 105,
     "text": "| Active indicator width | 56dp [token:md.comp.nav-rail.item.vertical.active-indicator.width] | hugs the content [NOT FOUND] |"
   },
   {
     "note": "knowledge/guidance/components/navigation-rail.md",
-    "line": 132,
+    "line": 134,
     "text": "[NOT FOUND]. Compose's ids are `navigation-rail-vertical-item.label-text-font` (label medium)"
   },
   {
     "note": "knowledge/guidance/components/navigation-rail.md",
-    "line": 165,
+    "line": 167,
     "text": "- No navigation-rail duration, easing or spring token exists [NOT FOUND]. The site describes the"
   },
   {
@@ -416,17 +416,17 @@
   },
   {
     "note": "knowledge/guidance/components/sliders.md",
-    "line": 122,
+    "line": 123,
     "text": "data [NOT FOUND]."
   },
   {
     "note": "knowledge/guidance/components/sliders.md",
-    "line": 164,
+    "line": 165,
     "text": "- No slider duration, easing or spring token exists in the three sources [NOT FOUND]. Code chooses"
   },
   {
     "note": "knowledge/guidance/components/sliders.md",
-    "line": 173,
+    "line": 174,
     "text": "- The track-end shape change when the handle reaches an edge has no token [NOT FOUND]."
   },
   {
@@ -486,27 +486,27 @@
   },
   {
     "note": "knowledge/guidance/components/text-fields.md",
-    "line": 122,
+    "line": 123,
     "text": "| Top and bottom padding | 8dp [site:/components/text-fields/specs] | [NOT FOUND] |"
   },
   {
     "note": "knowledge/guidance/components/text-fields.md",
-    "line": 160,
+    "line": 161,
     "text": "| Prefix and suffix | follow the input text style [token:md.comp.filled-text-field.input-text.prefix.color] | [NOT FOUND] |"
   },
   {
     "note": "knowledge/guidance/components/text-fields.md",
-    "line": 208,
+    "line": 209,
     "text": "roles; the field tokens do not cover them [NOT FOUND]."
   },
   {
     "note": "knowledge/guidance/components/text-fields.md",
-    "line": 212,
+    "line": 213,
     "text": "- No text-field duration, easing or spring token exists in any of the three sources [NOT FOUND]."
   },
   {
     "note": "knowledge/guidance/components/time-pickers.md",
-    "line": 160,
+    "line": 159,
     "text": "- No time-picker duration, easing or spring token exists in the three sources [NOT FOUND]. The"
   },
   {
@@ -531,22 +531,22 @@
   },
   {
     "note": "knowledge/guidance/develop/platforms.md",
-    "line": 130,
+    "line": 131,
     "text": "that are illustrations, not spec values; do not reuse them as tokens [NOT FOUND]."
   },
   {
     "note": "knowledge/guidance/develop/platforms.md",
-    "line": 131,
+    "line": 132,
     "text": "- No platform-level spacing or size tokens are introduced on these pages [NOT FOUND]."
   },
   {
     "note": "knowledge/guidance/expressive.md",
-    "line": 184,
+    "line": 182,
     "text": "only the standard scheme (expressive values for web: [NOT FOUND])."
   },
   {
     "note": "knowledge/guidance/expressive.md",
-    "line": 216,
+    "line": 214,
     "text": "- Guidance on reduced motion for springs is not covered by these pages [NOT FOUND]."
   },
   {
@@ -571,12 +571,12 @@
   },
   {
     "note": "knowledge/guidance/foundations/layout.md",
-    "line": 400,
+    "line": 402,
     "text": "no token states a maximum width [NOT FOUND]."
   },
   {
     "note": "knowledge/guidance/foundations/layout.md",
-    "line": 444,
+    "line": 446,
     "text": "The layout pages do not say which step each margin, gap or padding should use [NOT FOUND]."
   },
   {
@@ -651,12 +651,12 @@
   },
   {
     "note": "knowledge/guidance/styles/spacing.md",
-    "line": 94,
+    "line": 95,
     "text": "Compose, but the pinned material3 sources define no spacing token or API [NOT FOUND]."
   },
   {
     "note": "knowledge/guidance/styles/spacing.md",
-    "line": 99,
+    "line": 100,
     "text": "- Web: no maintained official component, and material-web has no spacing tokens [NOT FOUND]. Our"
   },
   {

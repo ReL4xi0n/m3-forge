@@ -180,8 +180,9 @@ Platform difference:
 ## Pitfalls
 
 - Buttons inside a card that is itself clickable.
-- Choosing the elevated card for emphasis. The three styles are equal in function; the shadow is
-  only about separation.
+- Treating the elevated card as the most emphatic style. The three styles read and work equally
+  well, so the choice is a matter of style; for separation, filled is the quietest, elevated sits
+  in the middle, and outlined can stand out the most.
 - Cards with different resting elevations in one collection.
 - Scrolling inside a card on mobile.
 - Several swipe actions on one card, or swipeable content inside a swipeable card.

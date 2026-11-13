@@ -52,6 +52,9 @@ Badges sit at the top trailing corner of the icon and overlap it in both item la
     are centered, so leftover space goes to the two ends.
 - Use vertical items in compact windows and horizontal items in medium windows.
 - Baseline navigation bar: taller, vertical items only, no longer recommended.
+- Changes from M2 (these predate M3 Expressive): no drop shadow, a taller container, new color
+  mappings that work with dynamic color, and the active destination shown with a filled icon on a
+  contrasting pill.
 
 ## Expressive
 
@@ -59,8 +62,6 @@ Badges sit at the top trailing corner of the icon and overlap it in both item la
 - The flexible bar is shorter than the baseline bar and supports horizontal items for medium
   windows.
 - The active label color moved from on surface variant to secondary.
-- Changes from M2: no drop shadow, a taller container, new color mappings that work with dynamic
-  color, and the active destination shown with a filled icon on a contrasting pill.
 
 ## States and behavior
 

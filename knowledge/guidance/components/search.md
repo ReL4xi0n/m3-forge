@@ -51,14 +51,14 @@ In the divided style a divider separates the bar from the results.
     expanded windows.
 - Trailing configurations: an avatar, one icon button, two icon buttons, or an icon button plus
   an avatar.
+- Changes from M2 (these predate M3 Expressive): the old "open search bar" was square and elevated. M3 search is rounded, uses a
+  tonal surface, supports dynamic color, and has lower elevation with no shadow by default.
 
 ## Expressive
 
 - February 2025 update: "search bar" and "search view" are now just "search"; the contained style
   arrived; gaps can split results into groups; and the bar grows wider when focused (its outer
   margin shrinks).
-- Changes from M2: the old "open search bar" was square and elevated. M3 search is rounded, uses a
-  tonal surface, supports dynamic color, and has lower elevation with no shadow by default.
 
 ## States and behavior
 

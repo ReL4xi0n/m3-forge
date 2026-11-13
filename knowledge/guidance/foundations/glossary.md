@@ -1,7 +1,7 @@
 ---
 title: Glossary
 kind: foundation
-pages: [/foundations/glossary]
+pages: [/foundations/glossary, /styles/color/system/how-the-system-works, /foundations/design-tokens/overview, /styles/color/advanced/apply-colors]
 tokenSets: []
 expressive: false
 fetched: 2026-11-13
@@ -98,9 +98,10 @@ Not covered by the sources. The glossary defines terms, not sizes.
 
 ## Accessibility
 
-- The tone-difference rule above is the basis for M3's contrast guarantees: role pairs are chosen
-  far enough apart in tone to reach 3:1 or 4.5:1.
-- Medium- and high-contrast schemes widen those tone gaps; they are delivered as token contexts.
+- The tone-difference rule above is the basis for M3's contrast guarantees: the color algorithm
+  assigns a role and its "on" role tones far enough apart to reach 3:1 or 4.5:1.
+- Medium- and high-contrast schemes push those tones further apart. Tokens carry them as contexts,
+  so a system token resolves to a higher-contrast value when that context is active.
 
 ## Platform mapping
 

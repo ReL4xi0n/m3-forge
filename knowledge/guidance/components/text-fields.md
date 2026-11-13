@@ -1,7 +1,7 @@
 ---
 title: Text fields
 kind: component
-pages: [/components/text-fields/overview, /components/text-fields/specs, /components/text-fields/guidelines, /components/text-fields/accessibility]
+pages: [/components/text-fields/overview, /components/text-fields/specs, /components/text-fields/guidelines, /components/text-fields/accessibility, /components/date-pickers/accessibility]
 tokenSets: [filled-text-field, outlined-text-field]
 expressive: false
 fetched: 2026-11-13
@@ -26,7 +26,8 @@ not change text fields.
 - Both styles may appear in one product, but keep each region consistent: one style per form or
   section, never side by side.
 - Avoid when:
-  - The answer is one of a few known options; use radio buttons, chips, or a menu.
+  - **Our practice:** when the answer is one of a few known options, offer radio buttons, chips,
+    or a menu instead of free text.
   - The value is a date or a time that benefits from a calendar or dial; pair the field with a
     date or time picker (see `date-pickers.md` and `time-pickers.md`).
 
@@ -282,8 +283,9 @@ roles; the field tokens do not cover them [NOT FOUND].
 - Filled and outlined fields mixed inside one form.
 - Showing error text under the supporting text instead of replacing it, so the form jumps.
 - Signalling an error by color alone, without an error icon or message.
-- Adding slashes or other formatting while the person types (input masks). Format after they
-  leave the field.
+- In a date field, inserting slashes or other separators while the person types (an input mask);
+  screen reader users hear their input change. Format the date after they press Enter or leave
+  the field.
 - Fields stretched across a wide screen with fixed margins.
 - Dense fields by default, which push targets below the 48 × 48 CSS px [site:/components/text-fields/guidelines]
   minimum.

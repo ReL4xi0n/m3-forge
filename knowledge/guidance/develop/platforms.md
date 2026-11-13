@@ -39,8 +39,9 @@ Choosing a platform:
 
 - Android: build with Compose. Only use MDC-Android for existing Views apps, and plan a migration.
 - Multi-platform apps: Flutter is the site's recommended choice for Material support.
-- Web: there is no maintained official component set. Use the material-web token values and build
-  components on top (this repo's Phase 3 CSS does exactly that).
+- Web: there is no maintained official component set.
+  - **Our practice:** use the material-web token values and build components on top (this repo's
+    Phase 3 CSS does exactly that).
 - Wear OS and Android XR have their own guidance and libraries; see `foundations/watches.md` and
   `foundations/xr.md`.
 

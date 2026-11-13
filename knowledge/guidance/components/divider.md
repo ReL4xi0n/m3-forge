@@ -36,7 +36,8 @@ should be visible but quiet, and used only when open space alone cannot do the g
 ## Variants
 
 - Full width: spans the container.
-- Inset: indented at the start only.
+- Inset: indented at the start only, per the spec margins (see Measurements). The guidelines page
+  says otherwise: there, an inset divider is indented equally from both sides by default.
 - Middle inset: indented equally at both ends.
 - Orientation: horizontal or vertical.
 
@@ -48,7 +49,6 @@ list new color mappings with dynamic color and the new vertical orientation.
 ## States and behavior
 
 - Dividers are static and non-interactive; they have no states.
-- Keep the type of divider consistent within one level of the hierarchy.
 
 ## Measurements
 

@@ -54,6 +54,9 @@ the trailing icons.
   center-aligned app bar became the centered configuration of the small bar.
 - Baseline (not recommended): medium and large. Replace them with the flexible versions, which
   look similar but are shorter, support multiple lines and accept images.
+- Changes from M2 (these predate M3 Expressive): M2 raised the bar with elevation and a shadow when content scrolled under it.
+  M3 fills the container with a color instead and drops the shadow. M3 also uses larger default
+  text and a smaller default height.
 
 ## Expressive
 
@@ -63,9 +66,6 @@ the trailing icons.
   long headlines, and grow to hug their content, so a subtitle makes them taller.
 - The flexible bars accept images and filled icon buttons as elements.
 - Colors were remapped to work with dynamic color.
-- Changes from M2: M2 raised the bar with elevation and a shadow when content scrolled under it.
-  M3 fills the container with a color instead and drops the shadow. M3 also uses larger default
-  text and a smaller default height.
 
 ## States and behavior
 

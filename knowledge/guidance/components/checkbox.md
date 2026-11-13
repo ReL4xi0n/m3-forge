@@ -1,7 +1,7 @@
 ---
 title: Checkbox
 kind: component
-pages: [/components/checkbox/overview, /components/checkbox/specs, /components/checkbox/guidelines, /components/checkbox/accessibility]
+pages: [/components/checkbox/overview, /components/checkbox/specs, /components/checkbox/guidelines, /components/checkbox/accessibility, /components/switch/guidelines, /components/dialogs/guidelines]
 tokenSets: [checkbox]
 expressive: false
 fetched: 2026-11-13
@@ -21,11 +21,13 @@ has an error version.
 - A single item is turned on or off on desktop, where checkboxes are the common idiom.
 - Related options should read as one group. Checkboxes also take less room than a column of
   switches.
+- A list of several related options that would otherwise be drawn as switches, or choices that
+  take effect only when the person saves. Switches are meant to act at once, so a set that waits
+  for a save belongs in checkboxes.
+- When a checkbox turns a single item on or off, carry out the change straight away.
 - Avoid when:
   - Only one option may be chosen; use radio buttons.
-  - The control is a standalone setting that applies at once, especially on mobile; use a switch.
-  - A list of independent options would otherwise be shown as several switches; checkboxes are
-    the better fit there.
+  - The control is a standalone setting, such as a single row on a settings screen; use a switch.
 
 ## Anatomy
 
@@ -165,10 +167,12 @@ State layers (a circle behind the box):
 
 ## Pitfalls
 
-- Using checkboxes for a single choice (use radio buttons) or for settings that apply instantly
-  on mobile (use a switch).
-- A column of switches where a list of related checkboxes would be clearer and smaller.
+- Using checkboxes for a single choice (use radio buttons) or for a standalone setting (use a
+  switch).
+- A column of switches for related options, or for choices that only apply after a save; a list
+  of checkboxes is clearer and smaller.
 - Making only the box clickable, not its label.
 - A parent checkbox that never shows the indeterminate value when its children are mixed.
-- Error shown by color alone; pair it with an error message.
+- An error state with no message beside it. Checkboxes have no built-in error text, so add an
+  error message next to them.
 - Default density that shrinks the 48dp [site:/components/checkbox/specs] target.

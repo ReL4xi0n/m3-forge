@@ -51,6 +51,9 @@ them, wide enough to replace the navigation drawer).
   - Behaviour when closed: transition back to the collapsed rail, or hide entirely.
 - Baseline rail (not recommended): narrower, with a menu, FAB and optional labels.
 - Common layouts: items alone, with a menu, with a FAB, with both, with or without labels.
+- Since baseline M3 (vs M2): the active destination is marked by a pill-shaped indicator in a
+  contrasting color rather than by icon color, weight and fill alone, and the colors were remapped
+  to work with dynamic color.
 
 ## Expressive
 
@@ -58,11 +61,7 @@ them, wide enough to replace the navigation drawer).
   and the expanded rail stands in for the navigation drawer.
 - The two rails share one visual language so they can morph into each other on any device,
   including phones in portrait.
-- Predictive back is supported for the modal expanded rail on Android: the rail lifts off the
-  window edge as the gesture previews the previous screen.
 - Vertical items now color the active label secondary (it used to be on surface variant).
-- Changes from M2: a pill-shaped active indicator instead of icon color and weight alone, and new
-  color mappings for dynamic color.
 
 ## States and behavior
 
@@ -86,6 +85,9 @@ them, wide enough to replace the navigation drawer).
 - Badges: on the icon's top corner in the collapsed rail, next to the label in the expanded rail.
 - Labels: one word each. Avoid wrapping; if unavoidable, break between words or hyphenate. Never
   truncate or shrink them.
+- Predictive back (Android; listed among the baseline M3 changes from M2): it applies only to the
+  modal expanded rail, which lifts off the window edge as the back gesture previews the previous
+  screen.
 
 ## Measurements
 

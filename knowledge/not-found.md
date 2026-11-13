@@ -5388,62 +5388,62 @@ Statements the knowledge notes mark `[NOT FOUND]` (values or facts no source giv
 | knowledge/guidance/components/app-bars.md:135 | token [NOT FOUND]. |
 | knowledge/guidance/components/app-bars.md:155 | itself defines no state-layer opacity [NOT FOUND]. |
 | knowledge/guidance/components/app-bars.md:159 | - No app-bar duration, easing or spring token exists [NOT FOUND]. The site describes the |
-| knowledge/guidance/components/badges.md:75 | - The token set has no padding, offset or maximum-width token [NOT FOUND]; those values come from |
-| knowledge/guidance/components/badges.md:104 | - No badge motion, duration, easing or spring token [NOT FOUND]. The sources do not describe how a |
+| knowledge/guidance/components/badges.md:74 | - The token set has no padding, offset or maximum-width token [NOT FOUND]; those values come from |
+| knowledge/guidance/components/badges.md:103 | - No badge motion, duration, easing or spring token [NOT FOUND]. The sources do not describe how a |
 | knowledge/guidance/components/bottom-sheets.md:105 | - The bottom sheet token set defines no text style [NOT FOUND]. |
 | knowledge/guidance/components/bottom-sheets.md:123 | - Bottom sheet motion tokens (duration, easing or spring): none in the token set [NOT FOUND]. |
 | knowledge/guidance/components/button-groups.md:121 | - The group has no type token of its own [NOT FOUND]. Labels follow the button sizes; see |
 | knowledge/guidance/components/button-groups.md:139 | - Compose has no group motion token [NOT FOUND]; `ButtonGroup` animates widths with the fast |
 | knowledge/guidance/components/button-groups.md:145 | [NOT FOUND]. |
-| knowledge/guidance/components/buttons.md:125 | per-size label token [NOT FOUND]; their single label token is `md.comp.button.label-text`. |
-| knowledge/guidance/components/buttons.md:160 | - Compose defines no per-button motion token [NOT FOUND]. Its code animates the plain button's |
-| knowledge/guidance/components/buttons.md:165 | [NOT FOUND]. Springs replace durations and easings in Expressive motion. |
+| knowledge/guidance/components/buttons.md:126 | per-size label token [NOT FOUND]; their single label token is `md.comp.button.label-text`. |
+| knowledge/guidance/components/buttons.md:161 | - Compose defines no per-button motion token [NOT FOUND]. Its code animates the plain button's |
+| knowledge/guidance/components/buttons.md:166 | [NOT FOUND]. Springs replace durations and easings in Expressive motion. |
 | knowledge/guidance/components/cards.md:102 | [NOT FOUND]. |
 | knowledge/guidance/components/cards.md:108 | - The card token sets define no headline, subhead or supporting-text type style [NOT FOUND]. |
 | knowledge/guidance/components/cards.md:141 | - Card motion tokens: none in any card token set [NOT FOUND]. |
-| knowledge/guidance/components/carousel.md:96 | \| Item corner radius \| 28dp [site:/components/carousel/specs] [token:md.comp.carousel-item.container.shape] \| 28dp [site:/components/carousel/specs] [token:md.comp.carousel-item.container.shape] \| 28dp [site:/components/carousel/specs] [token:md.comp.carousel-item.container.shape] \| [NOT FOUND] \| |
-| knowledge/guidance/components/carousel.md:114 | - The carousel-item token set defines no text style [NOT FOUND]. |
-| knowledge/guidance/components/carousel.md:134 | - Carousel motion tokens (duration, easing or spring): none in the token data [NOT FOUND]. |
-| knowledge/guidance/components/checkbox.md:84 | - Compose defines no focus-ring tokens for the checkbox [NOT FOUND]; see `knowledge/not-found.md`. |
-| knowledge/guidance/components/checkbox.md:90 | - The checkbox has no text of its own and no type token [NOT FOUND]. |
-| knowledge/guidance/components/checkbox.md:92 | [NOT FOUND]; only its color is specified (below). |
-| knowledge/guidance/components/checkbox.md:124 | - No checkbox duration, easing or spring token exists in the three sources [NOT FOUND]. The |
-| knowledge/guidance/components/chips.md:179 | - No chip duration, easing or spring token exists in material-web's data [NOT FOUND]. Code chooses |
-| knowledge/guidance/components/chips.md:195 | [NOT FOUND]. |
-| knowledge/guidance/components/date-pickers.md:131 | [NOT FOUND]. |
-| knowledge/guidance/components/date-pickers.md:185 | - No date-picker duration, easing or spring token exists in the three sources [NOT FOUND]. Modal |
+| knowledge/guidance/components/carousel.md:97 | \| Item corner radius \| 28dp [site:/components/carousel/specs] [token:md.comp.carousel-item.container.shape] \| 28dp [site:/components/carousel/specs] [token:md.comp.carousel-item.container.shape] \| 28dp [site:/components/carousel/specs] [token:md.comp.carousel-item.container.shape] \| [NOT FOUND] \| |
+| knowledge/guidance/components/carousel.md:115 | - The carousel-item token set defines no text style [NOT FOUND]. |
+| knowledge/guidance/components/carousel.md:135 | - Carousel motion tokens (duration, easing or spring): none in the token data [NOT FOUND]. |
+| knowledge/guidance/components/checkbox.md:86 | - Compose defines no focus-ring tokens for the checkbox [NOT FOUND]; see `knowledge/not-found.md`. |
+| knowledge/guidance/components/checkbox.md:92 | - The checkbox has no text of its own and no type token [NOT FOUND]. |
+| knowledge/guidance/components/checkbox.md:94 | [NOT FOUND]; only its color is specified (below). |
+| knowledge/guidance/components/checkbox.md:126 | - No checkbox duration, easing or spring token exists in the three sources [NOT FOUND]. The |
+| knowledge/guidance/components/chips.md:182 | - No chip duration, easing or spring token exists in material-web's data [NOT FOUND]. Code chooses |
+| knowledge/guidance/components/chips.md:198 | [NOT FOUND]. |
+| knowledge/guidance/components/date-pickers.md:132 | [NOT FOUND]. |
+| knowledge/guidance/components/date-pickers.md:186 | - No date-picker duration, easing or spring token exists in the three sources [NOT FOUND]. Modal |
 | knowledge/guidance/components/dialogs.md:175 | - Dialog motion tokens (duration, easing or spring): none in either token set [NOT FOUND]. |
 | knowledge/guidance/components/divider.md:77 | - The divider has no text of its own and no type token [NOT FOUND]. |
 | knowledge/guidance/components/divider.md:89 | - No motion. The divider has no motion tokens [NOT FOUND] and no animated behavior in the |
-| knowledge/guidance/components/extended-fab.md:119 | extended-FAB label token [NOT FOUND]. Compose's code hard-codes those three styles |
-| knowledge/guidance/components/extended-fab.md:162 | - No extended-FAB duration, easing or spring token covers these transitions [NOT FOUND]. |
+| knowledge/guidance/components/extended-fab.md:122 | extended-FAB label token [NOT FOUND]. Compose's code hard-codes those three styles |
+| knowledge/guidance/components/extended-fab.md:165 | - No extended-FAB duration, easing or spring token covers these transitions [NOT FOUND]. |
 | knowledge/guidance/components/fab-menu.md:99 | in Flutter's data; material-web and Compose define no FAB-menu label token [NOT FOUND]. |
 | knowledge/guidance/components/fab-menu.md:133 | - No FAB-menu duration, easing or spring token exists [NOT FOUND]. |
 | knowledge/guidance/components/floating-action-button.md:95 | - Padding and screen margins are drawn only in spec images without printed values [NOT FOUND]. |
 | knowledge/guidance/components/floating-action-button.md:104 | - Medium FAB shape: Compose has no token for it [NOT FOUND] and uses `ShapeDefaults.LargeIncreased` |
 | knowledge/guidance/components/floating-action-button.md:109 | - A FAB shows no text, so it has no label type token [NOT FOUND]. For the labelled version see |
 | knowledge/guidance/components/floating-action-button.md:148 | - No FAB duration, easing or spring token covers these transitions [NOT FOUND]. |
-| knowledge/guidance/components/icon-buttons.md:115 | - Icon buttons carry no text, so there is no label type token [NOT FOUND]. |
-| knowledge/guidance/components/icon-buttons.md:164 | [NOT FOUND]. |
-| knowledge/guidance/components/icon-buttons.md:165 | - Compose defines no icon-button motion token [NOT FOUND]. Its code animates both the press morph |
-| knowledge/guidance/components/icon-buttons.md:176 | - Icon change on selection (outlined to filled glyph): no motion token [NOT FOUND]. |
-| knowledge/guidance/components/lists.md:231 | - List motion tokens (duration, easing or spring): none in the token data [NOT FOUND]. |
-| knowledge/guidance/components/lists.md:240 | - material-web and Flutter have no list motion values [NOT FOUND]. |
+| knowledge/guidance/components/icon-buttons.md:117 | - Icon buttons carry no text, so there is no label type token [NOT FOUND]. |
+| knowledge/guidance/components/icon-buttons.md:166 | [NOT FOUND]. |
+| knowledge/guidance/components/icon-buttons.md:167 | - Compose defines no icon-button motion token [NOT FOUND]. Its code animates both the press morph |
+| knowledge/guidance/components/icon-buttons.md:178 | - Icon change on selection (outlined to filled glyph): no motion token [NOT FOUND]. |
+| knowledge/guidance/components/lists.md:234 | - List motion tokens (duration, easing or spring): none in the token data [NOT FOUND]. |
+| knowledge/guidance/components/lists.md:243 | - material-web and Flutter have no list motion values [NOT FOUND]. |
 | knowledge/guidance/components/loading-indicator.md:94 | - No token gives the minimum or maximum size [NOT FOUND]; the range comes from the guidelines page. |
 | knowledge/guidance/components/loading-indicator.md:98 | - The loading indicator has no text and no type token [NOT FOUND]. |
 | knowledge/guidance/components/loading-indicator.md:114 | - No loading-indicator motion token exists in any repository [NOT FOUND]. Compose's code sets the |
 | knowledge/guidance/components/menus.md:124 | [NOT FOUND]; the table above uses the tokens. |
 | knowledge/guidance/components/menus.md:154 | - Group label text: no type token [NOT FOUND]. |
 | knowledge/guidance/components/menus.md:200 | - No menu motion token exists in any repository [NOT FOUND]. The site describes the behavior: |
-| knowledge/guidance/components/navigation-bar.md:94 | \| Active indicator width \| 56dp [token:md.comp.nav-bar.item.vertical.active-indicator.width] \| hugs the content [NOT FOUND] \| |
-| knowledge/guidance/components/navigation-bar.md:104 | [NOT FOUND]. |
-| knowledge/guidance/components/navigation-bar.md:124 | only in Flutter's data; material-web's `nav-bar` set defines no label font [NOT FOUND]. |
-| knowledge/guidance/components/navigation-bar.md:160 | - No navigation-bar duration, easing or spring token exists [NOT FOUND]. The site describes the |
+| knowledge/guidance/components/navigation-bar.md:95 | \| Active indicator width \| 56dp [token:md.comp.nav-bar.item.vertical.active-indicator.width] \| hugs the content [NOT FOUND] \| |
+| knowledge/guidance/components/navigation-bar.md:105 | [NOT FOUND]. |
+| knowledge/guidance/components/navigation-bar.md:125 | only in Flutter's data; material-web's `nav-bar` set defines no label font [NOT FOUND]. |
+| knowledge/guidance/components/navigation-bar.md:161 | - No navigation-bar duration, easing or spring token exists [NOT FOUND]. The site describes the |
 | knowledge/guidance/components/navigation-drawer.md:101 | - Modal drawer: the specs page gives no separate measurements [NOT FOUND]. |
 | knowledge/guidance/components/navigation-drawer.md:136 | - No drawer duration, easing or spring token exists [NOT FOUND]. |
-| knowledge/guidance/components/navigation-rail.md:103 | \| Active indicator width \| 56dp [token:md.comp.nav-rail.item.vertical.active-indicator.width] \| hugs the content [NOT FOUND] \| |
-| knowledge/guidance/components/navigation-rail.md:132 | [NOT FOUND]. Compose's ids are `navigation-rail-vertical-item.label-text-font` (label medium) |
-| knowledge/guidance/components/navigation-rail.md:165 | - No navigation-rail duration, easing or spring token exists [NOT FOUND]. The site describes the |
+| knowledge/guidance/components/navigation-rail.md:105 | \| Active indicator width \| 56dp [token:md.comp.nav-rail.item.vertical.active-indicator.width] \| hugs the content [NOT FOUND] \| |
+| knowledge/guidance/components/navigation-rail.md:134 | [NOT FOUND]. Compose's ids are `navigation-rail-vertical-item.label-text-font` (label medium) |
+| knowledge/guidance/components/navigation-rail.md:167 | - No navigation-rail duration, easing or spring token exists [NOT FOUND]. The site describes the |
 | knowledge/guidance/components/progress-indicators.md:117 | \| Wave amplitude \| 3dp [token:md.comp.progress-indicator.linear.active-indicator.wave.amplitude] \| [NOT FOUND] \| |
 | knowledge/guidance/components/progress-indicators.md:118 | \| Wavelength, determinate \| 40dp [token:md.comp.progress-indicator.linear.active-indicator.wave.wavelength] \| [NOT FOUND] \| |
 | knowledge/guidance/components/progress-indicators.md:119 | \| Wavelength, indeterminate \| 20dp [token:md.comp.progress-indicator.linear.indeterminate.active-indicator.wave.wavelength] \| [NOT FOUND] \| |
@@ -5464,9 +5464,9 @@ Statements the knowledge notes mark `[NOT FOUND]` (values or facts no source giv
 | knowledge/guidance/components/segmented-buttons.md:114 | spring [NOT FOUND]. No segmented-button motion token exists [NOT FOUND]. |
 | knowledge/guidance/components/side-sheets.md:120 | - Side sheet motion tokens (duration, easing or spring): none in the token set [NOT FOUND]. |
 | knowledge/guidance/components/side-sheets.md:122 | either [NOT FOUND]. |
-| knowledge/guidance/components/sliders.md:122 | data [NOT FOUND]. |
-| knowledge/guidance/components/sliders.md:164 | - No slider duration, easing or spring token exists in the three sources [NOT FOUND]. Code chooses |
-| knowledge/guidance/components/sliders.md:173 | - The track-end shape change when the handle reaches an edge has no token [NOT FOUND]. |
+| knowledge/guidance/components/sliders.md:123 | data [NOT FOUND]. |
+| knowledge/guidance/components/sliders.md:165 | - No slider duration, easing or spring token exists in the three sources [NOT FOUND]. Code chooses |
+| knowledge/guidance/components/sliders.md:174 | - The track-end shape change when the handle reaches an edge has no token [NOT FOUND]. |
 | knowledge/guidance/components/snackbar.md:103 | token [NOT FOUND]. |
 | knowledge/guidance/components/snackbar.md:137 | - No snackbar motion token exists in any repository [NOT FOUND]. The site only says that the |
 | knowledge/guidance/components/split-button.md:96 | - The split button has no label type token of its own [NOT FOUND]. |
@@ -5478,25 +5478,25 @@ Statements the knowledge notes mark `[NOT FOUND]` (values or facts no source giv
 | knowledge/guidance/components/switch.md:136 | - No switch duration, easing or spring token exists in the three sources [NOT FOUND]. The switch |
 | knowledge/guidance/components/tabs.md:97 | - Beyond the minimum length, the site and tokens give no indicator width [NOT FOUND]. Flutter |
 | knowledge/guidance/components/tabs.md:157 | - No tab duration, easing or spring token exists [NOT FOUND]. The site only says the indicator |
-| knowledge/guidance/components/text-fields.md:122 | \| Top and bottom padding \| 8dp [site:/components/text-fields/specs] \| [NOT FOUND] \| |
-| knowledge/guidance/components/text-fields.md:160 | \| Prefix and suffix \| follow the input text style [token:md.comp.filled-text-field.input-text.prefix.color] \| [NOT FOUND] \| |
-| knowledge/guidance/components/text-fields.md:208 | roles; the field tokens do not cover them [NOT FOUND]. |
-| knowledge/guidance/components/text-fields.md:212 | - No text-field duration, easing or spring token exists in any of the three sources [NOT FOUND]. |
-| knowledge/guidance/components/time-pickers.md:160 | - No time-picker duration, easing or spring token exists in the three sources [NOT FOUND]. The |
+| knowledge/guidance/components/text-fields.md:123 | \| Top and bottom padding \| 8dp [site:/components/text-fields/specs] \| [NOT FOUND] \| |
+| knowledge/guidance/components/text-fields.md:161 | \| Prefix and suffix \| follow the input text style [token:md.comp.filled-text-field.input-text.prefix.color] \| [NOT FOUND] \| |
+| knowledge/guidance/components/text-fields.md:209 | roles; the field tokens do not cover them [NOT FOUND]. |
+| knowledge/guidance/components/text-fields.md:213 | - No text-field duration, easing or spring token exists in any of the three sources [NOT FOUND]. |
+| knowledge/guidance/components/time-pickers.md:159 | - No time-picker duration, easing or spring token exists in the three sources [NOT FOUND]. The |
 | knowledge/guidance/components/toolbars.md:130 | - No toolbar type token exists [NOT FOUND]. Text inside comes from the placed components (button |
 | knowledge/guidance/components/toolbars.md:172 | - No toolbar duration, easing or spring token exists [NOT FOUND]. |
 | knowledge/guidance/components/tooltips.md:104 | - There is no height, padding or width token for either variant [NOT FOUND]; those values come |
 | knowledge/guidance/components/tooltips.md:151 | - No tooltip motion token exists in any repository [NOT FOUND]. The site gives only the hide |
-| knowledge/guidance/develop/platforms.md:130 | that are illustrations, not spec values; do not reuse them as tokens [NOT FOUND]. |
-| knowledge/guidance/develop/platforms.md:131 | - No platform-level spacing or size tokens are introduced on these pages [NOT FOUND]. |
-| knowledge/guidance/expressive.md:184 | only the standard scheme (expressive values for web: [NOT FOUND]). |
-| knowledge/guidance/expressive.md:216 | - Guidance on reduced motion for springs is not covered by these pages [NOT FOUND]. |
+| knowledge/guidance/develop/platforms.md:131 | that are illustrations, not spec values; do not reuse them as tokens [NOT FOUND]. |
+| knowledge/guidance/develop/platforms.md:132 | - No platform-level spacing or size tokens are introduced on these pages [NOT FOUND]. |
+| knowledge/guidance/expressive.md:182 | only the standard scheme (expressive values for web: [NOT FOUND]). |
+| knowledge/guidance/expressive.md:214 | - Guidance on reduced motion for springs is not covered by these pages [NOT FOUND]. |
 | knowledge/guidance/foundations/designing.md:143 | - No system token defines the minimum target or the target spacing [NOT FOUND]. The libraries |
 | knowledge/guidance/foundations/interaction.md:57 | No token gives the fade timing [NOT FOUND]. |
 | knowledge/guidance/foundations/interaction.md:151 | entry [NOT FOUND]. Components apply the 38% [token:md.sys.state.disabled.state-layer-opacity] |
 | knowledge/guidance/foundations/interaction.md:161 | - Compose has none of these three tokens [NOT FOUND]. Its optional inset ring is set in code: |
-| knowledge/guidance/foundations/layout.md:400 | no token states a maximum width [NOT FOUND]. |
-| knowledge/guidance/foundations/layout.md:444 | The layout pages do not say which step each margin, gap or padding should use [NOT FOUND]. |
+| knowledge/guidance/foundations/layout.md:402 | no token states a maximum width [NOT FOUND]. |
+| knowledge/guidance/foundations/layout.md:446 | The layout pages do not say which step each margin, gap or padding should use [NOT FOUND]. |
 | knowledge/guidance/foundations/usability.md:82 | - No system token encodes usability guidance itself [NOT FOUND]. |
 | knowledge/guidance/foundations/watches.md:88 | [NOT FOUND]. |
 | knowledge/guidance/foundations/watches.md:90 | library, not on these pages and not in our token sources [NOT FOUND]. |
@@ -5511,6 +5511,6 @@ Statements the knowledge notes mark `[NOT FOUND]` (values or facts no source giv
 | knowledge/guidance/styles/icons.md:95 | - No icon-style token exists; these values come from the site [NOT FOUND]. Component icon sizes |
 | knowledge/guidance/styles/shape.md:88 | these as tokens [NOT FOUND]. |
 | knowledge/guidance/styles/shape.md:90 | - Shape morph timing: the site names the scheme but no spring speed for morphs in general [NOT FOUND]. |
-| knowledge/guidance/styles/spacing.md:94 | Compose, but the pinned material3 sources define no spacing token or API [NOT FOUND]. |
-| knowledge/guidance/styles/spacing.md:99 | - Web: no maintained official component, and material-web has no spacing tokens [NOT FOUND]. Our |
+| knowledge/guidance/styles/spacing.md:95 | Compose, but the pinned material3 sources define no spacing token or API [NOT FOUND]. |
+| knowledge/guidance/styles/spacing.md:100 | - Web: no maintained official component, and material-web has no spacing tokens [NOT FOUND]. Our |
 | knowledge/guidance/styles/typography.md:158 | exists in our token sources [NOT FOUND]. Relative to the small category, scripts in the medium |

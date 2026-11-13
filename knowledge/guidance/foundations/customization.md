@@ -1,7 +1,7 @@
 ---
 title: Customizing Material
 kind: foundation
-pages: [/foundations/customization]
+pages: [/foundations/customization, /styles/color/roles]
 tokenSets: [sys.color, ref.palette]
 expressive: false
 fetched: 2026-11-13
@@ -40,8 +40,12 @@ a user-generated scheme when dynamic color is on.
 - Five key color groups carry the roles: primary, secondary, tertiary, neutral and neutral
   variant. Each key color produces a tonal palette, and tones from it fill roles such as
   `primary`, `on-primary` and `primary-container`.
-- Map your app's colors to roles, not to palette steps. Only roles follow light/dark mode,
-  contrast level and dynamic color.
+- Map your app's own colors onto the source colors of the custom scheme. That lines them up
+  with the roles and the logic dynamic color applies.
+- Color roles are used the same way with the static baseline scheme and with dynamic color, and
+  custom components must be mapped to them as well. Apply roles only in their intended pairs and
+  layering orders; other combinations can lose contrast once dynamic color or a user's contrast
+  setting moves the tones.
 
 ### Tools
 
@@ -63,14 +67,14 @@ For example, the light baseline primary resolves to `md.ref.palette.primary40`:
 
 ## Accessibility
 
-- Generated schemes handle contrast for you: role pairs such as `primary` / `on-primary` are
-  chosen from tones far enough apart to stay readable. Keep that guarantee by always pairing a
-  role with its `on-` role.
-- Pick brand inputs freely; let the system choose tones. Forcing an exact brand hex onto a
-  container role can break the contrast the scheme was built to keep.
-- Medium and high contrast variants of the scheme exist (see `design-tokens.md#rules`); a custom
-  theme should provide them too, so people who need more contrast are not left with the
-  standard scheme.
+- The color system handles accessible contrast for you: its role pairs, such as `primary` /
+  `on-primary`, are designed to keep at least 3:1 contrast. Keep that guarantee by pairing a
+  role only with its intended partner, for example its `on-` role.
+- **Our practice:** pick brand inputs freely and let the system choose the tones. Forcing an
+  exact brand hex onto a container role can break the contrast the scheme was built to keep.
+- **Our practice:** give a custom theme medium and high contrast versions as well (the variants
+  are listed in `design-tokens.md#rules`), so people who need more contrast are not left with
+  the standard scheme.
 
 ## Platform mapping
 
@@ -99,9 +103,9 @@ For example, the light baseline primary resolves to `md.ref.palette.primary40`:
 - Hard-coding brand hex values in components. They will not follow dark mode, contrast levels or
   dynamic color.
 - Shipping dynamic color without a custom fallback scheme.
-- Assuming dynamic color means "whatever Theme Builder outputs". It means a role that can change
-  in response to the person's settings at run time.
+- **Our practice:** do not treat dynamic color as "whatever Theme Builder outputs". It means a
+  role that can change in response to the person's settings at run time.
 - Turning dynamic color on everywhere when the brand relies on recognizable color in key places;
   apply it selectively instead.
-- Adding many input colors to chase a brand guide. One source color usually gives a more
-  coherent scheme; extra inputs are for real brand needs.
+- **Our practice:** avoid adding many input colors to chase a brand guide. One source color
+  usually gives a more coherent scheme; keep extra inputs for real brand needs.

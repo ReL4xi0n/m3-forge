@@ -1,7 +1,7 @@
 ---
 title: Progress indicators
 kind: component
-pages: [/components/progress-indicators/overview, /components/progress-indicators/specs, /components/progress-indicators/guidelines, /components/progress-indicators/accessibility]
+pages: [/components/progress-indicators/overview, /components/progress-indicators/specs, /components/progress-indicators/guidelines, /components/progress-indicators/accessibility, /components/loading-indicator/guidelines]
 tokenSets: [progress-indicator, progress-indicator.linear, progress-indicator.circular, progress-indicator.linear.thick, progress-indicator.circular.thick, linear-progress-indicator, circular-progress-indicator]
 expressive: true
 fetched: 2026-11-13
@@ -56,13 +56,15 @@ the top and run clockwise by default.
 - Determinate: the fill must reflect real progress.
 - Indeterminate: only says that work is happening. When the remaining amount becomes known, switch
   from indeterminate to determinate.
+- Since the December 2023 refresh (before M3 Expressive): a stop indicator, higher track contrast,
+  rounded ends and new motion.
 
 ## Expressive
 
 - Added in the Expressive update (dated Aug 2024 on the overview page): configurable track
   thickness and the wavy active indicator.
 - Wavy shape:
-  - A sine-like wave drawn on the active indicator; the track stays flat.
+  - A wave is applied to the active indicator; its shape is set by amplitude and wavelength.
   - Amplitude is measured from the resting centre line to the centre of a peak; wavelength is the
     distance between neighbouring peaks.
   - It makes the overall component taller (linear) or larger (circular), so reserve the space.
@@ -71,8 +73,6 @@ the top and run clockwise by default.
   - When a circular indicator is resized, scale the wave with it so the proportions hold.
 - Compose fades the wave in and out with progress. Its default amplitude function keeps the wave
   flat below 10% and from 95% of progress onwards [impl:compose-material3/commonMain/androidx/compose/material3/WavyProgressIndicator.kt:490].
-- An earlier change (Dec 2023) added the stop indicator, raised track contrast, rounded the ends
-  and introduced new motion.
 
 ## States and behavior
 

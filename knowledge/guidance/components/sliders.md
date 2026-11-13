@@ -23,9 +23,9 @@ orientation and an optional icon inside the track.
   - Centered: zero or the default sits in the middle, with negative and positive values on
     either side.
   - Range: two handles set a minimum and a maximum.
+- **Our practice:** when the value must be exact and the range is wide, offer a text field instead,
+  or pair one with the slider.
 - Avoid when:
-  - The value must be exact and the range is wide; offer a text field, or pair one with the
-    slider.
   - A range slider would be vertical. Two handles on a vertical track add too much cognitive load;
     keep range sliders horizontal.
 
@@ -54,6 +54,12 @@ ones.
   - The icon should show what the slider controls. It may change at zero (volume becomes mute).
   - When the active track is too short to hold it, the icon moves to the inactive track.
 - Value indicator: off (default) or on. Not needed when the value is shown elsewhere.
+- Since the December 2023 refresh (before M3 Expressive):
+  - The handle became a narrow vertical bar that gets thinner while pressed.
+  - Stop indicators were added at the track ends for contrast.
+  - The value label grew larger.
+  - Centered sliders start from the middle.
+  - The track ends change shape as the handle reaches an edge.
 
 ## Expressive
 
@@ -61,15 +67,10 @@ ones.
   - Vertical orientation.
   - The S, M, L and XL sizes (XS is the previous default).
   - The inset icon.
-  - The site lists these as available in code on MDC-Android only; on other platforms they exist
-    as tokens without presets. To resize, swap the default `md.comp.slider.xsmall.*` tokens for
-    another size's set.
-- December 2023 refresh, carried into M3 Expressive:
-  - The handle became a narrow vertical bar that gets thinner while pressed.
-  - Stop indicators were added at the track ends for contrast.
-  - The value label grew larger.
-  - Centered sliders start from the middle.
-  - The track ends change shape as the handle reaches an edge.
+  - Vertical orientation and the inset icon are listed simply as available. Only the S–XL sizes
+    carry a platform note: they are presets in code on MDC-Android, and elsewhere exist only as
+    tokens with no preset. To resize there, replace the default `md.comp.slider.xsmall.*` tokens
+    with another size's set.
 
 ## States and behavior
 
@@ -204,7 +205,8 @@ Platform differences (see `knowledge/conflicts.md`):
 
 ## Pitfalls
 
-- Using a slider where an exact value matters and no text entry is offered.
+- **Our practice:** do not rely on a slider alone where an exact value matters; offer text entry
+  too.
 - Vertical range sliders.
 - Inset icons on XS or S sliders, on centered or range sliders.
 - Too many stop indicators.

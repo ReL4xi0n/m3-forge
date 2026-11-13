@@ -80,21 +80,21 @@ inside their own source before comparing; a unitless number (Flutter) is compare
 
 | token | page | site value | repo value (wins) | note |
 |---|---|---|---|---|
-| md.comp.badge.shape | /components/badges/specs | 3dp | material-web: → md.sys.shape.corner.full | knowledge/guidance/components/badges.md:67 |
-| md.comp.badge.large.shape | /components/badges/specs | 8dp | material-web: → md.sys.shape.corner.full | knowledge/guidance/components/badges.md:69 |
+| md.comp.badge.shape | /components/badges/specs | 3dp | material-web: → md.sys.shape.corner.full | knowledge/guidance/components/badges.md:66 |
+| md.comp.badge.large.shape | /components/badges/specs | 8dp | material-web: → md.sys.shape.corner.full | knowledge/guidance/components/badges.md:68 |
 | md.comp.button-group.connected.xsmall.inner-corner.corner-size | /components/button-groups/specs | 4dp | material-web: → md.sys.shape.corner-value.small | knowledge/guidance/components/button-groups.md:97 |
-| md.comp.checkbox.container.size | /components/checkbox/specs | 48dp | material-web: 18dp | knowledge/guidance/components/checkbox.md:147 |
-| md.comp.input-chip.with-avatar.avatar.shape | /components/chips/specs | 12dp | material-web: → md.sys.shape.corner.full | knowledge/guidance/components/chips.md:112 |
-| md.comp.extended-fab.small.leading-space | /components/extended-fab/specs | 8dp | material-web: 16dp | knowledge/guidance/components/extended-fab.md:88 |
+| md.comp.checkbox.container.size | /components/checkbox/specs | 48dp | material-web: 18dp | knowledge/guidance/components/checkbox.md:149 |
+| md.comp.input-chip.with-avatar.avatar.shape | /components/chips/specs | 12dp | material-web: → md.sys.shape.corner.full | knowledge/guidance/components/chips.md:113 |
+| md.comp.extended-fab.small.leading-space | /components/extended-fab/specs | 8dp | material-web: 16dp | knowledge/guidance/components/extended-fab.md:91 |
 | md.comp.fab.container.height | /components/floating-action-button/specs | 24dp | material-web: 56dp | knowledge/guidance/components/floating-action-button.md:91 |
-| md.comp.list.list-item.trailing-space | /components/lists/specs | 24dp | material-web: 16dp | knowledge/guidance/components/lists.md:167 |
-| md.comp.list.divider.trailing-space | /components/lists/specs | 24dp | material-web: 16dp | knowledge/guidance/components/lists.md:168 |
+| md.comp.list.list-item.trailing-space | /components/lists/specs | 24dp | material-web: 16dp | knowledge/guidance/components/lists.md:170 |
+| md.comp.list.divider.trailing-space | /components/lists/specs | 24dp | material-web: 16dp | knowledge/guidance/components/lists.md:171 |
 | md.comp.search-bar.avatar.size | /components/search/specs | 48dp | material-web: 30dp | knowledge/guidance/components/search.md:104 |
-| md.comp.slider.medium.active.handle.height | /components/sliders/specs | 52dp | material-web: 44dp | knowledge/guidance/components/sliders.md:108 |
+| md.comp.slider.medium.active.handle.height | /components/sliders/specs | 52dp | material-web: 44dp | knowledge/guidance/components/sliders.md:109 |
 | md.comp.snackbar.with-two-lines.container.height | /components/snackbar/guidelines | 48dp | material-web: 68dp | knowledge/guidance/components/snackbar.md:100 |
 | md.comp.snackbar.with-two-lines.container.height | /components/snackbar/guidelines | 64dp | material-web: 68dp | knowledge/guidance/components/snackbar.md:100 |
-| md.comp.time-picker.time-selector.container.width | /components/time-pickers/specs | 80dp | material-web: 96dp | knowledge/guidance/components/time-pickers.md:100 |
-| md.comp.time-picker.period-selector.vertical.container.width | /components/time-pickers/specs | 80dp | material-web: 52dp | knowledge/guidance/components/time-pickers.md:103 |
-| md.comp.time-picker.period-selector.horizontal.container.width | /components/time-pickers/specs | 38dp | material-web: 216dp | knowledge/guidance/components/time-pickers.md:104 |
-| md.comp.time-input.time-input-field.container.width | /components/time-pickers/specs | 72dp | material-web: 96dp | knowledge/guidance/components/time-pickers.md:110 |
-| md.comp.time-input.period-selector.container.width | /components/time-pickers/specs | 72dp | material-web: 52dp | knowledge/guidance/components/time-pickers.md:112 |
+| md.comp.time-picker.time-selector.container.width | /components/time-pickers/specs | 80dp | material-web: 96dp | knowledge/guidance/components/time-pickers.md:99 |
+| md.comp.time-picker.period-selector.vertical.container.width | /components/time-pickers/specs | 80dp | material-web: 52dp | knowledge/guidance/components/time-pickers.md:102 |
+| md.comp.time-picker.period-selector.horizontal.container.width | /components/time-pickers/specs | 38dp | material-web: 216dp | knowledge/guidance/components/time-pickers.md:103 |
+| md.comp.time-input.time-input-field.container.width | /components/time-pickers/specs | 72dp | material-web: 96dp | knowledge/guidance/components/time-pickers.md:109 |
+| md.comp.time-input.period-selector.container.width | /components/time-pickers/specs | 72dp | material-web: 52dp | knowledge/guidance/components/time-pickers.md:111 |

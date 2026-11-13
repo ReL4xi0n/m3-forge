@@ -95,8 +95,10 @@ platforms.
 - Do not trade clarity for decoration: unconventional shapes on text-heavy containers hurt
   reading.
 - Large corners clip content in dense containers; keep text and images clear of the corner.
-- Morphing is decorative motion. When the user has asked for reduced motion, turn shape morphing
-  off (see motion.md#accessibility).
+- A shape morph answers an interaction and tells the user something: a selected state, work in
+  progress, or a change around them. Make sure that message survives when the morph does not play.
+- **Our practice:** when the user has asked for reduced motion, turn shape morphing off and jump
+  straight to the end shape (see motion.md#accessibility).
 
 ## Platform mapping
 

@@ -1,7 +1,7 @@
 ---
 title: Typography
 kind: style
-pages: [/styles/typography/overview, /styles/typography/fonts, /styles/typography/type-scale-tokens, /styles/typography/applying-type, /styles/typography/editorial-treatments, /blog/design-material-theme-type, /blog/roboto-flex, /blog/color-fonts-are-here, /blog/fonts-are-software-video, /blog/google-fonts-pairing-figma]
+pages: [/styles/typography/overview, /styles/typography/fonts, /styles/typography/type-scale-tokens, /styles/typography/applying-type, /styles/typography/editorial-treatments, /blog/design-material-theme-type, /blog/roboto-flex, /blog/color-fonts-are-here, /blog/fonts-are-software-video, /blog/google-fonts-pairing-figma, /foundations/writing/text-resizing]
 tokenSets: [sys.typescale, sys.typescale.emphasized, ref.typeface]
 expressive: true
 fetched: 2026-11-13
@@ -176,8 +176,9 @@ the table; Compose uses:
 - Contrast: at least 3:1 for large text and 4.5:1 for small text.
 - Default text color is the on surface role; on surface variant is a good alternative. Links on a
   surface use primary (tertiary for quieter links) and must be underlined.
-- Large text: when the user scales text up, keep layouts reflowing rather than clipping; do not
-  change the scale's sizes in ways that break that.
+- Large text: people must be able to scale text up, through the OS setting or an in-app multiplier.
+  Let containers grow, reflow the layout (stack side-by-side parts) or allow scrolling, so enlarged
+  text is never clipped, overlapped or truncated.
 - Script height: ignoring the language-height categories leads to overlapping or clipped text in
   taller scripts.
 - Avoid very thin weights and decorative faces at small sizes; grade (not weight) can adjust

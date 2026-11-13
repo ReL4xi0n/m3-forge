@@ -1,7 +1,7 @@
 ---
 title: Design tokens
 kind: foundation
-pages: [/foundations/design-tokens/overview, /foundations/design-tokens/how-to-use-tokens]
+pages: [/foundations/design-tokens/overview, /foundations/design-tokens/how-to-use-tokens, /styles/color/advanced/apply-colors]
 tokenSets: [ref.palette, ref.typeface, sys.color, sys.typescale, sys.shape, sys.state, sys.motion]
 expressive: false
 fetched: 2026-11-13
@@ -36,7 +36,7 @@ from that data with a `token:` marker.
 
 | Tier | Prefix in our ids | What it holds | Examples in `knowledge/tokens/merged.json` |
 |---|---|---|---|
-| Reference | `md.ref.` | The full menu of raw options. Values are literals (hex, font family). They never change with context. | `md.ref.palette.*` tonal palette steps, `md.ref.typeface.brand`, `md.ref.typeface.plain` |
+| Reference | `md.ref.` | The full menu of raw options. Values are usually literals (hex, font family), though one reference token may point to another. They never change with context. | `md.ref.palette.*` tonal palette steps, `md.ref.typeface.brand`, `md.ref.typeface.plain` |
 | System | `md.sys.` | The decisions that give a theme its character: color roles, type scale, shape scale, elevation levels, state-layer opacities, motion. This is where theming and context switching happen. | `md.sys.color.*`, `md.sys.typescale.*`, `md.sys.shape.*`, `md.sys.elevation.*`, `md.sys.state.*`, `md.sys.motion.*`, `md.sys.measurement.*` |
 | Component | `md.comp.` | The properties of one component's parts (container, label text, icon, outline) per state: color, size, shape, elevation, type. | `md.comp.button.small.container.height`, `md.comp.fab.primary-container.container.color` |
 
@@ -151,8 +151,9 @@ The tiers carry the measurements; this note quotes a few only as examples.
 
 - Copying a hex value from a spec instead of the token or role: it breaks dark mode, contrast
   modes and dynamic color.
-- Pointing a component token straight at a reference token (`md.ref.palette.primary40`) when a
-  role exists: the component then ignores theming.
+- **Our practice:** prefer a system role when one exists. The site lets a component token point
+  straight at a reference token (`md.ref.palette.primary40`), but the component then ignores
+  theming.
 - Reading the token's value as part of its meaning. `secondary-container` is a role; its tone
   changes with mode and scheme.
 - Treating Flutter's inlined hex values as a platform difference. Resolve references first.
