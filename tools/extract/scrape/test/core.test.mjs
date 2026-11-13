@@ -45,10 +45,18 @@ test('sitemap: index and urlset, entities decoded, whitespace trimmed', () => {
 });
 
 test('classify: sections in scope, Expressive by URL, others out', () => {
-  assert.deepEqual(classify('/components/split-button/overview'), { inScope: true, section: 'components', expressiveUrl: false });
-  assert.deepEqual(classify('/blog/m3-expressive-launch'), { inScope: true, section: 'expressive', expressiveUrl: true });
-  assert.deepEqual(classify('/styles/motion/Expressive'), { inScope: true, section: 'styles', expressiveUrl: true });
-  assert.deepEqual(classify('/develop/web'), { inScope: false, section: null, expressiveUrl: false });
+  assert.deepEqual(classify('/components/split-button/overview'), { inScope: true, section: 'components', expressiveUrl: false, candidate: false });
+  assert.deepEqual(classify('/m3-expressive-launch'), { inScope: true, section: 'expressive', expressiveUrl: true, candidate: false });
+  assert.deepEqual(classify('/styles/motion/Expressive'), { inScope: true, section: 'styles', expressiveUrl: true, candidate: false });
+  assert.deepEqual(classify('/blog/m3-expressive-launch'), { inScope: false, section: 'blog', expressiveUrl: true, candidate: true });
+  assert.deepEqual(classify('/blog/tone-based-surface-color-m3'), { inScope: false, section: 'blog', expressiveUrl: false, candidate: true });
+  for (const p of ['/', '/blog', '/blog/search.html']) assert.equal(classify(p).candidate, false, p);
+  for (const p of ['/', '/blog', '/blog/search.html']) assert.equal(classify(p).inScope, false, p);
+  assert.deepEqual(classify('/develop/flutter'), { inScope: true, section: 'develop', expressiveUrl: false, candidate: false });
+  assert.equal(classify('/develop').section, 'develop');
+  assert.deepEqual(classify('/whats-new-at-io26'), { inScope: true, section: 'news', expressiveUrl: false, candidate: false });
+  assert.equal(classify('/material-is-compose-first').section, 'news');
+  assert.deepEqual(classify('/legal/x'), { inScope: false, section: null, expressiveUrl: false, candidate: false });
 });
 
 test('slug: collision-free on case-insensitive file systems', () => {

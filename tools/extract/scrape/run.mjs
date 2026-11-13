@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // Site scrape CLI (run in the toolchain env). Writes only under private/raw/<YYYY-MM-DD>/.
 //   run.mjs plan                         robots + sitemap -> meta/, state.json (new dated run)
+//   run.mjs plan --refresh [--date D]    re-classify the saved sitemap; add newly scoped pages (no network)
 //   run.mjs scrape [--date D] [--only p1,p2]   capture pending/failed pages (resumes the run)
 //   run.mjs coverage [--date D] [--only p1,p2] [--check]
 //        full run: writes knowledge/coverage.{md,json}; --only: writes meta/coverage-pilot.md
@@ -50,20 +51,52 @@ export async function planRun({ run, origin, fetchText, pacer = null }) {
   const entries = [...new Set(urls.map(keyOf))].map(path => ({ path, ...classify(path) }));
   run.state.robotsSha256 = sha256(robotsText);
   run.state.sitemapSha256 = sha256(texts.join('\n'));
-  for (const e of entries.filter(x => x.inScope)) {
-    const base = { attempts: 0, section: e.section, expressiveUrl: e.expressiveUrl };
+  for (const e of entries.filter(x => x.inScope || x.candidate)) {
+    const base = { attempts: 0, section: e.section, expressiveUrl: e.expressiveUrl, ...(e.candidate ? { candidate: true } : {}) };
     run.state.pages[e.path] = isAllowed(robots, e.path) ? { status: 'pending', ...base } : { status: 'skipped', reason: 'robots', ...base };
   }
   const plan = { origin, plannedAt: new Date().toISOString(), sitemapTotal: entries.length, urls: entries };
   await writeJsonAtomic(join(run.dir, 'meta', 'plan.json'), plan);
   await run.save();
   const bySection = {};
-  for (const e of entries) bySection[e.inScope ? e.section : 'out'] = (bySection[e.inScope ? e.section : 'out'] || 0) + 1;
-  return { sitemapTotal: entries.length, inScope: entries.filter(e => e.inScope).length, bySection, expressiveUrl: entries.filter(e => e.expressiveUrl).length };
+  for (const e of entries) {
+    const k = e.inScope ? e.section : e.candidate ? 'blog-candidate' : 'out';
+    bySection[k] = (bySection[k] || 0) + 1;
+  }
+  return {
+    sitemapTotal: entries.length, inScope: entries.filter(e => e.inScope).length, candidates: entries.filter(e => e.candidate).length,
+    bySection, expressiveUrl: entries.filter(e => e.expressiveUrl).length,
+  };
+}
+
+// Re-applies classify() to the run's saved plan (meta/plan.json, meta/robots.txt): adds pages that are
+// now in scope or candidates, leaves existing page states alone, makes no network request.
+export async function refreshPlan(run) {
+  const plan = JSON.parse(await readFile(join(run.dir, 'meta', 'plan.json'), 'utf8'));
+  const robots = parseRobots(await readFile(join(run.dir, 'meta', 'robots.txt'), 'utf8'));
+  const added = [];
+  plan.urls = plan.urls.map(u => ({ path: u.path, ...classify(u.path) }));
+  for (const e of plan.urls.filter(x => x.inScope || x.candidate)) {
+    if (run.state.pages[e.path]) continue;
+    const base = { attempts: 0, section: e.section, expressiveUrl: e.expressiveUrl, ...(e.candidate ? { candidate: true } : {}) };
+    run.state.pages[e.path] = isAllowed(robots, e.path) ? { status: 'pending', ...base } : { status: 'skipped', reason: 'robots', ...base };
+    added.push(e.path);
+  }
+  await writeJsonAtomic(join(run.dir, 'meta', 'plan.json'), plan);
+  await run.save();
+  return added;
+}
+
+// A blog candidate is kept when its text has Expressive or design-token content.
+export function relevance(text) {
+  const r = [];
+  if (/\bexpressive\b/i.test(text)) r.push('expressive');
+  if (/\bmd\.(sys|comp|ref)\.[a-z]/i.test(text) || /\b(design|color|colour|shape|type|typescale|motion|elevation|spacing|component|system) tokens?\b/i.test(text)) r.push('tokens');
+  return r;
 }
 
 function counts(pages) {
-  const c = { done: 0, failed: 0, pending: 0, redirect: 0, skipped: 0 };
+  const c = { done: 0, failed: 0, pending: 0, redirect: 0, skipped: 0, excluded: 0 };
   for (const p of Object.values(pages)) c[p.status] = (c[p.status] || 0) + 1;
   return c;
 }
@@ -143,6 +176,11 @@ export async function scrape({
       });
       pages[target] = { ...common, status: 'done', slug };
       delete pages[target].reason;
+      if (pages[target].candidate) {
+        const rel = relevance(r.text);
+        pages[target].relevance = rel;
+        if (!rel.length) pages[target] = { ...pages[target], status: 'excluded', reason: 'no Expressive or token content' };
+      }
       for (const t of r.tabLinks || []) {
         if (pages[t] || !classify(t).inScope) continue;
         pages[t] = isAllowed(robots, t)
@@ -209,6 +247,13 @@ async function main() {
     }
   };
 
+  if (cmd === 'plan' && process.argv.includes('--refresh')) {
+    const date = arg('--date') || await latestRunDate(repo.privateDir);
+    const run = await openRun({ privateDir: repo.privateDir, date, resume: true });
+    const added = await refreshPlan(run);
+    console.log(JSON.stringify({ run: `raw/${date}`, added: added.length, pages: added }, null, 2));
+    return;
+  }
   if (cmd === 'plan') {
     const date = arg('--date') || new Date().toLocaleDateString('sv-SE');
     const run = await openRun({ privateDir: repo.privateDir, date, resume: false });

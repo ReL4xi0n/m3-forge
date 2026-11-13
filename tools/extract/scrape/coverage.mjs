@@ -20,9 +20,10 @@ export function computeCoverage(state, plan, exceptions, { only = null } = {}) {
   const ex = validateExceptions(exceptions);
   const pages = state.pages;
   const onlySet = only ? new Set(only) : null;
-  const paths = Object.keys(pages)
+  const selected = Object.keys(pages)
     .filter(p => !onlySet || onlySet.has(p) || onlySet.has(pages[p].discoveredFrom))
     .sort();
+  const paths = selected.filter(p => pages[p].status !== 'excluded');
   const isScraped = p => {
     const s = pages[p];
     if (!s) return false;
@@ -33,6 +34,7 @@ export function computeCoverage(state, plan, exceptions, { only = null } = {}) {
   const cov = {
     sitemapTotal: plan.sitemapTotal, inScope: paths.length, expressive: { url: 0, content: 0 },
     done: 0, redirects: 0, skippedRobots: 0, failed: 0, missing: [], unjustified: [], jsonNone: [], rows: [], components: [],
+    checkedExcluded: selected.filter(p => pages[p].status === 'excluded').map(p => ({ path: p, reason: pages[p].reason })),
   };
   for (const path of paths) {
     const s = pages[path];
@@ -41,6 +43,7 @@ export function computeCoverage(state, plan, exceptions, { only = null } = {}) {
     const row = { path, section: s.section ?? null, expressive, status: s.status, json: s.jsonCount ?? 0 };
     if (s.finalPath) row.finalPath = s.finalPath;
     if (s.reason) row.reason = s.reason;
+    if (s.candidate && s.relevance?.length) row.included = s.relevance;
     if (ex[path]) row.exception = ex[path];
     cov.rows.push(row);
     if (s.status === 'done') {
@@ -94,7 +97,8 @@ export function renderCoverageMd(cov) {
   out.push(`- Expressive: ${cov.expressive.url} by URL, ${cov.expressive.content} by content`);
   out.push(`- Done: ${cov.done}; redirects to scraped pages: ${cov.redirects}; skipped by robots.txt: ${cov.skippedRobots}`);
   out.push(`- Failed: ${cov.failed}; missing: ${cov.missing.length}; unjustified: ${cov.unjustified.length}`);
-  out.push(`- JSON-none pages: ${cov.jsonNone.length}`, '');
+  out.push(`- JSON-none pages: ${cov.jsonNone.length}`);
+  out.push(`- Blog candidates checked and excluded: ${cov.checkedExcluded.length}`, '');
 
   out.push('## Component tabs', '');
   out.push('| component | Overview | Specs | Guidelines | Accessibility | other tabs | expanded elements |');
@@ -112,10 +116,15 @@ export function renderCoverageMd(cov) {
   out.push('| path | section | expressive | status | JSON | note |');
   out.push('|---|---|---|---|---|---|');
   for (const r of cov.rows) {
-    const note = [r.finalPath && `→ ${r.finalPath}`, r.reason, r.exception && `${r.exception.kind}: ${r.exception.detail}`].filter(Boolean).join('; ');
+    const note = [r.finalPath && `→ ${r.finalPath}`, r.reason, r.included && `included: ${r.included.join(', ')}`,
+      r.exception && `${r.exception.kind}: ${r.exception.detail}`].filter(Boolean).join('; ');
     out.push(`| ${r.path} | ${r.section ?? ''} | ${r.expressive} | ${r.status} | ${r.json} | ${note} |`);
   }
   out.push('');
+
+  out.push('## Checked and excluded', '');
+  out.push('Blog posts scraped as candidates and left out because their text has no Expressive or token content.', '');
+  out.push(...(cov.checkedExcluded.length ? cov.checkedExcluded.map(e => `- ${e.path}: ${e.reason}`) : ['(none)']), '');
 
   out.push('## JSON-none pages', '');
   out.push(...(cov.jsonNone.length ? cov.jsonNone.map(p => `- ${p}`) : ['(none)']), '');

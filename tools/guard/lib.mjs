@@ -14,7 +14,8 @@ const CORPUS_EXTS = new Set(['.txt', '.md', '.html', '.htm', '.json']);
 const ALLOWLISTABLE = new Set(['raw-overlap', 'forbidden-term']);
 const SHINGLE_SIZE = 12;
 // Bump when text normalization or shingling changes, so cached corpora are rebuilt.
-export const CORPUS_VERSION = '2';
+export const CORPUS_VERSION = '3';
+const SCRAPER_FILES = new Set(['state.json', 'meta.json']);
 
 export function normalizePath(p) {
   let s = String(p).replace(/\\/g, '/');
@@ -132,8 +133,10 @@ async function listCorpusFiles(rawDir) {
   async function walk(dir) {
     for (const e of await readdir(dir, { withFileTypes: true })) {
       const abs = join(dir, e.name);
-      if (e.isDirectory()) await walk(abs);
-      else if (e.isFile() && CORPUS_EXTS.has(extname(e.name).toLowerCase())) {
+      // The scraper's own bookkeeping (meta/, state.json, per-page meta.json) is not site text.
+      if (e.isDirectory()) {
+        if (e.name !== 'meta') await walk(abs);
+      } else if (e.isFile() && !SCRAPER_FILES.has(e.name) && CORPUS_EXTS.has(extname(e.name).toLowerCase())) {
         const st = await stat(abs);
         out.push({ abs, rel: normalizePath(relative(rawDir, abs)), size: st.size, mtimeMs: st.mtimeMs });
       }

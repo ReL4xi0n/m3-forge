@@ -5,7 +5,7 @@ import { tmpdir } from 'node:os';
 import { mkdtemp, mkdir, readFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { createHash } from 'node:crypto';
-import { planRun, scrape } from '../run.mjs';
+import { planRun, scrape, refreshPlan } from '../run.mjs';
 import { computeCoverage, renderCoverageMd, validateExceptions } from '../coverage.mjs';
 import { createPacer } from '../pacer.mjs';
 import { openRun } from '../state.mjs';
@@ -64,7 +64,7 @@ function captureFrom(map) {
 test('plan: sitemap paths classified, robots-disallowed in-scope pages skipped, hashes recorded', async () => {
   const { run, plan } = await setup(['/components/chips/overview', '/archive/components', '/develop/web', '/styles/color/roles']);
   assert.equal(plan.sitemapTotal, 4);
-  assert.deepEqual(Object.keys(run.state.pages).sort(), ['/components/chips/overview', '/styles/color/roles']);
+  assert.deepEqual(Object.keys(run.state.pages).sort(), ['/components/chips/overview', '/develop/web', '/styles/color/roles']);
   assert.match(run.state.robotsSha256, /^[0-9a-f]{64}$/);
   assert.match(run.state.sitemapSha256, /^[0-9a-f]{64}$/);
   assert.ok(existsSync(join(run.dir, 'meta', 'plan.json')));
@@ -202,4 +202,40 @@ test('scrape: meta/run.json records UA, blocked and allowed third-party hosts', 
   assert.equal(meta.userAgent, 'UA x');
   assert.deepEqual(meta.thirdParty, { allowed: ['apis.example'], blocked: ['ga.example'] });
   assert.equal(meta.counts.done, 1);
+});
+
+test('blog candidates: kept only with Expressive or token content; the rest are checked and excluded', async () => {
+  const { run, fetchText } = await setup(['/blog/new-motion', '/blog/surface-tokens', '/blog/photo-interview', '/blog', '/']);
+  assert.deepEqual(Object.keys(run.state.pages).sort(), ['/blog/new-motion', '/blog/photo-interview', '/blog/surface-tokens']);
+  assert.ok(Object.values(run.state.pages).every(p => p.candidate === true));
+  const cap = captureFrom({
+    '/blog/new-motion': page('/blog/new-motion', { text: 'Meet the M3 Expressive motion system. '.repeat(10) }),
+    '/blog/surface-tokens': page('/blog/surface-tokens', { text: 'Surface roles now map to md.sys.color.surface-container tokens. '.repeat(5) }),
+    '/blog/photo-interview': page('/blog/photo-interview', { text: 'An interview about photography and light. '.repeat(10) }),
+  });
+  await scrape({ run, origin: ORIGIN, fetchText, capture: cap, pacer: fastPacer() });
+  assert.equal(run.state.pages['/blog/new-motion'].status, 'done');
+  assert.deepEqual(run.state.pages['/blog/new-motion'].relevance, ['expressive']);
+  assert.deepEqual(run.state.pages['/blog/surface-tokens'].relevance, ['tokens']);
+  assert.equal(run.state.pages['/blog/photo-interview'].status, 'excluded');
+  assert.equal(run.state.pages['/blog/photo-interview'].reason, 'no Expressive or token content');
+  const cov = computeCoverage(run.state, { sitemapTotal: 5 }, {});
+  assert.equal(cov.inScope, 2);
+  assert.deepEqual(cov.checkedExcluded, [{ path: '/blog/photo-interview', reason: 'no Expressive or token content' }]);
+  assert.deepEqual(cov.missing, []);
+  const md = renderCoverageMd(cov);
+  assert.match(md, /## Checked and excluded/);
+  assert.match(md, /\| \/blog\/new-motion \| blog \| content \| done \| 1 \| included: expressive \|/);
+});
+
+test('refreshPlan adds newly scoped pages from the saved sitemap without network or touching existing pages', async () => {
+  const { run } = await setup(['/components/chips/overview', '/develop/flutter', '/blog/x']);
+  run.state.pages['/components/chips/overview'].status = 'done';
+  delete run.state.pages['/develop/flutter'];
+  delete run.state.pages['/blog/x'];
+  const added = await refreshPlan(run);
+  assert.deepEqual(added.sort(), ['/blog/x', '/develop/flutter']);
+  assert.equal(run.state.pages['/components/chips/overview'].status, 'done');
+  assert.equal(run.state.pages['/blog/x'].candidate, true);
+  assert.equal(run.state.pages['/develop/flutter'].status, 'pending');
 });
