@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Invented fixture in MDC-Android's token format. -->
+<resources>
+  <!-- Generated from token set (md.comp.filled-button) in context (platform=android, audience=3p). -->
+  <dimen name="m3_comp_filled_button_container_height">40dp</dimen>
+  <item name="m3_comp_filled_button_disabled_container_opacity" format="float" type="dimen">0.12</item>
+  <color name="m3_comp_filled_button_container_color">@color/m3_sys_color_primary</color>
+  <dimen name="m3_comp_mystery_widget_gap_size">4dp</dimen>
+  <color name="m3_comp_filled_button_hover_color">@android:color/system_accent1_100</color>
+  <color name="m3_ref_palette_primary40">#ff6750a4</color>
+</resources>
