@@ -1,0 +1,14 @@
+{
+  "name": "m3-forge-harness-web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Web capture harness: Playwright screenshots plus axe-core contrast and target-size checks.",
+  "license": "Apache-2.0",
+  "scripts": {
+    "test": "node --test \"test/*.test.mjs\""
+  },
+  "dependencies": {
+    "axe-core": "4.14.0"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "harness-web-broken-sample",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "node -e \"console.log('compiling...'); console.error('error: planted build failure'); process.exit(1)\""
+  }
+}
