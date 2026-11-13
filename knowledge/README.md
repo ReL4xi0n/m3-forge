@@ -42,6 +42,19 @@ Do not edit generated files. CI fails when they are stale.
 - In M3 tokens `px` and `dp` are the same unit. Flutter's data gives numbers without units; they are
   compared by magnitude.
 
+## Rules for platform claims
+
+- Tables and values in a note are material-web's (canonical) unless a line says otherwise.
+- Every cited token whose platform values differ must be acknowledged somewhere in the note with
+  `[differs:<id>]`. The linter fails when one is missing, and also when `[differs:]` marks a token
+  whose platforms agree.
+- A sentence that says platforms agree ("same", "agree", "identical", "match" next to a platform
+  name) must carry `[same:<id>]`. The linter checks that the token exists on all three platforms
+  with equal values. Otherwise rewrite the sentence or remove it.
+- References are followed inside each platform before comparing. Two references to different
+  tokens count as a difference; a style and its own sub-token (`typescale.label-large` vs
+  `typescale.label-large.font`) do not.
+
 ## Precedence
 
 1. A platform uses the value from its own repository: material-web for the web, `material_ui` for
@@ -69,7 +82,15 @@ fetched: 2026-11-13    # date of the scrape run the note was written from
 Sections (each required; write "Not covered by the sources." rather than leaving one empty):
 
 - component: Summary, Use it when, Anatomy, Variants, Expressive, States and behavior, Measurements,
-  Accessibility, Platform mapping, Pitfalls
+  Typography, Color roles and state layers, Motion, Accessibility, Platform mapping, Pitfalls
+  - Typography: the label (or main text) type style per size, each with `[token:]`, or
+    `[NOT FOUND]`.
+  - Color roles and state layers: roles per configuration and state-layer opacities. Instead, a
+    note may point to another note's section by its full heading, e.g.
+    `buttons.md#color-roles-and-state-layers`; the linter checks that the heading exists.
+  - Motion: duration, easing or spring tokens for the Expressive shape morphs and icon movements,
+    or `[NOT FOUND]`. Name the code location when only an implementation (not a token) chooses
+    the motion.
 - style, foundation, expressive: Summary, Rules, Measurements, Accessibility, Platform mapping,
   Pitfalls
 

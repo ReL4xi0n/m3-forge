@@ -50,6 +50,7 @@ function summaryOf(bySource, r) {
     perPlatform[p] = {
       source: src,
       notFoundEntries: r.notFound[p].length,
+      notFoundTokens: r.notFound[p].reduce((a, e) => a + (e.count ?? 1), 0),
       conflicts: r.conflicts.filter(c => c.values.some(v => v.where === src)).length,
     };
   }
@@ -90,11 +91,11 @@ function notFoundMd(r) {
     'does not. Values are never guessed; Phase 3 applies the resolution ladder in spec §3 and records each use.',
     'Deprecated tokens and names we could not map to a token id are listed separately and are not counted.', ''];
   for (const [p, src] of Object.entries(PLATFORMS)) {
-    out.push(`## ${p} (${src}): ${r.notFound[p].length}`, '');
+    out.push(`## ${p} (${src}): ${r.notFound[p].reduce((a, e) => a + (e.count ?? 1), 0)} tokens in ${r.notFound[p].length} entries`, '');
     let comp = null;
     for (const e of r.notFound[p]) {
       if (e.component !== comp) { comp = e.component; out.push(`### ${comp}`, ''); }
-      out.push(`- ${e.id}${e.mode ? ` @${e.mode}` : ''} (available in: ${e.availableIn.join(', ')})`);
+      out.push(`- ${e.id}${e.mode ? ` @${e.mode}` : ''}${e.count ? ` (${e.count} tokens)` : ''} (available in: ${e.availableIn.join(', ')})`);
     }
     out.push('');
   }

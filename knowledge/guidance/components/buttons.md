@@ -80,7 +80,8 @@ optional toggle (selected / unselected) behaviour.
 
 ## Measurements
 
-Per size (the same in material-web, Flutter `material_ui` and Compose unless noted):
+Per size. The values are material-web's (canonical). Every token that differs on another platform
+is listed under "Platform differences" with a `[differs:]` marker.
 
 | | XS | S | M | L | XL |
 |---|---|---|---|---|---|
@@ -90,7 +91,8 @@ Per size (the same in material-web, Flutter `material_ui` and Compose unless not
 | Icon–label gap | 8dp [token:md.comp.button.xsmall.icon-label-space] | 8dp [token:md.comp.button.small.icon-label-space] | 8dp [token:md.comp.button.medium.icon-label-space] | 12dp [token:md.comp.button.large.icon-label-space] | 16dp [token:md.comp.button.xlarge.icon-label-space] |
 | Outline width | 1dp [token:md.comp.button.xsmall.outlined.outline.width] | 1dp [token:md.comp.button.small.outlined.outline.width] | 1dp [token:md.comp.button.medium.outlined.outline.width] | 2dp [token:md.comp.button.large.outlined.outline.width] | 3dp [token:md.comp.button.xlarge.outlined.outline.width] |
 
-Corner radius (the site's table and the tokens agree):
+Corner radius. The site's table and the tokens give these values; `knowledge/conflicts.md` lists
+no site-vs-repo difference for them.
 
 | | XS | S | M | L | XL |
 |---|---|---|---|---|---|
@@ -100,14 +102,32 @@ Corner radius (the site's table and the tokens agree):
 
 Platform differences (see `knowledge/conflicts.md`):
 
-- Extra small side padding is 16dp in Compose [token:md.comp.button.xsmall.leading-space] against
-  12dp in material-web and Flutter [token:md.comp.button.xsmall.leading-space].
-- Extra small icon–label gap is 4dp in Flutter [token:md.comp.button.xsmall.icon-label-space]
-  against 8dp elsewhere [token:md.comp.button.xsmall.icon-label-space].
-- Compose's selected-shape tokens keep round toggles round when selected, unlike material-web and
-  Flutter. The site says round toggles turn square when selected, which matches material-web.
+- Extra small side padding [differs:md.comp.button.xsmall.leading-space]:
+  - Compose: 16dp [token:md.comp.button.xsmall.leading-space].
+  - material-web and Flutter: 12dp [token:md.comp.button.xsmall.leading-space].
+- Extra small icon–label gap [differs:md.comp.button.xsmall.icon-label-space]:
+  - Flutter: 4dp [token:md.comp.button.xsmall.icon-label-space].
+  - material-web and Compose: 8dp [token:md.comp.button.xsmall.icon-label-space].
+- Selected shape of a round toggle: material-web and Flutter switch to the square corner of the
+  size; Compose keeps it fully round [token:md.comp.button.small.selected.container.shape.round]
+  [differs:md.comp.button.small.selected.container.shape.round]. The site describes the switch to
+  square (see Expressive above).
 
-Color roles (configuration → container / icon and label):
+## Typography
+
+The label's type style per size [token:md.comp.button.xsmall.label-text]:
+
+| XS | S | M | L | XL |
+|---|---|---|---|---|
+| label large [token:md.comp.button.xsmall.label-text] | label large [token:md.comp.button.small.label-text] | title medium [token:md.comp.button.medium.label-text] | headline small [token:md.comp.button.large.label-text] | headline large [token:md.comp.button.xlarge.label-text] |
+
+- These per-size label tokens exist only in Flutter's data. material-web and Compose define no
+  per-size label token [NOT FOUND]; their single label token is `md.comp.button.label-text`.
+- Labels use sentence case and stay on one line.
+
+## Color roles and state layers
+
+Configuration → container / icon and label:
 
 - Elevated: surface container low [token:md.comp.button.elevated.container.color] / primary.
 - Filled: primary [token:md.comp.button.filled.container.color] / on primary.
@@ -119,6 +139,30 @@ Color roles (configuration → container / icon and label):
   [token:md.comp.button.filled.unselected.container.color] and filled selected uses primary
   [token:md.comp.button.filled.selected.container.color].
 - Other role pairs are allowed when container and label keep at least 3:1 contrast.
+
+State layers (drawn in the label/icon color over the container):
+
+- Hovered: 8% [token:md.comp.button.hovered.state-layer.opacity].
+- Focused: 10% [token:md.comp.button.focused.state-layer.opacity].
+- Pressed: 10% [token:md.comp.button.pressed.state-layer.opacity].
+- Disabled: container at 10% [token:md.comp.button.disabled.container.opacity] and label at
+  38% [token:md.comp.button.disabled.label-text.opacity].
+
+## Motion
+
+- Pressed shape morph: material-web and Flutter tie the pressed corner change to the fast spatial
+  spring [token:md.comp.button.small.pressed.container.corner-size.motion.spring.damping]
+  [token:md.comp.button.small.pressed.container.corner-size.motion.spring.stiffness].
+  - Standard scheme: damping 0.9, stiffness 1400 [token:md.sys.motion.spring.fast.spatial.damping]
+    [token:md.sys.motion.spring.fast.spatial.stiffness].
+  - Expressive scheme: damping 0.6, stiffness 800 [token:md.sys.motion.spring.fast.spatial.damping]
+    [token:md.sys.motion.spring.fast.spatial.stiffness].
+- Compose defines no per-button motion token [NOT FOUND]. Its code animates the plain button's
+  pressed shape with the default effects spring (`MotionSchemeKeyTokens.DefaultEffects`,
+  Button.kt:253) and toggle shape changes with the fast spatial spring (`FastSpatial`,
+  ToggleButton.kt:176).
+- Selected-state shape change and color change: no button-level duration, easing or spring token
+  [NOT FOUND]. Springs replace durations and easings in Expressive motion.
 
 ## Accessibility
 

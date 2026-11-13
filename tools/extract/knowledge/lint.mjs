@@ -18,7 +18,8 @@ import { compare } from '../tokens/merge.mjs';
 
 export const KINDS = ['style', 'foundation', 'component', 'expressive'];
 export const SECTIONS = {
-  component: ['Summary', 'Use it when', 'Anatomy', 'Variants', 'Expressive', 'States and behavior', 'Measurements', 'Accessibility', 'Platform mapping', 'Pitfalls'],
+  component: ['Summary', 'Use it when', 'Anatomy', 'Variants', 'Expressive', 'States and behavior', 'Measurements',
+    'Typography', 'Color roles and state layers', 'Motion', 'Accessibility', 'Platform mapping', 'Pitfalls'],
   style: ['Summary', 'Rules', 'Measurements', 'Accessibility', 'Platform mapping', 'Pitfalls'],
 };
 SECTIONS.foundation = SECTIONS.style;
@@ -56,6 +57,11 @@ function parseFrontMatter(text) {
   return { fm, bodyStart: m[0].split(/\r?\n/).length - 1 };
 }
 
+export const anchorOf = heading => heading.toLowerCase().replace(/[^a-z0-9 -]/g, '').trim().replace(/\s+/g, '-');
+const PLATFORM_KEYS = ['web', 'flutter', 'compose'];
+const AGREEMENT = /\b(same|agree|agrees|identical|match|matches)\b/i;
+const PLATFORM_WORD = /\b(material-web|flutter|compose|platforms?)\b/i;
+
 async function listNotes(dir) {
   if (!existsSync(dir)) return [];
   const out = [];
@@ -88,8 +94,43 @@ export async function lintNotes(notesDir, { merged, coverage, exceptions = {}, r
     return out;
   };
   const cited = new Set();
+  // Per-platform index (id -> { value }) so compare() follows refs inside each platform, exactly as the
+  // token merge does.
+  const platformIndex = Object.fromEntries(PLATFORM_KEYS.map(p => {
+    const idx = new Map();
+    for (const m of merged) {
+      const v = m.perPlatform?.[p];
+      if (v && v !== 'NOT FOUND' && !idx.has(m.id)) idx.set(m.id, { value: v });
+    }
+    return [p, idx];
+  }));
+  const rawValues = id => (byId.get(id) || []).map(entry => Object.fromEntries(PLATFORM_KEYS.map(p => {
+    const v = entry.perPlatform?.[p];
+    return [p, v && v !== 'NOT FOUND' ? v : null];
+  })));
+  const cmp = (pv, p, q) => compare(pv[p], pv[q], platformIndex[p], platformIndex[q]);
+  const differs = id => rawValues(id).some(pv => {
+    const ps = PLATFORM_KEYS.filter(p => pv[p]);
+    return ps.some((p, i) => ps.slice(i + 1).some(q => cmp(pv, p, q) === 'different'));
+  });
+  const allSame = id => {
+    const pvs = rawValues(id);
+    return pvs.length > 0 && pvs.every(pv => PLATFORM_KEYS.every(p => pv[p])
+      && PLATFORM_KEYS.every((p, i) => PLATFORM_KEYS.slice(i + 1).every(q => cmp(pv, p, q) === 'same')));
+  };
 
-  for (const abs of await listNotes(notesDir)) {
+  const notes = await listNotes(notesDir);
+  const anchors = new Map();
+  for (const abs of notes) {
+    const set = new Set();
+    for (const l of (await readFile(abs, 'utf8')).split(/\r?\n/)) {
+      const h = /^##\s+(.+?)\s*$/.exec(l);
+      if (h) set.add(anchorOf(h[1]));
+    }
+    anchors.set(abs.replace(/\\/g, '/').split('/').pop(), set);
+  }
+
+  for (const abs of notes) {
     const label = `knowledge/guidance/${relative(notesDir, abs).replace(/\\/g, '/')}`;
     const text = await readFile(abs, 'utf8');
     const lines = text.split(/\r?\n/);
@@ -113,6 +154,26 @@ export async function lintNotes(notesDir, { merged, coverage, exceptions = {}, r
     for (const s of SECTIONS[fm.kind] || []) {
       if (!sections.has(s)) err(1, `missing section "## ${s}"`);
       else if (!sections.get(s).content) err(sections.get(s).line, `empty section "## ${s}"`);
+    }
+
+    const citedTokens = new Map();
+    const acknowledged = new Set();
+    for (let i = bodyStart; i < lines.length; i++) {
+      for (const m of lines[i].matchAll(/\b([a-z0-9-]+\.md)#([a-z0-9-]+)/g)) {
+        if (!anchors.get(m[1])?.has(m[2])) err(i + 1, `broken reference ${m[1]}#${m[2]}`);
+      }
+      for (const m of lines[i].matchAll(/\[token:([^\]\s]+)\]/g)) if (!citedTokens.has(m[1])) citedTokens.set(m[1], i + 1);
+      for (const m of lines[i].matchAll(/\[differs:([^\]\s]+)\]/g)) {
+        acknowledged.add(m[1]);
+        if (byId.has(m[1]) && !differs(m[1])) err(i + 1, `[differs:${m[1]}] but the platforms agree`);
+      }
+      for (const m of lines[i].matchAll(/\[same:([^\]\s]+)\]/g)) if (!allSame(m[1])) err(i + 1, `[same:${m[1]}] is not true (a platform differs or lacks the token)`);
+      if (AGREEMENT.test(lines[i]) && PLATFORM_WORD.test(lines[i]) && !/\[same:/.test(lines[i])) {
+        err(i + 1, 'platform agreement claim without [same:] marker (verify it or remove it)');
+      }
+    }
+    for (const [t, line] of citedTokens) {
+      if (byId.has(t) && differs(t) && !acknowledged.has(t)) err(line, `token ${t} differs between platforms; acknowledge it with [differs:${t}]`);
     }
 
     // Table rows are checked cell by cell: a value pairs with the markers in its own cell.

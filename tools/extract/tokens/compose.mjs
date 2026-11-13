@@ -28,26 +28,59 @@ function propName(info, prop) {
   return info.set === 'motion' && /^Easing/.test(prop) ? prop.replace(/CubicBezier$/, '') : prop;
 }
 
-// aliases: { "<Object>": { props: [{ pattern, replace }], why } } (reviewed; see aliases.json).
-// A rewrite is used only when the rewritten name hits a known id.
+// Mapping rules, applied in order; a rule maps only when it yields exactly one known id:
+//   exact     separator-insensitive equality (FilledButtonTokens.ContainerHeight = md.comp.filled-button.container.height)
+//   alias     reviewed prop rewrites from aliases.json ({ "<Object>": { props: [{ pattern, replace }], why } })
+//   word-order  the same words in another order (XSmallIconButtonTokens.IconSize = md.comp.icon-button.xsmall.icon.size),
+//             after two naming normalizations:
+//               N1  X + Small / Large -> xsmall / xlarge
+//               N2  Hover / Focus / Press / Drag -> hovered / focused / pressed / dragged
+// No rule adds or drops a word. Several candidates -> ambiguous, unmapped.
+const N2 = { hover: 'hovered', focus: 'focused', press: 'pressed', drag: 'dragged' };
+const SIZES = new Set(['xsmall', 'small', 'medium', 'large', 'xlarge']);
+
+function normWords(words) {
+  const out = [];
+  for (let i = 0; i < words.length; i++) {
+    const w = words[i];
+    if (w === 'x' && (words[i + 1] === 'small' || words[i + 1] === 'large')) { out.push(`x${words[++i]}`); continue; }
+    out.push(N2[w] ?? w);
+  }
+  return out;
+}
+const camelWords = s => (String(s).match(/[A-Z][a-z0-9]*|[a-z0-9]+/g) || []).map(w => w.toLowerCase());
+const bagKey = words => normWords(words).slice().sort().join(' ');
+
 function resolver(knownIds, aliases = {}) {
   const bySquash = new Map();
+  const byBag = new Map();
   for (const id of knownIds) {
     const k = squash(id);
     bySquash.set(k, bySquash.has(k) && bySquash.get(k) !== id ? null : id); // null = ambiguous
+    // set part = segment 2 (+ segment 3 when it is a size qualifier); property part = the rest.
+    const [, kind, set, ...rest] = id.split('.');
+    if (!set || !rest.length) continue;
+    const sized = SIZES.has(rest[0]) && rest.length > 1;
+    const setWords = [...set.split('-'), ...(sized ? [rest[0]] : [])];
+    const propWords = (sized ? rest.slice(1) : rest).join('.').split(/[.-]/);
+    const bk = `${kind}|${bagKey(setWords)}|${bagKey(propWords)}`;
+    byBag.set(bk, byBag.has(bk) && byBag.get(bk) !== id ? null : id);
   }
   return (obj, prop) => {
     const info = infoOf(obj);
     const p = propName(info, prop);
     const hit = bySquash.get(squash(`md${info.kind}${info.set}${p}`));
-    if (hit) return { id: hit };
+    if (hit) return { id: hit, mappedBy: 'exact' };
     for (const rule of aliases[obj]?.props || []) {
       const re = new RegExp(rule.pattern);
       if (!re.test(p)) continue;
       const aliased = bySquash.get(squash(`md${info.kind}${info.set}${p.replace(re, rule.replace)}`));
-      if (aliased) return { id: aliased, alias: obj };
+      if (aliased) return { id: aliased, alias: obj, mappedBy: `alias:${obj}` };
     }
-    return { id: derivedId(info.kind, info.set, kebab(p)), derived: true, ambiguous: hit === null };
+    const setWords = SYS[obj] ? info.set.split('-') : camelWords(obj);
+    const bag = byBag.get(`${info.kind}|${bagKey(setWords)}|${bagKey(camelWords(p))}`);
+    if (bag) return { id: bag, mappedBy: 'word-order' };
+    return { id: derivedId(info.kind, info.set, kebab(p)), derived: true, ambiguous: hit === null || bag === null };
   };
 }
 
@@ -86,9 +119,23 @@ export async function extractCompose(dir, { knownIds = new Set(), aliases = {} }
       out.push({
         id: target.id, native: `${obj}Tokens.${prop}`, source: 'compose-material3', file: f.rel, line: i + 1, kind: info.kind,
         ...(mode ? { mode } : {}), value, raw, ...(target.derived ? { derived: true } : {}), ...(target.ambiguous ? { ambiguous: true } : {}),
-        ...(target.alias ? { alias: target.alias } : {}),
+        ...(target.alias ? { alias: target.alias } : {}), ...(target.mappedBy ? { mappedBy: target.mappedBy } : {}),
       });
       i = j;
+    }
+  }
+  // Safety net: if a word-order mapping lands on an id another Compose name also uses, drop it.
+  const byKey = new Map();
+  for (const r of out) {
+    const k = r.mode ? `${r.id}@${r.mode}` : r.id;
+    byKey.set(k, [...(byKey.get(k) || []), r]);
+  }
+  for (const group of byKey.values()) {
+    if (group.length < 2) continue;
+    for (const r of group.filter(x => x.mappedBy === 'word-order')) {
+      const info = infoOf(r.native.split('Tokens.')[0]);
+      Object.assign(r, { id: derivedId(info.kind, info.set, kebab(propName(info, r.native.split('.')[1]))), derived: true, ambiguous: true });
+      delete r.mappedBy;
     }
   }
   return out;

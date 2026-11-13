@@ -51,7 +51,7 @@ test('NOT FOUND: exact marker, availableIn, whole components collapsed; deprecat
   const t = r.merged.find(m => m.id === 'md.comp.x.height');
   assert.equal(t.perPlatform.flutter, 'NOT FOUND');
   assert.deepEqual(r.notFound.flutter.find(e => e.id === 'md.comp.x.height'), { id: 'md.comp.x.height', component: 'x', availableIn: ['compose-material3', 'material-web'] });
-  assert.deepEqual(r.notFound.compose.filter(e => e.component === 'webonly'), [{ id: 'webonly.*', component: 'webonly', availableIn: ['material-web', 'material_ui'] }]);
+  assert.deepEqual(r.notFound.compose.filter(e => e.component === 'webonly'), [{ id: 'webonly.*', component: 'webonly', availableIn: ['material-web', 'material_ui'], count: 2 }]);
   assert.ok(!Object.values(r.notFound).flat().some(e => e.id.includes('gone') || e.id.includes('derived-thing')));
   assert.equal(r.deprecated.length, 1);
   assert.equal(r.unmapped.length, 1);
@@ -79,6 +79,8 @@ test('report: deterministic output; --check passes on fresh output and fails aft
   const summary = JSON.parse(a.get('tokens/summary.json'));
   assert.equal(summary.perSource['material-web'].unparsed, 1);
   assert.equal(summary.perPlatform.compose.conflicts, 1);
+  assert.equal(summary.perPlatform.web.notFoundTokens, 0);
+  assert.equal(summary.perPlatform.flutter.notFoundTokens, 2, 'every missing token is counted, collapsed or not');
   assert.match(a.get('not-found.md'), /## Unparsed values/);
   assert.match(a.get('not-found.md'), /## Unmapped native names/);
   assert.match(a.get('conflicts.md'), /md\.comp\.x\.height/);
@@ -89,4 +91,17 @@ test('report: deterministic output; --check passes on fresh output and fails aft
   const f = join(dir, 'conflicts.md');
   await writeFile(f, (await readFile(f, 'utf8')).replace('md.comp', 'md.camp'));
   assert.deepEqual(await checkAll(dir, a), ['conflicts.md']);
+});
+
+test('compare: different references whose values cannot be compared are a difference', () => {
+  const a = new Map([['md.sys.shape.corner.medium', { value: { dp: 12 } }]]);
+  const b = new Map([['md.sys.shape.corner.full', { value: { unparsed: 'CircleShape' } }]]);
+  assert.equal(compare({ ref: 'md.sys.shape.corner.medium' }, { ref: 'md.sys.shape.corner.full' }, a, b), 'different');
+  assert.equal(compare({ ref: 'md.sys.shape.corner.medium' }, { dp: 12 }, a, null), 'same');
+  assert.equal(compare({ ref: 'md.sys.shape.corner.full' }, { dp: 12 }, b, null), 'not-compared');
+});
+
+test('compare: a reference to a whole style and to its own sub-token is not a difference', () => {
+  assert.equal(compare({ ref: 'md.sys.typescale.label-large' }, { ref: 'md.sys.typescale.label-large.font' }), 'not-compared');
+  assert.equal(compare({ ref: 'md.sys.typescale.label-large' }, { ref: 'md.sys.typescale.label-medium.font' }), 'different');
 });

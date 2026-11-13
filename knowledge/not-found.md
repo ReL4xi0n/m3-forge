@@ -6,7 +6,7 @@ A token is NOT FOUND for a platform when another pinned source defines it and th
 does not. Values are never guessed; Phase 3 applies the resolution ladder in spec §3 and records each use.
 Deprecated tokens and names we could not map to a token id are listed separately and are not counted.
 
-## web (material-web): 135
+## web (material-web): 190 tokens in 135 entries
 
 ### app-bar
 
@@ -38,7 +38,7 @@ Deprecated tokens and names we could not map to a token id are listed separately
 - md.comp.button.xsmall.label-text (available in: material_ui)
 ### chips
 
-- chips.* (available in: compose-material3, material_ui)
+- chips.* (56 tokens) (available in: compose-material3, material_ui)
 ### date-input
 
 - md.comp.date-input.modal.header.headline.type (available in: material_ui)
@@ -222,7 +222,7 @@ Deprecated tokens and names we could not map to a token id are listed separately
 - md.comp.time-picker.time-selector.label-text.type (available in: material_ui)
 - md.comp.time-picker.time-selector.separator.type (available in: material_ui)
 
-## flutter (material_ui): 802
+## flutter (material_ui): 1395 tokens in 802 entries
 
 ### assist-chip
 
@@ -247,10 +247,10 @@ Deprecated tokens and names we could not map to a token id are listed separately
 - md.comp.banner.supporting-text.weight (available in: material-web)
 ### banners
 
-- banners.* (available in: material-web)
+- banners.* (73 tokens) (available in: material-web)
 ### data-table
 
-- data-table.* (available in: material-web)
+- data-table.* (38 tokens) (available in: material-web)
 ### date-input
 
 - md.comp.date-input.modal.header.headline.font (available in: compose-material3, material-web)
@@ -405,13 +405,13 @@ Deprecated tokens and names we could not map to a token id are listed separately
 - md.comp.fab.branded.pressed.state-layer.opacity (available in: material-web)
 ### filled-autocomplete
 
-- filled-autocomplete.* (available in: compose-material3, material-web)
+- filled-autocomplete.* (87 tokens) (available in: compose-material3, material-web)
 ### filled-menu-button
 
-- filled-menu-button.* (available in: material-web)
+- filled-menu-button.* (43 tokens) (available in: material-web)
 ### filled-select
 
-- filled-select.* (available in: material-web)
+- filled-select.* (99 tokens) (available in: material-web)
 ### filled-text-field
 
 - md.comp.filled-text-field.input-text.font (available in: material-web)
@@ -573,10 +573,10 @@ Deprecated tokens and names we could not map to a token id are listed separately
 - md.comp.navigation-rail.label-text.weight (available in: material-web)
 ### outlined-autocomplete
 
-- outlined-autocomplete.* (available in: compose-material3, material-web)
+- outlined-autocomplete.* (85 tokens) (available in: compose-material3, material-web)
 ### outlined-menu-button
 
-- outlined-menu-button.* (available in: material-web)
+- outlined-menu-button.* (43 tokens) (available in: material-web)
 ### outlined-segmented-button
 
 - md.comp.outlined-segmented-button.label-text.font (available in: compose-material3, material-web)
@@ -586,7 +586,7 @@ Deprecated tokens and names we could not map to a token id are listed separately
 - md.comp.outlined-segmented-button.label-text.weight (available in: material-web)
 ### outlined-select
 
-- outlined-select.* (available in: material-web)
+- outlined-select.* (97 tokens) (available in: material-web)
 ### outlined-text-field
 
 - md.comp.outlined-text-field.input-text.font (available in: material-web)
@@ -644,7 +644,7 @@ Deprecated tokens and names we could not map to a token id are listed separately
 - md.comp.rich-tooltip.supporting-text.weight (available in: material-web)
 ### scrim
 
-- scrim.* (available in: compose-material3, material-components-android, material-web)
+- scrim.* (2 tokens) (available in: compose-material3, material-components-android, material-web)
 ### search-bar
 
 - md.comp.search-bar.contained.motion.spring (available in: material-web)
@@ -706,7 +706,7 @@ Deprecated tokens and names we could not map to a token id are listed separately
 - md.comp.snackbar.supporting-text.weight (available in: material-web)
 ### standard-menu-button
 
-- standard-menu-button.* (available in: material-web)
+- standard-menu-button.* (36 tokens) (available in: material-web)
 ### suggestion-chip
 
 - md.comp.suggestion-chip.label-text.font (available in: compose-material3, material-web)
@@ -1117,7 +1117,7 @@ Deprecated tokens and names we could not map to a token id are listed separately
 - md.comp.time-picker.time-selector.separator.tracking (available in: material-web)
 - md.comp.time-picker.time-selector.separator.weight (available in: material-web)
 
-## compose (compose-material3): 2541
+## compose (compose-material3): 3809 tokens in 2712 entries
 
 ### app-bar
 
@@ -1166,10 +1166,10 @@ Deprecated tokens and names we could not map to a token id are listed separately
 - md.comp.badge.large.label-text.weight (available in: material-web)
 ### banner
 
-- banner.* (available in: material-web, material_ui)
+- banner.* (18 tokens) (available in: material-web, material_ui)
 ### banners
 
-- banners.* (available in: material-web)
+- banners.* (73 tokens) (available in: material-web)
 ### button
 
 - md.comp.button.container.color (available in: material-web, material_ui)
@@ -1477,10 +1477,10 @@ Deprecated tokens and names we could not map to a token id are listed separately
 - md.comp.button.xsmall.pressed.container.corner-size.motion.spring.stiffness (available in: material-web, material_ui)
 ### button-group
 
-- button-group.* (available in: material-components-android, material-web, material_ui)
+- button-group.* (55 tokens) (available in: material-components-android, material-web, material_ui)
 ### carousel-item
 
-- carousel-item.* (available in: material-web, material_ui)
+- carousel-item.* (26 tokens) (available in: material-web, material_ui)
 ### checkbox
 
 - md.comp.checkbox.error.focus.state-layer.color (available in: material-web, material_ui)
@@ -1534,7 +1534,7 @@ Deprecated tokens and names we could not map to a token id are listed separately
 - md.comp.chips.with-trailing-icon.padding.trailing (available in: material_ui)
 ### data-table
 
-- data-table.* (available in: material-web)
+- data-table.* (38 tokens) (available in: material-web)
 ### date-input
 
 - md.comp.date-input.modal.header.headline.line-height (available in: material-web)
@@ -2094,7 +2094,7 @@ Deprecated tokens and names we could not map to a token id are listed separately
 - md.comp.fab.tertiary.pressed.state-layer.opacity (available in: material-web, material_ui)
 ### fab-menu
 
-- fab-menu.* (available in: material-web, material_ui)
+- fab-menu.* (117 tokens) (available in: material-web, material_ui)
 ### filled-autocomplete
 
 - md.comp.filled-autocomplete.menu.cascading-menu-indicator.icon.color (available in: material-web)
@@ -2160,10 +2160,10 @@ Deprecated tokens and names we could not map to a token id are listed separately
 - md.comp.filled-card.pressed.state-layer.opacity (available in: material-components-android, material-web, material_ui)
 ### filled-menu-button
 
-- filled-menu-button.* (available in: material-web)
+- filled-menu-button.* (43 tokens) (available in: material-web)
 ### filled-select
 
-- filled-select.* (available in: material-web)
+- filled-select.* (99 tokens) (available in: material-web)
 ### filled-text-field
 
 - md.comp.filled-text-field.disabled.input-text.color (available in: material-web, material_ui)
@@ -2271,10 +2271,191 @@ Deprecated tokens and names we could not map to a token id are listed separately
 - md.comp.filter-chip.with-trailing-icon.unselected.trailing-icon.color (available in: material-web, material_ui)
 ### full-screen-dialog
 
-- full-screen-dialog.* (available in: material-web, material_ui)
+- full-screen-dialog.* (33 tokens) (available in: material-web, material_ui)
 ### icon-button
 
-- icon-button.* (available in: material-components-android, material-web, material_ui)
+- md.comp.icon-button.container.color (available in: material-web, material_ui)
+- md.comp.icon-button.container.height (available in: material-web, material_ui)
+- md.comp.icon-button.container.shape.round (available in: material-web, material_ui)
+- md.comp.icon-button.container.shape.square (available in: material-web, material_ui)
+- md.comp.icon-button.default.leading-space (available in: material-web, material_ui)
+- md.comp.icon-button.default.trailing-space (available in: material-web, material_ui)
+- md.comp.icon-button.disabled.container.color (available in: material-web, material_ui)
+- md.comp.icon-button.disabled.container.opacity (available in: material-web, material_ui)
+- md.comp.icon-button.disabled.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.disabled.icon.opacity (available in: material-web, material_ui)
+- md.comp.icon-button.filled.container.color (available in: material-web, material_ui)
+- md.comp.icon-button.filled.disabled.container.color (available in: material-web, material_ui)
+- md.comp.icon-button.filled.disabled.container.opacity (available in: material-web, material_ui)
+- md.comp.icon-button.filled.disabled.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.filled.disabled.icon.opacity (available in: material-web, material_ui)
+- md.comp.icon-button.filled.focused.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.filled.focused.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.filled.focused.state-layer.opacity (available in: material-web, material_ui)
+- md.comp.icon-button.filled.hovered.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.filled.hovered.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.filled.hovered.state-layer.opacity (available in: material-web, material_ui)
+- md.comp.icon-button.filled.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.filled.pressed.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.filled.pressed.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.filled.pressed.state-layer.opacity (available in: material-web, material_ui)
+- md.comp.icon-button.filled.selected.container.color (available in: material-web, material_ui)
+- md.comp.icon-button.filled.selected.focused.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.filled.selected.focused.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.filled.selected.hovered.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.filled.selected.hovered.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.filled.selected.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.filled.selected.pressed.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.filled.selected.pressed.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.filled.unselected.container.color (available in: material-web, material_ui)
+- md.comp.icon-button.filled.unselected.focused.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.filled.unselected.focused.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.filled.unselected.hovered.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.filled.unselected.hovered.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.filled.unselected.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.filled.unselected.pressed.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.filled.unselected.pressed.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.focus.indicator.color (available in: material-web, material_ui)
+- md.comp.icon-button.focus.indicator.outline.offset (available in: material-web, material_ui)
+- md.comp.icon-button.focus.indicator.thickness (available in: material-web, material_ui)
+- md.comp.icon-button.focused.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.focused.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.focused.state-layer.opacity (available in: material-web, material_ui)
+- md.comp.icon-button.hovered.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.hovered.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.hovered.state-layer.opacity (available in: material-web, material_ui)
+- md.comp.icon-button.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.icon.size (available in: material-web, material_ui)
+- md.comp.icon-button.large.default.leading-space (available in: material-components-android, material-web, material_ui)
+- md.comp.icon-button.large.default.trailing-space (available in: material-components-android, material-web, material_ui)
+- md.comp.icon-button.large.pressed.container.corner-size.motion.spring.damping (available in: material-web, material_ui)
+- md.comp.icon-button.large.pressed.container.corner-size.motion.spring.stiffness (available in: material-web, material_ui)
+- md.comp.icon-button.medium.pressed.container.corner-size.motion.spring.damping (available in: material-web, material_ui)
+- md.comp.icon-button.medium.pressed.container.corner-size.motion.spring.stiffness (available in: material-web, material_ui)
+- md.comp.icon-button.narrow.leading-space (available in: material-web, material_ui)
+- md.comp.icon-button.narrow.trailing-space (available in: material-web, material_ui)
+- md.comp.icon-button.outlined.disabled.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.outlined.disabled.icon.opacity (available in: material-web, material_ui)
+- md.comp.icon-button.outlined.disabled.outline.color (available in: material-web, material_ui)
+- md.comp.icon-button.outlined.focused.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.outlined.focused.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.outlined.focused.state-layer.opacity (available in: material-web, material_ui)
+- md.comp.icon-button.outlined.hovered.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.outlined.hovered.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.outlined.hovered.state-layer.opacity (available in: material-web, material_ui)
+- md.comp.icon-button.outlined.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.outlined.outline.color (available in: material-web, material_ui)
+- md.comp.icon-button.outlined.pressed.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.outlined.pressed.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.outlined.pressed.state-layer.opacity (available in: material-web, material_ui)
+- md.comp.icon-button.outlined.selected.container.color (available in: material-web, material_ui)
+- md.comp.icon-button.outlined.selected.disabled.container.color (available in: material-web, material_ui)
+- md.comp.icon-button.outlined.selected.disabled.container.opacity (available in: material-web, material_ui)
+- md.comp.icon-button.outlined.selected.focused.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.outlined.selected.focused.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.outlined.selected.hovered.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.outlined.selected.hovered.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.outlined.selected.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.outlined.selected.pressed.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.outlined.selected.pressed.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.outlined.unselected.disabled.outline.color (available in: material-web, material_ui)
+- md.comp.icon-button.outlined.unselected.focused.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.outlined.unselected.focused.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.outlined.unselected.hovered.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.outlined.unselected.hovered.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.outlined.unselected.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.outlined.unselected.outline.color (available in: material-web, material_ui)
+- md.comp.icon-button.outlined.unselected.pressed.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.outlined.unselected.pressed.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.pressed.container.corner-size.motion.spring.damping (available in: material-web, material_ui)
+- md.comp.icon-button.pressed.container.corner-size.motion.spring.stiffness (available in: material-web, material_ui)
+- md.comp.icon-button.pressed.container.shape (available in: material-web, material_ui)
+- md.comp.icon-button.pressed.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.pressed.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.pressed.state-layer.opacity (available in: material-web, material_ui)
+- md.comp.icon-button.selected.container.color (available in: material-web, material_ui)
+- md.comp.icon-button.selected.container.shape.round (available in: material-web, material_ui)
+- md.comp.icon-button.selected.container.shape.square (available in: material-web, material_ui)
+- md.comp.icon-button.selected.focused.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.selected.focused.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.selected.hovered.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.selected.hovered.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.selected.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.selected.pressed.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.selected.pressed.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.small.pressed.container.corner-size.motion.spring.damping (available in: material-web, material_ui)
+- md.comp.icon-button.small.pressed.container.corner-size.motion.spring.stiffness (available in: material-web, material_ui)
+- md.comp.icon-button.standard.disabled.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.standard.disabled.icon.opacity (available in: material-web, material_ui)
+- md.comp.icon-button.standard.focused.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.standard.focused.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.standard.focused.state-layer.opacity (available in: material-web, material_ui)
+- md.comp.icon-button.standard.hovered.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.standard.hovered.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.standard.hovered.state-layer.opacity (available in: material-web, material_ui)
+- md.comp.icon-button.standard.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.standard.pressed.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.standard.pressed.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.standard.pressed.state-layer.opacity (available in: material-web, material_ui)
+- md.comp.icon-button.standard.selected.focused.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.standard.selected.focused.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.standard.selected.hovered.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.standard.selected.hovered.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.standard.selected.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.standard.selected.pressed.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.standard.selected.pressed.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.standard.unselected.focused.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.standard.unselected.focused.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.standard.unselected.hovered.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.standard.unselected.hovered.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.standard.unselected.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.standard.unselected.pressed.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.standard.unselected.pressed.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.tonal.container.color (available in: material-web, material_ui)
+- md.comp.icon-button.tonal.disabled.container.color (available in: material-web, material_ui)
+- md.comp.icon-button.tonal.disabled.container.opacity (available in: material-web, material_ui)
+- md.comp.icon-button.tonal.disabled.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.tonal.disabled.icon.opacity (available in: material-web, material_ui)
+- md.comp.icon-button.tonal.focused.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.tonal.focused.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.tonal.focused.state-layer.opacity (available in: material-web, material_ui)
+- md.comp.icon-button.tonal.hovered.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.tonal.hovered.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.tonal.hovered.state-layer.opacity (available in: material-web, material_ui)
+- md.comp.icon-button.tonal.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.tonal.pressed.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.tonal.pressed.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.tonal.pressed.state-layer.opacity (available in: material-web, material_ui)
+- md.comp.icon-button.tonal.selected.container.color (available in: material-web, material_ui)
+- md.comp.icon-button.tonal.selected.focused.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.tonal.selected.focused.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.tonal.selected.hovered.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.tonal.selected.hovered.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.tonal.selected.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.tonal.selected.pressed.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.tonal.selected.pressed.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.tonal.unselected.container.color (available in: material-web, material_ui)
+- md.comp.icon-button.tonal.unselected.focused.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.tonal.unselected.focused.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.tonal.unselected.hovered.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.tonal.unselected.hovered.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.tonal.unselected.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.tonal.unselected.pressed.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.tonal.unselected.pressed.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.unselected.container.color (available in: material-web, material_ui)
+- md.comp.icon-button.unselected.focused.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.unselected.focused.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.unselected.hovered.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.unselected.hovered.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.unselected.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.unselected.pressed.icon.color (available in: material-web, material_ui)
+- md.comp.icon-button.unselected.pressed.state-layer.color (available in: material-web, material_ui)
+- md.comp.icon-button.wide.leading-space (available in: material-web, material_ui)
+- md.comp.icon-button.wide.trailing-space (available in: material-web, material_ui)
+- md.comp.icon-button.xlarge.pressed.container.corner-size.motion.spring.damping (available in: material-web, material_ui)
+- md.comp.icon-button.xlarge.pressed.container.corner-size.motion.spring.stiffness (available in: material-web, material_ui)
+- md.comp.icon-button.xsmall.pressed.container.corner-size.motion.spring.damping (available in: material-web, material_ui)
+- md.comp.icon-button.xsmall.pressed.container.corner-size.motion.spring.stiffness (available in: material-web, material_ui)
 ### input-chip
 
 - md.comp.input-chip.focus.indicator.outline.offset (available in: material-web, material_ui)
@@ -2420,13 +2601,13 @@ Deprecated tokens and names we could not map to a token id are listed separately
 - md.comp.menu.container.shadow-color (available in: material-web, material_ui)
 ### menus
 
-- menus.* (available in: material-web, material_ui)
+- menus.* (213 tokens) (available in: material-web, material_ui)
 ### nav-bar
 
-- nav-bar.* (available in: material-components-android, material-web, material_ui)
+- nav-bar.* (33 tokens) (available in: material-components-android, material-web, material_ui)
 ### nav-rail
 
-- nav-rail.* (available in: material-components-android, material-web, material_ui)
+- nav-rail.* (51 tokens) (available in: material-components-android, material-web, material_ui)
 ### navigation-bar
 
 - md.comp.navigation-bar.active-indicator.color (available in: material-web, material_ui)
@@ -2501,7 +2682,7 @@ Deprecated tokens and names we could not map to a token id are listed separately
 - md.comp.navigation-drawer.pressed.state-layer.opacity (available in: material-components-android, material-web, material_ui)
 ### navigation-rail
 
-- navigation-rail.* (available in: material-web, material_ui)
+- navigation-rail.* (43 tokens) (available in: material-web, material_ui)
 ### outlined-autocomplete
 
 - md.comp.outlined-autocomplete.menu.cascading-menu-indicator.icon.color (available in: material-web)
@@ -2568,7 +2749,7 @@ Deprecated tokens and names we could not map to a token id are listed separately
 - md.comp.outlined-card.pressed.state-layer.opacity (available in: material-web, material_ui)
 ### outlined-menu-button
 
-- outlined-menu-button.* (available in: material-web)
+- outlined-menu-button.* (43 tokens) (available in: material-web)
 ### outlined-segmented-button
 
 - md.comp.outlined-segmented-button.focus.indicator.color (available in: material-web, material_ui)
@@ -2593,7 +2774,7 @@ Deprecated tokens and names we could not map to a token id are listed separately
 - md.comp.outlined-segmented-button.with-icon.icon.size (available in: material-web, material_ui)
 ### outlined-select
 
-- outlined-select.* (available in: material-web)
+- outlined-select.* (97 tokens) (available in: material-web)
 ### outlined-text-field
 
 - md.comp.outlined-text-field.disabled.input-text.color (available in: material-web, material_ui)
@@ -3105,30 +3286,20 @@ Deprecated tokens and names we could not map to a token id are listed separately
 - md.comp.snackbar.with-two-lines.container.height (available in: material-web, material_ui)
 ### split-button
 
-- md.comp.split-button.large.inner-corner.hovered.corner-size (available in: material-web, material_ui)
-- md.comp.split-button.large.inner-corner.pressed.corner-size (available in: material-web, material_ui)
 - md.comp.split-button.large.trailing-button.icon.size (available in: material-components-android, material-web, material_ui)
 - md.comp.split-button.large.trailing-button.inner-corner.selected.corner-size (available in: material-web, material_ui)
-- md.comp.split-button.medium.inner-corner.hovered.corner-size (available in: material-web, material_ui)
-- md.comp.split-button.medium.inner-corner.pressed.corner-size (available in: material-web, material_ui)
 - md.comp.split-button.medium.trailing-button.icon.size (available in: material-components-android, material-web, material_ui)
 - md.comp.split-button.medium.trailing-button.inner-corner.selected.corner-size (available in: material-web, material_ui)
-- md.comp.split-button.small.inner-corner.hovered.corner-size (available in: material-web, material_ui)
-- md.comp.split-button.small.inner-corner.pressed.corner-size (available in: material-web, material_ui)
 - md.comp.split-button.small.trailing-button.icon.size (available in: material-components-android, material-web, material_ui)
 - md.comp.split-button.small.trailing-button.inner-corner.selected.corner-size (available in: material-web, material_ui)
-- md.comp.split-button.xlarge.inner-corner.hovered.corner-size (available in: material-web, material_ui)
-- md.comp.split-button.xlarge.inner-corner.pressed.corner-size (available in: material-web, material_ui)
 - md.comp.split-button.xlarge.trailing-button.icon.size (available in: material-components-android, material-web, material_ui)
 - md.comp.split-button.xlarge.trailing-button.inner-corner.selected.corner-size (available in: material-web, material_ui)
-- md.comp.split-button.xsmall.inner-corner.hovered.corner-size (available in: material-web, material_ui)
-- md.comp.split-button.xsmall.inner-corner.pressed.corner-size (available in: material-web, material_ui)
 - md.comp.split-button.xsmall.outer-corner.corner-size (available in: material-web, material_ui)
 - md.comp.split-button.xsmall.trailing-button.icon.size (available in: material-components-android, material-web, material_ui)
 - md.comp.split-button.xsmall.trailing-button.inner-corner.selected.corner-size (available in: material-web, material_ui)
 ### standard-menu-button
 
-- standard-menu-button.* (available in: material-web)
+- standard-menu-button.* (36 tokens) (available in: material-web)
 ### suggestion-chip
 
 - md.comp.suggestion-chip.dragged.state-layer.color (available in: material-web, material_ui)
@@ -3797,7 +3968,7 @@ Deprecated tokens and names we could not map to a token id are listed separately
 - md.comp.time-picker.time-selector.unselected.pressed.state-layer.color (available in: material-web, material_ui)
 ### toolbar
 
-- toolbar.* (available in: material-components-android, material-web, material_ui)
+- toolbar.* (96 tokens) (available in: material-components-android, material-web, material_ui)
 
 ## Deprecated tokens (not counted): 1080
 
@@ -4218,7 +4389,7 @@ md.comp.app-bar.large.icon.size, md.comp.app-bar.medium.icon.size, md.comp.app-b
 | material-web | md.sys.typescale.title-small.wdth | $title-small-wdth | 'wdth' 100 | _md-sys-typescale.scss:381 |
 | material-web | md.sys.typescale.title-small.wght | $title-small-wght | 'wght' 500 | _md-sys-typescale.scss:383 |
 
-## Unmapped native names: 1071
+## Unmapped native names: 981
 
 | source | native | derived id | file:line |
 |---|---|---|---|
@@ -4320,12 +4491,8 @@ md.comp.app-bar.large.icon.size, md.comp.app-bar.medium.icon.size, md.comp.app-b
 | compose-material3 | DragHandleTokens.DraggedWidth | md.comp.drag-handle.dragged-width | DragHandleTokens.kt:42 |
 | compose-material3 | ElevatedButtonTokens.DisabledIconColor | md.comp.elevated-button.disabled-icon-color | ElevatedButtonTokens.kt:35 |
 | compose-material3 | ElevatedButtonTokens.DisabledIconOpacity | md.comp.elevated-button.disabled-icon-opacity | ElevatedButtonTokens.kt:38 |
-| compose-material3 | ElevatedButtonTokens.FocusedContainerElevation | md.comp.elevated-button.focused-container-elevation | ElevatedButtonTokens.kt:43 |
 | compose-material3 | ElevatedButtonTokens.FocusedIconColor | md.comp.elevated-button.focused-icon-color | ElevatedButtonTokens.kt:46 |
-| compose-material3 | ElevatedButtonTokens.FocusedLabelTextColor | md.comp.elevated-button.focused-label-text-color | ElevatedButtonTokens.kt:49 |
-| compose-material3 | ElevatedButtonTokens.HoveredContainerElevation | md.comp.elevated-button.hovered-container-elevation | ElevatedButtonTokens.kt:52 |
 | compose-material3 | ElevatedButtonTokens.HoveredIconColor | md.comp.elevated-button.hovered-icon-color | ElevatedButtonTokens.kt:55 |
-| compose-material3 | ElevatedButtonTokens.HoveredLabelTextColor | md.comp.elevated-button.hovered-label-text-color | ElevatedButtonTokens.kt:58 |
 | compose-material3 | ElevatedButtonTokens.IconColor | md.comp.elevated-button.icon-color | ElevatedButtonTokens.kt:61 |
 | compose-material3 | ElevatedButtonTokens.LabelTextSelectedColor | md.comp.elevated-button.label-text-selected-color | ElevatedButtonTokens.kt:67 |
 | compose-material3 | ElevatedButtonTokens.LabelTextUnselectedColor | md.comp.elevated-button.label-text-unselected-color | ElevatedButtonTokens.kt:70 |
@@ -4401,12 +4568,8 @@ md.comp.app-bar.large.icon.size, md.comp.app-bar.medium.icon.size, md.comp.app-b
 | compose-material3 | FilledAutocompleteTokens.FieldSupportingTextFont | md.comp.filled-autocomplete.field-supporting-text-font | FilledAutocompleteTokens.kt:199 |
 | compose-material3 | FilledButtonTokens.DisabledIconColor | md.comp.filled-button.disabled-icon-color | FilledButtonTokens.kt:35 |
 | compose-material3 | FilledButtonTokens.DisabledIconOpacity | md.comp.filled-button.disabled-icon-opacity | FilledButtonTokens.kt:38 |
-| compose-material3 | FilledButtonTokens.FocusedContainerElevation | md.comp.filled-button.focused-container-elevation | FilledButtonTokens.kt:43 |
 | compose-material3 | FilledButtonTokens.FocusedIconColor | md.comp.filled-button.focused-icon-color | FilledButtonTokens.kt:46 |
-| compose-material3 | FilledButtonTokens.FocusedLabelTextColor | md.comp.filled-button.focused-label-text-color | FilledButtonTokens.kt:49 |
-| compose-material3 | FilledButtonTokens.HoveredContainerElevation | md.comp.filled-button.hovered-container-elevation | FilledButtonTokens.kt:52 |
 | compose-material3 | FilledButtonTokens.HoveredIconColor | md.comp.filled-button.hovered-icon-color | FilledButtonTokens.kt:55 |
-| compose-material3 | FilledButtonTokens.HoveredLabelTextColor | md.comp.filled-button.hovered-label-text-color | FilledButtonTokens.kt:58 |
 | compose-material3 | FilledButtonTokens.IconColor | md.comp.filled-button.icon-color | FilledButtonTokens.kt:61 |
 | compose-material3 | FilledButtonTokens.LabelTextSelectedColor | md.comp.filled-button.label-text-selected-color | FilledButtonTokens.kt:67 |
 | compose-material3 | FilledButtonTokens.LabelTextUnselectedColor | md.comp.filled-button.label-text-unselected-color | FilledButtonTokens.kt:70 |
@@ -4559,20 +4722,8 @@ md.comp.app-bar.large.icon.size, md.comp.app-bar.medium.icon.size, md.comp.app-b
 | compose-material3 | InputChipTokens.UnselectedPressedLeadingIconColor | md.comp.input-chip.unselected-pressed-leading-icon-color | InputChipTokens.kt:140 |
 | compose-material3 | InputChipTokens.UnselectedPressedTrailingIconColor | md.comp.input-chip.unselected-pressed-trailing-icon-color | InputChipTokens.kt:174 |
 | compose-material3 | InputChipTokens.UnselectedTrailingIconColor | md.comp.input-chip.unselected-trailing-icon-color | InputChipTokens.kt:177 |
-| compose-material3 | LargeIconButtonTokens.ContainerHeight | md.comp.large-icon-button.container-height | LargeIconButtonTokens.kt:24 |
-| compose-material3 | LargeIconButtonTokens.ContainerShapeRound | md.comp.large-icon-button.container-shape-round | LargeIconButtonTokens.kt:27 |
-| compose-material3 | LargeIconButtonTokens.ContainerShapeSquare | md.comp.large-icon-button.container-shape-square | LargeIconButtonTokens.kt:30 |
-| compose-material3 | LargeIconButtonTokens.IconSize | md.comp.large-icon-button.icon-size | LargeIconButtonTokens.kt:33 |
-| compose-material3 | LargeIconButtonTokens.NarrowLeadingSpace | md.comp.large-icon-button.narrow-leading-space | LargeIconButtonTokens.kt:36 |
-| compose-material3 | LargeIconButtonTokens.NarrowTrailingSpace | md.comp.large-icon-button.narrow-trailing-space | LargeIconButtonTokens.kt:39 |
-| compose-material3 | LargeIconButtonTokens.OutlinedOutlineWidth | md.comp.large-icon-button.outlined-outline-width | LargeIconButtonTokens.kt:42 |
-| compose-material3 | LargeIconButtonTokens.PressedContainerShape | md.comp.large-icon-button.pressed-container-shape | LargeIconButtonTokens.kt:45 |
-| compose-material3 | LargeIconButtonTokens.SelectedContainerShapeRound | md.comp.large-icon-button.selected-container-shape-round | LargeIconButtonTokens.kt:48 |
-| compose-material3 | LargeIconButtonTokens.SelectedContainerShapeSquare | md.comp.large-icon-button.selected-container-shape-square | LargeIconButtonTokens.kt:51 |
 | compose-material3 | LargeIconButtonTokens.UniformLeadingSpace | md.comp.large-icon-button.uniform-leading-space | LargeIconButtonTokens.kt:54 |
 | compose-material3 | LargeIconButtonTokens.UniformTrailingSpace | md.comp.large-icon-button.uniform-trailing-space | LargeIconButtonTokens.kt:57 |
-| compose-material3 | LargeIconButtonTokens.WideLeadingSpace | md.comp.large-icon-button.wide-leading-space | LargeIconButtonTokens.kt:60 |
-| compose-material3 | LargeIconButtonTokens.WideTrailingSpace | md.comp.large-icon-button.wide-trailing-space | LargeIconButtonTokens.kt:63 |
 | compose-material3 | LinearProgressIndicatorTokens.ActiveThickness | md.comp.linear-progress-indicator.active-thickness | LinearProgressIndicatorTokens.kt:24 |
 | compose-material3 | LinearProgressIndicatorTokens.ActiveWaveAmplitude | md.comp.linear-progress-indicator.active-wave-amplitude | LinearProgressIndicatorTokens.kt:27 |
 | compose-material3 | LinearProgressIndicatorTokens.ActiveWaveWavelength | md.comp.linear-progress-indicator.active-wave-wavelength | LinearProgressIndicatorTokens.kt:30 |
@@ -4585,20 +4736,6 @@ md.comp.app-bar.large.icon.size, md.comp.app-bar.medium.icon.size, md.comp.app-b
 | compose-material3 | LinearProgressIndicatorTokens.WaveHeight | md.comp.linear-progress-indicator.wave-height | LinearProgressIndicatorTokens.kt:51 |
 | compose-material3 | LoadingIndicatorTokens.ActiveSize | md.comp.loading-indicator.active-size | LoadingIndicatorTokens.kt:27 |
 | compose-material3 | LoadingIndicatorTokens.ContainedActiveColor | md.comp.loading-indicator.contained-active-color | LoadingIndicatorTokens.kt:30 |
-| compose-material3 | MediumIconButtonTokens.ContainerHeight | md.comp.medium-icon-button.container-height | MediumIconButtonTokens.kt:24 |
-| compose-material3 | MediumIconButtonTokens.ContainerShapeRound | md.comp.medium-icon-button.container-shape-round | MediumIconButtonTokens.kt:27 |
-| compose-material3 | MediumIconButtonTokens.ContainerShapeSquare | md.comp.medium-icon-button.container-shape-square | MediumIconButtonTokens.kt:30 |
-| compose-material3 | MediumIconButtonTokens.DefaultLeadingSpace | md.comp.medium-icon-button.default-leading-space | MediumIconButtonTokens.kt:33 |
-| compose-material3 | MediumIconButtonTokens.DefaultTrailingSpace | md.comp.medium-icon-button.default-trailing-space | MediumIconButtonTokens.kt:36 |
-| compose-material3 | MediumIconButtonTokens.IconSize | md.comp.medium-icon-button.icon-size | MediumIconButtonTokens.kt:39 |
-| compose-material3 | MediumIconButtonTokens.NarrowLeadingSpace | md.comp.medium-icon-button.narrow-leading-space | MediumIconButtonTokens.kt:42 |
-| compose-material3 | MediumIconButtonTokens.NarrowTrailingSpace | md.comp.medium-icon-button.narrow-trailing-space | MediumIconButtonTokens.kt:45 |
-| compose-material3 | MediumIconButtonTokens.OutlinedOutlineWidth | md.comp.medium-icon-button.outlined-outline-width | MediumIconButtonTokens.kt:48 |
-| compose-material3 | MediumIconButtonTokens.PressedContainerShape | md.comp.medium-icon-button.pressed-container-shape | MediumIconButtonTokens.kt:51 |
-| compose-material3 | MediumIconButtonTokens.SelectedContainerShapeRound | md.comp.medium-icon-button.selected-container-shape-round | MediumIconButtonTokens.kt:54 |
-| compose-material3 | MediumIconButtonTokens.SelectedContainerShapeSquare | md.comp.medium-icon-button.selected-container-shape-square | MediumIconButtonTokens.kt:57 |
-| compose-material3 | MediumIconButtonTokens.WideLeadingSpace | md.comp.medium-icon-button.wide-leading-space | MediumIconButtonTokens.kt:60 |
-| compose-material3 | MediumIconButtonTokens.WideTrailingSpace | md.comp.medium-icon-button.wide-trailing-space | MediumIconButtonTokens.kt:63 |
 | compose-material3 | MenuTokens.ListItemSelectedLeadingTrailingIconColor | md.comp.menu.list-item-selected-leading-trailing-icon-color | MenuTokens.kt:40 |
 | compose-material3 | MenuTokens.MenuListItemLeadingIconColor | md.comp.menu.menu-list-item-leading-icon-color | MenuTokens.kt:43 |
 | compose-material3 | NavigationBarHorizontalItemTokens.ActiveIndicatorHeight | md.comp.navigation-bar-horizontal-item.active-indicator-height | NavigationBarHorizontalItemTokens.kt:24 |
@@ -4698,11 +4835,7 @@ md.comp.app-bar.large.icon.size, md.comp.app-bar.medium.icon.size, md.comp.app-b
 | compose-material3 | OutlinedButtonTokens.DisabledIconColor | md.comp.outlined-button.disabled-icon-color | OutlinedButtonTokens.kt:23 |
 | compose-material3 | OutlinedButtonTokens.DisabledIconOpacity | md.comp.outlined-button.disabled-icon-opacity | OutlinedButtonTokens.kt:26 |
 | compose-material3 | OutlinedButtonTokens.FocusedIconColor | md.comp.outlined-button.focused-icon-color | OutlinedButtonTokens.kt:34 |
-| compose-material3 | OutlinedButtonTokens.FocusedLabelTextColor | md.comp.outlined-button.focused-label-text-color | OutlinedButtonTokens.kt:37 |
-| compose-material3 | OutlinedButtonTokens.FocusedOutlineColor | md.comp.outlined-button.focused-outline-color | OutlinedButtonTokens.kt:40 |
 | compose-material3 | OutlinedButtonTokens.HoveredIconColor | md.comp.outlined-button.hovered-icon-color | OutlinedButtonTokens.kt:43 |
-| compose-material3 | OutlinedButtonTokens.HoveredLabelTextColor | md.comp.outlined-button.hovered-label-text-color | OutlinedButtonTokens.kt:46 |
-| compose-material3 | OutlinedButtonTokens.HoveredOutlineColor | md.comp.outlined-button.hovered-outline-color | OutlinedButtonTokens.kt:49 |
 | compose-material3 | OutlinedButtonTokens.IconColor | md.comp.outlined-button.icon-color | OutlinedButtonTokens.kt:52 |
 | compose-material3 | OutlinedButtonTokens.PressedIconColor | md.comp.outlined-button.pressed-icon-color | OutlinedButtonTokens.kt:61 |
 | compose-material3 | OutlinedButtonTokens.SelectedContainerColor | md.comp.outlined-button.selected-container-color | OutlinedButtonTokens.kt:70 |
@@ -4878,43 +5011,19 @@ md.comp.app-bar.large.icon.size, md.comp.app-bar.medium.icon.size, md.comp.app-b
 | compose-material3 | SliderTokens.LabelTextColor | md.comp.slider.label-text-color | SliderTokens.kt:119 |
 | compose-material3 | SliderTokens.ValueIndicatorLabelTextColor | md.comp.slider.value-indicator-label-text-color | SliderTokens.kt:161 |
 | compose-material3 | SliderTokens.ValueIndicatorLabelTextFont | md.comp.slider.value-indicator-label-text-font | SliderTokens.kt:164 |
-| compose-material3 | SmallIconButtonTokens.ContainerHeight | md.comp.small-icon-button.container-height | SmallIconButtonTokens.kt:24 |
-| compose-material3 | SmallIconButtonTokens.ContainerShapeRound | md.comp.small-icon-button.container-shape-round | SmallIconButtonTokens.kt:27 |
-| compose-material3 | SmallIconButtonTokens.ContainerShapeSquare | md.comp.small-icon-button.container-shape-square | SmallIconButtonTokens.kt:30 |
-| compose-material3 | SmallIconButtonTokens.DefaultLeadingSpace | md.comp.small-icon-button.default-leading-space | SmallIconButtonTokens.kt:33 |
-| compose-material3 | SmallIconButtonTokens.DefaultTrailingSpace | md.comp.small-icon-button.default-trailing-space | SmallIconButtonTokens.kt:36 |
-| compose-material3 | SmallIconButtonTokens.IconSize | md.comp.small-icon-button.icon-size | SmallIconButtonTokens.kt:39 |
-| compose-material3 | SmallIconButtonTokens.NarrowLeadingSpace | md.comp.small-icon-button.narrow-leading-space | SmallIconButtonTokens.kt:42 |
-| compose-material3 | SmallIconButtonTokens.NarrowTrailingSpace | md.comp.small-icon-button.narrow-trailing-space | SmallIconButtonTokens.kt:45 |
-| compose-material3 | SmallIconButtonTokens.OutlinedOutlineWidth | md.comp.small-icon-button.outlined-outline-width | SmallIconButtonTokens.kt:48 |
-| compose-material3 | SmallIconButtonTokens.PressedContainerShape | md.comp.small-icon-button.pressed-container-shape | SmallIconButtonTokens.kt:51 |
-| compose-material3 | SmallIconButtonTokens.SelectedContainerShapeRound | md.comp.small-icon-button.selected-container-shape-round | SmallIconButtonTokens.kt:54 |
-| compose-material3 | SmallIconButtonTokens.SelectedContainerShapeSquare | md.comp.small-icon-button.selected-container-shape-square | SmallIconButtonTokens.kt:57 |
-| compose-material3 | SmallIconButtonTokens.WideLeadingSpace | md.comp.small-icon-button.wide-leading-space | SmallIconButtonTokens.kt:60 |
-| compose-material3 | SmallIconButtonTokens.WideTrailingSpace | md.comp.small-icon-button.wide-trailing-space | SmallIconButtonTokens.kt:63 |
 | compose-material3 | SnackbarTokens.FocusIconColor | md.comp.snackbar.focus-icon-color | SnackbarTokens.kt:51 |
 | compose-material3 | SnackbarTokens.HoverIconColor | md.comp.snackbar.hover-icon-color | SnackbarTokens.kt:54 |
 | compose-material3 | SnackbarTokens.PressedIconColor | md.comp.snackbar.pressed-icon-color | SnackbarTokens.kt:57 |
 | compose-material3 | SnackbarTokens.SingleLineContainerHeight | md.comp.snackbar.single-line-container-height | SnackbarTokens.kt:69 |
 | compose-material3 | SnackbarTokens.TwoLinesContainerHeight | md.comp.snackbar.two-lines-container-height | SnackbarTokens.kt:72 |
-| compose-material3 | SplitButtonLargeTokens.InnerHoveredCornerCornerSize | md.comp.split-button-large.inner-hovered-corner-corner-size | SplitButtonLargeTokens.kt:35 |
-| compose-material3 | SplitButtonLargeTokens.InnerPressedCornerCornerSize | md.comp.split-button-large.inner-pressed-corner-corner-size | SplitButtonLargeTokens.kt:36 |
 | compose-material3 | SplitButtonLargeTokens.TrailingIconSize | md.comp.split-button-large.trailing-icon-size | SplitButtonLargeTokens.kt:43 |
 | compose-material3 | SplitButtonLargeTokens.TrailingInnerSelectedCornerCornerSizePercent | md.comp.split-button-large.trailing-inner-selected-corner-corner-size-percent | SplitButtonLargeTokens.kt:46 |
-| compose-material3 | SplitButtonMediumTokens.InnerHoveredCornerCornerSize | md.comp.split-button-medium.inner-hovered-corner-corner-size | SplitButtonMediumTokens.kt:35 |
-| compose-material3 | SplitButtonMediumTokens.InnerPressedCornerCornerSize | md.comp.split-button-medium.inner-pressed-corner-corner-size | SplitButtonMediumTokens.kt:36 |
 | compose-material3 | SplitButtonMediumTokens.TrailingIconSize | md.comp.split-button-medium.trailing-icon-size | SplitButtonMediumTokens.kt:43 |
 | compose-material3 | SplitButtonMediumTokens.TrailingInnerSelectedCornerCornerSizePercent | md.comp.split-button-medium.trailing-inner-selected-corner-corner-size-percent | SplitButtonMediumTokens.kt:46 |
-| compose-material3 | SplitButtonSmallTokens.InnerHoveredCornerCornerSize | md.comp.split-button-small.inner-hovered-corner-corner-size | SplitButtonSmallTokens.kt:35 |
-| compose-material3 | SplitButtonSmallTokens.InnerPressedCornerCornerSize | md.comp.split-button-small.inner-pressed-corner-corner-size | SplitButtonSmallTokens.kt:36 |
 | compose-material3 | SplitButtonSmallTokens.TrailingIconSize | md.comp.split-button-small.trailing-icon-size | SplitButtonSmallTokens.kt:43 |
 | compose-material3 | SplitButtonSmallTokens.TrailingInnerSelectedCornerCornerSizePercent | md.comp.split-button-small.trailing-inner-selected-corner-corner-size-percent | SplitButtonSmallTokens.kt:46 |
-| compose-material3 | SplitButtonXLargeTokens.InnerHoveredCornerCornerSize | md.comp.split-button-x-large.inner-hovered-corner-corner-size | SplitButtonXLargeTokens.kt:35 |
-| compose-material3 | SplitButtonXLargeTokens.InnerPressedCornerCornerSize | md.comp.split-button-x-large.inner-pressed-corner-corner-size | SplitButtonXLargeTokens.kt:36 |
 | compose-material3 | SplitButtonXLargeTokens.TrailingIconSize | md.comp.split-button-x-large.trailing-icon-size | SplitButtonXLargeTokens.kt:43 |
 | compose-material3 | SplitButtonXLargeTokens.TrailingInnerSelectedCornerCornerSizePercent | md.comp.split-button-x-large.trailing-inner-selected-corner-corner-size-percent | SplitButtonXLargeTokens.kt:46 |
-| compose-material3 | SplitButtonXSmallTokens.InnerHoveredCornerCornerSize | md.comp.split-button-x-small.inner-hovered-corner-corner-size | SplitButtonXSmallTokens.kt:35 |
-| compose-material3 | SplitButtonXSmallTokens.InnerPressedCornerCornerSize | md.comp.split-button-x-small.inner-pressed-corner-corner-size | SplitButtonXSmallTokens.kt:36 |
 | compose-material3 | SplitButtonXSmallTokens.OuterCornerCornerSizePercent | md.comp.split-button-x-small.outer-corner-corner-size-percent | SplitButtonXSmallTokens.kt:43 |
 | compose-material3 | SplitButtonXSmallTokens.TrailingIconSize | md.comp.split-button-x-small.trailing-icon-size | SplitButtonXSmallTokens.kt:44 |
 | compose-material3 | SplitButtonXSmallTokens.TrailingInnerSelectedCornerCornerSizePercent | md.comp.split-button-x-small.trailing-inner-selected-corner-corner-size-percent | SplitButtonXSmallTokens.kt:47 |
@@ -5123,34 +5232,6 @@ md.comp.app-bar.large.icon.size, md.comp.app-bar.medium.icon.size, md.comp.app-b
 | compose-material3 | VibrantMenuTokens.ItemSupportingTextColor | md.comp.vibrant-menu.item-supporting-text-color | VibrantMenuTokens.kt:149 |
 | compose-material3 | VibrantMenuTokens.ItemTrailingIconColor | md.comp.vibrant-menu.item-trailing-icon-color | VibrantMenuTokens.kt:152 |
 | compose-material3 | VibrantMenuTokens.ItemTrailingSupportingTextColor | md.comp.vibrant-menu.item-trailing-supporting-text-color | VibrantMenuTokens.kt:155 |
-| compose-material3 | XLargeIconButtonTokens.ContainerHeight | md.comp.x-large-icon-button.container-height | XLargeIconButtonTokens.kt:24 |
-| compose-material3 | XLargeIconButtonTokens.ContainerShapeRound | md.comp.x-large-icon-button.container-shape-round | XLargeIconButtonTokens.kt:27 |
-| compose-material3 | XLargeIconButtonTokens.ContainerShapeSquare | md.comp.x-large-icon-button.container-shape-square | XLargeIconButtonTokens.kt:30 |
-| compose-material3 | XLargeIconButtonTokens.DefaultLeadingSpace | md.comp.x-large-icon-button.default-leading-space | XLargeIconButtonTokens.kt:33 |
-| compose-material3 | XLargeIconButtonTokens.DefaultTrailingSpace | md.comp.x-large-icon-button.default-trailing-space | XLargeIconButtonTokens.kt:36 |
-| compose-material3 | XLargeIconButtonTokens.IconSize | md.comp.x-large-icon-button.icon-size | XLargeIconButtonTokens.kt:39 |
-| compose-material3 | XLargeIconButtonTokens.NarrowLeadingSpace | md.comp.x-large-icon-button.narrow-leading-space | XLargeIconButtonTokens.kt:42 |
-| compose-material3 | XLargeIconButtonTokens.NarrowTrailingSpace | md.comp.x-large-icon-button.narrow-trailing-space | XLargeIconButtonTokens.kt:45 |
-| compose-material3 | XLargeIconButtonTokens.OutlinedOutlineWidth | md.comp.x-large-icon-button.outlined-outline-width | XLargeIconButtonTokens.kt:48 |
-| compose-material3 | XLargeIconButtonTokens.PressedContainerShape | md.comp.x-large-icon-button.pressed-container-shape | XLargeIconButtonTokens.kt:51 |
-| compose-material3 | XLargeIconButtonTokens.SelectedContainerShapeRound | md.comp.x-large-icon-button.selected-container-shape-round | XLargeIconButtonTokens.kt:54 |
-| compose-material3 | XLargeIconButtonTokens.SelectedContainerShapeSquare | md.comp.x-large-icon-button.selected-container-shape-square | XLargeIconButtonTokens.kt:57 |
-| compose-material3 | XLargeIconButtonTokens.WideLeadingSpace | md.comp.x-large-icon-button.wide-leading-space | XLargeIconButtonTokens.kt:60 |
-| compose-material3 | XLargeIconButtonTokens.WideTrailingSpace | md.comp.x-large-icon-button.wide-trailing-space | XLargeIconButtonTokens.kt:63 |
-| compose-material3 | XSmallIconButtonTokens.ContainerHeight | md.comp.x-small-icon-button.container-height | XSmallIconButtonTokens.kt:24 |
-| compose-material3 | XSmallIconButtonTokens.ContainerShapeRound | md.comp.x-small-icon-button.container-shape-round | XSmallIconButtonTokens.kt:27 |
-| compose-material3 | XSmallIconButtonTokens.ContainerShapeSquare | md.comp.x-small-icon-button.container-shape-square | XSmallIconButtonTokens.kt:30 |
-| compose-material3 | XSmallIconButtonTokens.DefaultLeadingSpace | md.comp.x-small-icon-button.default-leading-space | XSmallIconButtonTokens.kt:33 |
-| compose-material3 | XSmallIconButtonTokens.DefaultTrailingSpace | md.comp.x-small-icon-button.default-trailing-space | XSmallIconButtonTokens.kt:36 |
-| compose-material3 | XSmallIconButtonTokens.IconSize | md.comp.x-small-icon-button.icon-size | XSmallIconButtonTokens.kt:39 |
-| compose-material3 | XSmallIconButtonTokens.NarrowLeadingSpace | md.comp.x-small-icon-button.narrow-leading-space | XSmallIconButtonTokens.kt:42 |
-| compose-material3 | XSmallIconButtonTokens.NarrowTrailingSpace | md.comp.x-small-icon-button.narrow-trailing-space | XSmallIconButtonTokens.kt:45 |
-| compose-material3 | XSmallIconButtonTokens.OutlinedOutlineWidth | md.comp.x-small-icon-button.outlined-outline-width | XSmallIconButtonTokens.kt:48 |
-| compose-material3 | XSmallIconButtonTokens.PressedContainerShape | md.comp.x-small-icon-button.pressed-container-shape | XSmallIconButtonTokens.kt:51 |
-| compose-material3 | XSmallIconButtonTokens.SelectedContainerShapeRound | md.comp.x-small-icon-button.selected-container-shape-round | XSmallIconButtonTokens.kt:54 |
-| compose-material3 | XSmallIconButtonTokens.SelectedContainerShapeSquare | md.comp.x-small-icon-button.selected-container-shape-square | XSmallIconButtonTokens.kt:57 |
-| compose-material3 | XSmallIconButtonTokens.WideLeadingSpace | md.comp.x-small-icon-button.wide-leading-space | XSmallIconButtonTokens.kt:60 |
-| compose-material3 | XSmallIconButtonTokens.WideTrailingSpace | md.comp.x-small-icon-button.wide-trailing-space | XSmallIconButtonTokens.kt:63 |
 | material-components-android | m3_ref_typeface_brand_medium | (none) | typography/res/values/tokens.xml:179 |
 | material-components-android | m3_ref_typeface_brand_regular | (none) | typography/res/values/tokens.xml:178 |
 | material-components-android | m3_ref_typeface_plain_medium | (none) | typography/res/values/tokens.xml:183 |

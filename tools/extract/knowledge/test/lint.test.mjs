@@ -11,6 +11,7 @@ const merged = [
   { id: 'md.sys.shape.corner.medium', canonical: { dp: 12 }, perPlatform: { web: { dp: 12 } }, crossCheck: {} },
   { id: 'md.comp.filled-button.disabled.container.opacity', canonical: { number: 0.38 }, perPlatform: { web: { number: 0.38 } }, crossCheck: {} },
   { id: 'md.ref.palette.primary40', canonical: { hex: '#6750a4ff' }, perPlatform: { web: { hex: '#6750a4ff' } }, crossCheck: {} },
+  { id: 'md.comp.x.leading-space', canonical: { dp: 12 }, perPlatform: { web: { dp: 12 }, flutter: { number: 12 }, compose: { dp: 16 } }, crossCheck: {} },
 ];
 const coverage = { rows: [
   { path: '/components/buttons/specs', status: 'done' },
@@ -19,7 +20,7 @@ const coverage = { rows: [
   { path: '/blog/gone', status: 'failed' },
 ] };
 
-const COMPONENT_SECTIONS = ['Summary', 'Use it when', 'Anatomy', 'Variants', 'Expressive', 'States and behavior', 'Measurements', 'Accessibility', 'Platform mapping', 'Pitfalls'];
+const COMPONENT_SECTIONS = ['Summary', 'Use it when', 'Anatomy', 'Variants', 'Expressive', 'States and behavior', 'Measurements', 'Typography', 'Color roles and state layers', 'Motion', 'Accessibility', 'Platform mapping', 'Pitfalls'];
 
 function note({ kind = 'component', pages = ['/components/buttons/specs'], body = {}, drop = [] } = {}) {
   const fm = ['---', 'title: Buttons', `kind: ${kind}`, `pages: [${pages.join(', ')}]`, 'tokenSets: [filled-button]', 'expressive: true', 'fetched: 2026-11-13', '---', ''];
@@ -104,4 +105,30 @@ test('table rows: each cell pairs its own value with its own markers', async () 
   const bad = await run({ 'components/buttons.md': note({ body: { Measurements: '| x | 12dp [token:md.comp.filled-button.container.shape] | 41dp [token:md.comp.filled-button.container.height] |' } }) });
   assert.ok(bad.errors.some(e => /value 41dp does not match token md\.comp\.filled-button\.container\.height$/.test(e)), bad.errors.join('\n'));
   assert.ok(!bad.errors.some(e => /value 12dp/.test(e)));
+});
+
+
+test('component notes need Typography, Color roles and state layers, Motion; references must resolve', async () => {
+  const missing = await run({ 'components/buttons.md': note({ drop: ['Motion'] }) });
+  assert.ok(missing.errors.some(e => /missing section "## Motion"/.test(e)));
+  const ref = note({ body: { 'Color roles and state layers': 'Same as buttons.md#color-roles-and-state-layers.' } });
+  assert.deepEqual((await run({ 'components/split-button.md': ref, 'components/buttons.md': note() })).errors, []);
+  const broken = note({ body: { 'Color roles and state layers': 'See buttons.md#colour-roles.' } });
+  const r = await run({ 'components/split-button.md': broken, 'components/buttons.md': note() });
+  assert.ok(r.errors.some(e => /broken reference buttons\.md#colour-roles/.test(e)), r.errors.join('\n'));
+});
+
+test('platform claims: differences must be acknowledged, [same:] and [differs:] are verified, bare agreement wording is rejected', async () => {
+  const unack = await run({ 'components/buttons.md': note({ body: { Measurements: 'Side padding 12dp [token:md.comp.x.leading-space].' } }) });
+  assert.ok(unack.errors.some(e => /token md\.comp\.x\.leading-space differs between platforms; acknowledge it with \[differs:md\.comp\.x\.leading-space\]/.test(e)), unack.errors.join('\n'));
+  const ack = await run({ 'components/buttons.md': note({ body: { Measurements: 'Side padding 12dp [token:md.comp.x.leading-space].\nCompose uses 16dp [token:md.comp.x.leading-space] [differs:md.comp.x.leading-space].' } }) });
+  assert.deepEqual(ack.errors, []);
+  const wrongDiff = await run({ 'components/buttons.md': note({ body: { Measurements: 'Height 40dp [token:md.comp.filled-button.container.height] [differs:md.comp.filled-button.container.height].' } }) });
+  assert.ok(wrongDiff.errors.some(e => /\[differs:md\.comp\.filled-button\.container\.height\] but the platforms agree/.test(e)));
+  const same = await run({ 'components/buttons.md': note({ body: { Measurements: 'Height 40dp on every platform [token:md.comp.filled-button.container.height] [same:md.comp.filled-button.container.height].' } }) });
+  assert.deepEqual(same.errors, []);
+  const sameBad = await run({ 'components/buttons.md': note({ body: { Measurements: 'Padding is identical everywhere [same:md.comp.x.leading-space] [differs:md.comp.x.leading-space].' } }) });
+  assert.ok(sameBad.errors.some(e => /\[same:md\.comp\.x\.leading-space\] is not true/.test(e)));
+  const claim = await run({ 'components/buttons.md': note({ body: { Measurements: 'The values agree in material-web, Flutter and Compose.' } }) });
+  assert.ok(claim.errors.some(e => /platform agreement claim without \[same:\]/.test(e)));
 });

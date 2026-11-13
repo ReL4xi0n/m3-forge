@@ -6,16 +6,21 @@ Precedence: each platform keeps the value from its own repository; the cross-pla
 material-web's; when the site and a repository disagree, the repository wins. References are followed
 inside their own source before comparing; a unitless number (Flutter) is compared by magnitude.
 
-## Repo vs repo (56)
+## Repo vs repo (65)
 
 | token | mode | values | differing pairs |
 |---|---|---|---|
+| md.comp.button.large.selected.container.shape.round |  | compose-material3: → md.sys.shape.corner.full; material_ui: shape(SHAPE_FAMILY_ROUNDED_CORNERS; 28, 28, 28, 28); material-web: → md.sys.shape.corner.extra-large | compose-material3 ≠ material-web |
 | md.comp.button.large.selected.container.shape.square |  | compose-material3: → md.sys.shape.corner.extra-large; material_ui: shape(SHAPE_FAMILY_CIRCULAR; 0, 0, 0, 0); material-web: → md.sys.shape.corner.full | compose-material3 ≠ material-web |
+| md.comp.button.medium.selected.container.shape.round |  | compose-material3: → md.sys.shape.corner.full; material_ui: shape(SHAPE_FAMILY_ROUNDED_CORNERS; 16, 16, 16, 16); material-web: → md.sys.shape.corner.large | compose-material3 ≠ material-web |
 | md.comp.button.medium.selected.container.shape.square |  | compose-material3: → md.sys.shape.corner.large; material_ui: shape(SHAPE_FAMILY_CIRCULAR; 0, 0, 0, 0); material-web: → md.sys.shape.corner.full | compose-material3 ≠ material-web |
+| md.comp.button.small.selected.container.shape.round |  | compose-material3: → md.sys.shape.corner.full; material_ui: shape(SHAPE_FAMILY_ROUNDED_CORNERS; 12, 12, 12, 12); material-web: → md.sys.shape.corner.medium | compose-material3 ≠ material-web |
 | md.comp.button.small.selected.container.shape.square |  | compose-material3: → md.sys.shape.corner.medium; material_ui: shape(SHAPE_FAMILY_CIRCULAR; 0, 0, 0, 0); material-web: → md.sys.shape.corner.full | compose-material3 ≠ material-web |
+| md.comp.button.xlarge.selected.container.shape.round |  | compose-material3: → md.sys.shape.corner.full; material_ui: shape(SHAPE_FAMILY_ROUNDED_CORNERS; 28, 28, 28, 28); material-web: → md.sys.shape.corner.extra-large | compose-material3 ≠ material-web |
 | md.comp.button.xlarge.selected.container.shape.square |  | compose-material3: → md.sys.shape.corner.extra-large; material_ui: shape(SHAPE_FAMILY_CIRCULAR; 0, 0, 0, 0); material-web: → md.sys.shape.corner.full | compose-material3 ≠ material-web |
 | md.comp.button.xsmall.icon-label-space |  | compose-material3: 8dp; material_ui: 4; material-components-android: 8dp; material-web: 8dp | compose-material3 ≠ material_ui; material-components-android ≠ material_ui; material-web ≠ material_ui |
 | md.comp.button.xsmall.leading-space |  | compose-material3: 16dp; material_ui: 12; material-components-android: 12dp; material-web: 12dp | compose-material3 ≠ material-components-android; compose-material3 ≠ material-web; compose-material3 ≠ material_ui |
+| md.comp.button.xsmall.selected.container.shape.round |  | compose-material3: → md.sys.shape.corner.full; material_ui: shape(SHAPE_FAMILY_ROUNDED_CORNERS; 12, 12, 12, 12); material-web: → md.sys.shape.corner.medium | compose-material3 ≠ material-web |
 | md.comp.button.xsmall.selected.container.shape.square |  | compose-material3: → md.sys.shape.corner.medium; material_ui: shape(SHAPE_FAMILY_CIRCULAR; 0, 0, 0, 0); material-web: → md.sys.shape.corner.full | compose-material3 ≠ material-web |
 | md.comp.button.xsmall.trailing-space |  | compose-material3: 16dp; material_ui: 12; material-components-android: 12dp; material-web: 12dp | compose-material3 ≠ material-components-android; compose-material3 ≠ material-web; compose-material3 ≠ material_ui |
 | md.comp.circular-progress-indicator.size |  | compose-material3: 40dp; material-web: 48dp | compose-material3 ≠ material-web |
@@ -43,6 +48,10 @@ inside their own source before comparing; a unitless number (Flutter) is compare
 | md.comp.navigation-bar.container.height |  | compose-material3: 64dp; material_ui: 80; material-web: 80dp | compose-material3 ≠ material-web; compose-material3 ≠ material_ui |
 | md.comp.outlined-button.disabled.label-text.color |  | compose-material3: → md.sys.color.on-surface-variant; material-web: → md.sys.color.on-surface | compose-material3 ≠ material-web |
 | md.comp.outlined-button.disabled.outline.color |  | compose-material3: → md.sys.color.outline-variant; material-web: → md.sys.color.on-surface | compose-material3 ≠ material-web |
+| md.comp.outlined-button.focus.label-text.color |  | compose-material3: → md.sys.color.on-surface-variant; material-web: → md.sys.color.primary | compose-material3 ≠ material-web |
+| md.comp.outlined-button.focus.outline.color |  | compose-material3: → md.sys.color.outline-variant; material-web: → md.sys.color.primary | compose-material3 ≠ material-web |
+| md.comp.outlined-button.hover.label-text.color |  | compose-material3: → md.sys.color.on-surface-variant; material-web: → md.sys.color.primary | compose-material3 ≠ material-web |
+| md.comp.outlined-button.hover.outline.color |  | compose-material3: → md.sys.color.outline-variant; material-web: → md.sys.color.outline | compose-material3 ≠ material-web |
 | md.comp.outlined-button.label-text.color |  | compose-material3: → md.sys.color.on-surface-variant; material-web: → md.sys.color.primary | compose-material3 ≠ material-web |
 | md.comp.outlined-button.outline.color |  | compose-material3: → md.sys.color.outline-variant; material-web: → md.sys.color.outline | compose-material3 ≠ material-web |
 | md.comp.outlined-button.pressed.label-text.color |  | compose-material3: → md.sys.color.on-surface-variant; material-web: → md.sys.color.primary | compose-material3 ≠ material-web |

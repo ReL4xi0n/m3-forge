@@ -2,8 +2,8 @@
   "perSource": {
     "compose-material3": {
       "records": 2537,
-      "mapped": 1608,
-      "unmapped": 929,
+      "mapped": 1698,
+      "unmapped": 839,
       "unparsed": 9,
       "deprecated": 0
     },
@@ -30,7 +30,7 @@
     }
   },
   "perKind": {
-    "comp": 6334,
+    "comp": 6244,
     "ref": 246,
     "sys": 849
   },
@@ -38,28 +38,31 @@
     "web": {
       "source": "material-web",
       "notFoundEntries": 135,
-      "conflicts": 56
+      "notFoundTokens": 190,
+      "conflicts": 65
     },
     "flutter": {
       "source": "material_ui",
       "notFoundEntries": 802,
-      "conflicts": 40
+      "notFoundTokens": 1395,
+      "conflicts": 45
     },
     "compose": {
       "source": "compose-material3",
-      "notFoundEntries": 2541,
-      "conflicts": 56
+      "notFoundEntries": 2712,
+      "notFoundTokens": 3809,
+      "conflicts": 65
     }
   },
   "totals": {
-    "tokenKeys": 7429,
+    "tokenKeys": 7339,
     "conflicts": {
-      "repoVsRepo": 56,
+      "repoVsRepo": 65,
       "siteVsRepo": 0
     },
-    "notFoundEntries": 3478,
+    "notFoundEntries": 3649,
     "deprecatedIds": 1080,
     "unparsed": 410,
-    "unmapped": 1071
+    "unmapped": 981
   }
 }

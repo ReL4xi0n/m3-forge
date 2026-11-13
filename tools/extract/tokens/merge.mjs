@@ -22,20 +22,27 @@ function resolve(value, index) {
 
 // 'same' | 'different' | 'not-compared'. Refs are followed inside their own source first; a unitless
 // {number} (Flutter) is compared with any numeric unit by magnitude only.
+const related = (p, q) => p === q || p.startsWith(`${q}.`) || q.startsWith(`${p}.`);
+
 export function compare(a, b, indexA = null, indexB = null) {
   if (a.ref && b.ref && a.ref === b.ref) return 'same';
+  // A whole style vs one of its own sub-tokens (typescale.label-large vs typescale.label-large.font)
+  // points at the same thing at different depths: not comparable, not a difference.
+  if (a.ref && b.ref && related(a.ref, b.ref)) return 'not-compared';
   const x = resolve(a, indexA);
   const y = resolve(b, indexB);
-  if (x.ref && y.ref) return x.ref === y.ref ? 'same' : 'different';
-  if (x.ref || y.ref) return 'not-compared';
+  if (x.ref && y.ref) return related(x.ref, y.ref) ? (x.ref === y.ref ? 'same' : 'not-compared') : 'different';
+  // Different references that end in values we cannot compare are still a token-level difference.
+  const refsDiffer = Boolean(a.ref && b.ref && !related(a.ref, b.ref));
+  if (x.ref || y.ref) return refsDiffer ? 'different' : 'not-compared';
   const kx = kindOf(x);
   const ky = kindOf(y);
-  if (kx === 'unparsed' || ky === 'unparsed') return 'not-compared';
+  if (kx === 'unparsed' || ky === 'unparsed') return refsDiffer ? 'different' : 'not-compared';
   if (NUMERIC.has(kx) && NUMERIC.has(ky)) {
     if (kx !== ky && kx !== 'number' && ky !== 'number') return 'different';
     return x[kx] === y[ky] ? 'same' : 'different';
   }
-  if (kx !== ky) return 'not-compared';
+  if (kx !== ky) return refsDiffer ? 'different' : 'not-compared';
   return JSON.stringify(x[kx]) === JSON.stringify(y[ky]) ? 'same' : 'different';
 }
 
@@ -99,8 +106,9 @@ export function merge(bySource, siteValues = []) {
       const prefix = id.split('.').slice(0, 3).join('.') + '.';
       const platformHasComponent = [...indexes[src]?.keys() ?? []].some(k => k.startsWith(prefix));
       if (!platformHasComponent && id.split('.')[1] === 'comp') {
-        const c = collapsed[p].get(component) || new Set();
-        present.forEach(s => c.add(s));
+        const c = collapsed[p].get(component) || { sources: new Set(), count: 0 };
+        present.forEach(s => c.sources.add(s));
+        c.count++;
         collapsed[p].set(component, c);
       } else {
         notFound[p].push({ id, ...(mode ? { mode } : {}), component, availableIn: present.slice().sort() });
@@ -108,7 +116,7 @@ export function merge(bySource, siteValues = []) {
     }
   }
   for (const p of Object.keys(notFound)) {
-    for (const [component, set] of collapsed[p]) notFound[p].push({ id: `${component}.*`, component, availableIn: [...set].sort() });
+    for (const [component, c] of collapsed[p]) notFound[p].push({ id: `${component}.*`, component, availableIn: [...c.sources].sort(), count: c.count });
     notFound[p].sort((a, b) => a.component.localeCompare(b.component) || a.id.localeCompare(b.id));
   }
 

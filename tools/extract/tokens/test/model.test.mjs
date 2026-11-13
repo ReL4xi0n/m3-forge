@@ -93,10 +93,33 @@ test('extractCompose: reviewed prop rewrites from aliases.json join names Compos
   const knownIds = new Set((await extractWeb(fx('web'))).map(x => x.id));
   const aliases = { 'compose-material3': { TypeScale: { props: [{ pattern: '^(.+?)Emphasized(.+)$', replace: 'Emphasized$1$2' }], why: 'Compose puts Emphasized after the style name' } } };
   const plain = await extractCompose(fx('compose'), { knownIds });
-  assert.equal(plain.find(r => r.native === 'TypeScaleTokens.BodyLargeEmphasizedLineHeight').derived, true);
+  assert.equal(plain.find(r => r.native === 'TypeScaleTokens.BodyLargeEmphasizedLineHeight').mappedBy, 'word-order', 'the word-order rule covers this without an alias');
   const r = await extractCompose(fx('compose'), { knownIds, aliases });
   const t = r.find(x => x.native === 'TypeScaleTokens.BodyLargeEmphasizedLineHeight');
   assert.equal(t.id, 'md.sys.typescale.emphasized.body-large.line-height');
   assert.equal(t.alias, 'TypeScale');
   assert.equal(t.derived, undefined);
+});
+
+test('compose mapping rules: X+Small, state tense, word order; ambiguous or extra-word names stay unmapped', async () => {
+  const knownIds = new Set([
+    'md.comp.icon-button.xsmall.icon.size',
+    'md.comp.icon-button.xsmall.hovered.state-layer.opacity',
+    'md.comp.split-button.small.inner-corner.pressed.corner-size',
+    'md.comp.split-button.small.trailing-button.icon.size',
+    'md.comp.icon-button.xsmall.bogus-thing', 'md.comp.icon-button.xsmall.thing.bogus',
+    'md.comp.button.filled.disabled.icon.color',
+  ]);
+  const r = await extractCompose(fx('compose-rules'), { knownIds });
+  const get = n => r.find(x => x.native === n);
+  assert.equal(get('XSmallIconButtonTokens.IconSize').id, 'md.comp.icon-button.xsmall.icon.size');
+  assert.equal(get('XSmallIconButtonTokens.IconSize').mappedBy, 'word-order');
+  assert.equal(get('XSmallIconButtonTokens.HoverStateLayerOpacity').id, 'md.comp.icon-button.xsmall.hovered.state-layer.opacity');
+  assert.equal(get('SplitButtonSmallTokens.InnerPressedCornerCornerSize').id, 'md.comp.split-button.small.inner-corner.pressed.corner-size');
+  const extra = get('SplitButtonSmallTokens.TrailingIconSize');
+  assert.equal(extra.derived, true, 'database has an extra word (button): never inferred');
+  const amb = get('XSmallIconButtonTokens.BogusThing');
+  assert.equal(amb.derived, true);
+  assert.equal(amb.ambiguous, true, 'two candidates with the same words');
+  assert.equal(get('FilledIconButtonTokens.DisabledColor').derived, true, 'object words must match the database set, not leak into the property');
 });

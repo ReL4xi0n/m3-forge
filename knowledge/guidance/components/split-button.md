@@ -68,7 +68,8 @@ The layout mirrors in right-to-left languages.
 
 ## Measurements
 
-The values agree in material-web, Flutter `material_ui` and Compose unless noted.
+The values are material-web's (canonical). No token cited below differs on another platform; the
+linter checks this, and a difference would need a `[differs:]` marker.
 
 | | XS | S | M | L | XL |
 |---|---|---|---|---|---|
@@ -85,9 +86,36 @@ The values agree in material-web, Flutter `material_ui` and Compose unless noted
   the outer and selected-trailing corner sizes as 50% [site:/components/split-button/specs].
 - The gap between halves is always 2dp, whatever the size [site:/components/split-button/specs]
   [token:md.comp.split-button.medium.between-space].
-- Compose has the same values, but several of its names did not map to the token database (for
-  example the menu-icon and hovered-corner sizes). They appear under "Unmapped native names" in
-  `knowledge/not-found.md`, not as conflicts.
+- Several Compose names for this component do not map to a token-database id (the menu-icon size,
+  the hovered and pressed inner corners, the selected trailing corner). They are listed under
+  "Unmapped native names" in `knowledge/not-found.md`, so Compose shows NOT FOUND for those ids
+  rather than a value.
+
+## Typography
+
+- The split button has no label type token of its own [NOT FOUND].
+- The leading button follows the button label styles per size; see
+  buttons.md#typography (label large for extra small and small, title medium, headline small,
+  headline large).
+
+## Color roles and state layers
+
+- The color configurations, roles and state-layer opacities are the button ones; see
+  buttons.md#color-roles-and-state-layers.
+- Opening the menu does not change colors. The trailing button only adds its selected state layer.
+
+## Motion
+
+- Menu icon: rotates 180° inwards when the menu opens or closes, using the standard motion scheme
+  [site:/components/split-button/guidelines].
+- Inner-corner shape morph on hover, focus and press: no split-button duration, easing or spring
+  token [NOT FOUND].
+- Compose animates both halves with the default effects spring of the active motion scheme
+  (`MotionSchemeKeyTokens.DefaultEffects`, SplitButton.kt:697): damping 1, stiffness 1600 in both
+  schemes [token:md.sys.motion.spring.default.effects.damping]
+  [token:md.sys.motion.spring.default.effects.stiffness].
+- The site names a scheme but no token, so material-web and Flutter have no split-button motion
+  token [NOT FOUND].
 
 ## Accessibility
 
