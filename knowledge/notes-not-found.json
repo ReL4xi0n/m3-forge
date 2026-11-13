@@ -28,5 +28,25 @@
     "note": "knowledge/guidance/components/split-button.md",
     "line": 118,
     "text": "token [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/styles/color.md",
+    "line": 156,
+    "text": "| M3 | Tonal spot (`DynamicSchemeVariant.tonalSpot`, MCU `Variant.TONAL_SPOT`) | `ColorScheme.fromSeed` default [impl:material_ui/packages/material_ui/lib/src/color_scheme.dart:283]; `ColorScheme.fromImageProvider` default [impl:material_ui/packages/material_ui/lib/src/color_scheme.dart:1758]; enum doc \"Default for Material theme colors\" [impl:material_ui/packages/material_ui/lib/src/color_scheme.dart:31]; MCU doc calls tonal spot the default Material You theme on Android 12 and 13 [impl:material-color-utilities/package/scheme/scheme_tonal_spot.js:23] | No color page names a variant [NOT FOUND] |"
+  },
+  {
+    "note": "knowledge/guidance/styles/color.md",
+    "line": 157,
+    "text": "| M3 Expressive | [NOT FOUND] | No source sets a variant for the Expressive style (details below) | No color page names a variant [NOT FOUND] |"
+  },
+  {
+    "note": "knowledge/guidance/styles/color.md",
+    "line": 200,
+    "text": "which spec version goes with the M3 Expressive style [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/styles/color.md",
+    "line": 267,
+    "text": "Compose has no medium or high contrast tokens [NOT FOUND]."
   }
 ]

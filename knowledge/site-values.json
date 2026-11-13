@@ -229,5 +229,13 @@
     },
     "note": "knowledge/guidance/components/split-button.md",
     "line": 147
+  },
+  {
+    "page": "/blog/science-of-color-design",
+    "value": {
+      "dp": 40
+    },
+    "note": "knowledge/guidance/styles/color.md",
+    "line": 285
   }
 ]
