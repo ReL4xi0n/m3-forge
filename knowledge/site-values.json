@@ -643,6 +643,241 @@
     "line": 107
   },
   {
+    "page": "/components/checkbox/specs",
+    "token": "md.comp.checkbox.container.size",
+    "value": {
+      "dp": 18
+    },
+    "note": "knowledge/guidance/components/checkbox.md",
+    "line": 72
+  },
+  {
+    "page": "/components/checkbox/specs",
+    "token": "md.comp.checkbox.container.shape",
+    "value": {
+      "dp": 2
+    },
+    "note": "knowledge/guidance/components/checkbox.md",
+    "line": 73
+  },
+  {
+    "page": "/components/checkbox/specs",
+    "token": "md.comp.checkbox.icon.size",
+    "value": {
+      "dp": 18
+    },
+    "note": "knowledge/guidance/components/checkbox.md",
+    "line": 76
+  },
+  {
+    "page": "/components/checkbox/specs",
+    "token": "md.comp.checkbox.state-layer.size",
+    "value": {
+      "dp": 40
+    },
+    "note": "knowledge/guidance/components/checkbox.md",
+    "line": 77
+  },
+  {
+    "page": "/components/checkbox/specs",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/checkbox.md",
+    "line": 79
+  },
+  {
+    "page": "/components/checkbox/specs",
+    "token": "md.comp.checkbox.container.size",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/checkbox.md",
+    "line": 147
+  },
+  {
+    "page": "/components/checkbox/specs",
+    "token": "md.comp.checkbox.container.size",
+    "value": {
+      "dp": 18
+    },
+    "note": "knowledge/guidance/components/checkbox.md",
+    "line": 147
+  },
+  {
+    "page": "/components/checkbox/specs",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/checkbox.md",
+    "line": 174
+  },
+  {
+    "page": "/components/chips/specs",
+    "token": "md.comp.assist-chip.container.height",
+    "value": {
+      "dp": 32
+    },
+    "note": "knowledge/guidance/components/chips.md",
+    "line": 106
+  },
+  {
+    "page": "/components/chips/specs",
+    "token": "md.comp.assist-chip.container.shape",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/chips.md",
+    "line": 107
+  },
+  {
+    "page": "/components/chips/specs",
+    "token": "md.comp.assist-chip.with-icon.icon.size",
+    "value": {
+      "dp": 18
+    },
+    "note": "knowledge/guidance/components/chips.md",
+    "line": 110
+  },
+  {
+    "page": "/components/chips/specs",
+    "token": "md.comp.input-chip.with-avatar.avatar.size",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/components/chips.md",
+    "line": 111
+  },
+  {
+    "page": "/components/chips/specs",
+    "token": "md.comp.input-chip.with-avatar.avatar.shape",
+    "value": {
+      "dp": 12
+    },
+    "note": "knowledge/guidance/components/chips.md",
+    "line": 112
+  },
+  {
+    "page": "/components/chips/specs",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/chips.md",
+    "line": 113
+  },
+  {
+    "page": "/components/chips/specs",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/chips.md",
+    "line": 114
+  },
+  {
+    "page": "/components/chips/specs",
+    "value": {
+      "dp": 4
+    },
+    "note": "knowledge/guidance/components/chips.md",
+    "line": 115
+  },
+  {
+    "page": "/components/chips/specs",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/chips.md",
+    "line": 116
+  },
+  {
+    "page": "/components/chips/guidelines",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/chips.md",
+    "line": 117
+  },
+  {
+    "page": "/components/chips/guidelines",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/chips.md",
+    "line": 118
+  },
+  {
+    "page": "/components/chips/guidelines",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/chips.md",
+    "line": 124
+  },
+  {
+    "page": "/components/chips/guidelines",
+    "value": {
+      "dp": 88
+    },
+    "note": "knowledge/guidance/components/chips.md",
+    "line": 126
+  },
+  {
+    "page": "/components/chips/guidelines",
+    "value": {
+      "dp": 42
+    },
+    "note": "knowledge/guidance/components/chips.md",
+    "line": 126
+  },
+  {
+    "page": "/components/chips/guidelines",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/chips.md",
+    "line": 232
+  },
+  {
+    "page": "/components/chips/guidelines",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/chips.md",
+    "line": 258
+  },
+  {
+    "page": "/components/date-pickers/overview",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/date-pickers.md",
+    "line": 72
+  },
+  {
+    "page": "/components/date-pickers/accessibility",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/date-pickers.md",
+    "line": 129
+  },
+  {
+    "page": "/components/date-pickers/accessibility",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/date-pickers.md",
+    "line": 235
+  },
+  {
+    "page": "/components/date-pickers/accessibility",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/date-pickers.md",
+    "line": 265
+  },
+  {
     "page": "/components/dialogs/guidelines",
     "value": {
       "dp": 56
@@ -1452,6 +1687,48 @@
     "line": 94
   },
   {
+    "page": "/components/radio-button/specs",
+    "token": "md.comp.radio-button.icon.size",
+    "value": {
+      "dp": 20
+    },
+    "note": "knowledge/guidance/components/radio-button.md",
+    "line": 63
+  },
+  {
+    "page": "/components/radio-button/specs",
+    "token": "md.comp.radio-button.state-layer.size",
+    "value": {
+      "dp": 40
+    },
+    "note": "knowledge/guidance/components/radio-button.md",
+    "line": 64
+  },
+  {
+    "page": "/components/radio-button/specs",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/radio-button.md",
+    "line": 65
+  },
+  {
+    "page": "/components/radio-button/specs",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/radio-button.md",
+    "line": 123
+  },
+  {
+    "page": "/components/radio-button/specs",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/radio-button.md",
+    "line": 145
+  },
+  {
     "page": "/components/search/specs",
     "value": {
       "dp": 24
@@ -1693,6 +1970,202 @@
     "line": 90
   },
   {
+    "page": "/components/sliders/guidelines",
+    "token": "md.comp.slider.medium.active.track.height",
+    "value": {
+      "dp": 40
+    },
+    "note": "knowledge/guidance/components/sliders.md",
+    "line": 53
+  },
+  {
+    "page": "/components/sliders/specs",
+    "token": "md.comp.slider.xsmall.active.track.height",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/sliders.md",
+    "line": 102
+  },
+  {
+    "page": "/components/sliders/specs",
+    "token": "md.comp.slider.small.active.track.height",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/components/sliders.md",
+    "line": 102
+  },
+  {
+    "page": "/components/sliders/specs",
+    "token": "md.comp.slider.medium.active.track.height",
+    "value": {
+      "dp": 40
+    },
+    "note": "knowledge/guidance/components/sliders.md",
+    "line": 102
+  },
+  {
+    "page": "/components/sliders/specs",
+    "token": "md.comp.slider.large.active.track.height",
+    "value": {
+      "dp": 56
+    },
+    "note": "knowledge/guidance/components/sliders.md",
+    "line": 102
+  },
+  {
+    "page": "/components/sliders/specs",
+    "token": "md.comp.slider.xlarge.active.track.height",
+    "value": {
+      "dp": 96
+    },
+    "note": "knowledge/guidance/components/sliders.md",
+    "line": 102
+  },
+  {
+    "page": "/components/sliders/specs",
+    "token": "md.comp.slider.xsmall.active.handle.height",
+    "value": {
+      "dp": 44
+    },
+    "note": "knowledge/guidance/components/sliders.md",
+    "line": 103
+  },
+  {
+    "page": "/components/sliders/specs",
+    "token": "md.comp.slider.small.active.handle.height",
+    "value": {
+      "dp": 44
+    },
+    "note": "knowledge/guidance/components/sliders.md",
+    "line": 103
+  },
+  {
+    "page": "/components/sliders/specs",
+    "token": "md.comp.slider.large.active.handle.height",
+    "value": {
+      "dp": 68
+    },
+    "note": "knowledge/guidance/components/sliders.md",
+    "line": 103
+  },
+  {
+    "page": "/components/sliders/specs",
+    "token": "md.comp.slider.xlarge.active.handle.height",
+    "value": {
+      "dp": 108
+    },
+    "note": "knowledge/guidance/components/sliders.md",
+    "line": 103
+  },
+  {
+    "page": "/components/sliders/specs",
+    "token": "md.comp.slider.xsmall.active.track.shape.leading",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/sliders.md",
+    "line": 104
+  },
+  {
+    "page": "/components/sliders/specs",
+    "token": "md.comp.slider.small.active.track.shape.leading",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/sliders.md",
+    "line": 104
+  },
+  {
+    "page": "/components/sliders/specs",
+    "token": "md.comp.slider.medium.active.track.shape.leading",
+    "value": {
+      "dp": 12
+    },
+    "note": "knowledge/guidance/components/sliders.md",
+    "line": 104
+  },
+  {
+    "page": "/components/sliders/specs",
+    "token": "md.comp.slider.large.active.track.shape.leading",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/sliders.md",
+    "line": 104
+  },
+  {
+    "page": "/components/sliders/specs",
+    "token": "md.comp.slider.xlarge.active.track.shape.leading",
+    "value": {
+      "dp": 28
+    },
+    "note": "knowledge/guidance/components/sliders.md",
+    "line": 104
+  },
+  {
+    "page": "/components/sliders/specs",
+    "token": "md.comp.slider.medium.icon.size",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/components/sliders.md",
+    "line": 105
+  },
+  {
+    "page": "/components/sliders/specs",
+    "token": "md.comp.slider.large.icon.size",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/components/sliders.md",
+    "line": 105
+  },
+  {
+    "page": "/components/sliders/specs",
+    "token": "md.comp.slider.xlarge.icon.size",
+    "value": {
+      "dp": 32
+    },
+    "note": "knowledge/guidance/components/sliders.md",
+    "line": 105
+  },
+  {
+    "page": "/components/sliders/specs",
+    "token": "md.comp.slider.medium.active.handle.height",
+    "value": {
+      "dp": 52
+    },
+    "note": "knowledge/guidance/components/sliders.md",
+    "line": 108
+  },
+  {
+    "page": "/components/sliders/specs",
+    "token": "md.comp.slider.handle.width",
+    "value": {
+      "dp": 4
+    },
+    "note": "knowledge/guidance/components/sliders.md",
+    "line": 111
+  },
+  {
+    "page": "/components/sliders/specs",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/sliders.md",
+    "line": 118
+  },
+  {
+    "page": "/components/sliders/specs",
+    "value": {
+      "dp": 44
+    },
+    "note": "knowledge/guidance/components/sliders.md",
+    "line": 118
+  },
+  {
     "page": "/components/split-button/guidelines",
     "value": {
       "dp": 4
@@ -1776,6 +2249,111 @@
     },
     "note": "knowledge/guidance/components/split-button.md",
     "line": 147
+  },
+  {
+    "page": "/components/switch/specs",
+    "token": "md.comp.switch.track.width",
+    "value": {
+      "dp": 52
+    },
+    "note": "knowledge/guidance/components/switch.md",
+    "line": 73
+  },
+  {
+    "page": "/components/switch/specs",
+    "token": "md.comp.switch.track.height",
+    "value": {
+      "dp": 32
+    },
+    "note": "knowledge/guidance/components/switch.md",
+    "line": 74
+  },
+  {
+    "page": "/components/switch/specs",
+    "token": "md.comp.switch.track.outline.width",
+    "value": {
+      "dp": 2
+    },
+    "note": "knowledge/guidance/components/switch.md",
+    "line": 75
+  },
+  {
+    "page": "/components/switch/specs",
+    "token": "md.comp.switch.unselected.handle.width",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/switch.md",
+    "line": 77
+  },
+  {
+    "page": "/components/switch/specs",
+    "token": "md.comp.switch.with-icon.handle.width",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/components/switch.md",
+    "line": 78
+  },
+  {
+    "page": "/components/switch/specs",
+    "token": "md.comp.switch.selected.handle.width",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/components/switch.md",
+    "line": 79
+  },
+  {
+    "page": "/components/switch/specs",
+    "token": "md.comp.switch.pressed.handle.width",
+    "value": {
+      "dp": 28
+    },
+    "note": "knowledge/guidance/components/switch.md",
+    "line": 80
+  },
+  {
+    "page": "/components/switch/specs",
+    "token": "md.comp.switch.selected.icon.size",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/switch.md",
+    "line": 82
+  },
+  {
+    "page": "/components/switch/specs",
+    "token": "md.comp.switch.state-layer.size",
+    "value": {
+      "dp": 40
+    },
+    "note": "knowledge/guidance/components/switch.md",
+    "line": 83
+  },
+  {
+    "page": "/components/switch/specs",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/switch.md",
+    "line": 84
+  },
+  {
+    "page": "/components/switch/specs",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/switch.md",
+    "line": 157
+  },
+  {
+    "page": "/components/switch/specs",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/switch.md",
+    "line": 178
   },
   {
     "page": "/components/tabs/guidelines",
@@ -1878,6 +2456,295 @@
     },
     "note": "knowledge/guidance/components/tabs.md",
     "line": 93
+  },
+  {
+    "page": "/components/text-fields/specs",
+    "token": "md.comp.filled-text-field.container.height",
+    "value": {
+      "dp": 56
+    },
+    "note": "knowledge/guidance/components/text-fields.md",
+    "line": 112
+  },
+  {
+    "page": "/components/text-fields/specs",
+    "token": "md.comp.outlined-text-field.container.height",
+    "value": {
+      "dp": 56
+    },
+    "note": "knowledge/guidance/components/text-fields.md",
+    "line": 112
+  },
+  {
+    "page": "/components/text-fields/specs",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/text-fields.md",
+    "line": 119
+  },
+  {
+    "page": "/components/text-fields/specs",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/text-fields.md",
+    "line": 119
+  },
+  {
+    "page": "/components/text-fields/specs",
+    "value": {
+      "dp": 12
+    },
+    "note": "knowledge/guidance/components/text-fields.md",
+    "line": 120
+  },
+  {
+    "page": "/components/text-fields/specs",
+    "value": {
+      "dp": 12
+    },
+    "note": "knowledge/guidance/components/text-fields.md",
+    "line": 120
+  },
+  {
+    "page": "/components/text-fields/specs",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/text-fields.md",
+    "line": 121
+  },
+  {
+    "page": "/components/text-fields/specs",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/text-fields.md",
+    "line": 121
+  },
+  {
+    "page": "/components/text-fields/specs",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/text-fields.md",
+    "line": 122
+  },
+  {
+    "page": "/components/text-fields/specs",
+    "value": {
+      "dp": 4
+    },
+    "note": "knowledge/guidance/components/text-fields.md",
+    "line": 123
+  },
+  {
+    "page": "/components/text-fields/specs",
+    "value": {
+      "dp": 4
+    },
+    "note": "knowledge/guidance/components/text-fields.md",
+    "line": 123
+  },
+  {
+    "page": "/components/text-fields/specs",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/text-fields.md",
+    "line": 124
+  },
+  {
+    "page": "/components/text-fields/specs",
+    "value": {
+      "dp": 16
+    },
+    "note": "knowledge/guidance/components/text-fields.md",
+    "line": 124
+  },
+  {
+    "page": "/components/text-fields/specs",
+    "value": {
+      "dp": 4
+    },
+    "note": "knowledge/guidance/components/text-fields.md",
+    "line": 125
+  },
+  {
+    "page": "/components/text-fields/specs",
+    "value": {
+      "dp": 56
+    },
+    "note": "knowledge/guidance/components/text-fields.md",
+    "line": 126
+  },
+  {
+    "page": "/components/text-fields/specs",
+    "value": {
+      "dp": 56
+    },
+    "note": "knowledge/guidance/components/text-fields.md",
+    "line": 126
+  },
+  {
+    "page": "/components/text-fields/guidelines",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/components/text-fields.md",
+    "line": 131
+  },
+  {
+    "page": "/components/time-pickers/specs",
+    "value": {
+      "dp": 24
+    },
+    "note": "knowledge/guidance/components/time-pickers.md",
+    "line": 97
+  },
+  {
+    "page": "/components/time-pickers/specs",
+    "token": "md.comp.time-picker.time-selector.container.width",
+    "value": {
+      "dp": 96
+    },
+    "note": "knowledge/guidance/components/time-pickers.md",
+    "line": 100
+  },
+  {
+    "page": "/components/time-pickers/specs",
+    "token": "md.comp.time-picker.time-selector.container.width",
+    "value": {
+      "dp": 80
+    },
+    "note": "knowledge/guidance/components/time-pickers.md",
+    "line": 100
+  },
+  {
+    "page": "/components/time-pickers/specs",
+    "token": "md.comp.time-picker.time-selector.24h-vertical.container.width",
+    "value": {
+      "dp": 114
+    },
+    "note": "knowledge/guidance/components/time-pickers.md",
+    "line": 101
+  },
+  {
+    "page": "/components/time-pickers/specs",
+    "token": "md.comp.time-picker.period-selector.vertical.container.width",
+    "value": {
+      "dp": 52
+    },
+    "note": "knowledge/guidance/components/time-pickers.md",
+    "line": 103
+  },
+  {
+    "page": "/components/time-pickers/specs",
+    "token": "md.comp.time-picker.period-selector.vertical.container.width",
+    "value": {
+      "dp": 80
+    },
+    "note": "knowledge/guidance/components/time-pickers.md",
+    "line": 103
+  },
+  {
+    "page": "/components/time-pickers/specs",
+    "token": "md.comp.time-picker.period-selector.horizontal.container.width",
+    "value": {
+      "dp": 216
+    },
+    "note": "knowledge/guidance/components/time-pickers.md",
+    "line": 104
+  },
+  {
+    "page": "/components/time-pickers/specs",
+    "token": "md.comp.time-picker.period-selector.horizontal.container.width",
+    "value": {
+      "dp": 38
+    },
+    "note": "knowledge/guidance/components/time-pickers.md",
+    "line": 104
+  },
+  {
+    "page": "/components/time-pickers/specs",
+    "token": "md.comp.time-picker.clock-dial.container.size",
+    "value": {
+      "dp": 256
+    },
+    "note": "knowledge/guidance/components/time-pickers.md",
+    "line": 106
+  },
+  {
+    "page": "/components/time-pickers/specs",
+    "token": "md.comp.time-picker.clock-dial.selector.handle.container.size",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/time-pickers.md",
+    "line": 107
+  },
+  {
+    "page": "/components/time-pickers/specs",
+    "token": "md.comp.time-picker.clock-dial.selector.center.container.size",
+    "value": {
+      "dp": 8
+    },
+    "note": "knowledge/guidance/components/time-pickers.md",
+    "line": 108
+  },
+  {
+    "page": "/components/time-pickers/specs",
+    "token": "md.comp.time-picker.clock-dial.selector.track.container.width",
+    "value": {
+      "dp": 2
+    },
+    "note": "knowledge/guidance/components/time-pickers.md",
+    "line": 109
+  },
+  {
+    "page": "/components/time-pickers/specs",
+    "token": "md.comp.time-input.time-input-field.container.width",
+    "value": {
+      "dp": 96
+    },
+    "note": "knowledge/guidance/components/time-pickers.md",
+    "line": 110
+  },
+  {
+    "page": "/components/time-pickers/specs",
+    "token": "md.comp.time-input.time-input-field.container.width",
+    "value": {
+      "dp": 72
+    },
+    "note": "knowledge/guidance/components/time-pickers.md",
+    "line": 110
+  },
+  {
+    "page": "/components/time-pickers/specs",
+    "token": "md.comp.time-input.period-selector.container.width",
+    "value": {
+      "dp": 52
+    },
+    "note": "knowledge/guidance/components/time-pickers.md",
+    "line": 112
+  },
+  {
+    "page": "/components/time-pickers/specs",
+    "token": "md.comp.time-input.period-selector.container.width",
+    "value": {
+      "dp": 72
+    },
+    "note": "knowledge/guidance/components/time-pickers.md",
+    "line": 112
+  },
+  {
+    "page": "/components/time-pickers/accessibility",
+    "value": {
+      "dp": 48
+    },
+    "note": "knowledge/guidance/components/time-pickers.md",
+    "line": 193
   },
   {
     "page": "/components/toolbars/overview",

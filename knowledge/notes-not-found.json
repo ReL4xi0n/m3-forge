@@ -105,6 +105,46 @@
     "text": "- Carousel motion tokens (duration, easing or spring): none in the token data [NOT FOUND]."
   },
   {
+    "note": "knowledge/guidance/components/checkbox.md",
+    "line": 84,
+    "text": "- Compose defines no focus-ring tokens for the checkbox [NOT FOUND]; see `knowledge/not-found.md`."
+  },
+  {
+    "note": "knowledge/guidance/components/checkbox.md",
+    "line": 90,
+    "text": "- The checkbox has no text of its own and no type token [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/checkbox.md",
+    "line": 92,
+    "text": "[NOT FOUND]; only its color is specified (below)."
+  },
+  {
+    "note": "knowledge/guidance/components/checkbox.md",
+    "line": 124,
+    "text": "- No checkbox duration, easing or spring token exists in the three sources [NOT FOUND]. The"
+  },
+  {
+    "note": "knowledge/guidance/components/chips.md",
+    "line": 179,
+    "text": "- No chip duration, easing or spring token exists in material-web's data [NOT FOUND]. Code chooses"
+  },
+  {
+    "note": "knowledge/guidance/components/chips.md",
+    "line": 195,
+    "text": "[NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/date-pickers.md",
+    "line": 131,
+    "text": "[NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/date-pickers.md",
+    "line": 185,
+    "text": "- No date-picker duration, easing or spring token exists in the three sources [NOT FOUND]. Modal"
+  },
+  {
     "note": "knowledge/guidance/components/dialogs.md",
     "line": 175,
     "text": "- Dialog motion tokens (duration, easing or spring): none in either token set [NOT FOUND]."
@@ -235,6 +275,36 @@
     "text": "- No navigation-rail duration, easing or spring token exists [NOT FOUND]. The site describes the"
   },
   {
+    "note": "knowledge/guidance/components/radio-button.md",
+    "line": 66,
+    "text": "| Ring stroke width | [NOT FOUND] (no token) |"
+  },
+  {
+    "note": "knowledge/guidance/components/radio-button.md",
+    "line": 67,
+    "text": "| Selected dot size | [NOT FOUND] (no token) |"
+  },
+  {
+    "note": "knowledge/guidance/components/radio-button.md",
+    "line": 75,
+    "text": "- The radio button has no text of its own and no type token [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/radio-button.md",
+    "line": 76,
+    "text": "- The adjacent label's type style is not specified by the site [NOT FOUND]; only its color is"
+  },
+  {
+    "note": "knowledge/guidance/components/radio-button.md",
+    "line": 100,
+    "text": "- No radio-button duration, easing or spring token exists in the three sources [NOT FOUND]. There"
+  },
+  {
+    "note": "knowledge/guidance/components/radio-button.md",
+    "line": 106,
+    "text": "- Flutter: [NOT FOUND] in `material_ui`; the radio's toggle animation comes from the Flutter"
+  },
+  {
     "note": "knowledge/guidance/components/search.md",
     "line": 116,
     "text": "| Docked header height | not given [NOT FOUND] | 56dp [token:md.comp.search-view.docked.header.container.height] |"
@@ -260,6 +330,21 @@
     "text": "either [NOT FOUND]."
   },
   {
+    "note": "knowledge/guidance/components/sliders.md",
+    "line": 122,
+    "text": "data [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/sliders.md",
+    "line": 164,
+    "text": "- No slider duration, easing or spring token exists in the three sources [NOT FOUND]. Code chooses"
+  },
+  {
+    "note": "knowledge/guidance/components/sliders.md",
+    "line": 173,
+    "text": "- The track-end shape change when the handle reaches an edge has no token [NOT FOUND]."
+  },
+  {
     "note": "knowledge/guidance/components/split-button.md",
     "line": 96,
     "text": "- The split button has no label type token of its own [NOT FOUND]."
@@ -275,6 +360,26 @@
     "text": "token [NOT FOUND]."
   },
   {
+    "note": "knowledge/guidance/components/switch.md",
+    "line": 91,
+    "text": "- Compose defines no focus-ring tokens for the switch [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/switch.md",
+    "line": 103,
+    "text": "- The switch shows no text and has no type token [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/switch.md",
+    "line": 105,
+    "text": "site names no type style for either [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/switch.md",
+    "line": 136,
+    "text": "- No switch duration, easing or spring token exists in the three sources [NOT FOUND]. The switch"
+  },
+  {
     "note": "knowledge/guidance/components/tabs.md",
     "line": 97,
     "text": "- Beyond the minimum length, the site and tokens give no indicator width [NOT FOUND]. Flutter"
@@ -283,6 +388,31 @@
     "note": "knowledge/guidance/components/tabs.md",
     "line": 157,
     "text": "- No tab duration, easing or spring token exists [NOT FOUND]. The site only says the indicator"
+  },
+  {
+    "note": "knowledge/guidance/components/text-fields.md",
+    "line": 122,
+    "text": "| Top and bottom padding | 8dp [site:/components/text-fields/specs] | [NOT FOUND] |"
+  },
+  {
+    "note": "knowledge/guidance/components/text-fields.md",
+    "line": 160,
+    "text": "| Prefix and suffix | follow the input text style [token:md.comp.filled-text-field.input-text.prefix.color] | [NOT FOUND] |"
+  },
+  {
+    "note": "knowledge/guidance/components/text-fields.md",
+    "line": 208,
+    "text": "roles; the field tokens do not cover them [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/text-fields.md",
+    "line": 212,
+    "text": "- No text-field duration, easing or spring token exists in any of the three sources [NOT FOUND]."
+  },
+  {
+    "note": "knowledge/guidance/components/time-pickers.md",
+    "line": 160,
+    "text": "- No time-picker duration, easing or spring token exists in the three sources [NOT FOUND]. The"
   },
   {
     "note": "knowledge/guidance/components/toolbars.md",

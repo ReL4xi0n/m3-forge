@@ -5375,7 +5375,7 @@ md.comp.app-bar.large.icon.size, md.comp.app-bar.medium.icon.size, md.comp.app-b
 | material-components-android | m3_sys_shape_corner_medium_corner_family | (none) | shape/res/values/tokens.xml:54 |
 | material-components-android | m3_sys_shape_corner_small_corner_family | (none) | shape/res/values/tokens.xml:60 |
 
-## NOT FOUND in notes: 86
+## NOT FOUND in notes: 112
 
 Statements the knowledge notes mark `[NOT FOUND]` (values or facts no source gives, e.g. the default color variant for M3 Expressive). Collected by `tools/extract/knowledge/lint.mjs`.
 
@@ -5402,6 +5402,14 @@ Statements the knowledge notes mark `[NOT FOUND]` (values or facts no source giv
 | knowledge/guidance/components/carousel.md:96 | \| Item corner radius \| 28dp [site:/components/carousel/specs] [token:md.comp.carousel-item.container.shape] \| 28dp [site:/components/carousel/specs] [token:md.comp.carousel-item.container.shape] \| 28dp [site:/components/carousel/specs] [token:md.comp.carousel-item.container.shape] \| [NOT FOUND] \| |
 | knowledge/guidance/components/carousel.md:114 | - The carousel-item token set defines no text style [NOT FOUND]. |
 | knowledge/guidance/components/carousel.md:134 | - Carousel motion tokens (duration, easing or spring): none in the token data [NOT FOUND]. |
+| knowledge/guidance/components/checkbox.md:84 | - Compose defines no focus-ring tokens for the checkbox [NOT FOUND]; see `knowledge/not-found.md`. |
+| knowledge/guidance/components/checkbox.md:90 | - The checkbox has no text of its own and no type token [NOT FOUND]. |
+| knowledge/guidance/components/checkbox.md:92 | [NOT FOUND]; only its color is specified (below). |
+| knowledge/guidance/components/checkbox.md:124 | - No checkbox duration, easing or spring token exists in the three sources [NOT FOUND]. The |
+| knowledge/guidance/components/chips.md:179 | - No chip duration, easing or spring token exists in material-web's data [NOT FOUND]. Code chooses |
+| knowledge/guidance/components/chips.md:195 | [NOT FOUND]. |
+| knowledge/guidance/components/date-pickers.md:131 | [NOT FOUND]. |
+| knowledge/guidance/components/date-pickers.md:185 | - No date-picker duration, easing or spring token exists in the three sources [NOT FOUND]. Modal |
 | knowledge/guidance/components/dialogs.md:175 | - Dialog motion tokens (duration, easing or spring): none in either token set [NOT FOUND]. |
 | knowledge/guidance/components/divider.md:77 | - The divider has no text of its own and no type token [NOT FOUND]. |
 | knowledge/guidance/components/divider.md:89 | - No motion. The divider has no motion tokens [NOT FOUND] and no animated behavior in the |
@@ -5428,16 +5436,34 @@ Statements the knowledge notes mark `[NOT FOUND]` (values or facts no source giv
 | knowledge/guidance/components/navigation-rail.md:103 | \| Active indicator width \| 56dp [token:md.comp.nav-rail.item.vertical.active-indicator.width] \| hugs the content [NOT FOUND] \| |
 | knowledge/guidance/components/navigation-rail.md:132 | [NOT FOUND]. Compose's ids are `navigation-rail-vertical-item.label-text-font` (label medium) |
 | knowledge/guidance/components/navigation-rail.md:165 | - No navigation-rail duration, easing or spring token exists [NOT FOUND]. The site describes the |
+| knowledge/guidance/components/radio-button.md:66 | \| Ring stroke width \| [NOT FOUND] (no token) \| |
+| knowledge/guidance/components/radio-button.md:67 | \| Selected dot size \| [NOT FOUND] (no token) \| |
+| knowledge/guidance/components/radio-button.md:75 | - The radio button has no text of its own and no type token [NOT FOUND]. |
+| knowledge/guidance/components/radio-button.md:76 | - The adjacent label's type style is not specified by the site [NOT FOUND]; only its color is |
+| knowledge/guidance/components/radio-button.md:100 | - No radio-button duration, easing or spring token exists in the three sources [NOT FOUND]. There |
+| knowledge/guidance/components/radio-button.md:106 | - Flutter: [NOT FOUND] in `material_ui`; the radio's toggle animation comes from the Flutter |
 | knowledge/guidance/components/search.md:116 | \| Docked header height \| not given [NOT FOUND] \| 56dp [token:md.comp.search-view.docked.header.container.height] \| |
 | knowledge/guidance/components/search.md:117 | \| Docked results height \| 240dp minimum [site:/components/search/specs], at most two thirds of the screen \| [NOT FOUND] \| |
 | knowledge/guidance/components/segmented-buttons.md:114 | spring [NOT FOUND]. No segmented-button motion token exists [NOT FOUND]. |
 | knowledge/guidance/components/side-sheets.md:120 | - Side sheet motion tokens (duration, easing or spring): none in the token set [NOT FOUND]. |
 | knowledge/guidance/components/side-sheets.md:122 | either [NOT FOUND]. |
+| knowledge/guidance/components/sliders.md:122 | data [NOT FOUND]. |
+| knowledge/guidance/components/sliders.md:164 | - No slider duration, easing or spring token exists in the three sources [NOT FOUND]. Code chooses |
+| knowledge/guidance/components/sliders.md:173 | - The track-end shape change when the handle reaches an edge has no token [NOT FOUND]. |
 | knowledge/guidance/components/split-button.md:96 | - The split button has no label type token of its own [NOT FOUND]. |
 | knowledge/guidance/components/split-button.md:112 | token [NOT FOUND]. |
 | knowledge/guidance/components/split-button.md:118 | token [NOT FOUND]. |
+| knowledge/guidance/components/switch.md:91 | - Compose defines no focus-ring tokens for the switch [NOT FOUND]. |
+| knowledge/guidance/components/switch.md:103 | - The switch shows no text and has no type token [NOT FOUND]. |
+| knowledge/guidance/components/switch.md:105 | site names no type style for either [NOT FOUND]. |
+| knowledge/guidance/components/switch.md:136 | - No switch duration, easing or spring token exists in the three sources [NOT FOUND]. The switch |
 | knowledge/guidance/components/tabs.md:97 | - Beyond the minimum length, the site and tokens give no indicator width [NOT FOUND]. Flutter |
 | knowledge/guidance/components/tabs.md:157 | - No tab duration, easing or spring token exists [NOT FOUND]. The site only says the indicator |
+| knowledge/guidance/components/text-fields.md:122 | \| Top and bottom padding \| 8dp [site:/components/text-fields/specs] \| [NOT FOUND] \| |
+| knowledge/guidance/components/text-fields.md:160 | \| Prefix and suffix \| follow the input text style [token:md.comp.filled-text-field.input-text.prefix.color] \| [NOT FOUND] \| |
+| knowledge/guidance/components/text-fields.md:208 | roles; the field tokens do not cover them [NOT FOUND]. |
+| knowledge/guidance/components/text-fields.md:212 | - No text-field duration, easing or spring token exists in any of the three sources [NOT FOUND]. |
+| knowledge/guidance/components/time-pickers.md:160 | - No time-picker duration, easing or spring token exists in the three sources [NOT FOUND]. The |
 | knowledge/guidance/components/toolbars.md:130 | - No toolbar type token exists [NOT FOUND]. Text inside comes from the placed components (button |
 | knowledge/guidance/components/toolbars.md:172 | - No toolbar duration, easing or spring token exists [NOT FOUND]. |
 | knowledge/guidance/develop/platforms.md:130 | that are illustrations, not spec values; do not reuse them as tokens [NOT FOUND]. |
