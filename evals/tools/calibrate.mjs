@@ -5,12 +5,16 @@
 // ≥ 2.75 with no reference score below 2, and every defect page scores ≤ its maxScore on its item.
 import { ITEMS } from './judge.mjs';
 
-const REF = /^(android|web)-(expressive|classic|current)-(.+)-(light|dark)-(\d+)\.png$/;
+// <platform>-<style>-<screen>-<theme>-<n>.png; platform android | web | webmobile; style is a free label
+// (the owner used "m3" and "google"); only "classic" changes the request text.
+const REF = /^(android|webmobile|web)-([a-z0-9]+)-(.+)-(light|dark)-(\d+)\.png$/;
 
 export function parseRefName(name) {
   const m = name.match(REF);
   return m ? { platform: m[1], style: m[2], screen: m[3], theme: m[4], n: Number(m[5]) } : null;
 }
+
+const side = ref => (ref.platform === 'android' ? 'android' : 'web');
 
 export function splitReferences(names) {
   const refs = names.filter(n => parseRefName(n)).sort();
@@ -18,7 +22,7 @@ export function splitReferences(names) {
   const anchors = [];
   const checks = [];
   for (const platform of ['android', 'web']) {
-    const list = refs.filter(n => n.startsWith(`${platform}-`)).sort((a, b) => {
+    const list = refs.filter(n => side(parseRefName(n)) === platform).sort((a, b) => {
       const x = parseRefName(a); const y = parseRefName(b);
       return x.screen.localeCompare(y.screen) || x.theme.localeCompare(y.theme) || x.style.localeCompare(y.style) || x.n - y.n;
     });
@@ -31,11 +35,12 @@ const SCREEN = {
   landing: 'A landing page', settings: 'A settings screen', dashboard: 'A dashboard screen',
   'product-detail': 'A product detail page', onboarding: 'An onboarding form', empty: 'An empty state screen',
   error: 'An error state screen', main: 'A main app screen', list: 'A list screen',
+  detail: 'A product detail page', form: 'A form screen', signup: 'A sign-up form', app: 'A main app screen',
 };
 
 export function referenceRequest(ref) {
   const what = SCREEN[ref.screen] ?? `A ${ref.screen.replace(/-/g, ' ')} screen`;
-  const platform = ref.platform === 'android' ? 'Android' : 'web';
+  const platform = { android: 'Android', web: 'web', webmobile: 'web (mobile width)' }[ref.platform];
   const style = ref.style === 'classic' ? ' Use the classic Material 3 style, not M3 Expressive.' : '';
   return `${what}. Platform: ${platform}.${style}`;
 }
@@ -93,7 +98,7 @@ export async function runCalibrationRound({ root, round, evalRoot = 'C:\m3-eval'
   for (const n of checks) {
     const ref = parseRefName(n);
     outputs.push({ cell: n, condition: 'reference', repeat: 1, runId: `calibration-${round}`, request: referenceRequest(ref),
-      shots: [{ file: join(refDir, n), theme: ref.theme, viewport: ref.platform === 'android' ? 'phone' : 'web' }] });
+      shots: [{ file: join(refDir, n), theme: ref.theme, viewport: { android: 'phone', web: 'desktop web', webmobile: 'mobile web' }[ref.platform] }] });
   }
   const judgeDir = join(roundDir, 'judge');
   const mappingPath = join(root, 'private', 'evals', 'calibration', `round-${round}`, 'mapping.json');
@@ -103,7 +108,7 @@ export async function runCalibrationRound({ root, round, evalRoot = 'C:\m3-eval'
   const anchorList = anchors.map((n, i) => {
     const ref = parseRefName(n);
     writeFileSync(join(judgeDir, 'anchors', `${anchorIds[i]}.png`), stripPng(readFileSync(join(refDir, n))));
-    return { file: `anchors/${anchorIds[i]}.png`, platform: ref.platform === 'android' ? 'Android' : 'web', screen: ref.screen, theme: ref.theme,
+    return { file: `anchors/${anchorIds[i]}.png`, platform: { android: 'Android', web: 'desktop web', webmobile: 'mobile web' }[ref.platform], screen: ref.screen, theme: ref.theme,
       style: ref.style === 'classic' ? 'classic Material 3' : 'current first-party style', score: 3 };
   });
   writeFileSync(join(judgeDir, 'anchors', 'anchors.json'), JSON.stringify(anchorList, null, 2));

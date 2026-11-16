@@ -86,3 +86,16 @@ test('frozen: hashes ignore CRLF; checkFrozen reports missing and changed files'
   writeFileSync(join(root, 'evals', 'rubric.md'), 'r changed\n');
   assert.equal(checkFrozen(root).ok, false);
 });
+
+test("splitReferences: the owner's 17 files (android/web/webmobile, free style labels)", () => {
+  const owner = ['android-m3-dashboard-dark-1.png', 'android-m3-detail-dark-1.png', 'android-m3-detail-light-1.png', 'android-m3-empty-dark-1.png',
+    'android-m3-empty-light-1.png', 'android-m3-form-dark-1.png', 'android-m3-form-light-1.png', 'android-m3-settings-dark-1.png', 'android-m3-settings-light-1.png',
+    'web-google-app-dark-1.png', 'web-google-dashboard-light-1.png', 'web-google-empty-light-1.png', 'web-google-landing-light-1.png',
+    'web-google-settings-light-1.png', 'web-google-signup-light-1.png', 'webmobile-google-landing-light-1.png', 'webmobile-google-signup-light-1.png'];
+  const s = splitReferences(owner);
+  assert.equal(s.anchors.length, 9);
+  assert.equal(s.checks.length, 8);
+  assert.equal(s.checks.filter(n => n.startsWith('android-')).length, 4);
+  assert.ok(s.checks.some(n => n.includes('-dark-')) && s.anchors.some(n => n.includes('-dark-')));
+  assert.equal(referenceRequest(parseRefName('webmobile-google-signup-light-1.png')), 'A sign-up form. Platform: web (mobile width).');
+});
