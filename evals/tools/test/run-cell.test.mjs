@@ -134,3 +134,17 @@ test('sandboxEnv: APPDATA and LOCALAPPDATA point into the run folder, so tools a
   assert.ok(existsSync(e.APPDATA) && existsSync(e.LOCALAPPDATA));
   assert.equal(e.PATH, 'p');
 });
+
+test('copyRunScanned: files unchanged from the fixture are not copied (they are public already)', () => {
+  const fixture = mkdtempSync(join(tmpdir(), 'm3fx-'));
+  const src = mkdtempSync(join(tmpdir(), 'm3src-'));
+  const dst = mkdtempSync(join(tmpdir(), 'm3dst-'));
+  writeFileSync(join(fixture, 'pubspec.yaml'), 'name: a\n');
+  writeFileSync(join(src, 'pubspec.yaml'), 'name: a\n');
+  writeFileSync(join(fixture, 'main.dart'), 'old\n');
+  writeFileSync(join(src, 'main.dart'), 'new\n');
+  const r = copyRunScanned(src, dst, { skipSameAs: fixture });
+  assert.equal(existsSync(join(dst, 'pubspec.yaml')), false);
+  assert.equal(readFileSync(join(dst, 'main.dart'), 'utf8'), 'new\n');
+  assert.equal(r.unchanged, 1);
+});

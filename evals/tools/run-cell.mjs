@@ -82,9 +82,11 @@ export function aclOwnerOnly(dir) {
 }
 
 // Copies a run folder into the private repo, scanning every text file for secrets first.
-export function copyRunScanned(src, dst, { literals = [] } = {}) {
+// Files byte-identical to the fixture are skipped: they are public already and carry no run output.
+export function copyRunScanned(src, dst, { literals = [], skipSameAs = null } = {}) {
   const redacted = [];
   let files = 0;
+  let unchanged = 0;
   const walk = dir => {
     for (const name of readdirSync(dir)) {
       const p = join(dir, name);
@@ -94,6 +96,10 @@ export function copyRunScanned(src, dst, { literals = [] } = {}) {
       const out = join(dst, rel);
       mkdirSync(dirname(out), { recursive: true });
       const buf = readFileSync(p);
+      if (skipSameAs) {
+        const orig = join(skipSameAs, rel);
+        if (existsSync(orig) && readFileSync(orig).equals(buf)) { unchanged++; continue; }
+      }
       const text = decodeText(buf);
       if (text != null && scanSecrets(text, { literals }).length) {
         const hits = scanSecrets(text, { literals });
@@ -104,7 +110,7 @@ export function copyRunScanned(src, dst, { literals = [] } = {}) {
     }
   };
   walk(src);
-  return { files, redacted };
+  return { files, redacted, unchanged };
 }
 
 function runProcess(cmd, args, { cwd, env, timeoutMs, logFile }) {
@@ -184,7 +190,7 @@ export async function runCell(o) {
   const dest = join(privateDir, runId, cell.cell);
   rmSync(dest, { recursive: true, force: true });
   const logs = copyRunScanned(logDir, dest, { literals: [token] });
-  const project = copyRunScanned(workDir, join(dest, 'project'), { literals: [token] });
+  const project = copyRunScanned(workDir, join(dest, 'project'), { literals: [token], skipSameAs: join(root, 'evals', 'fixtures', cell.fixture) });
   checks.secrets = { redacted: [...logs.redacted, ...project.redacted.map(r => ({ ...r, path: `project/${r.path}` }))] };
 
   let status = end;
