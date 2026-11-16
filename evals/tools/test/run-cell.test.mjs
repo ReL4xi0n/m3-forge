@@ -124,3 +124,13 @@ test('runCell: refuses to start without a valid freeze unless told otherwise', a
   });
   assert.equal(r.status, 'not-frozen');
 });
+
+test('sandboxEnv: APPDATA and LOCALAPPDATA point into the run folder, so tools a run starts write nothing to the profile', async () => {
+  const { sandboxEnv } = await import('../run-cell.mjs');
+  const base = mkdtempSync(join(tmpdir(), 'm3sbx-'));
+  const e = sandboxEnv({ APPDATA: 'C:/Users/x/AppData/Roaming', LOCALAPPDATA: 'C:/Users/x/AppData/Local', PATH: 'p' }, join(base, 'appdata'));
+  assert.equal(e.APPDATA, join(base, 'appdata', 'Roaming'));
+  assert.equal(e.LOCALAPPDATA, join(base, 'appdata', 'Local'));
+  assert.ok(existsSync(e.APPDATA) && existsSync(e.LOCALAPPDATA));
+  assert.equal(e.PATH, 'p');
+});

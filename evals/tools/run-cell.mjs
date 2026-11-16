@@ -42,6 +42,16 @@ const permPath = p => {
   return m ? `//${m[1].toLowerCase()}/${m[2]}`.replace(/\/$/, '') : s;
 };
 
+// Tools a run starts (the Dart analysis server, npm, Next.js telemetry) write to APPDATA/LOCALAPPDATA;
+// point both into the run folder so nothing lands in the user profile (found in the pilot: Dart caches).
+export function sandboxEnv(env, dir) {
+  const roaming = join(dir, 'Roaming');
+  const local = join(dir, 'Local');
+  mkdirSync(roaming, { recursive: true });
+  mkdirSync(local, { recursive: true });
+  return { ...env, APPDATA: roaming, LOCALAPPDATA: local };
+}
+
 export function settingsFor({ repoRoot, realCfg, secretsDir, cfgDir }) {
   const deny = [];
   for (const p of [repoRoot, realCfg, secretsDir, cfgDir].filter(Boolean)) {
@@ -149,7 +159,7 @@ export async function runCell(o) {
   }
   if (!existsSync(tokenFile)) return record('no-token', { problems: [`token file missing: ${tokenFile}`] });
   const token = readFileSync(tokenFile, 'utf8').trim();
-  const env = dropRepoPaths(withToolchain(childEnv(process.env, { CLAUDE_CONFIG_DIR: cfgDir, CLAUDE_CODE_OAUTH_TOKEN: token })), repoRoot);
+  const env = sandboxEnv(dropRepoPaths(withToolchain(childEnv(process.env, { CLAUDE_CONFIG_DIR: cfgDir, CLAUDE_CODE_OAUTH_TOKEN: token })), repoRoot), join(evalRoot, 'appdata', runId, cell.cell));
 
   checks.preflight = preflight({ workDir, cfgDir, env, checkAncestors: !skipPreflightAncestors, repoRoot });
   if (!checks.preflight.ok) { rmSync(cfgDir, { recursive: true, force: true }); return record('invalid-isolation', { checks }); }
