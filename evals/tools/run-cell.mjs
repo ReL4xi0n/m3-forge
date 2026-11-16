@@ -4,7 +4,7 @@ import { spawn, execFileSync } from 'node:child_process';
 import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative, resolve } from 'node:path';
 import { tmpdir } from 'node:os';
-import { preflight, checkInit, auditTranscript, classifyEnd, childEnv, findInit, ownerInstalledNames, effectiveForbidden, probeBuiltIns, DISALLOWED_TOOLS } from './isolation.mjs';
+import { preflight, dropRepoPaths, checkInit, auditTranscript, classifyEnd, childEnv, findInit, ownerInstalledNames, effectiveForbidden, probeBuiltIns, DISALLOWED_TOOLS } from './isolation.mjs';
 
 let builtInCache = null;
 export function forbiddenFor(realCfg, evalRoot, builtIns) {
@@ -149,9 +149,9 @@ export async function runCell(o) {
   }
   if (!existsSync(tokenFile)) return record('no-token', { problems: [`token file missing: ${tokenFile}`] });
   const token = readFileSync(tokenFile, 'utf8').trim();
-  const env = withToolchain(childEnv(process.env, { CLAUDE_CONFIG_DIR: cfgDir, CLAUDE_CODE_OAUTH_TOKEN: token }));
+  const env = dropRepoPaths(withToolchain(childEnv(process.env, { CLAUDE_CONFIG_DIR: cfgDir, CLAUDE_CODE_OAUTH_TOKEN: token })), repoRoot);
 
-  checks.preflight = preflight({ workDir, cfgDir, env, checkAncestors: !skipPreflightAncestors });
+  checks.preflight = preflight({ workDir, cfgDir, env, checkAncestors: !skipPreflightAncestors, repoRoot });
   if (!checks.preflight.ok) { rmSync(cfgDir, { recursive: true, force: true }); return record('invalid-isolation', { checks }); }
 
   const args = [...claudeCmd.slice(1), '-p', o.promptOverride ?? buildPrompt(cell, root),

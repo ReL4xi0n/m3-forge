@@ -3,7 +3,7 @@
 import { spawn } from 'node:child_process';
 import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
-import { preflight, checkInit, findInit, childEnv, ownerInstalledNames, DISALLOWED_TOOLS } from './isolation.mjs';
+import { preflight, dropRepoPaths, checkInit, findInit, childEnv, ownerInstalledNames, DISALLOWED_TOOLS } from './isolation.mjs';
 import { settingsFor, restrictAcl, aclOwnerOnly, forbiddenFor, DEFAULT_MODEL } from './run-cell.mjs';
 import { withToolchain, toolchainRoot } from './toolchain-env.mjs';
 import { checkFrozen } from './frozen.mjs';
@@ -87,8 +87,8 @@ export async function runJudgeBatch(o) {
     mkdirSync(cfg, { recursive: true });
     writeFileSync(join(cfg, 'settings.json'), JSON.stringify(settingsFor({ repoRoot: root, realCfg, secretsDir: dirname(tokenFile), cfgDir: cfg }), null, 2));
     restrictAcl(cfg);
-    const env = withToolchain(childEnv(process.env, { CLAUDE_CONFIG_DIR: cfg, CLAUDE_CODE_OAUTH_TOKEN: token }));
-    const pre = preflight({ workDir: work, cfgDir: cfg, env, checkAncestors: !skipPreflightAncestors });
+    const env = dropRepoPaths(withToolchain(childEnv(process.env, { CLAUDE_CONFIG_DIR: cfg, CLAUDE_CODE_OAUTH_TOKEN: token })), root);
+    const pre = preflight({ workDir: work, cfgDir: cfg, env, checkAncestors: !skipPreflightAncestors, repoRoot: root });
     if (!pre.ok) { attemptsLog.push({ attempt, problems: pre.problems }); rmSync(cfg, { recursive: true, force: true }); continue; }
     const args = [...claudeCmd.slice(1), '-p', prompt, '--output-format', 'stream-json', '--verbose', '--model', model,
       '--setting-sources', 'user', '--strict-mcp-config', '--allowedTools', 'Read', '--disallowedTools', ...JUDGE_DISALLOWED];

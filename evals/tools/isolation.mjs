@@ -24,9 +24,26 @@ export function childEnv(base, add = {}) {
   return { ...env, ...add };
 }
 
+// No environment value may reveal where the repository is: PATH entries inside it are removed, and any
+// other variable holding the repo path is dropped.
+export function dropRepoPaths(env, repoRoot) {
+  const r = norm(repoRoot);
+  const out = {};
+  for (const [k, v] of Object.entries(env)) {
+    const s = String(v);
+    if (k.toLowerCase() === 'path') { out[k] = s.split(';').filter(p => !p || !inside(p, repoRoot)).join(';'); continue; }
+    if (s.replace(/[\\/]+/g, '/').toLowerCase().includes(r)) continue;
+    out[k] = v;
+  }
+  return out;
+}
+
 // V1: before a run.
-export function preflight({ workDir, cfgDir, env, allowedCfgFiles = ['settings.json'], checkAncestors = true }) {
+export function preflight({ workDir, cfgDir, env, allowedCfgFiles = ['settings.json'], checkAncestors = true, repoRoot = null }) {
   const problems = [];
+  if (repoRoot) {
+    for (const [k, v] of Object.entries(env)) if (String(v).replace(/[\\/]+/g, '/').toLowerCase().includes(norm(repoRoot))) problems.push(`env ${k} points into the repository`);
+  }
   if (!existsSync(workDir)) problems.push(`work folder missing: ${workDir}`);
   for (let d = dirname(resolve(workDir)); checkAncestors; d = dirname(d)) {
     for (const m of ANCESTOR_MARKERS) if (existsSync(join(d, m))) problems.push(`ancestor marker ${m} in ${d}`);

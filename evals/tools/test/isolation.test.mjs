@@ -130,3 +130,18 @@ test('findInit: the init event after hook events, and hook events are a leak', a
   assert.equal(checkInit(g.init, { ...opts, preInit: g.preInit }).ok, true);
   assert.equal(findInit(['not json']).init, null);
 });
+
+test('preflight and dropRepoPaths: no environment value may point into the repository', async () => {
+  const { dropRepoPaths } = await import('../isolation.mjs');
+  const repoRoot = join(tmpdir(), 'My Repo 3');
+  const env = { PATH: `${join(repoRoot, 'tools', 'shims')};${join(tmpdir(), 'bin')}`, INIT_CWD: repoRoot, KEEP: 'x' };
+  const cleaned = dropRepoPaths(env, repoRoot);
+  assert.equal(cleaned.INIT_CWD, undefined);
+  assert.equal(cleaned.KEEP, 'x');
+  assert.ok(!cleaned.PATH.toLowerCase().includes('my repo 3'), 'repo entries are removed from PATH');
+  const base = mkdtempSync(join(tmpdir(), 'm3env-'));
+  const work = join(base, 'w'); const cfg = join(base, 'c');
+  mkdirSync(work); mkdirSync(cfg); writeFileSync(join(cfg, 'settings.json'), '{}');
+  const p = preflight({ workDir: work, cfgDir: cfg, env: { CLAUDE_CONFIG_DIR: cfg, INIT_CWD: repoRoot }, checkAncestors: false, repoRoot });
+  assert.ok(p.problems.some(x => x.includes('INIT_CWD')));
+});

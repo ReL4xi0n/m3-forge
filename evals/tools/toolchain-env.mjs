@@ -1,5 +1,5 @@
 // Node equivalent of tools/toolchain/env.ps1: toolchain variables for a child process only.
-import { readFileSync } from 'node:fs';
+import { readFileSync, writeFileSync, readdirSync, mkdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -30,7 +30,16 @@ export function withToolchain(env) {
     npm_config_cache: join(root, 'npm-cache'),
     FLUTTER_SUPPRESS_ANALYTICS: 'true',
   });
-  const prepend = [join(repo, 'tools', 'toolchain', 'shims'), join(java, 'bin'), join(root, 'flutter', 'bin'), join(android, 'cmdline-tools', 'latest', 'bin')];
+  // The shims are copied into the toolchain folder: a PATH entry inside the repository would show an
+  // eval run where the repository is (found in the pilot via `where flutter`).
+  const shims = join(root, 'shims');
+  mkdirSync(shims, { recursive: true });
+  for (const f of readdirSync(join(repo, 'tools', 'toolchain', 'shims'))) {
+    const src = readFileSync(join(repo, 'tools', 'toolchain', 'shims', f));
+    const dst = join(shims, f);
+    if (!existsSync(dst) || !readFileSync(dst).equals(src)) writeFileSync(dst, src);
+  }
+  const prepend = [shims, join(java, 'bin'), join(root, 'flutter', 'bin'), join(android, 'cmdline-tools', 'latest', 'bin')];
   const key = pathKey(out);
   const rest = String(out[key] ?? '').split(';').filter(p => p && !prepend.includes(p));
   out[key] = [...prepend, ...rest].join(';');
