@@ -111,3 +111,10 @@ test('builtInNames: skills and slash commands of an init event', async () => {
   const { builtInNames } = await import('../isolation.mjs');
   assert.deepEqual(builtInNames({ skills: ['a', 'b'], slash_commands: ['b', 'c'] }), ['a', 'b', 'c']);
 });
+
+test('auditTranscript: a forbidden root with spaces in its path is still caught', () => {
+  const o = { workDir: WORK, repoRoot: String.raw`C:\Users\someone\Desktop\My Repo 3`, forbiddenRoots: [String.raw`C:\Users\someone\.m3-toolchain\secrets`] };
+  assert.equal(auditTranscript([toolUse({ file_path: String.raw`C:\Users\someone\Desktop\My Repo 3\knowledge\README.md` })], o).ok, false);
+  assert.equal(auditTranscript([toolUse({ command: 'Get-Content "c:/users/someone/desktop/my repo 3/private/x.txt"' })], o).ok, false);
+  assert.equal(auditTranscript([toolUse({ command: String.raw`type C:\Users\someone\.m3-toolchain\secrets\claude-oauth-token` })], o).ok, false);
+});

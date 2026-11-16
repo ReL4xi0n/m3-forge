@@ -135,6 +135,9 @@ export function auditTranscript(lines, { workDir, repoRoot, forbiddenRoots = [],
   for (const t of texts) {
     const text = t.text.replace(/\\\\/g, '\\');
     for (const k of keywords) if (text.toLowerCase().includes(k)) hits.push({ level: 'fail', why: `keyword ${k}`, where: t.kind });
+    // Roots may contain spaces, which end a path match below; look for each root as a plain substring too.
+    const flat = text.replace(/[\\/]+/g, '/').toLowerCase();
+    for (const r of fail) if (flat.includes(norm(r))) hits.push({ level: 'fail', why: 'forbidden path', path: r, where: t.kind });
     for (const m of text.match(ABS_PATH) ?? []) {
       const p = m.replace(/^\/\/?([a-z])\//, '$1:/');
       if (fail.some(r => inside(p, r))) hits.push({ level: 'fail', why: 'forbidden path', path: p, where: t.kind });
