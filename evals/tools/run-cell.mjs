@@ -4,7 +4,14 @@ import { spawn, execFileSync } from 'node:child_process';
 import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative, resolve } from 'node:path';
 import { tmpdir } from 'node:os';
-import { preflight, checkInit, auditTranscript, classifyEnd, childEnv, ownerInstalledNames, DISALLOWED_TOOLS } from './isolation.mjs';
+import { preflight, checkInit, auditTranscript, classifyEnd, childEnv, ownerInstalledNames, effectiveForbidden, probeBuiltIns, DISALLOWED_TOOLS } from './isolation.mjs';
+
+let builtInCache = null;
+export function forbiddenFor(realCfg, evalRoot, builtIns) {
+  const owner = ownerInstalledNames(realCfg);
+  if (!owner.length) return [];
+  return effectiveForbidden(owner, builtIns ?? (builtInCache ??= probeBuiltIns(evalRoot)));
+}
 import { withToolchain, toolchainRoot } from './toolchain-env.mjs';
 import { checkFrozen } from './frozen.mjs';
 import { scanSecrets, redactSecrets } from '../../tools/guard/secrets.mjs';
@@ -157,7 +164,7 @@ export async function runCell(o) {
 
   let init = null;
   try { init = JSON.parse(p.lines[0] ?? 'null'); } catch { init = null; }
-  checks.init = checkInit(init, { workDir, cfgDir, forbiddenNames: ownerInstalledNames(realCfg), allowedSkills });
+  checks.init = checkInit(init, { workDir, cfgDir, forbiddenNames: forbiddenFor(realCfg, evalRoot, o.builtIns), allowedSkills });
   checks.audit = auditTranscript(p.lines, {
     workDir, repoRoot, forbiddenRoots: [realCfg, secretsDir],
     allowRoots: [toolchainRoot(), tmpdir(), join(evalRoot, 'work', runId)],

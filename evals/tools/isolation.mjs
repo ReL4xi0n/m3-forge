@@ -1,8 +1,8 @@
 // Isolation guarantees and checks for eval runs (Phase 2 plan, Task 4: G1–G6, V1–V3).
 // Every check fails closed: a missing field or an unreadable folder is a problem, not a pass.
-import { existsSync, readdirSync, statSync } from 'node:fs';
+import { existsSync, readdirSync, statSync, mkdirSync, rmSync } from 'node:fs';
 import { dirname, join, resolve, sep } from 'node:path';
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 
 // Tools a run may not have: skills (G4), and tools that act outside the work folder or publish.
 export const DISALLOWED_TOOLS = [
@@ -92,6 +92,29 @@ export function ownerInstalledNames(realCfgDir) {
     }
   }
   return [...names].sort();
+}
+
+export const builtInNames = init => [...new Set([...(init?.skills ?? []), ...(init?.slash_commands ?? [])])].sort();
+
+// An owner skill named like a Claude Code built-in (e.g. "design") cannot be told apart by name; the
+// built-in one is present with an empty config, so it is not a leak. Every other owner name stays forbidden.
+export const effectiveForbidden = (ownerNames, builtIns) => ownerNames.filter(n => !builtIns.includes(n));
+
+// Claude Code's own skills and commands: a session with an empty config and no credentials still emits
+// its init event (then stops at "Not logged in"), so this costs nothing and reads no user configuration.
+export function probeBuiltIns(evalRoot = 'C:\\m3-eval', claude = 'claude') {
+  const base = join(evalRoot, 'probe', String(process.pid));
+  const work = join(base, 'work');
+  const cfg = join(base, 'cfg');
+  mkdirSync(work, { recursive: true });
+  mkdirSync(cfg, { recursive: true });
+  const env = childEnv(process.env, { CLAUDE_CONFIG_DIR: cfg });
+  const r = spawnSync(claude, ['-p', 'x', '--output-format', 'stream-json', '--verbose', '--setting-sources', 'user', '--strict-mcp-config', '--disallowedTools', 'Skill'],
+    { cwd: work, env, encoding: 'utf8', shell: process.platform === 'win32', timeout: 120000 });
+  rmSync(base, { recursive: true, force: true });
+  const init = JSON.parse((r.stdout ?? '').split(/\r?\n/)[0] || 'null');
+  if (init?.subtype !== 'init') throw new Error('built-in probe produced no init event');
+  return builtInNames(init);
 }
 
 const ABS_PATH = /(?:[A-Za-z]:[\\/]|\/\/?[a-z]\/|\\\\)[^\s"'`<>|*?\r\n]*/g;

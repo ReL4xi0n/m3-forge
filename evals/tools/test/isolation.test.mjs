@@ -97,3 +97,17 @@ test('classifyEnd: ok, asked-question, session-error', () => {
   assert.equal(classifyEnd([a([{ type: 'text', text: 'x' }])]), 'session-error');
   assert.equal(classifyEnd([result(true)]), 'session-error');
 });
+
+test('effectiveForbidden: an owner skill that shares a name with a Claude Code built-in is not a leak', async () => {
+  const { effectiveForbidden } = await import('../isolation.mjs');
+  assert.deepEqual(effectiveForbidden(['design', 'frontend-design', 'brainstorming'], ['design', 'debug']), ['frontend-design', 'brainstorming']);
+  const i = clean();
+  i.skills.push('design');
+  assert.equal(checkInit(i, { ...opts, forbiddenNames: effectiveForbidden(['design', 'frontend-design'], ['design']) }).ok, true);
+  assert.equal(checkInit(i, { ...opts, forbiddenNames: ['design'] }).ok, false);
+});
+
+test('builtInNames: skills and slash commands of an init event', async () => {
+  const { builtInNames } = await import('../isolation.mjs');
+  assert.deepEqual(builtInNames({ skills: ['a', 'b'], slash_commands: ['b', 'c'] }), ['a', 'b', 'c']);
+});
