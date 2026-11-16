@@ -100,15 +100,19 @@ These come from the verify script and the harness. Rates are per 100 non-blank l
 - **0**: Broken layout: overlap, overflow, clipped content or unreadable areas.
 
 ### 6. Interaction states
-- **3**: Visible states look like Material states:
+Score only the states the screenshots actually show. A static screenshot often cannot show focus,
+pressed, error or disabled states. Never lower the score because a state is absent that this
+screen had no reason to show.
+- **3**: Every visible state is a correct Material state, for example:
   - selected items use the indicator or container styling;
-  - focus is visible;
+  - a visible focus is clear;
   - disabled items use reduced emphasis;
   - errors show the error color with supporting text;
-  - inputs show labels and helper or error text.
+  - inputs show labels.
 
   The screen as a whole makes the available actions obvious.
-- **2**: States present and mostly Material, with one or two weak or unclear ones.
+- **2**: One or two of the visible states are weak or unclear. Examples: a selected item that is
+  hard to tell apart, or an input whose label is easy to miss.
 - **1**: States missing or non-Material. Examples: selection shown only by bold text, errors without
   text, or inputs without labels.
 - **0**: No states can be told apart.

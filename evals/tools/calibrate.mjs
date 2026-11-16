@@ -80,7 +80,7 @@ const DEFECT_REQUEST = 'A settings screen for a budgeting app called Pocketbook.
 
 export async function runCalibrationRound({ root, round, evalRoot = 'C:\m3-eval', judgeOpts = {} }) {
   const { readdirSync, readFileSync, writeFileSync, mkdirSync, rmSync } = await import('node:fs');
-  const { join } = await import('node:path');
+  const { join, isAbsolute } = await import('node:path');
   const { anonymize, stripPng, newIds } = await import('./anonymize.mjs');
   const { runJudgeBatch } = await import('./judge.mjs');
   const { captureWeb } = await import('../../harness/web/capture.mjs');
@@ -91,9 +91,11 @@ export async function runCalibrationRound({ root, round, evalRoot = 'C:\m3-eval'
   rmSync(roundDir, { recursive: true, force: true });
   const outputs = [];
   for (const name of Object.keys(expected)) {
-    const cap = await captureWeb({ projectDir: join(root, 'evals', 'calibration', 'defects', name), kind: 'web-empty', outDir: join(roundDir, 'shots', name) });
+    const shotDir = join(roundDir, 'shots', name);
+    const cap = await captureWeb({ projectDir: join(root, 'evals', 'calibration', 'defects', name), kind: 'web-empty', outDir: shotDir });
     if (!cap.buildOk) throw new Error(`defect page ${name} did not capture: ${cap.reason}`);
-    outputs.push({ cell: name, condition: 'defect', repeat: 1, runId: `calibration-${round}`, request: DEFECT_REQUEST, shots: cap.shots });
+    outputs.push({ cell: name, condition: 'defect', repeat: 1, runId: `calibration-${round}`, request: DEFECT_REQUEST,
+      shots: cap.shots.map(s => ({ ...s, file: isAbsolute(s.file) ? s.file : join(shotDir, s.file) })) });
   }
   for (const n of checks) {
     const ref = parseRefName(n);
