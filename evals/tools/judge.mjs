@@ -3,7 +3,7 @@
 import { spawn } from 'node:child_process';
 import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
-import { preflight, checkInit, childEnv, ownerInstalledNames, DISALLOWED_TOOLS } from './isolation.mjs';
+import { preflight, checkInit, findInit, childEnv, ownerInstalledNames, DISALLOWED_TOOLS } from './isolation.mjs';
 import { settingsFor, restrictAcl, aclOwnerOnly, forbiddenFor, DEFAULT_MODEL } from './run-cell.mjs';
 import { withToolchain, toolchainRoot } from './toolchain-env.mjs';
 import { checkFrozen } from './frozen.mjs';
@@ -95,7 +95,8 @@ export async function runJudgeBatch(o) {
     const r = await runOnce(claudeCmd[0], args, { cwd: work, env });
     rmSync(cfg, { recursive: true, force: true });
     const events = r.lines.map(l => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
-    const init = checkInit(events[0], { workDir: work, cfgDir: cfg, forbiddenNames: forbiddenFor(realCfg, evalRoot, o.builtIns) });
+    const fi = findInit(r.lines);
+    const init = checkInit(fi.init, { workDir: work, cfgDir: cfg, forbiddenNames: forbiddenFor(realCfg, evalRoot, o.builtIns), preInit: fi.preInit });
     const res = events.filter(e => e.type === 'result').pop();
     const v = init.ok ? validateScores(res?.result ?? '', ids) : { ok: false, problems: init.problems, scores: null };
     attemptsLog.push({ attempt, ok: v.ok, problems: v.problems.slice(0, 10), costUsd: res?.total_cost_usd ?? null, durationMs: res?.duration_ms ?? null });

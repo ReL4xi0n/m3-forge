@@ -4,7 +4,7 @@ import { spawn, execFileSync } from 'node:child_process';
 import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative, resolve } from 'node:path';
 import { tmpdir } from 'node:os';
-import { preflight, checkInit, auditTranscript, classifyEnd, childEnv, ownerInstalledNames, effectiveForbidden, probeBuiltIns, DISALLOWED_TOOLS } from './isolation.mjs';
+import { preflight, checkInit, auditTranscript, classifyEnd, childEnv, findInit, ownerInstalledNames, effectiveForbidden, probeBuiltIns, DISALLOWED_TOOLS } from './isolation.mjs';
 
 let builtInCache = null;
 export function forbiddenFor(realCfg, evalRoot, builtIns) {
@@ -162,9 +162,8 @@ export async function runCell(o) {
   rmSync(cfgDir, { recursive: true, force: true });
   try { if (readdirSync(dirname(cfgDir)).length === 0) rmSync(dirname(cfgDir), { recursive: true }); } catch { /* already gone */ }
 
-  let init = null;
-  try { init = JSON.parse(p.lines[0] ?? 'null'); } catch { init = null; }
-  checks.init = checkInit(init, { workDir, cfgDir, forbiddenNames: forbiddenFor(realCfg, evalRoot, o.builtIns), allowedSkills });
+  const { init, preInit } = findInit(p.lines);
+  checks.init = checkInit(init, { workDir, cfgDir, forbiddenNames: forbiddenFor(realCfg, evalRoot, o.builtIns), allowedSkills, preInit });
   checks.audit = auditTranscript(p.lines, {
     workDir, repoRoot, forbiddenRoots: [realCfg, secretsDir],
     allowRoots: [toolchainRoot(), tmpdir(), join(evalRoot, 'work', runId)],

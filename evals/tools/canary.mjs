@@ -8,7 +8,7 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { runCell, DEFAULT_MODEL } from './run-cell.mjs';
-import { checkInit, ownerInstalledNames } from './isolation.mjs';
+import { checkInit, findInit, ownerInstalledNames } from './isolation.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 
@@ -49,10 +49,11 @@ async function main() {
     delete env.CLAUDE_CONFIG_DIR;
     const p = spawnSync('claude', ['-p', 'Reply with the single word OK.', '--output-format', 'stream-json', '--verbose',
       '--model', DEFAULT_MODEL, '--max-turns', '1', '--no-session-persistence'], { cwd: work, env, encoding: 'utf8', shell: true });
-    const init = JSON.parse(p.stdout.split(/\r?\n/)[0] || 'null');
+    const { init, preInit } = findInit(p.stdout.split(/\r?\n/).filter(Boolean));
     const realCfg = join(process.env.USERPROFILE, '.claude');
-    const check = checkInit(init, { workDir: work, cfgDir: null, forbiddenNames: ownerInstalledNames(realCfg) });
-    const verdict = { expect: 'fail', got: check.ok ? 'pass' : 'fail', problems: check.problems.length, pass: !check.ok };
+    const check = checkInit(init, { workDir: work, cfgDir: null, forbiddenNames: ownerInstalledNames(realCfg), preInit });
+    // It must fail on what the real config loads, not merely because no init event was found.
+    const verdict = { expect: 'fail', got: check.ok ? 'pass' : 'fail', problems: check.problems.length, pass: Boolean(init) && !check.ok };
     writeFileSync(join(outDir, 'negative.json'), JSON.stringify({ ...verdict, problemsList: check.problems }, null, 2));
     console.log(JSON.stringify(verdict));
     process.exitCode = verdict.pass ? 0 : 1;
@@ -65,7 +66,7 @@ async function main() {
   const { readFileSync } = await import('node:fs');
   const lines = readFileSync(join(outDir, 'canary', 'run.jsonl'), 'utf8').split(/\r?\n/).filter(Boolean);
   const reads = readsDenied(lines, [join(root, 'knowledge', 'README.md'), join(root, 'private', 'README.md'), join(cfgDir, 'settings.json')]);
-  const init = JSON.parse(lines[0]);
+  const { init } = findInit(lines);
   const verdict = {
     status: rec.status, init: rec.checks?.init?.ok, audit: rec.checks?.audit?.ok, readsDenied: reads.ok,
     builtIns: [...new Set([...(init.skills ?? []), ...(init.slash_commands ?? [])])].length,

@@ -118,3 +118,15 @@ test('auditTranscript: a forbidden root with spaces in its path is still caught'
   assert.equal(auditTranscript([toolUse({ command: 'Get-Content "c:/users/someone/desktop/my repo 3/private/x.txt"' })], o).ok, false);
   assert.equal(auditTranscript([toolUse({ command: String.raw`type C:\Users\someone\.m3-toolchain\secrets\claude-oauth-token` })], o).ok, false);
 });
+
+test('findInit: the init event after hook events, and hook events are a leak', async () => {
+  const { findInit } = await import('../isolation.mjs');
+  const hook = JSON.stringify({ type: 'system', subtype: 'hook_started', hook_name: 'SessionStart' });
+  const f = findInit([hook, hook, JSON.stringify(clean())]);
+  assert.equal(f.init.subtype, 'init');
+  assert.deepEqual(f.preInit, ['system/hook_started', 'system/hook_started']);
+  assert.equal(checkInit(f.init, { ...opts, preInit: f.preInit }).ok, false, 'hooks ran before init');
+  const g = findInit([JSON.stringify(clean())]);
+  assert.equal(checkInit(g.init, { ...opts, preInit: g.preInit }).ok, true);
+  assert.equal(findInit(['not json']).init, null);
+});

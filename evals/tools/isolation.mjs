@@ -49,10 +49,23 @@ export function preflight({ workDir, cfgDir, env, allowedCfgFiles = ['settings.j
   return { ok: problems.length === 0, problems };
 }
 
-// V2: the run's own init event.
-export function checkInit(init, { workDir, cfgDir, forbiddenNames = [], allowedSkills = null }) {
+// The init event, and the events printed before it (hooks print system/hook_* events first).
+export function findInit(lines) {
+  const preInit = [];
+  for (const raw of lines) {
+    let ev;
+    try { ev = typeof raw === 'string' ? JSON.parse(raw) : raw; } catch { continue; }
+    if (ev?.type === 'system' && ev.subtype === 'init') return { init: ev, preInit };
+    preInit.push(`${ev?.type}/${ev?.subtype ?? ''}`);
+  }
+  return { init: null, preInit };
+}
+
+// V2: the run's own init event. Any event before init (e.g. a SessionStart hook) means a hook ran.
+export function checkInit(init, { workDir, cfgDir, forbiddenNames = [], allowedSkills = null, preInit = [] }) {
   const problems = [];
-  if (!init || init.type !== 'system' || init.subtype !== 'init') return { ok: false, problems: ['first event is not system/init'] };
+  if (!init || init.type !== 'system' || init.subtype !== 'init') return { ok: false, problems: ['no system/init event'] };
+  if (preInit.length) problems.push(`events before init (hooks ran): ${[...new Set(preInit)].join(', ')}`);
   for (const f of ['cwd', 'tools', 'mcp_servers', 'plugins', 'skills', 'slash_commands']) {
     if (init[f] === undefined) problems.push(`init has no ${f}`);
   }
