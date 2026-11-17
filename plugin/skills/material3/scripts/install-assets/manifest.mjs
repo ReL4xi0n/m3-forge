@@ -26,7 +26,10 @@ const COMPOSE_LICENSES = LICENSES.filter((l) => !/material-design-icons/.test(l.
 const COMPOSE_FONTS = TTF_FONTS.filter((f) => !/MaterialSymbols/.test(f.src));
 
 // Web component style sheets (assets/web/components/<name>.css), each installed by the part <name>.
-export const WEB_COMPONENTS = ['button', 'icon-button', 'fab', 'button-group', 'split-button', 'segmented-button'];
+export const WEB_COMPONENTS = [
+  'button', 'icon-button', 'fab', 'button-group', 'split-button', 'segmented-button',
+  'card', 'list', 'chip', 'text-field', 'checkbox', 'radio', 'switch', 'slider', 'divider', 'badge',
+];
 
 export const MANIFEST = {
   web: {

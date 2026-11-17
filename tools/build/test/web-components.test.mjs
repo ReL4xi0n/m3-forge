@@ -17,7 +17,8 @@ import { tmpdir } from 'node:os';
 import { extname, join, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildSkillTokens } from '../tokens.mjs';
-import { shadowOf, TARGET_SIZE } from '../emit/web.mjs';
+import { IMPL_VALUES, shadowOf, TARGET_SIZE } from '../emit/web.mjs';
+import { sourceDir } from '../../extract/sources/lock.mjs';
 import { buildGallerySite, GALLERY_DIR } from '../gallery/web/site.mjs';
 import { MANIFEST, WEB_COMPONENTS } from '../../../plugin/skills/material3/scripts/install-assets/manifest.mjs';
 import { BASELINE_SEED, renderTheme } from '../../../plugin/skills/material3/scripts/color/index.mjs';
@@ -176,6 +177,23 @@ test('tokens.css: the elevation shadows and the touch target are material-web\'s
   assert.equal(TARGET_SIZE.px, 48);
 });
 
+test('tokens.css: the --md-impl-* values the style sheets use, each with its source line', () => {
+  const used = new Set([...sheets.values()].flatMap(css => usedIn(css).filter(v => v.startsWith('--md-impl-'))));
+  assert.deepEqual([...used].sort(), IMPL_VALUES.map(v => v.name).sort(), 'every [impl:] value is used, and only those');
+  for (const v of IMPL_VALUES) {
+    assert.ok(tokensCss.split(/\r?\n/).includes(`  ${v.name}: ${v.px}px; /* [impl:${v.impl}] */`), v.name);
+  }
+});
+
+// The cited line of each [impl:] value holds that number (the pinned Compose sources in the toolchain).
+test('[impl:] values: the cited Compose source line holds the value', { skip: toolchain }, () => {
+  for (const v of IMPL_VALUES) {
+    const [, rel, line] = v.impl.match(/^compose-material3\/(.+):(\d+)$/);
+    const text = readFileSync(join(sourceDir('compose-material3'), ...rel.split('/')), 'utf8').split('\n')[Number(line) - 1];
+    assert.match(text, new RegExp(`\\b${v.px}(?:\\.0)?\\.dp\\b`), `${v.name}: ${v.impl}: ${text}`);
+  }
+});
+
 // Every component token the style sheets read, with its provenance; and the composite label-text
 // tokens they name in comments (resolved to the type scale role by rung 2 of the ladder).
 function ladder() {
@@ -201,6 +219,10 @@ test('ladder: the component tokens used are the web\'s own, except the ones list
     'md.comp.button.small.label-text derived:md.sys.typescale.label-large',
     'md.comp.button.xlarge.label-text derived:md.sys.typescale.headline-large',
     'md.comp.button.xsmall.label-text derived:md.sys.typescale.label-large',
+    // The gap between chips in a chip set and an input chip's start space before an avatar: Flutter's
+    // material_ui chips tokens (material-web has no token; rung 1).
+    'md.comp.chips.gap.horizontal cross-source:material_ui',
+    'md.comp.chips.with-avatar.padding.leading cross-source:material_ui',
     'md.comp.extended-fab.large.label-text derived:md.sys.typescale.headline-small',
     'md.comp.extended-fab.medium.label-text derived:md.sys.typescale.title-large',
     'md.comp.extended-fab.small.label-text derived:md.sys.typescale.title-medium',

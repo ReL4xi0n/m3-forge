@@ -1,0 +1,151 @@
+/* material3 skill asset: assets/web/components/switch.css
+ * Material 3 switches on the native checkbox input with role="switch": off, on, with or without
+ * handle icons. Needs tokens.css, fonts.css (handle icons are Material Symbols glyphs) and the color
+ * theme from scripts/color. Every value is a token variable.
+ *
+ *   <label class="…">Wi-Fi <input class="m3-switch" type="checkbox" role="switch" checked></label>
+ *   <input class="m3-switch m3-switch--icons" type="checkbox" role="switch" aria-label="Dark theme">
+ *
+ * Variant: m3-switch--icons shows a check on the handle when on and a close mark when off.
+ * The input is as wide as the track and --md-target-size tall (touch target); the track is drawn
+ * by ::before and the handle by ::after, whose outline is the state layer. Give every switch a label.
+ * The handle's move and size change are not animated (no motion token for them).
+ */
+
+.m3-switch {
+  /* md.comp.switch.unselected.* */
+  --_track-color: var(--md-sys-color-surface-container-highest);
+  --_track-outline-color: var(--md-sys-color-outline);
+  --_handle-color: var(--md-sys-color-outline);
+  --_handle-size: var(--md-comp-switch-unselected-handle-width);
+  --_icon-color: var(--md-sys-color-surface-container-highest);
+  --_state-layer-color: var(--md-sys-color-on-surface);
+  --_state-layer-opacity: 0;
+  /* The handle sits centered on a point half the track height in from the start (off) or end (on). */
+  --_handle-center: calc(var(--md-comp-switch-track-height) / 2);
+  --_handle-start: calc(var(--_handle-center) - var(--_handle-size) / 2);
+  /* The state layer is a ring around the handle out to the state layer size. */
+  --_state-layer-ring: calc((var(--md-comp-switch-state-layer-size) - var(--_handle-size)) / 2);
+
+  appearance: none;
+  position: relative;
+  display: inline-block;
+  flex: none;
+  box-sizing: border-box;
+  inline-size: var(--md-comp-switch-track-width);
+  block-size: var(--md-target-size);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  vertical-align: middle;
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Track (md.comp.switch.track.{width,height,shape,outline.width}) */
+.m3-switch::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  block-size: var(--md-comp-switch-track-height);
+  margin-block: auto;
+  border: var(--md-comp-switch-track-outline-width) solid var(--_track-outline-color);
+  border-radius: var(--md-comp-switch-track-shape);
+  background: var(--_track-color);
+  pointer-events: none;
+}
+
+/* Handle (md.comp.switch.handle.shape); its outline is the state layer (md.comp.switch.state-layer.size). */
+.m3-switch::after {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: var(--_handle-start);
+  box-sizing: border-box;
+  inline-size: var(--_handle-size);
+  block-size: var(--_handle-size);
+  margin-block: auto;
+  border-radius: var(--md-comp-switch-handle-shape);
+  outline: var(--_state-layer-ring) solid rgb(from var(--_state-layer-color) r g b / var(--_state-layer-opacity));
+  background: var(--_handle-color);
+  color: var(--_icon-color);
+  font-family: 'Material Symbols Outlined';
+  font-size: var(--md-comp-switch-unselected-icon-size);
+  font-style: normal;
+  font-feature-settings: 'liga';
+  line-height: var(--_handle-size);
+  text-align: center;
+  pointer-events: none;
+}
+
+/* On (md.comp.switch.selected.*) */
+.m3-switch:checked {
+  --_track-color: var(--md-sys-color-primary);
+  --_track-outline-color: var(--md-sys-color-primary);
+  --_handle-color: var(--md-sys-color-on-primary);
+  --_handle-size: var(--md-comp-switch-selected-handle-width);
+  --_icon-color: var(--md-sys-color-primary);
+  --_state-layer-color: var(--md-sys-color-primary);
+  --_handle-center: calc(var(--md-comp-switch-track-width) - var(--md-comp-switch-track-height) / 2);
+}
+
+/* Handle icons (md.comp.switch.with-icon.handle.*, {selected,unselected}.icon.size) */
+.m3-switch--icons {
+  --_handle-size: var(--md-comp-switch-with-icon-handle-width);
+}
+
+.m3-switch--icons::after {
+  content: 'close';
+}
+
+.m3-switch--icons:checked::after {
+  content: 'check';
+  font-size: var(--md-comp-switch-selected-icon-size);
+}
+
+/* States (md.comp.switch.{selected,unselected}.{hover,focus,pressed}.*) */
+.m3-switch:hover:not(:disabled) {
+  --_handle-color: var(--md-sys-color-on-surface-variant);
+  --_state-layer-opacity: var(--md-sys-state-hover-state-layer-opacity);
+}
+
+.m3-switch:focus-visible {
+  --_handle-color: var(--md-sys-color-on-surface-variant);
+  --_state-layer-opacity: var(--md-sys-state-focus-state-layer-opacity);
+}
+
+.m3-switch:focus-visible::before {
+  /* md.comp.switch.focus.indicator.{color,thickness,offset} */
+  outline: var(--md-sys-state-focus-indicator-thickness) solid var(--md-sys-color-secondary);
+  outline-offset: var(--md-sys-state-focus-indicator-outer-offset);
+}
+
+.m3-switch:active:not(:disabled) {
+  --_handle-color: var(--md-sys-color-on-surface-variant);
+  --_handle-size: var(--md-comp-switch-pressed-handle-width);
+  --_state-layer-opacity: var(--md-sys-state-pressed-state-layer-opacity);
+}
+
+.m3-switch:checked:is(:hover, :focus-visible, :active) {
+  --_handle-color: var(--md-sys-color-primary-container);
+}
+
+/* Disabled (md.comp.switch.disabled.*): track, handle and icon at their disabled opacities */
+.m3-switch:disabled {
+  --_track-color: rgb(from var(--md-sys-color-surface-container-highest) r g b / var(--md-comp-switch-disabled-track-opacity));
+  --_track-outline-color: rgb(from var(--md-sys-color-on-surface) r g b / var(--md-comp-switch-disabled-track-opacity));
+  --_handle-color: rgb(from var(--md-sys-color-on-surface) r g b / var(--md-comp-switch-disabled-unselected-handle-opacity));
+  --_icon-color: rgb(from var(--md-sys-color-surface-container-highest) r g b / var(--md-comp-switch-disabled-unselected-icon-opacity));
+  --_state-layer-opacity: 0;
+  cursor: default;
+}
+
+.m3-switch:disabled:checked {
+  --_track-color: rgb(from var(--md-sys-color-on-surface) r g b / var(--md-comp-switch-disabled-track-opacity));
+  --_track-outline-color: transparent;
+  --_handle-color: rgb(from var(--md-sys-color-surface) r g b / var(--md-comp-switch-disabled-selected-handle-opacity));
+  --_icon-color: rgb(from var(--md-sys-color-on-surface) r g b / var(--md-comp-switch-disabled-selected-icon-opacity));
+}

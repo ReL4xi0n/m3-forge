@@ -1,0 +1,41 @@
+/* material3 skill asset: assets/web/components/divider.css
+ * Material 3 dividers: full width, inset (list insets) and vertical. Needs tokens.css and the color
+ * theme from scripts/color. Every value is a token variable.
+ *
+ *   <hr class="m3-divider">
+ *   <hr class="m3-divider m3-divider--inset">
+ *   <div class="m3-divider m3-divider--vertical" role="separator" aria-orientation="vertical"></div>
+ *
+ * Variants: m3-divider--inset (both sides) | --inset-start | --inset-end | --vertical.
+ */
+
+.m3-divider {
+  /* md.comp.divider.{thickness,color} */
+  display: block;
+  flex: none;
+  box-sizing: border-box;
+  block-size: var(--md-comp-divider-thickness);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: var(--md-sys-color-outline-variant);
+}
+
+/* Insets: md.comp.list.divider.{leading,trailing}-space */
+.m3-divider--inset {
+  margin-inline: var(--md-comp-list-divider-leading-space) var(--md-comp-list-divider-trailing-space);
+}
+
+.m3-divider--inset-start {
+  margin-inline-start: var(--md-comp-list-divider-leading-space);
+}
+
+.m3-divider--inset-end {
+  margin-inline-end: var(--md-comp-list-divider-trailing-space);
+}
+
+.m3-divider--vertical {
+  align-self: stretch;
+  inline-size: var(--md-comp-divider-thickness);
+  block-size: auto;
+}

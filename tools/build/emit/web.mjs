@@ -28,6 +28,21 @@ export const TARGET_SIZE = { name: '--md-target-size', px: 48, impl: 'material-w
 //   value: tokens/_md-sys-elevation.scss:8-19), a key shadow at opacity 0.3 and an ambient shadow at
 //   opacity 0.15, with these clamp() sums (elevation/internal/_elevation.scss:62-175).
 export const SHADOW_IMPL = 'material-web/elevation/internal/_elevation.scss:62-175';
+// Component values from library code that no token carries, for the component style sheets
+// ([impl:] with file and line in the source the knowledge layer pins: compose-material3 1.5.0-rc01, see
+// knowledge/sources.lock.json). Sizes and offsets only; paddings and gaps from library code use the
+// equal --md-sys-space-* step in the style sheet with an [impl:] comment there. tokens.css declares
+// the ones the style sheets use.
+const CM3 = 'compose-material3/commonMain/androidx/compose/material3';
+export const IMPL_VALUES = [
+  { name: '--md-impl-radio-button-dot-size', px: 12, impl: `${CM3}/RadioButton.kt:321` },
+  { name: '--md-impl-radio-button-stroke-width', px: 2, impl: `${CM3}/RadioButton.kt:323` },
+  { name: '--md-impl-slider-track-inner-corner-size', px: 2, impl: `${CM3}/Slider.kt:3357` },
+  { name: '--md-impl-badge-offset', px: 6, impl: `${CM3}/Badge.kt:218` },
+  { name: '--md-impl-badge-large-offset-x', px: 12, impl: `${CM3}/Badge.kt:209` },
+  { name: '--md-impl-badge-large-offset-y', px: 14, impl: `${CM3}/Badge.kt:211` },
+];
+
 const clamp = (v, max) => Math.min(Math.max(v, 0), max);
 export function shadowOf(level) {
   const L = level;
@@ -177,6 +192,14 @@ export function emitWeb(sys, { comp = {}, componentCss = [] } = {}) {
   section(base, 'Spacing (md.sys.measurement steps on the 4 dp grid)');
   for (const s of spaceSteps(sys, P, skipped)) decl(base, s.id, 'dp', { name: spaceName(s.step) });
 
+  const usedImpl = new Set(componentCss.flatMap(t => [...t.matchAll(/var\((--md-impl-[\w-]+)\)/g)].map(m => m[1])));
+  for (const name of usedImpl) if (!IMPL_VALUES.some(v => v.name === name)) throw new Error(`component CSS uses ${name}, which is no [impl:] value`);
+  const implLines = IMPL_VALUES.filter(v => usedImpl.has(v.name)).map(v => `  ${v.name}: ${v.px}px; /* [impl:${v.impl}] */`);
+  if (implLines.length) {
+    section(base, 'Component values from library code (not tokens) used by the component style sheets');
+    base.push(...implLines);
+  }
+
   const compLines = compDeclarations(sys, comp, componentCss, skipped);
   if (compLines.length) {
     section(base, 'Component tokens used by the component style sheets (assets/web/components/)');
@@ -220,7 +243,8 @@ export function emitWeb(sys, { comp = {}, componentCss = [] } = {}) {
     ' * Expressive-only values off: emphasized type becomes the same role of the type scale, the added',
     ' * shape steps become the standard step they enlarge, and springs use the standard scheme.',
     ' * Use the variables (and the .m3-type-* classes) instead of literal sizes, radii and spacing.',
-    ' * --md-sys-elevation-level<N>-shadow and --md-target-size come from material-web code ([impl:]);',
+    ' * --md-sys-elevation-level<N>-shadow, --md-target-size and --md-impl-* come from library code',
+    ' * ([impl:] with the source line);',
     ' * the --md-comp-* variables are the component tokens the shipped component style sheets use.',
     ' */',
     '',

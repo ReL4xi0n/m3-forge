@@ -1,17 +1,17 @@
 #!/usr/bin/env node
 // Builds a servable folder for one web component gallery page (maintainer tool, not shipped):
 // the page as index.html, the skill's web assets installed the way a project gets them
-// (scripts/install-assets: tokens, fonts and every component part, into assets/m3/), and the color
+// (scripts/install-assets: tokens, fonts and the component parts the page links, into assets/m3/), and the color
 // theme from scripts/color for the baseline seed (assets/m3/theme.css).
 //
 //   buildGallerySite(name, outDir) -> { dir, page }      name: actions, ...
 //   CLI: node tools/build/gallery/web/site.mjs <name> <outDir>
 // Capture it with the harness (read-only use): node harness/web/capture.mjs <outDir> web-empty <shotsDir>
-import { copyFileSync, existsSync, mkdirSync, rmSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, readFileSync, rmSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { installAssets } from '../../../../plugin/skills/material3/scripts/install-assets/index.mjs';
-import { MANIFEST } from '../../../../plugin/skills/material3/scripts/install-assets/manifest.mjs';
+import { MANIFEST, WEB_COMPONENTS } from '../../../../plugin/skills/material3/scripts/install-assets/manifest.mjs';
 import { BASELINE_SEED, writeTheme } from '../../../../plugin/skills/material3/scripts/color/index.mjs';
 
 const HERE = fileURLToPath(new URL('.', import.meta.url));
@@ -24,7 +24,12 @@ export function buildGallerySite(name, outDir) {
   const dir = resolve(outDir);
   rmSync(dir, { recursive: true, force: true });
   mkdirSync(dir, { recursive: true });
-  const r = installAssets({ projectDir: dir, platform: 'web', parts: Object.keys(MANIFEST.web) });
+  // Tokens, fonts and the component parts whose style sheet the page links (an installed sheet the
+  // page does not use would be an unused asset).
+  const html = readFileSync(page, 'utf8');
+  const linked = WEB_COMPONENTS.filter(c => html.includes(`href="assets/m3/${c}.css"`));
+  const parts = Object.keys(MANIFEST.web).filter(p => !WEB_COMPONENTS.includes(p) || linked.includes(p));
+  const r = installAssets({ projectDir: dir, platform: 'web', parts });
   if (r.conflicts.length) throw new Error(`install conflicts: ${r.conflicts.join(', ')}`);
   writeTheme({ platform: 'web', seed: BASELINE_SEED, out: join(dir, THEME_PATH) });
   copyFileSync(page, join(dir, 'index.html'));

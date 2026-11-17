@@ -1,0 +1,123 @@
+/* material3 skill asset: assets/web/components/card.css
+ * Material 3 cards: elevated, filled and outlined. A card holds its own content and adds no padding:
+ * lay the content out with the --md-sys-space-* steps. Needs tokens.css and the color theme from
+ * scripts/color. Every value is a token variable.
+ *
+ *   <article class="m3-card m3-card--outlined">…</article>
+ *   <a class="m3-card m3-card--elevated" href="/trips/lisbon">…</a>     (the whole card is one action)
+ *
+ * Kinds: m3-card--elevated | --filled (default) | --outlined.
+ * A card that is an a[href], a button or has a tabindex gets the hover, focus and pressed states
+ * (state layer, focus ring, hover elevation). aria-disabled="true" shows the disabled card.
+ * Icons inside a card (.m3-icon) use the card's icon color and size.
+ */
+
+.m3-card {
+  /* Kind: filled. md.comp.filled-card.* */
+  --_container-color: var(--md-sys-color-surface-container-highest);
+  --_shadow: var(--md-sys-elevation-level0-shadow);
+  --_shadow-hover: var(--md-sys-elevation-level1-shadow); /* md.comp.filled-card.hover.container.elevation */
+  --_outline-width: 0;
+  --_outline-color: transparent;
+  --_state-layer-color: var(--md-sys-color-on-surface);
+  --_state-layer-opacity: 0;
+
+  position: relative;
+  isolation: isolate;
+  display: block;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: var(--_outline-width) solid var(--_outline-color);
+  border-radius: var(--md-comp-filled-card-container-shape);
+  background: var(--_container-color);
+  box-shadow: var(--_shadow);
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  text-decoration: none;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* State layer: over the content, under nothing; it does not take pointer events. */
+.m3-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgb(from var(--_state-layer-color) r g b / var(--_state-layer-opacity));
+  pointer-events: none;
+}
+
+.m3-card :is(.m3-icon, [class*="material-symbols"]) {
+  /* md.comp.<kind>-card.icon.{color,size} */
+  color: var(--md-sys-color-primary);
+  font-size: var(--md-comp-filled-card-icon-size);
+}
+
+/* Kinds */
+.m3-card--elevated {
+  --_container-color: var(--md-sys-color-surface-container-low);
+  --_shadow: var(--md-sys-elevation-level1-shadow); /* md.comp.elevated-card.container.elevation */
+  --_shadow-hover: var(--md-sys-elevation-level2-shadow); /* md.comp.elevated-card.hover.container.elevation */
+  border-radius: var(--md-comp-elevated-card-container-shape);
+}
+
+.m3-card--outlined {
+  --_container-color: var(--md-sys-color-surface);
+  --_shadow-hover: var(--md-sys-elevation-level1-shadow); /* md.comp.outlined-card.hover.container.elevation */
+  --_outline-width: var(--md-comp-outlined-card-outline-width);
+  --_outline-color: var(--md-sys-color-outline-variant);
+  border-radius: var(--md-comp-outlined-card-container-shape);
+}
+
+/* Interactive cards (md.comp.<kind>-card.{hover,focus,pressed}.*) */
+.m3-card:is(a[href], button, [tabindex]) {
+  cursor: pointer;
+}
+
+.m3-card:is(a[href], button, [tabindex]):hover:not(:disabled, [aria-disabled="true"]) {
+  --_state-layer-opacity: var(--md-sys-state-hover-state-layer-opacity);
+  --_shadow: var(--_shadow-hover);
+}
+
+.m3-card:is(a[href], button, [tabindex]):focus-visible {
+  --_state-layer-opacity: var(--md-sys-state-focus-state-layer-opacity);
+  outline: var(--md-sys-state-focus-indicator-thickness) solid var(--md-sys-color-secondary);
+  outline-offset: var(--md-sys-state-focus-indicator-outer-offset);
+}
+
+.m3-card--outlined:is(a[href], button, [tabindex]):focus-visible {
+  --_outline-color: var(--md-sys-color-on-surface); /* md.comp.outlined-card.focus.outline.color */
+}
+
+.m3-card:is(a[href], button, [tabindex]):active:not(:disabled, [aria-disabled="true"]) {
+  --_state-layer-opacity: var(--md-sys-state-pressed-state-layer-opacity);
+}
+
+/* md.comp.<kind>-card.pressed.container.elevation: the resting level of each kind */
+.m3-card--elevated:is(a[href], button, [tabindex]):active:not(:disabled, [aria-disabled="true"]) {
+  --_shadow: var(--md-sys-elevation-level1-shadow);
+}
+
+.m3-card:not(.m3-card--elevated):is(a[href], button, [tabindex]):active:not(:disabled, [aria-disabled="true"]) {
+  --_shadow: var(--md-sys-elevation-level0-shadow);
+}
+
+/* Disabled (md.comp.<kind>-card.disabled.*) */
+.m3-card:is(:disabled, [aria-disabled="true"]) {
+  --_container-color: rgb(from var(--md-sys-color-surface-variant) r g b / var(--md-comp-filled-card-disabled-container-opacity));
+  cursor: default;
+  pointer-events: none;
+}
+
+.m3-card--elevated:is(:disabled, [aria-disabled="true"]) {
+  --_container-color: rgb(from var(--md-sys-color-surface) r g b / var(--md-comp-elevated-card-disabled-container-opacity));
+}
+
+.m3-card--outlined:is(:disabled, [aria-disabled="true"]) {
+  --_container-color: var(--md-sys-color-surface);
+  --_outline-color: rgb(from var(--md-sys-color-outline) r g b / var(--md-comp-outlined-card-disabled-outline-opacity));
+}

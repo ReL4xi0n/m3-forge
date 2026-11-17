@@ -1,0 +1,263 @@
+/* material3 skill asset: assets/web/components/list.css
+ * Material 3 lists: one, two and three line items with leading icon, avatar or image, overline,
+ * supporting text and trailing text or icon; interactive, selected and disabled items; the
+ * Expressive segmented list (separate rounded items). Needs tokens.css and the color theme from
+ * scripts/color. Every value is a token variable.
+ *
+ *   <ul class="m3-list">
+ *     <li><a class="m3-list-item" href="/inbox">
+ *       <span class="m3-icon" aria-hidden="true">inbox</span>
+ *       <span class="m3-list-item-text">Inbox
+ *         <span class="m3-list-item-supporting-text">24 new messages</span></span>
+ *       <span class="m3-list-item-trailing-text">24</span></a></li>
+ *     <li class="m3-list-item"><span class="m3-list-item-avatar" aria-hidden="true">AL</span>
+ *       <span class="m3-list-item-text"><span class="m3-list-item-overline">Owner</span>Ana Lima</span></li>
+ *   </ul>
+ *
+ * Parts: .m3-list-item-text holds the headline text and, as children, .m3-list-item-overline (before)
+ * and .m3-list-item-supporting-text (after); .m3-list-item-trailing-text; .m3-list-item-avatar
+ * (initials or an img); an img child is a leading image; an .m3-icon before the text is the leading
+ * icon, after it the trailing icon. Controls (m3-checkbox, m3-radio, m3-switch) can sit at either end.
+ * The item grows from one line (56) to two (72) when it has supporting text; m3-list-item--three-line
+ * for supporting text of two lines (88). An a[href], button or label item, or one with a tabindex,
+ * gets the hover, focus and pressed states; aria-selected="true" or aria-current marks the selected
+ * item; aria-disabled="true" the disabled one.
+ * Variant: m3-list--segmented (Expressive): items apart by the segmented gap, rounded.
+ * Items are direct children of the list or the only child of its li, and fill its width.
+ */
+
+.m3-list {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.m3-list > li:not(.m3-list-item) {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+}
+
+.m3-list-item {
+  /* md.comp.list.list-item.* */
+  --_container-color: var(--md-sys-color-surface);
+  --_shape: var(--md-comp-list-list-item-container-shape);
+  --_label-color: var(--md-sys-color-on-surface);
+  --_supporting-color: var(--md-sys-color-on-surface-variant);
+  --_leading-color: var(--md-sys-color-on-surface-variant);
+  --_trailing-color: var(--md-sys-color-on-surface-variant);
+  --_state-layer-color: var(--md-sys-color-on-surface);
+  --_state-layer-opacity: 0;
+  --_min-height: var(--md-comp-list-list-item-one-line-container-height);
+
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  gap: var(--md-comp-list-list-item-between-space);
+  box-sizing: border-box;
+  min-block-size: var(--_min-height);
+  margin: 0;
+  padding-block: var(--md-comp-list-list-item-top-space) var(--md-comp-list-list-item-bottom-space);
+  padding-inline: var(--md-comp-list-list-item-leading-space) var(--md-comp-list-list-item-trailing-space);
+  border: 0;
+  border-radius: var(--_shape);
+  background: var(--_container-color);
+  color: var(--_label-color);
+  font-family: var(--md-comp-list-list-item-label-text-font);
+  font-weight: var(--md-comp-list-list-item-label-text-weight);
+  font-size: var(--md-comp-list-list-item-label-text-size);
+  line-height: var(--md-comp-list-list-item-label-text-line-height);
+  letter-spacing: var(--md-comp-list-list-item-label-text-tracking);
+  text-align: start;
+  text-decoration: none;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* State layer */
+.m3-list-item::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: rgb(from var(--_state-layer-color) r g b / var(--_state-layer-opacity));
+  pointer-events: none;
+}
+
+.m3-list-item:has(.m3-list-item-supporting-text) {
+  --_min-height: var(--md-comp-list-list-item-two-line-container-height);
+}
+
+.m3-list-item--three-line {
+  --_min-height: var(--md-comp-list-list-item-three-line-container-height);
+  align-items: flex-start;
+}
+
+/* Text */
+.m3-list-item-text {
+  display: flex;
+  flex: auto;
+  flex-direction: column;
+  min-inline-size: 0;
+}
+
+.m3-list-item-overline {
+  color: var(--_supporting-color);
+  font-family: var(--md-comp-list-list-item-overline-font);
+  font-weight: var(--md-comp-list-list-item-overline-weight);
+  font-size: var(--md-comp-list-list-item-overline-size);
+  line-height: var(--md-comp-list-list-item-overline-line-height);
+  letter-spacing: var(--md-comp-list-list-item-overline-tracking);
+}
+
+.m3-list-item-supporting-text {
+  color: var(--_supporting-color);
+  font-family: var(--md-comp-list-list-item-supporting-text-font);
+  font-weight: var(--md-comp-list-list-item-supporting-text-weight);
+  font-size: var(--md-comp-list-list-item-supporting-text-size);
+  line-height: var(--md-comp-list-list-item-supporting-text-line-height);
+  letter-spacing: var(--md-comp-list-list-item-supporting-text-tracking);
+}
+
+.m3-list-item-trailing-text {
+  flex: none;
+  color: var(--_trailing-color);
+  font-family: var(--md-comp-list-list-item-trailing-supporting-text-font);
+  font-weight: var(--md-comp-list-list-item-trailing-supporting-text-weight);
+  font-size: var(--md-comp-list-list-item-trailing-supporting-text-size);
+  line-height: var(--md-comp-list-list-item-trailing-supporting-text-line-height);
+  letter-spacing: var(--md-comp-list-list-item-trailing-supporting-text-tracking);
+}
+
+/* Leading and trailing icons (md.comp.list.list-item.{leading,trailing}-icon.{color,size}) */
+.m3-list-item > :is(.m3-icon, [class*="material-symbols"]) {
+  flex: none;
+  inline-size: var(--md-comp-list-list-item-leading-icon-size);
+  block-size: var(--md-comp-list-list-item-leading-icon-size);
+  overflow: hidden;
+  color: var(--_leading-color);
+  font-size: var(--md-comp-list-list-item-leading-icon-size);
+  line-height: var(--md-comp-list-list-item-leading-icon-size);
+}
+
+.m3-list-item > .m3-list-item-text ~ :is(.m3-icon, [class*="material-symbols"]) {
+  inline-size: var(--md-comp-list-list-item-trailing-icon-size);
+  block-size: var(--md-comp-list-list-item-trailing-icon-size);
+  color: var(--_trailing-color);
+  font-size: var(--md-comp-list-list-item-trailing-icon-size);
+  line-height: var(--md-comp-list-list-item-trailing-icon-size);
+}
+
+/* Avatar (md.comp.list.list-item.leading-avatar.*) */
+.m3-list-item-avatar {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  inline-size: var(--md-comp-list-list-item-leading-avatar-size);
+  block-size: var(--md-comp-list-list-item-leading-avatar-size);
+  overflow: hidden;
+  border-radius: var(--md-comp-list-list-item-leading-avatar-shape);
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  font-family: var(--md-comp-list-list-item-leading-avatar-label-font);
+  font-weight: var(--md-comp-list-list-item-leading-avatar-label-weight);
+  font-size: var(--md-comp-list-list-item-leading-avatar-label-size);
+  line-height: var(--md-comp-list-list-item-leading-avatar-label-line-height);
+  letter-spacing: var(--md-comp-list-list-item-leading-avatar-label-tracking);
+}
+
+.m3-list-item-avatar > img {
+  inline-size: var(--md-comp-list-list-item-leading-avatar-size);
+  block-size: var(--md-comp-list-list-item-leading-avatar-size);
+  object-fit: cover;
+}
+
+/* Leading image (md.comp.list.list-item.leading-image.*) */
+.m3-list-item > img {
+  flex: none;
+  inline-size: var(--md-comp-list-list-item-leading-image-width);
+  block-size: var(--md-comp-list-list-item-leading-image-height);
+  border-radius: var(--md-comp-list-list-item-leading-image-shape);
+  object-fit: cover;
+}
+
+/* Interactive items (md.comp.list.list-item.{hover,focus,pressed}.*) */
+.m3-list-item:is(a[href], button, label, [tabindex]) {
+  cursor: pointer;
+}
+
+.m3-list-item:is(a[href], button, label, [tabindex]):hover:not(:disabled, [aria-disabled="true"]) {
+  --_state-layer-opacity: var(--md-sys-state-hover-state-layer-opacity);
+}
+
+.m3-list-item:is(a[href], button, label, [tabindex]):focus-visible {
+  --_state-layer-opacity: var(--md-sys-state-focus-state-layer-opacity);
+  /* md.comp.list.focus.indicator.{color,thickness,outline.offset} */
+  outline: var(--md-sys-state-focus-indicator-thickness) solid var(--md-sys-color-secondary);
+  outline-offset: var(--md-sys-state-focus-indicator-inner-offset);
+}
+
+.m3-list-item:is(a[href], button, label, [tabindex]):active:not(:disabled, [aria-disabled="true"]) {
+  --_state-layer-opacity: var(--md-sys-state-pressed-state-layer-opacity);
+}
+
+/* Selected (md.comp.list.list-item.selected.*) */
+.m3-list-item:is([aria-selected="true"], [aria-current]:not([aria-current="false"])) {
+  --_container-color: var(--md-sys-color-secondary-container);
+  --_shape: var(--md-comp-list-list-item-selected-container-shape);
+  --_label-color: var(--md-sys-color-on-secondary-container);
+  --_supporting-color: var(--md-sys-color-on-secondary-container);
+  --_leading-color: var(--md-sys-color-on-secondary-container);
+  --_trailing-color: var(--md-sys-color-on-secondary-container);
+}
+
+/* Disabled (md.comp.list.list-item.disabled.*): text and icons on-surface at 38% */
+.m3-list-item:is(:disabled, [aria-disabled="true"]) {
+  --_label-color: rgb(from var(--md-sys-color-on-surface) r g b / var(--md-comp-list-list-item-disabled-label-text-opacity));
+  --_supporting-color: rgb(from var(--md-sys-color-on-surface) r g b / var(--md-comp-list-list-item-disabled-supporting-text-opacity));
+  --_leading-color: rgb(from var(--md-sys-color-on-surface) r g b / var(--md-comp-list-list-item-disabled-leading-icon-opacity));
+  --_trailing-color: rgb(from var(--md-sys-color-on-surface) r g b / var(--md-comp-list-list-item-disabled-trailing-icon-opacity));
+  cursor: default;
+  pointer-events: none;
+}
+
+/* Segmented (Expressive): md.comp.list.segmented.gap, md.comp.list.container.shape (the list's
+   outer corners), md.comp.list.list-item.*.container.expressive.shape (each item and its states). */
+.m3-list--segmented {
+  gap: var(--md-comp-list-segmented-gap);
+}
+
+.m3-list--segmented .m3-list-item {
+  --_container-color: var(--md-sys-color-surface);
+  --_shape: var(--md-comp-list-list-item-container-expressive-shape);
+}
+
+.m3-list--segmented > :first-child,
+.m3-list--segmented > :first-child > .m3-list-item {
+  border-start-start-radius: var(--md-comp-list-container-shape);
+  border-start-end-radius: var(--md-comp-list-container-shape);
+}
+
+.m3-list--segmented > :last-child,
+.m3-list--segmented > :last-child > .m3-list-item {
+  border-end-start-radius: var(--md-comp-list-container-shape);
+  border-end-end-radius: var(--md-comp-list-container-shape);
+}
+
+.m3-list--segmented .m3-list-item:is(a[href], button, label, [tabindex]):hover:not(:disabled, [aria-disabled="true"]) {
+  border-radius: var(--md-comp-list-list-item-hovered-container-expressive-shape);
+}
+
+.m3-list--segmented .m3-list-item:is(a[href], button, label, [tabindex]):is(:focus-visible, :active) {
+  border-radius: var(--md-comp-list-list-item-focused-container-expressive-shape);
+}
+
+.m3-list--segmented .m3-list-item:is([aria-selected="true"], [aria-current]:not([aria-current="false"])) {
+  --_shape: var(--md-comp-list-list-item-selected-container-expressive-shape);
+}

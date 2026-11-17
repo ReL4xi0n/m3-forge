@@ -1,0 +1,117 @@
+/* material3 skill asset: assets/web/components/radio.css
+ * Material 3 radio buttons on the native input. Needs tokens.css and the color theme from
+ * scripts/color. Every value is a token variable.
+ *
+ *   <div role="radiogroup" aria-labelledby="size-label">
+ *     <label class="…"><input class="m3-radio" type="radio" name="size" value="s" checked> Small</label>
+ *     <label class="…"><input class="m3-radio" type="radio" name="size" value="m"> Medium</label>
+ *   </div>
+ *
+ * The input is the touch target (--md-target-size square); the state layer is drawn by ::before and
+ * the ring with its dot by ::after, centered in it. The ring's stroke and the dot's size come from
+ * Compose's RadioButton ([impl:] values in tokens.css). Give every radio button a label.
+ */
+
+.m3-radio {
+  /* md.comp.radio-button.unselected.* */
+  --_icon-color: var(--md-sys-color-on-surface-variant);
+  --_dot-color: transparent;
+  --_state-layer-color: var(--md-sys-color-on-surface);
+  --_state-layer-opacity: 0;
+  /* The gap between the ring and the dot: what the icon size leaves of the dot and two strokes, per side. */
+  --_dot-gap: calc((var(--md-comp-radio-button-icon-size) - var(--md-impl-radio-button-stroke-width) - var(--md-impl-radio-button-stroke-width) - var(--md-impl-radio-button-dot-size)) / 2);
+
+  appearance: none;
+  position: relative;
+  display: inline-block;
+  flex: none;
+  box-sizing: border-box;
+  inline-size: var(--md-target-size);
+  block-size: var(--md-target-size);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  vertical-align: middle;
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.m3-radio::before,
+.m3-radio::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  margin: auto;
+  border-radius: var(--md-sys-shape-corner-full);
+  pointer-events: none;
+}
+
+/* State layer (md.comp.radio-button.state-layer.size) */
+.m3-radio::before {
+  inline-size: var(--md-comp-radio-button-state-layer-size);
+  block-size: var(--md-comp-radio-button-state-layer-size);
+  background: rgb(from var(--_state-layer-color) r g b / var(--_state-layer-opacity));
+}
+
+/* Ring and dot (md.comp.radio-button.icon.size): the dot is the background of the content box. */
+.m3-radio::after {
+  inline-size: var(--md-comp-radio-button-icon-size);
+  block-size: var(--md-comp-radio-button-icon-size);
+  padding: var(--_dot-gap);
+  border: var(--md-impl-radio-button-stroke-width) solid var(--_icon-color);
+  background: var(--_dot-color);
+  background-clip: content-box;
+}
+
+/* Selected (md.comp.radio-button.selected.*) */
+.m3-radio:checked {
+  --_icon-color: var(--md-sys-color-primary);
+  --_dot-color: var(--md-sys-color-primary);
+}
+
+/* States (md.comp.radio-button.{unselected,selected}.{hover,focus,pressed}.*) */
+.m3-radio:hover:not(:disabled) {
+  --_icon-color: var(--md-sys-color-on-surface);
+  --_state-layer-opacity: var(--md-sys-state-hover-state-layer-opacity);
+}
+
+.m3-radio:focus-visible {
+  --_icon-color: var(--md-sys-color-on-surface);
+  --_state-layer-opacity: var(--md-sys-state-focus-state-layer-opacity);
+}
+
+.m3-radio:focus-visible::before {
+  outline: var(--md-sys-state-focus-indicator-thickness) solid var(--md-sys-color-secondary);
+  outline-offset: var(--md-sys-state-focus-indicator-outer-offset);
+}
+
+.m3-radio:active:not(:disabled) {
+  --_icon-color: var(--md-sys-color-on-surface);
+  --_state-layer-color: var(--md-sys-color-primary);
+  --_state-layer-opacity: var(--md-sys-state-pressed-state-layer-opacity);
+}
+
+.m3-radio:checked:is(:hover, :focus-visible) {
+  --_icon-color: var(--md-sys-color-primary);
+  --_state-layer-color: var(--md-sys-color-primary);
+}
+
+.m3-radio:checked:active:not(:disabled) {
+  --_icon-color: var(--md-sys-color-primary);
+  --_state-layer-color: var(--md-sys-color-on-surface);
+}
+
+/* Disabled (md.comp.radio-button.disabled.{selected,unselected}.icon.*) */
+.m3-radio:disabled {
+  --_icon-color: rgb(from var(--md-sys-color-on-surface) r g b / var(--md-comp-radio-button-disabled-unselected-icon-opacity));
+  --_state-layer-opacity: 0;
+  cursor: default;
+}
+
+.m3-radio:disabled:checked {
+  --_icon-color: rgb(from var(--md-sys-color-on-surface) r g b / var(--md-comp-radio-button-disabled-selected-icon-opacity));
+  --_dot-color: var(--_icon-color);
+}

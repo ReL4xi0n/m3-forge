@@ -1,0 +1,362 @@
+<!doctype html>
+<!-- Gallery of the web containment and input components (maintainer page, not shipped). Build a
+     servable folder with `node tools/build/gallery/web/site.mjs containment <outDir>`: it installs the
+     skill's web assets into <outDir>/assets/m3/ and writes the baseline color theme there. Hover, focus
+     and pressed states need a pointer or keyboard; tools/build/test/web-components.test.mjs drives them. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Containment and input components</title>
+  <link rel="stylesheet" href="assets/m3/fonts.css">
+  <link rel="stylesheet" href="assets/m3/tokens.css">
+  <link rel="stylesheet" href="assets/m3/theme.css">
+  <link rel="stylesheet" href="assets/m3/card.css">
+  <link rel="stylesheet" href="assets/m3/list.css">
+  <link rel="stylesheet" href="assets/m3/chip.css">
+  <link rel="stylesheet" href="assets/m3/text-field.css">
+  <link rel="stylesheet" href="assets/m3/checkbox.css">
+  <link rel="stylesheet" href="assets/m3/radio.css">
+  <link rel="stylesheet" href="assets/m3/switch.css">
+  <link rel="stylesheet" href="assets/m3/slider.css">
+  <link rel="stylesheet" href="assets/m3/divider.css">
+  <link rel="stylesheet" href="assets/m3/badge.css">
+  <style>
+    body {
+      margin: 0;
+      background: var(--md-sys-color-surface);
+      color: var(--md-sys-color-on-surface);
+      font-family: var(--md-sys-typescale-body-medium-font);
+    }
+    main {
+      display: grid;
+      gap: var(--md-sys-space-400);
+      padding: var(--md-sys-space-200);
+    }
+    section {
+      display: grid;
+      gap: var(--md-sys-space-200);
+      min-inline-size: 0;
+    }
+    h1, h2, h3, h4, p {
+      margin: 0;
+    }
+    h3 {
+      color: var(--md-sys-color-on-surface-variant);
+    }
+    .gallery-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--md-sys-space-200);
+    }
+    .gallery-card-body {
+      display: grid;
+      gap: var(--md-sys-space-100);
+      padding: var(--md-sys-space-200);
+    }
+    .gallery-control {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--md-sys-space-50);
+    }
+    .gallery-anchor {
+      position: relative;
+      display: inline-flex;
+    }
+    .gallery-stack {
+      display: grid;
+      gap: var(--md-sys-space-200);
+    }
+    .gallery-vertical {
+      display: flex;
+      align-items: center;
+      gap: var(--md-sys-space-200);
+      block-size: var(--md-sys-space-600);
+    }
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-style: normal;
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      font-feature-settings: 'liga';
+      letter-spacing: normal;
+      text-transform: none;
+      white-space: nowrap;
+      direction: ltr;
+      -webkit-font-smoothing: antialiased;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <h1 class="m3-type-headline-medium">Containment and input components</h1>
+
+  <section aria-labelledby="cards">
+    <h2 class="m3-type-title-large" id="cards">Cards</h2>
+    <h3 class="m3-type-title-small">Elevated, filled, outlined</h3>
+    <div class="gallery-stack">
+      <article class="m3-card m3-card--elevated">
+        <div class="gallery-card-body">
+          <h4 class="m3-type-title-medium">Lisbon in spring</h4>
+          <p class="m3-type-body-medium">Five days of tiled streets, river light and late dinners.</p>
+        </div>
+      </article>
+      <article class="m3-card m3-card--filled">
+        <div class="gallery-card-body">
+          <h4 class="m3-type-title-medium">Weekly summary</h4>
+          <p class="m3-type-body-medium">You walked 42 km and slept 7 h 10 min a night.</p>
+        </div>
+      </article>
+      <article class="m3-card m3-card--outlined">
+        <div class="gallery-card-body">
+          <h4 class="m3-type-title-medium">Shared album</h4>
+          <p class="m3-type-body-medium">Ana added 12 photos to Coast trip.</p>
+        </div>
+      </article>
+    </div>
+    <h3 class="m3-type-title-small">Interactive (the whole card is one action)</h3>
+    <div class="gallery-stack">
+      <a class="m3-card m3-card--elevated" href="#cards">
+        <div class="gallery-card-body">
+          <span class="material-symbols-outlined" aria-hidden="true">flight</span>
+          <h4 class="m3-type-title-medium">Flight to Porto</h4>
+          <p class="m3-type-body-medium">Boarding at 09:40, gate 12</p>
+        </div>
+      </a>
+      <button class="m3-card m3-card--filled" type="button">
+        <span class="gallery-card-body">
+          <span class="m3-type-title-medium">Open the recipe</span>
+          <span class="m3-type-body-medium">Lemon risotto, 35 minutes</span>
+        </span>
+      </button>
+      <a class="m3-card m3-card--outlined" href="#cards">
+        <div class="gallery-card-body">
+          <h4 class="m3-type-title-medium">Invoice 2041</h4>
+          <p class="m3-type-body-medium">Due on 30 November</p>
+        </div>
+      </a>
+      <div class="m3-card m3-card--outlined" aria-disabled="true">
+        <div class="gallery-card-body">
+          <h4 class="m3-type-title-medium">Archived project</h4>
+          <p class="m3-type-body-medium">Read only</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="lists">
+    <h2 class="m3-type-title-large" id="lists">Lists</h2>
+    <h3 class="m3-type-title-small">One, two and three lines</h3>
+    <ul class="m3-list">
+      <li class="m3-list-item">
+        <span class="material-symbols-outlined" aria-hidden="true">inbox</span>
+        <span class="m3-list-item-text">Inbox</span>
+        <span class="m3-list-item-trailing-text">24</span>
+      </li>
+      <li class="m3-list-item">
+        <span class="m3-list-item-avatar" aria-hidden="true">AL</span>
+        <span class="m3-list-item-text">Ana Lima<span class="m3-list-item-supporting-text">Can we move the call to 15:00?</span></span>
+        <span class="m3-list-item-trailing-text">10:24</span>
+      </li>
+      <li class="m3-list-item m3-list-item--three-line">
+        <span class="m3-list-item-avatar" aria-hidden="true">RK</span>
+        <span class="m3-list-item-text"><span class="m3-list-item-overline">Design review</span>Ravi Kumar<span class="m3-list-item-supporting-text">The new onboarding flow is ready for a first look; notes are in the doc.</span></span>
+      </li>
+    </ul>
+    <h3 class="m3-type-title-small">Interactive, selected and disabled, with controls</h3>
+    <ul class="m3-list">
+      <li><a class="m3-list-item" href="#lists"><span class="material-symbols-outlined" aria-hidden="true">photo_library</span><span class="m3-list-item-text">Photos</span><span class="material-symbols-outlined" aria-hidden="true">chevron_right</span></a></li>
+      <li><a class="m3-list-item" href="#lists" aria-current="page"><span class="material-symbols-outlined" aria-hidden="true">star</span><span class="m3-list-item-text">Starred<span class="m3-list-item-supporting-text">8 items</span></span></a></li>
+      <li><label class="m3-list-item"><span class="m3-list-item-text">Download over Wi-Fi only</span><input class="m3-switch" type="checkbox" role="switch" checked></label></li>
+      <li><label class="m3-list-item"><input class="m3-checkbox" type="checkbox"><span class="m3-list-item-text">Include attachments</span></label></li>
+      <li><div class="m3-list-item" aria-disabled="true"><span class="material-symbols-outlined" aria-hidden="true">cloud_off</span><span class="m3-list-item-text">Backup<span class="m3-list-item-supporting-text">Not available offline</span></span></div></li>
+    </ul>
+    <h3 class="m3-type-title-small">Segmented (Expressive)</h3>
+    <ul class="m3-list m3-list--segmented">
+      <li><a class="m3-list-item" href="#lists"><span class="material-symbols-outlined" aria-hidden="true">wifi</span><span class="m3-list-item-text">Network</span></a></li>
+      <li><a class="m3-list-item" href="#lists"><span class="material-symbols-outlined" aria-hidden="true">bluetooth</span><span class="m3-list-item-text">Connected devices</span></a></li>
+      <li><a class="m3-list-item" href="#lists"><span class="material-symbols-outlined" aria-hidden="true">battery_full</span><span class="m3-list-item-text">Battery<span class="m3-list-item-supporting-text">82%, about 1 day left</span></span></a></li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="dividers">
+    <h2 class="m3-type-title-large" id="dividers">Dividers</h2>
+    <h3 class="m3-type-title-small">Full width, inset, vertical</h3>
+    <hr class="m3-divider">
+    <hr class="m3-divider m3-divider--inset">
+    <div class="gallery-vertical">
+      <span class="m3-type-body-medium">Left</span>
+      <div class="m3-divider m3-divider--vertical" role="separator" aria-orientation="vertical"></div>
+      <span class="m3-type-body-medium">Right</span>
+    </div>
+  </section>
+
+  <section aria-labelledby="chips">
+    <h2 class="m3-type-title-large" id="chips">Chips</h2>
+    <h3 class="m3-type-title-small">Assist</h3>
+    <div class="m3-chip-set" role="group" aria-label="Assist chips">
+      <button class="m3-chip m3-chip--assist"><span class="material-symbols-outlined" aria-hidden="true">event</span>Add to calendar</button>
+      <button class="m3-chip m3-chip--assist m3-chip--elevated"><span class="material-symbols-outlined" aria-hidden="true">map</span>Directions</button>
+      <button class="m3-chip m3-chip--assist">Share</button>
+      <button class="m3-chip m3-chip--assist" disabled>Unavailable</button>
+    </div>
+    <h3 class="m3-type-title-small">Filter</h3>
+    <div class="m3-chip-set" role="group" aria-label="Diet">
+      <button class="m3-chip m3-chip--filter" aria-pressed="true"><span class="material-symbols-outlined" aria-hidden="true">check</span>Vegan</button>
+      <button class="m3-chip m3-chip--filter" aria-pressed="false"><span class="material-symbols-outlined" aria-hidden="true">check</span>Gluten free</button>
+      <button class="m3-chip m3-chip--filter m3-chip--elevated" aria-pressed="true"><span class="material-symbols-outlined" aria-hidden="true">check</span>Nut free</button>
+      <button class="m3-chip m3-chip--filter m3-chip--elevated" aria-pressed="false">Spicy</button>
+      <button class="m3-chip m3-chip--filter" aria-pressed="true" disabled><span class="material-symbols-outlined" aria-hidden="true">check</span>Halal</button>
+    </div>
+    <h3 class="m3-type-title-small">Input</h3>
+    <div class="m3-chip-set" role="group" aria-label="Recipients">
+      <span class="m3-chip m3-chip--input">Ana Lima<button type="button" aria-label="Remove Ana Lima"><span class="material-symbols-outlined" aria-hidden="true">close</span></button></span>
+      <span class="m3-chip m3-chip--input"><span class="material-symbols-outlined" aria-hidden="true">group</span>Design team<button type="button" aria-label="Remove Design team"><span class="material-symbols-outlined" aria-hidden="true">close</span></button></span>
+    </div>
+    <h3 class="m3-type-title-small">Suggestion</h3>
+    <div class="m3-chip-set" role="group" aria-label="Quick replies">
+      <button class="m3-chip m3-chip--suggestion">Sounds good</button>
+      <button class="m3-chip m3-chip--suggestion m3-chip--elevated">See you then</button>
+      <button class="m3-chip m3-chip--suggestion"><span class="material-symbols-outlined" aria-hidden="true">schedule</span>Later</button>
+    </div>
+  </section>
+
+  <section aria-labelledby="fields">
+    <h2 class="m3-type-title-large" id="fields">Text fields</h2>
+    <h3 class="m3-type-title-small">Filled</h3>
+    <div class="gallery-stack">
+      <div class="m3-text-field m3-text-field--filled">
+        <div>
+          <input id="f-name" placeholder=" " autocomplete="off">
+          <label for="f-name">Full name</label>
+        </div>
+      </div>
+      <div class="m3-text-field m3-text-field--filled">
+        <div>
+          <span class="material-symbols-outlined" aria-hidden="true">search</span>
+          <input id="f-city" placeholder=" " value="Lisbon" aria-describedby="f-city-help" autocomplete="off">
+          <label for="f-city">City</label>
+          <span class="material-symbols-outlined" aria-hidden="true">mic</span>
+        </div>
+        <p id="f-city-help">Where you live now</p>
+      </div>
+      <div class="m3-text-field m3-text-field--filled">
+        <div>
+          <input id="f-email" type="email" placeholder=" " value="ana@" aria-invalid="true" aria-describedby="f-email-help" autocomplete="off">
+          <label for="f-email">Email</label>
+          <span class="material-symbols-outlined" aria-hidden="true">error</span>
+        </div>
+        <p id="f-email-help">Enter a full email address</p>
+      </div>
+      <div class="m3-text-field m3-text-field--filled">
+        <div>
+          <input id="f-code" placeholder=" " value="NL-2041" disabled>
+          <label for="f-code">Member code</label>
+        </div>
+      </div>
+    </div>
+    <h3 class="m3-type-title-small">Outlined</h3>
+    <div class="gallery-stack">
+      <div class="m3-text-field m3-text-field--outlined">
+        <div>
+          <input id="o-name" placeholder=" " autocomplete="off">
+          <label for="o-name">Full name</label>
+        </div>
+      </div>
+      <div class="m3-text-field m3-text-field--outlined">
+        <div>
+          <span class="material-symbols-outlined" aria-hidden="true">search</span>
+          <input id="o-city" placeholder=" " value="Porto" aria-describedby="o-city-help" autocomplete="off">
+          <label for="o-city">City</label>
+          <span class="material-symbols-outlined" aria-hidden="true">mic</span>
+        </div>
+        <p id="o-city-help">Where you live now</p>
+      </div>
+      <div class="m3-text-field m3-text-field--outlined">
+        <div>
+          <input id="o-email" type="email" placeholder=" " value="ana@" aria-invalid="true" aria-describedby="o-email-help" autocomplete="off">
+          <label for="o-email">Email</label>
+          <span class="material-symbols-outlined" aria-hidden="true">error</span>
+        </div>
+        <p id="o-email-help">Enter a full email address</p>
+      </div>
+      <div class="m3-text-field m3-text-field--outlined">
+        <div>
+          <input id="o-code" placeholder=" " value="NL-2041" disabled>
+          <label for="o-code">Member code</label>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="selection">
+    <h2 class="m3-type-title-large" id="selection">Checkboxes, radio buttons, switches</h2>
+    <h3 class="m3-type-title-small">Checkboxes</h3>
+    <div class="gallery-row">
+      <label class="gallery-control"><input class="m3-checkbox" type="checkbox"><span>Unchecked</span></label>
+      <label class="gallery-control"><input class="m3-checkbox" type="checkbox" checked><span>Checked</span></label>
+      <label class="gallery-control"><input class="m3-checkbox" type="checkbox" id="indeterminate"><span>Some</span></label>
+      <label class="gallery-control"><input class="m3-checkbox" type="checkbox" aria-invalid="true"><span>Accept terms</span></label>
+      <label class="gallery-control"><input class="m3-checkbox" type="checkbox" aria-invalid="true" checked><span>Error, checked</span></label>
+      <label class="gallery-control"><input class="m3-checkbox" type="checkbox" disabled><span>Disabled</span></label>
+      <label class="gallery-control"><input class="m3-checkbox" type="checkbox" disabled checked><span>Disabled, checked</span></label>
+    </div>
+    <h3 class="m3-type-title-small" id="size-label">Radio buttons</h3>
+    <div class="gallery-row" role="radiogroup" aria-labelledby="size-label">
+      <label class="gallery-control"><input class="m3-radio" type="radio" name="size" value="s" checked><span>Small</span></label>
+      <label class="gallery-control"><input class="m3-radio" type="radio" name="size" value="m"><span>Medium</span></label>
+      <label class="gallery-control"><input class="m3-radio" type="radio" name="size" value="l"><span>Large</span></label>
+      <label class="gallery-control"><input class="m3-radio" type="radio" name="size-off" disabled><span>Disabled</span></label>
+      <label class="gallery-control"><input class="m3-radio" type="radio" name="size-off-on" disabled checked><span>Disabled, selected</span></label>
+    </div>
+    <h3 class="m3-type-title-small">Switches</h3>
+    <div class="gallery-row">
+      <label class="gallery-control"><input class="m3-switch" type="checkbox" role="switch"><span>Off</span></label>
+      <label class="gallery-control"><input class="m3-switch" type="checkbox" role="switch" checked><span>On</span></label>
+      <label class="gallery-control"><input class="m3-switch m3-switch--icons" type="checkbox" role="switch"><span>Icons, off</span></label>
+      <label class="gallery-control"><input class="m3-switch m3-switch--icons" type="checkbox" role="switch" checked><span>Icons, on</span></label>
+      <label class="gallery-control"><input class="m3-switch" type="checkbox" role="switch" disabled><span>Disabled</span></label>
+      <label class="gallery-control"><input class="m3-switch" type="checkbox" role="switch" disabled checked><span>Disabled, on</span></label>
+    </div>
+  </section>
+
+  <section aria-labelledby="sliders">
+    <h2 class="m3-type-title-large" id="sliders">Sliders</h2>
+    <h3 class="m3-type-title-small">Extra small to extra large</h3>
+    <div class="gallery-stack">
+      <div class="m3-slider" style="--m3-slider-value: 0.4"><input type="range" min="0" max="100" value="40" aria-label="Volume"></div>
+      <div class="m3-slider m3-slider--small" style="--m3-slider-value: 0.6"><input type="range" min="0" max="100" value="60" aria-label="Brightness"></div>
+      <div class="m3-slider m3-slider--medium" style="--m3-slider-value: 0.25"><input type="range" min="0" max="100" value="25" aria-label="Bass"></div>
+      <div class="m3-slider m3-slider--large" style="--m3-slider-value: 0.75"><input type="range" min="0" max="100" value="75" aria-label="Treble"></div>
+      <div class="m3-slider m3-slider--xlarge" style="--m3-slider-value: 0.5"><input type="range" min="0" max="100" value="50" aria-label="Balance"></div>
+    </div>
+    <h3 class="m3-type-title-small">Start, end, disabled</h3>
+    <div class="gallery-stack">
+      <div class="m3-slider" style="--m3-slider-value: 0"><input type="range" min="0" max="10" value="0" aria-label="Minimum"></div>
+      <div class="m3-slider" style="--m3-slider-value: 1"><input type="range" min="0" max="10" value="10" aria-label="Maximum"></div>
+      <div class="m3-slider" style="--m3-slider-value: 0.3"><input type="range" min="0" max="10" value="3" aria-label="Disabled" disabled></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="badges">
+    <h2 class="m3-type-title-large" id="badges">Badges</h2>
+    <h3 class="m3-type-title-small">Small, large, on icons</h3>
+    <div class="gallery-row">
+      <span class="m3-badge"></span>
+      <span class="m3-badge">3</span>
+      <span class="m3-badge">999+</span>
+      <span class="gallery-anchor" role="img" aria-label="Mail, new messages"><span class="material-symbols-outlined" aria-hidden="true">mail</span><span class="m3-badge m3-badge--anchored"></span></span>
+      <span class="gallery-anchor" role="img" aria-label="Notifications, 12 new"><span class="material-symbols-outlined" aria-hidden="true">notifications</span><span class="m3-badge m3-badge--anchored" aria-hidden="true">12</span></span>
+    </div>
+  </section>
+</main>
+<script>
+  document.getElementById('indeterminate').indeterminate = true;
+  for (const input of document.querySelectorAll('.m3-slider > input')) {
+    input.addEventListener('input', () => {
+      input.parentElement.style.setProperty('--m3-slider-value', String((input.value - input.min) / (input.max - input.min)));
+    });
+  }
+</script>
+</body>
+</html>

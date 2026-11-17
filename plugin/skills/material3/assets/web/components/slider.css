@@ -1,0 +1,181 @@
+/* material3 skill asset: assets/web/components/slider.css
+ * Material 3 Expressive slider (standard, continuous) on the native range input: an active and an
+ * inactive track with a gap around a bar handle; extra small to extra large. Needs tokens.css and the
+ * color theme from scripts/color. Every value is a token variable.
+ *
+ *   <div class="m3-slider" style="--m3-slider-value: 0.4">
+ *     <input type="range" min="0" max="100" value="40" aria-label="Volume"
+ *       oninput="this.parentElement.style.setProperty('--m3-slider-value', (this.value - this.min) / (this.max - this.min))">
+ *   </div>
+ *
+ * --m3-slider-value is the input's position from 0 to 1; the page keeps it in step with the input
+ * (as above), since CSS cannot read an input's value. Sizes: m3-slider--small | --medium | --large |
+ * --xlarge (default: extra small). disabled on the input shows the disabled slider.
+ * The tracks are drawn by the wrapper's ::before (active) and ::after (inactive); the input is the
+ * touch target and its thumb is the handle. Left out: the stop indicator at the track's end, the
+ * value indicator label and tick marks (they need more elements than a range input has).
+ */
+
+.m3-slider {
+  /* Size: extra small. md.comp.slider.xsmall.*, md.comp.slider.{handle,active.handle}.* */
+  --_track-height: var(--md-comp-slider-xsmall-active-track-height);
+  --_outer-corner: var(--md-comp-slider-xsmall-active-track-shape-leading);
+  --_handle-height: var(--md-comp-slider-xsmall-active-handle-height);
+  --_handle-width: var(--md-comp-slider-handle-width);
+  --_handle-visible-width: var(--md-comp-slider-handle-width);
+  --_gap: var(--md-comp-slider-active-handle-leading-space);
+  --_inner-corner: var(--md-impl-slider-track-inner-corner-size);
+  --_active-color: var(--md-sys-color-primary);
+  --_inactive-color: var(--md-sys-color-secondary-container);
+  --_handle-color: var(--md-sys-color-primary);
+  /* Where the handle's start edge is: the value times the travel (the width less the handle). */
+  --_handle-offset: calc(var(--m3-slider-value, 0) * (100% - var(--_handle-width)));
+
+  position: relative;
+  display: grid;
+  align-items: center;
+  box-sizing: border-box;
+  min-inline-size: var(--md-target-size);
+  margin: 0;
+  padding: 0;
+}
+
+.m3-slider::before,
+.m3-slider::after {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  box-sizing: border-box;
+  block-size: var(--_track-height);
+  margin-block: auto;
+  pointer-events: none;
+}
+
+/* Active track: from the start to the gap before the handle. */
+.m3-slider::before {
+  inset-inline-start: 0;
+  inline-size: calc(var(--_handle-offset) - var(--_gap));
+  border-start-start-radius: var(--_outer-corner);
+  border-end-start-radius: var(--_outer-corner);
+  border-start-end-radius: var(--_inner-corner);
+  border-end-end-radius: var(--_inner-corner);
+  background: var(--_active-color);
+}
+
+/* Inactive track: from the gap after the handle to the end. */
+.m3-slider::after {
+  inset-inline-start: calc(var(--_handle-offset) + var(--_handle-width) + var(--_gap));
+  inset-inline-end: 0;
+  border-start-start-radius: var(--_inner-corner);
+  border-end-start-radius: var(--_inner-corner);
+  border-start-end-radius: var(--_outer-corner);
+  border-end-end-radius: var(--_outer-corner);
+  background: var(--_inactive-color);
+}
+
+.m3-slider > input {
+  appearance: none;
+  justify-self: stretch;
+  box-sizing: border-box;
+  min-inline-size: 0;
+  block-size: var(--_handle-height);
+  min-block-size: var(--md-target-size);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.m3-slider > input::-webkit-slider-runnable-track {
+  block-size: var(--_handle-height);
+  border: 0;
+  background: none;
+}
+
+.m3-slider > input::-moz-range-track {
+  block-size: var(--_handle-height);
+  border: 0;
+  background: none;
+}
+
+/* Handle (md.comp.slider.handle.{width,height,shape,color}); it narrows when focused or pressed
+   (md.comp.slider.{focus,pressed}.handle.width) inside the same box, so the tracks stay put. */
+.m3-slider > input::-webkit-slider-thumb {
+  appearance: none;
+  box-sizing: border-box;
+  inline-size: var(--_handle-width);
+  block-size: var(--_handle-height);
+  padding-inline: calc((var(--_handle-width) - var(--_handle-visible-width)) / 2);
+  border: 0;
+  border-radius: var(--md-comp-slider-handle-shape);
+  background: var(--_handle-color);
+  background-clip: content-box;
+}
+
+.m3-slider > input::-moz-range-thumb {
+  box-sizing: border-box;
+  inline-size: var(--_handle-width);
+  block-size: var(--_handle-height);
+  padding-inline: calc((var(--_handle-width) - var(--_handle-visible-width)) / 2);
+  border: 0;
+  border-radius: var(--md-comp-slider-handle-shape);
+  background: var(--_handle-color);
+  background-clip: content-box;
+}
+
+.m3-slider > input:focus-visible::-webkit-slider-thumb {
+  outline: var(--md-sys-state-focus-indicator-thickness) solid var(--md-sys-color-secondary);
+  outline-offset: var(--md-sys-state-focus-indicator-outer-offset);
+}
+
+.m3-slider > input:focus-visible::-moz-range-thumb {
+  outline: var(--md-sys-state-focus-indicator-thickness) solid var(--md-sys-color-secondary);
+  outline-offset: var(--md-sys-state-focus-indicator-outer-offset);
+}
+
+.m3-slider:has(> input:focus-visible) {
+  --_handle-visible-width: var(--md-comp-slider-focus-handle-width);
+}
+
+.m3-slider:has(> input:active:not(:disabled)) {
+  --_handle-visible-width: var(--md-comp-slider-pressed-handle-width);
+}
+
+/* Sizes (md.comp.slider.<size>.*) */
+.m3-slider--small {
+  --_track-height: var(--md-comp-slider-small-active-track-height);
+  --_outer-corner: var(--md-comp-slider-small-active-track-shape-leading);
+  --_handle-height: var(--md-comp-slider-small-active-handle-height);
+}
+
+.m3-slider--medium {
+  --_track-height: var(--md-comp-slider-medium-active-track-height);
+  --_outer-corner: var(--md-comp-slider-medium-active-track-shape-leading);
+  --_handle-height: var(--md-comp-slider-medium-active-handle-height);
+}
+
+.m3-slider--large {
+  --_track-height: var(--md-comp-slider-large-active-track-height);
+  --_outer-corner: var(--md-comp-slider-large-active-track-shape-leading);
+  --_handle-height: var(--md-comp-slider-large-active-handle-height);
+}
+
+.m3-slider--xlarge {
+  --_track-height: var(--md-comp-slider-xlarge-active-track-height);
+  --_outer-corner: var(--md-comp-slider-xlarge-active-track-shape-leading);
+  --_handle-height: var(--md-comp-slider-xlarge-active-handle-height);
+}
+
+/* Disabled (md.comp.slider.disabled.*) */
+.m3-slider:has(> input:disabled) {
+  --_active-color: rgb(from var(--md-sys-color-on-surface) r g b / var(--md-comp-slider-disabled-active-track-opacity));
+  --_inactive-color: rgb(from var(--md-sys-color-on-surface) r g b / var(--md-comp-slider-disabled-inactive-track-opacity));
+  --_handle-color: rgb(from var(--md-sys-color-on-surface) r g b / var(--md-comp-slider-disabled-handle-opacity));
+}
+
+.m3-slider > input:disabled {
+  cursor: default;
+}

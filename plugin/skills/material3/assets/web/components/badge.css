@@ -1,0 +1,58 @@
+/* material3 skill asset: assets/web/components/badge.css
+ * Material 3 badges: small (a dot, when the badge is empty) and large (a count or short label).
+ * Needs tokens.css and the color theme from scripts/color. Every value is a token variable.
+ *
+ *   <span class="m3-badge"></span>                                    small: new content
+ *   <span class="m3-badge">3</span>                                   large: a count
+ *   <span class="m3-icon" aria-hidden="true">mail</span>
+ *   <span class="m3-badge m3-badge--anchored">12</span>               on the icon before it
+ *
+ * Anchored: the badge is placed at the top end corner of its containing block (give the icon's
+ * wrapper position: relative): a small badge overlaps the corner by 6, a large one starts 12 before
+ * the end and overlaps the top by 14, as Compose places them ([impl:] values in tokens.css).
+ * Give the badge's meaning in text for screen readers (for example aria-label on the anchor).
+ */
+
+.m3-badge {
+  /* Large: md.comp.badge.large.* */
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-inline-size: var(--md-comp-badge-large-size);
+  block-size: var(--md-comp-badge-large-size);
+  margin: 0;
+  /* [impl:compose-material3/commonMain/androidx/compose/material3/Badge.kt:202] 4 */
+  padding: 0 var(--md-sys-space-50);
+  border-radius: var(--md-comp-badge-large-shape);
+  background: var(--md-sys-color-error);
+  color: var(--md-sys-color-on-error);
+  font-family: var(--md-comp-badge-large-label-text-font);
+  font-weight: var(--md-comp-badge-large-label-text-weight);
+  font-size: var(--md-comp-badge-large-label-text-size);
+  line-height: var(--md-comp-badge-large-label-text-line-height);
+  letter-spacing: var(--md-comp-badge-large-label-text-tracking);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* Small: md.comp.badge.{size,shape} */
+.m3-badge:empty {
+  min-inline-size: var(--md-comp-badge-size);
+  inline-size: var(--md-comp-badge-size);
+  block-size: var(--md-comp-badge-size);
+  padding: 0;
+  border-radius: var(--md-comp-badge-shape);
+}
+
+.m3-badge--anchored {
+  position: absolute;
+  inset-block-start: calc(var(--md-impl-badge-large-offset-y) - var(--md-comp-badge-large-size));
+  inset-inline-start: calc(100% - var(--md-impl-badge-large-offset-x));
+}
+
+.m3-badge--anchored:empty {
+  inset-block-start: calc(var(--md-impl-badge-offset) - var(--md-comp-badge-size));
+  inset-inline-start: calc(100% - var(--md-impl-badge-offset));
+}

@@ -6,7 +6,8 @@
  * Expressive-only values off: emphasized type becomes the same role of the type scale, the added
  * shape steps become the standard step they enlarge, and springs use the standard scheme.
  * Use the variables (and the .m3-type-* classes) instead of literal sizes, radii and spacing.
- * --md-sys-elevation-level<N>-shadow and --md-target-size come from material-web code ([impl:]);
+ * --md-sys-elevation-level<N>-shadow, --md-target-size and --md-impl-* come from library code
+ * ([impl:] with the source line);
  * the --md-comp-* variables are the component tokens the shipped component style sheets use.
  */
 
@@ -290,7 +291,37 @@
   --md-sys-space-800: 64px; /* md.sys.measurement.space800 */
   --md-sys-space-900: 72px; /* md.sys.measurement.space900 */
 
+  /* Component values from library code (not tokens) used by the component style sheets */
+  --md-impl-radio-button-dot-size: 12px; /* [impl:compose-material3/commonMain/androidx/compose/material3/RadioButton.kt:321] */
+  --md-impl-radio-button-stroke-width: 2px; /* [impl:compose-material3/commonMain/androidx/compose/material3/RadioButton.kt:323] */
+  --md-impl-slider-track-inner-corner-size: 2px; /* [impl:compose-material3/commonMain/androidx/compose/material3/Slider.kt:3357] */
+  --md-impl-badge-offset: 6px; /* [impl:compose-material3/commonMain/androidx/compose/material3/Badge.kt:218] */
+  --md-impl-badge-large-offset-x: 12px; /* [impl:compose-material3/commonMain/androidx/compose/material3/Badge.kt:209] */
+  --md-impl-badge-large-offset-y: 14px; /* [impl:compose-material3/commonMain/androidx/compose/material3/Badge.kt:211] */
+
   /* Component tokens used by the component style sheets (assets/web/components/) */
+  --md-comp-assist-chip-container-height: 32px; /* md.comp.assist-chip.container.height */
+  --md-comp-assist-chip-container-shape: var(--md-sys-shape-corner-small); /* md.comp.assist-chip.container.shape */
+  --md-comp-assist-chip-disabled-label-text-opacity: 0.38; /* md.comp.assist-chip.disabled.label-text.opacity */
+  --md-comp-assist-chip-elevated-disabled-container-opacity: 0.12; /* md.comp.assist-chip.elevated.disabled.container.opacity */
+  --md-comp-assist-chip-flat-disabled-outline-opacity: 0.12; /* md.comp.assist-chip.flat.disabled.outline.opacity */
+  --md-comp-assist-chip-flat-outline-width: 1px; /* md.comp.assist-chip.flat.outline.width */
+  --md-comp-assist-chip-label-text-font: var(--md-sys-typescale-label-large-font); /* md.comp.assist-chip.label-text.font */
+  --md-comp-assist-chip-label-text-line-height: var(--md-sys-typescale-label-large-line-height); /* md.comp.assist-chip.label-text.line-height */
+  --md-comp-assist-chip-label-text-size: var(--md-sys-typescale-label-large-size); /* md.comp.assist-chip.label-text.size */
+  --md-comp-assist-chip-label-text-tracking: var(--md-sys-typescale-label-large-tracking); /* md.comp.assist-chip.label-text.tracking */
+  --md-comp-assist-chip-label-text-weight: var(--md-sys-typescale-label-large-weight); /* md.comp.assist-chip.label-text.weight */
+  --md-comp-assist-chip-with-icon-disabled-icon-opacity: 0.38; /* md.comp.assist-chip.with-icon.disabled.icon.opacity */
+  --md-comp-assist-chip-with-icon-icon-size: 18px; /* md.comp.assist-chip.with-icon.icon.size */
+  --md-comp-badge-large-label-text-font: var(--md-sys-typescale-label-small-font); /* md.comp.badge.large.label-text.font */
+  --md-comp-badge-large-label-text-line-height: var(--md-sys-typescale-label-small-line-height); /* md.comp.badge.large.label-text.line-height */
+  --md-comp-badge-large-label-text-size: var(--md-sys-typescale-label-small-size); /* md.comp.badge.large.label-text.size */
+  --md-comp-badge-large-label-text-tracking: var(--md-sys-typescale-label-small-tracking); /* md.comp.badge.large.label-text.tracking */
+  --md-comp-badge-large-label-text-weight: var(--md-sys-typescale-label-small-weight); /* md.comp.badge.large.label-text.weight */
+  --md-comp-badge-large-shape: var(--md-sys-shape-corner-full); /* md.comp.badge.large.shape */
+  --md-comp-badge-large-size: 16px; /* md.comp.badge.large.size */
+  --md-comp-badge-shape: var(--md-sys-shape-corner-full); /* md.comp.badge.shape */
+  --md-comp-badge-size: 6px; /* md.comp.badge.size */
   --md-comp-button-disabled-container-opacity: 0.1; /* md.comp.button.disabled.container.opacity */
   --md-comp-button-disabled-label-text-opacity: 0.38; /* md.comp.button.disabled.label-text.opacity */
   --md-comp-button-group-connected-large-between-space: 2px; /* md.comp.button-group.connected.large.between-space */
@@ -373,6 +404,21 @@
   --md-comp-button-xsmall-selected-container-shape-round: var(--md-sys-shape-corner-medium); /* md.comp.button.xsmall.selected.container.shape.round */
   --md-comp-button-xsmall-selected-container-shape-square: var(--md-sys-shape-corner-full); /* md.comp.button.xsmall.selected.container.shape.square */
   --md-comp-button-xsmall-trailing-space: 12px; /* md.comp.button.xsmall.trailing-space */
+  --md-comp-checkbox-container-shape: 2px; /* md.comp.checkbox.container.shape */
+  --md-comp-checkbox-container-size: 18px; /* md.comp.checkbox.container.size */
+  --md-comp-checkbox-icon-size: 18px; /* md.comp.checkbox.icon.size */
+  --md-comp-checkbox-selected-disabled-container-opacity: 0.38; /* md.comp.checkbox.selected.disabled.container.opacity */
+  --md-comp-checkbox-selected-disabled-container-outline-width: 0px; /* md.comp.checkbox.selected.disabled.container.outline.width */
+  --md-comp-checkbox-selected-outline-width: 0px; /* md.comp.checkbox.selected.outline.width */
+  --md-comp-checkbox-state-layer-shape: var(--md-sys-shape-corner-full); /* md.comp.checkbox.state-layer.shape */
+  --md-comp-checkbox-state-layer-size: 40px; /* md.comp.checkbox.state-layer.size */
+  --md-comp-checkbox-unselected-disabled-container-opacity: 0.38; /* md.comp.checkbox.unselected.disabled.container.opacity */
+  --md-comp-checkbox-unselected-outline-width: 2px; /* md.comp.checkbox.unselected.outline.width */
+  --md-comp-chips-gap-horizontal: 4px; /* md.comp.chips.gap.horizontal */
+  --md-comp-chips-with-avatar-padding-leading: 4px; /* md.comp.chips.with-avatar.padding.leading */
+  --md-comp-divider-thickness: 1px; /* md.comp.divider.thickness */
+  --md-comp-elevated-card-container-shape: var(--md-sys-shape-corner-medium); /* md.comp.elevated-card.container.shape */
+  --md-comp-elevated-card-disabled-container-opacity: 0.38; /* md.comp.elevated-card.disabled.container.opacity */
   --md-comp-extended-fab-large-container-height: 96px; /* md.comp.extended-fab.large.container.height */
   --md-comp-extended-fab-large-container-shape: var(--md-sys-shape-corner-extra-large); /* md.comp.extended-fab.large.container.shape */
   --md-comp-extended-fab-large-icon-label-space: 16px; /* md.comp.extended-fab.large.icon-label-space */
@@ -403,6 +449,43 @@
   --md-comp-fab-medium-container-shape: var(--md-sys-shape-corner-large-increased); /* md.comp.fab.medium.container.shape */
   --md-comp-fab-medium-container-width: 80px; /* md.comp.fab.medium.container.width */
   --md-comp-fab-medium-icon-size: 28px; /* md.comp.fab.medium.icon.size */
+  --md-comp-filled-card-container-shape: var(--md-sys-shape-corner-medium); /* md.comp.filled-card.container.shape */
+  --md-comp-filled-card-disabled-container-opacity: 0.38; /* md.comp.filled-card.disabled.container.opacity */
+  --md-comp-filled-card-icon-size: 24px; /* md.comp.filled-card.icon.size */
+  --md-comp-filled-text-field-active-indicator-height: 1px; /* md.comp.filled-text-field.active-indicator.height */
+  --md-comp-filled-text-field-container-shape: var(--md-sys-shape-corner-extra-small-top); /* md.comp.filled-text-field.container.shape */
+  --md-comp-filled-text-field-disabled-active-indicator-opacity: 0.38; /* md.comp.filled-text-field.disabled.active-indicator.opacity */
+  --md-comp-filled-text-field-disabled-container-opacity: 0.04; /* md.comp.filled-text-field.disabled.container.opacity */
+  --md-comp-filled-text-field-disabled-input-text-opacity: 0.38; /* md.comp.filled-text-field.disabled.input-text.opacity */
+  --md-comp-filled-text-field-disabled-label-text-opacity: 0.38; /* md.comp.filled-text-field.disabled.label-text.opacity */
+  --md-comp-filled-text-field-disabled-leading-icon-opacity: 0.38; /* md.comp.filled-text-field.disabled.leading-icon.opacity */
+  --md-comp-filled-text-field-disabled-supporting-text-opacity: 0.38; /* md.comp.filled-text-field.disabled.supporting-text.opacity */
+  --md-comp-filled-text-field-focus-active-indicator-thickness: var(--md-sys-state-focus-indicator-thickness); /* md.comp.filled-text-field.focus.active-indicator.thickness */
+  --md-comp-filled-text-field-input-text-font: var(--md-sys-typescale-body-large-font); /* md.comp.filled-text-field.input-text.font */
+  --md-comp-filled-text-field-input-text-line-height: var(--md-sys-typescale-body-large-line-height); /* md.comp.filled-text-field.input-text.line-height */
+  --md-comp-filled-text-field-input-text-size: var(--md-sys-typescale-body-large-size); /* md.comp.filled-text-field.input-text.size */
+  --md-comp-filled-text-field-input-text-tracking: var(--md-sys-typescale-body-large-tracking); /* md.comp.filled-text-field.input-text.tracking */
+  --md-comp-filled-text-field-input-text-weight: var(--md-sys-typescale-body-large-weight); /* md.comp.filled-text-field.input-text.weight */
+  --md-comp-filled-text-field-label-text-font: var(--md-sys-typescale-body-large-font); /* md.comp.filled-text-field.label-text.font */
+  --md-comp-filled-text-field-label-text-line-height: var(--md-sys-typescale-body-large-line-height); /* md.comp.filled-text-field.label-text.line-height */
+  --md-comp-filled-text-field-label-text-populated-line-height: var(--md-sys-typescale-body-small-line-height); /* md.comp.filled-text-field.label-text.populated.line-height */
+  --md-comp-filled-text-field-label-text-populated-size: var(--md-sys-typescale-body-small-size); /* md.comp.filled-text-field.label-text.populated.size */
+  --md-comp-filled-text-field-label-text-size: var(--md-sys-typescale-body-large-size); /* md.comp.filled-text-field.label-text.size */
+  --md-comp-filled-text-field-label-text-tracking: var(--md-sys-typescale-body-large-tracking); /* md.comp.filled-text-field.label-text.tracking */
+  --md-comp-filled-text-field-label-text-weight: var(--md-sys-typescale-body-large-weight); /* md.comp.filled-text-field.label-text.weight */
+  --md-comp-filled-text-field-leading-icon-size: 24px; /* md.comp.filled-text-field.leading-icon.size */
+  --md-comp-filled-text-field-supporting-text-font: var(--md-sys-typescale-body-small-font); /* md.comp.filled-text-field.supporting-text.font */
+  --md-comp-filled-text-field-supporting-text-line-height: var(--md-sys-typescale-body-small-line-height); /* md.comp.filled-text-field.supporting-text.line-height */
+  --md-comp-filled-text-field-supporting-text-size: var(--md-sys-typescale-body-small-size); /* md.comp.filled-text-field.supporting-text.size */
+  --md-comp-filled-text-field-supporting-text-tracking: var(--md-sys-typescale-body-small-tracking); /* md.comp.filled-text-field.supporting-text.tracking */
+  --md-comp-filled-text-field-supporting-text-weight: var(--md-sys-typescale-body-small-weight); /* md.comp.filled-text-field.supporting-text.weight */
+  --md-comp-filter-chip-flat-selected-outline-width: 0px; /* md.comp.filter-chip.flat.selected.outline.width */
+  --md-comp-filter-chip-flat-unselected-outline-width: 1px; /* md.comp.filter-chip.flat.unselected.outline.width */
+  --md-comp-filter-chip-label-text-font: var(--md-sys-typescale-label-large-font); /* md.comp.filter-chip.label-text.font */
+  --md-comp-filter-chip-label-text-line-height: var(--md-sys-typescale-label-large-line-height); /* md.comp.filter-chip.label-text.line-height */
+  --md-comp-filter-chip-label-text-size: var(--md-sys-typescale-label-large-size); /* md.comp.filter-chip.label-text.size */
+  --md-comp-filter-chip-label-text-tracking: var(--md-sys-typescale-label-large-tracking); /* md.comp.filter-chip.label-text.tracking */
+  --md-comp-filter-chip-label-text-weight: var(--md-sys-typescale-label-large-weight); /* md.comp.filter-chip.label-text.weight */
   --md-comp-icon-button-disabled-container-opacity: 0.1; /* md.comp.icon-button.disabled.container.opacity */
   --md-comp-icon-button-disabled-icon-opacity: 0.38; /* md.comp.icon-button.disabled.icon.opacity */
   --md-comp-icon-button-large-container-height: 96px; /* md.comp.icon-button.large.container.height */
@@ -475,6 +558,72 @@
   --md-comp-icon-button-xsmall-selected-container-shape-square: var(--md-sys-shape-corner-full); /* md.comp.icon-button.xsmall.selected.container.shape.square */
   --md-comp-icon-button-xsmall-wide-leading-space: 10px; /* md.comp.icon-button.xsmall.wide.leading-space */
   --md-comp-icon-button-xsmall-wide-trailing-space: 10px; /* md.comp.icon-button.xsmall.wide.trailing-space */
+  --md-comp-input-chip-label-text-font: var(--md-sys-typescale-label-large-font); /* md.comp.input-chip.label-text.font */
+  --md-comp-input-chip-label-text-line-height: var(--md-sys-typescale-label-large-line-height); /* md.comp.input-chip.label-text.line-height */
+  --md-comp-input-chip-label-text-size: var(--md-sys-typescale-label-large-size); /* md.comp.input-chip.label-text.size */
+  --md-comp-input-chip-label-text-tracking: var(--md-sys-typescale-label-large-tracking); /* md.comp.input-chip.label-text.tracking */
+  --md-comp-input-chip-label-text-weight: var(--md-sys-typescale-label-large-weight); /* md.comp.input-chip.label-text.weight */
+  --md-comp-input-chip-unselected-outline-width: 1px; /* md.comp.input-chip.unselected.outline.width */
+  --md-comp-input-chip-with-avatar-avatar-shape: var(--md-sys-shape-corner-full); /* md.comp.input-chip.with-avatar.avatar.shape */
+  --md-comp-input-chip-with-avatar-avatar-size: 24px; /* md.comp.input-chip.with-avatar.avatar.size */
+  --md-comp-input-chip-with-trailing-icon-trailing-icon-size: 18px; /* md.comp.input-chip.with-trailing-icon.trailing-icon.size */
+  --md-comp-list-container-shape: var(--md-sys-shape-corner-large); /* md.comp.list.container.shape */
+  --md-comp-list-divider-leading-space: 16px; /* md.comp.list.divider.leading-space */
+  --md-comp-list-divider-trailing-space: 16px; /* md.comp.list.divider.trailing-space */
+  --md-comp-list-list-item-between-space: 12px; /* md.comp.list.list-item.between-space */
+  --md-comp-list-list-item-bottom-space: 10px; /* md.comp.list.list-item.bottom-space */
+  --md-comp-list-list-item-container-expressive-shape: var(--md-sys-shape-corner-extra-small); /* md.comp.list.list-item.container.expressive.shape */
+  --md-comp-list-list-item-container-shape: var(--md-sys-shape-corner-none); /* md.comp.list.list-item.container.shape */
+  --md-comp-list-list-item-disabled-label-text-opacity: 0.38; /* md.comp.list.list-item.disabled.label-text.opacity */
+  --md-comp-list-list-item-disabled-leading-icon-opacity: 0.38; /* md.comp.list.list-item.disabled.leading-icon.opacity */
+  --md-comp-list-list-item-disabled-supporting-text-opacity: 0.38; /* md.comp.list.list-item.disabled.supporting-text.opacity */
+  --md-comp-list-list-item-disabled-trailing-icon-opacity: 0.38; /* md.comp.list.list-item.disabled.trailing-icon.opacity */
+  --md-comp-list-list-item-focused-container-expressive-shape: var(--md-sys-shape-corner-large); /* md.comp.list.list-item.focused.container.expressive.shape */
+  --md-comp-list-list-item-hovered-container-expressive-shape: var(--md-sys-shape-corner-medium); /* md.comp.list.list-item.hovered.container.expressive.shape */
+  --md-comp-list-list-item-label-text-font: var(--md-sys-typescale-body-large-font); /* md.comp.list.list-item.label-text.font */
+  --md-comp-list-list-item-label-text-line-height: var(--md-sys-typescale-body-large-line-height); /* md.comp.list.list-item.label-text.line-height */
+  --md-comp-list-list-item-label-text-size: var(--md-sys-typescale-body-large-size); /* md.comp.list.list-item.label-text.size */
+  --md-comp-list-list-item-label-text-tracking: var(--md-sys-typescale-body-large-tracking); /* md.comp.list.list-item.label-text.tracking */
+  --md-comp-list-list-item-label-text-weight: var(--md-sys-typescale-body-large-weight); /* md.comp.list.list-item.label-text.weight */
+  --md-comp-list-list-item-leading-avatar-label-font: var(--md-sys-typescale-title-medium-font); /* md.comp.list.list-item.leading-avatar-label.font */
+  --md-comp-list-list-item-leading-avatar-label-line-height: var(--md-sys-typescale-title-medium-line-height); /* md.comp.list.list-item.leading-avatar-label.line-height */
+  --md-comp-list-list-item-leading-avatar-label-size: var(--md-sys-typescale-title-medium-size); /* md.comp.list.list-item.leading-avatar-label.size */
+  --md-comp-list-list-item-leading-avatar-label-tracking: var(--md-sys-typescale-title-medium-tracking); /* md.comp.list.list-item.leading-avatar-label.tracking */
+  --md-comp-list-list-item-leading-avatar-label-weight: var(--md-sys-typescale-title-medium-weight); /* md.comp.list.list-item.leading-avatar-label.weight */
+  --md-comp-list-list-item-leading-avatar-shape: var(--md-sys-shape-corner-full); /* md.comp.list.list-item.leading-avatar.shape */
+  --md-comp-list-list-item-leading-avatar-size: 40px; /* md.comp.list.list-item.leading-avatar.size */
+  --md-comp-list-list-item-leading-icon-size: 24px; /* md.comp.list.list-item.leading-icon.size */
+  --md-comp-list-list-item-leading-image-height: 56px; /* md.comp.list.list-item.leading-image.height */
+  --md-comp-list-list-item-leading-image-shape: var(--md-sys-shape-corner-none); /* md.comp.list.list-item.leading-image.shape */
+  --md-comp-list-list-item-leading-image-width: 56px; /* md.comp.list.list-item.leading-image.width */
+  --md-comp-list-list-item-leading-space: 16px; /* md.comp.list.list-item.leading-space */
+  --md-comp-list-list-item-one-line-container-height: 56px; /* md.comp.list.list-item.one-line.container.height */
+  --md-comp-list-list-item-overline-font: var(--md-sys-typescale-label-small-font); /* md.comp.list.list-item.overline.font */
+  --md-comp-list-list-item-overline-line-height: var(--md-sys-typescale-label-small-line-height); /* md.comp.list.list-item.overline.line-height */
+  --md-comp-list-list-item-overline-size: var(--md-sys-typescale-label-small-size); /* md.comp.list.list-item.overline.size */
+  --md-comp-list-list-item-overline-tracking: var(--md-sys-typescale-label-small-tracking); /* md.comp.list.list-item.overline.tracking */
+  --md-comp-list-list-item-overline-weight: var(--md-sys-typescale-label-small-weight); /* md.comp.list.list-item.overline.weight */
+  --md-comp-list-list-item-selected-container-expressive-shape: var(--md-sys-shape-corner-large); /* md.comp.list.list-item.selected.container.expressive.shape */
+  --md-comp-list-list-item-selected-container-shape: var(--md-sys-shape-corner-large); /* md.comp.list.list-item.selected.container.shape */
+  --md-comp-list-list-item-supporting-text-font: var(--md-sys-typescale-body-medium-font); /* md.comp.list.list-item.supporting-text.font */
+  --md-comp-list-list-item-supporting-text-line-height: var(--md-sys-typescale-body-medium-line-height); /* md.comp.list.list-item.supporting-text.line-height */
+  --md-comp-list-list-item-supporting-text-size: var(--md-sys-typescale-body-medium-size); /* md.comp.list.list-item.supporting-text.size */
+  --md-comp-list-list-item-supporting-text-tracking: var(--md-sys-typescale-body-medium-tracking); /* md.comp.list.list-item.supporting-text.tracking */
+  --md-comp-list-list-item-supporting-text-weight: var(--md-sys-typescale-body-medium-weight); /* md.comp.list.list-item.supporting-text.weight */
+  --md-comp-list-list-item-three-line-container-height: 88px; /* md.comp.list.list-item.three-line.container.height */
+  --md-comp-list-list-item-top-space: 10px; /* md.comp.list.list-item.top-space */
+  --md-comp-list-list-item-trailing-icon-size: 24px; /* md.comp.list.list-item.trailing-icon.size */
+  --md-comp-list-list-item-trailing-space: 16px; /* md.comp.list.list-item.trailing-space */
+  --md-comp-list-list-item-trailing-supporting-text-font: var(--md-sys-typescale-label-small-font); /* md.comp.list.list-item.trailing-supporting-text.font */
+  --md-comp-list-list-item-trailing-supporting-text-line-height: var(--md-sys-typescale-label-small-line-height); /* md.comp.list.list-item.trailing-supporting-text.line-height */
+  --md-comp-list-list-item-trailing-supporting-text-size: var(--md-sys-typescale-label-small-size); /* md.comp.list.list-item.trailing-supporting-text.size */
+  --md-comp-list-list-item-trailing-supporting-text-tracking: var(--md-sys-typescale-label-small-tracking); /* md.comp.list.list-item.trailing-supporting-text.tracking */
+  --md-comp-list-list-item-trailing-supporting-text-weight: var(--md-sys-typescale-label-small-weight); /* md.comp.list.list-item.trailing-supporting-text.weight */
+  --md-comp-list-list-item-two-line-container-height: 72px; /* md.comp.list.list-item.two-line.container.height */
+  --md-comp-list-segmented-gap: 2px; /* md.comp.list.segmented.gap */
+  --md-comp-outlined-card-container-shape: var(--md-sys-shape-corner-medium); /* md.comp.outlined-card.container.shape */
+  --md-comp-outlined-card-disabled-outline-opacity: 0.12; /* md.comp.outlined-card.disabled.outline.opacity */
+  --md-comp-outlined-card-outline-width: 1px; /* md.comp.outlined-card.outline.width */
   --md-comp-outlined-segmented-button-container-height: 40px; /* md.comp.outlined-segmented-button.container.height */
   --md-comp-outlined-segmented-button-disabled-label-text-opacity: 0.38; /* md.comp.outlined-segmented-button.disabled.label-text.opacity */
   --md-comp-outlined-segmented-button-disabled-outline-opacity: 0.12; /* md.comp.outlined-segmented-button.disabled.outline.opacity */
@@ -489,6 +638,38 @@
   --md-comp-outlined-segmented-button-pressed-state-layer-opacity: var(--md-sys-state-focus-state-layer-opacity); /* md.comp.outlined-segmented-button.pressed.state-layer.opacity */
   --md-comp-outlined-segmented-button-shape: var(--md-sys-shape-corner-full); /* md.comp.outlined-segmented-button.shape */
   --md-comp-outlined-segmented-button-with-icon-icon-size: 18px; /* md.comp.outlined-segmented-button.with-icon.icon.size */
+  --md-comp-outlined-text-field-container-shape: var(--md-sys-shape-corner-extra-small); /* md.comp.outlined-text-field.container.shape */
+  --md-comp-outlined-text-field-disabled-outline-opacity: 0.12; /* md.comp.outlined-text-field.disabled.outline.opacity */
+  --md-comp-outlined-text-field-focus-outline-width: 3px; /* md.comp.outlined-text-field.focus.outline.width */
+  --md-comp-outlined-text-field-label-text-populated-line-height: var(--md-sys-typescale-body-small-line-height); /* md.comp.outlined-text-field.label-text.populated.line-height */
+  --md-comp-outlined-text-field-outline-width: 1px; /* md.comp.outlined-text-field.outline.width */
+  --md-comp-radio-button-disabled-selected-icon-opacity: 0.38; /* md.comp.radio-button.disabled.selected.icon.opacity */
+  --md-comp-radio-button-disabled-unselected-icon-opacity: 0.38; /* md.comp.radio-button.disabled.unselected.icon.opacity */
+  --md-comp-radio-button-icon-size: 20px; /* md.comp.radio-button.icon.size */
+  --md-comp-radio-button-state-layer-size: 40px; /* md.comp.radio-button.state-layer.size */
+  --md-comp-slider-active-handle-leading-space: 6px; /* md.comp.slider.active.handle.leading-space */
+  --md-comp-slider-disabled-active-track-opacity: 0.38; /* md.comp.slider.disabled.active.track.opacity */
+  --md-comp-slider-disabled-handle-opacity: 0.38; /* md.comp.slider.disabled.handle.opacity */
+  --md-comp-slider-disabled-inactive-track-opacity: 0.12; /* md.comp.slider.disabled.inactive.track.opacity */
+  --md-comp-slider-focus-handle-width: 2px; /* md.comp.slider.focus.handle.width */
+  --md-comp-slider-handle-shape: var(--md-sys-shape-corner-full); /* md.comp.slider.handle.shape */
+  --md-comp-slider-handle-width: 4px; /* md.comp.slider.handle.width */
+  --md-comp-slider-large-active-handle-height: 68px; /* md.comp.slider.large.active.handle.height */
+  --md-comp-slider-large-active-track-height: 56px; /* md.comp.slider.large.active.track.height */
+  --md-comp-slider-large-active-track-shape-leading: 16px; /* md.comp.slider.large.active.track.shape.leading */
+  --md-comp-slider-medium-active-handle-height: 44px; /* md.comp.slider.medium.active.handle.height */
+  --md-comp-slider-medium-active-track-height: 40px; /* md.comp.slider.medium.active.track.height */
+  --md-comp-slider-medium-active-track-shape-leading: 12px; /* md.comp.slider.medium.active.track.shape.leading */
+  --md-comp-slider-pressed-handle-width: 2px; /* md.comp.slider.pressed.handle.width */
+  --md-comp-slider-small-active-handle-height: 44px; /* md.comp.slider.small.active.handle.height */
+  --md-comp-slider-small-active-track-height: 24px; /* md.comp.slider.small.active.track.height */
+  --md-comp-slider-small-active-track-shape-leading: 8px; /* md.comp.slider.small.active.track.shape.leading */
+  --md-comp-slider-xlarge-active-handle-height: 108px; /* md.comp.slider.xlarge.active.handle.height */
+  --md-comp-slider-xlarge-active-track-height: 96px; /* md.comp.slider.xlarge.active.track.height */
+  --md-comp-slider-xlarge-active-track-shape-leading: 28px; /* md.comp.slider.xlarge.active.track.shape.leading */
+  --md-comp-slider-xsmall-active-handle-height: 44px; /* md.comp.slider.xsmall.active.handle.height */
+  --md-comp-slider-xsmall-active-track-height: 16px; /* md.comp.slider.xsmall.active.track.height */
+  --md-comp-slider-xsmall-active-track-shape-leading: 8px; /* md.comp.slider.xsmall.active.track.shape.leading */
   --md-comp-split-button-large-between-space: 2px; /* md.comp.split-button.large.between-space */
   --md-comp-split-button-large-container-shape: var(--md-sys-shape-corner-full); /* md.comp.split-button.large.container.shape */
   --md-comp-split-button-large-inner-corner-corner-size: var(--md-sys-shape-corner-small); /* md.comp.split-button.large.inner-corner.corner-size */
@@ -539,6 +720,28 @@
   --md-comp-split-button-xsmall-trailing-button-icon-size: 22px; /* md.comp.split-button.xsmall.trailing-button.icon.size */
   --md-comp-split-button-xsmall-trailing-button-leading-space: 13px; /* md.comp.split-button.xsmall.trailing-button.leading-space */
   --md-comp-split-button-xsmall-trailing-button-trailing-space: 13px; /* md.comp.split-button.xsmall.trailing-button.trailing-space */
+  --md-comp-suggestion-chip-label-text-font: var(--md-sys-typescale-label-large-font); /* md.comp.suggestion-chip.label-text.font */
+  --md-comp-suggestion-chip-label-text-line-height: var(--md-sys-typescale-label-large-line-height); /* md.comp.suggestion-chip.label-text.line-height */
+  --md-comp-suggestion-chip-label-text-size: var(--md-sys-typescale-label-large-size); /* md.comp.suggestion-chip.label-text.size */
+  --md-comp-suggestion-chip-label-text-tracking: var(--md-sys-typescale-label-large-tracking); /* md.comp.suggestion-chip.label-text.tracking */
+  --md-comp-suggestion-chip-label-text-weight: var(--md-sys-typescale-label-large-weight); /* md.comp.suggestion-chip.label-text.weight */
+  --md-comp-switch-disabled-selected-handle-opacity: 1; /* md.comp.switch.disabled.selected.handle.opacity */
+  --md-comp-switch-disabled-selected-icon-opacity: 0.38; /* md.comp.switch.disabled.selected.icon.opacity */
+  --md-comp-switch-disabled-track-opacity: 0.12; /* md.comp.switch.disabled.track.opacity */
+  --md-comp-switch-disabled-unselected-handle-opacity: 0.38; /* md.comp.switch.disabled.unselected.handle.opacity */
+  --md-comp-switch-disabled-unselected-icon-opacity: 0.38; /* md.comp.switch.disabled.unselected.icon.opacity */
+  --md-comp-switch-handle-shape: var(--md-sys-shape-corner-full); /* md.comp.switch.handle.shape */
+  --md-comp-switch-pressed-handle-width: 28px; /* md.comp.switch.pressed.handle.width */
+  --md-comp-switch-selected-handle-width: 24px; /* md.comp.switch.selected.handle.width */
+  --md-comp-switch-selected-icon-size: 16px; /* md.comp.switch.selected.icon.size */
+  --md-comp-switch-state-layer-size: 40px; /* md.comp.switch.state-layer.size */
+  --md-comp-switch-track-height: 32px; /* md.comp.switch.track.height */
+  --md-comp-switch-track-outline-width: 2px; /* md.comp.switch.track.outline.width */
+  --md-comp-switch-track-shape: var(--md-sys-shape-corner-full); /* md.comp.switch.track.shape */
+  --md-comp-switch-track-width: 52px; /* md.comp.switch.track.width */
+  --md-comp-switch-unselected-handle-width: 16px; /* md.comp.switch.unselected.handle.width */
+  --md-comp-switch-unselected-icon-size: 16px; /* md.comp.switch.unselected.icon.size */
+  --md-comp-switch-with-icon-handle-width: 24px; /* md.comp.switch.with-icon.handle.width */
 }
 
 :root:not([data-m3-style="classic"]) {
