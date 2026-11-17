@@ -61,6 +61,24 @@
       "url": "https://dl.google.com/android/maven2/androidx/compose/material3/material3-android/1.5.0-rc01/material3-android-1.5.0-rc01-sources.jar",
       "sha256": "0e9c5b37e75203b44b4987b3ccc0db41637303103ca21739691d7533cbe7cbb1",
       "license": "Apache-2.0"
+    },
+    {
+      "id": "material-symbols-paths",
+      "type": "git",
+      "repo": "https://github.com/google/material-design-icons.git",
+      "ref": "refs/heads/master",
+      "commit": "10ecc14790612ca8fd164e3f4ffe9c16fc50d5b7",
+      "paths": [
+        "/symbols/web/*/*/*_24px.svg",
+        "!/symbols/web/*/*/*_wght*",
+        "!/symbols/web/*/*/*_grad*",
+        "/symbols/android/*/*/*_24px.xml",
+        "!/symbols/android/*/*/*_wght*",
+        "!/symbols/android/*/*/*_grad*"
+      ],
+      "license": "Apache-2.0",
+      "resolvedOn": "2026-11-17",
+      "note": "Official Material Symbols path data (web SVG and Android vector drawable forms; default instance: weight 400, grade 0, 24 px; filled and unfilled; Outlined, Rounded, Sharp). Same commit as the bundled Symbols font (tools/toolchain/fonts.json). Input of tools/build/symbols-index.mjs."
     }
   ]
 }

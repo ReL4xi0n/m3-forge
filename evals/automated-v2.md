@@ -60,3 +60,24 @@ limits. It changes no item definition or band.
 
 All 8 Compose cells are captured again with harness v2 for the v2 re-scoring, so that the baseline and
 Phase 4 use the same harness.
+
+## Amendment: vector icons (owner decision, 2026-11-17, before any score with it)
+
+7. **Icon source covers icons drawn as path data.** A vector icon passes only if every path in it is
+   official Material Symbols geometry, unchanged: web inline `<svg>`, Compose `ImageVector`
+   (`ImageVector.Builder` / `materialIcon` with the path DSL, `addPathNodes` or
+   `PathParser().parsePathString`), and Android vector drawables under `res/drawable*`. Hand-drawn
+   paths, paths from other sets (including the legacy Material Icons) and edited official paths are
+   icon-source violations, one per icon.
+   - The official geometry is google/material-design-icons at the commit pinned in
+     `knowledge/sources.lock.json` (`material-symbols-paths`, the same commit as the bundled Symbols
+     font): `symbols/web/**/*_24px.svg` and `symbols/android/**/*_24px.xml`, Outlined, Rounded and
+     Sharp, unfilled and filled, at weight 400 and grade 0. `tools/build/symbols-index.mjs` hashes
+     every path (canonical absolute commands) into `scripts/verify/symbols-paths.json`.
+   - Other weights, grades and optical sizes are not in the index, so a copy of one of those counts
+     as not official.
+   - A vector is an icon when it is icon-sized: an `<svg>` whose viewBox is at most 48 units (or the
+     official 960 frame) or whose width and height are at most 48 px, or whose class names an icon;
+     an `ImageVector` or drawable at most 48 dp wide. Larger vectors (charts, illustrations) are not
+     checked.
+   - Positive and negative tests: `plugin/skills/material3/scripts/verify/test/symbols.test.mjs`.

@@ -3,6 +3,7 @@ import {
   countNonBlank, findEmoji, lineAt, lineStarts, looksGenerated, onGrid, radiusOnScale,
   readText, SHAPE_SCALE, stripComments, walk,
 } from './common.mjs';
+import { describeProblems, webSvgIcons } from './symbols.mjs';
 
 const EXT = /\.(html?|css|scss|js|jsx|ts|tsx|vue)$/i;
 const NOT_UI = /(?:\.min\.(?:js|css)|\.d\.ts|\.(?:test|spec|stories)\.[cm]?[jt]sx?|(?:^|\/)[^/]*\.config\.[cm]?[jt]s)$/i;
@@ -412,6 +413,12 @@ function scanFile(rel, text, ctx, collector) {
     }
     // Emoji in UI text.
     findEmoji(src.slice(p.start, p.end), (i, e) => hit('icon-source', p.start + i, `emoji ${e} in UI text (use Material Symbols)`));
+  }
+  // Inline <svg> icons: official Material Symbols path data only (symbols.mjs).
+  if (!/\.s?css$/i.test(rel)) {
+    for (const icon of webSvgIcons(src)) {
+      if (!icon.official) hit('icon-source', icon.index, `inline <svg> icon is not official Material Symbols geometry (${describeProblems(icon)})`);
+    }
   }
   return { themeLines: themeLines.size, nonBlank: countNonBlank(text) };
 }

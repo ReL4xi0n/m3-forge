@@ -3,6 +3,7 @@ import {
   callArgs, countNonBlank, findEmoji, looksGenerated, onGrid, radiusOnScale, readText, SHAPE_SCALE,
   stripComments, walk,
 } from './common.mjs';
+import { composeVectorIcons, describeProblems, xmlVectorIcon } from './symbols.mjs';
 
 const THEME_FILES = new Set(['Color.kt', 'Theme.kt', 'Type.kt', 'Shape.kt']);
 const DP = /(?<![\w.])(\d+(?:\.\d+)?)f?\.dp\b/g;
@@ -60,10 +61,31 @@ function scanKotlin(src, hit) {
   each(/\bIcons\.(?:Default|Filled|Outlined|Rounded|Sharp|TwoTone|AutoMirrored)\b(?:\.\w+)*/g, src, m =>
     hit('icon-source', m.index, `${m[0]} comes from material-icons; use Material Symbols`));
   findEmoji(src, (i, e) => hit('icon-source', i, `emoji ${e} in UI text (use Material Symbols)`));
+  // ImageVector icons: official Material Symbols path data only (symbols.mjs).
+  for (const icon of composeVectorIcons(src)) {
+    if (!icon.official) hit('icon-source', icon.index, `ImageVector icon is not official Material Symbols geometry (${describeProblems(icon)})`);
+  }
+}
+
+// Vector drawables under res/drawable*: official Material Symbols path data only. Their lines do not
+// count as UI lines (they are resources, not UI code).
+async function scanDrawables(projectDir, files, collector) {
+  let scanned = 0;
+  for (const rel of files.filter(f => /(?:^|\/)src\/main\/res\/drawable[^/]*\/[^/]+\.xml$/.test(f))) {
+    const text = await readText(projectDir, rel);
+    const icon = xmlVectorIcon(text);
+    if (!icon) continue;
+    scanned++;
+    if (!icon.official) {
+      collector.forFile(rel, text)('icon-source', icon.index, `vector drawable icon is not official Material Symbols geometry (${describeProblems(icon)})`);
+    }
+  }
+  return scanned;
 }
 
 export async function scanCompose(projectDir, collector) {
-  const files = (await walk(projectDir)).filter(f => f.endsWith('.kt') && /(?:^|\/)src\/main\//.test(f));
+  const all = await walk(projectDir);
+  const files = all.filter(f => f.endsWith('.kt') && /(?:^|\/)src\/main\//.test(f));
   let uiLines = 0;
   let themeLines = 0;
   let scanned = 0;
@@ -82,5 +104,6 @@ export async function scanCompose(projectDir, collector) {
     }
     scanKotlin(stripComments(text, { triple: true, quotes: ['"', "'"] }), collector.forFile(rel, text, exempt));
   }
+  scanned += await scanDrawables(projectDir, all, collector);
   return { uiLines, themeLines, files: scanned };
 }
