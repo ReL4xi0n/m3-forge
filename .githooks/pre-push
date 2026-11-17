@@ -1,10 +1,18 @@
 #!/bin/sh
 # m3-forge pre-push: blocks backup/* branches and checks every pushed commit (content it introduces,
 # commit message, GitHub noreply author/committer email) and the ref names. Fails closed like pre-commit.
-# Bypassing this hook (git push --no-verify) is forbidden.
+# Then runs the fast test subset (no toolchain, no browser) on the pushed commit, so a commit that breaks
+# a test is never pushed. Bypassing this hook (git push --no-verify) is forbidden.
 if ! command -v node >/dev/null 2>&1; then
   echo "m3-forge guard: node not found; push blocked" >&2
   exit 1
 fi
 export GUARD_REQUIRE_TERMS=1 GUARD_REQUIRE_CORPUS=1
-exec node tools/guard/pre-push.mjs "$@"
+lines=$(cat)
+printf '%s\n' "$lines" | node tools/guard/pre-push.mjs "$@" || exit $?
+# M3_FAST_TESTS_ACTIVE is set only by tools/ci/fast-tests.mjs for its own child run: a test that pushes
+# from a throwaway repo then runs the guard alone instead of the whole suite again.
+if [ "$M3_FAST_TESTS_ACTIVE" = 1 ]; then
+  exit 0
+fi
+printf '%s\n' "$lines" | node tools/ci/fast-tests.mjs --pre-push || exit 1

@@ -24,6 +24,7 @@ test('validateCapture: short text fails, missing JSON is only flagged, HTTP erro
 // ---- browser (runs where Playwright + Chromium are installed, i.e. in the toolchain env) ----
 
 async function browserOrSkipReason() {
+  if (process.env.M3_NO_BROWSER_TESTS === '1') return { reason: 'browser tests off (M3_NO_BROWSER_TESTS=1)' };
   try {
     const { chromium } = await import('playwright');
     if (!existsSync(chromium.executablePath())) return { reason: 'chromium not installed (run in the toolchain env)' };

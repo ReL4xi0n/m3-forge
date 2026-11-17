@@ -215,7 +215,8 @@ async function makePushPair(opts) {
 }
 
 function push(dir, ...args) {
-  const r = spawnSync('git', ['-c', 'core.hooksPath=.githooks', 'push', ...args], { cwd: dir, env: cleanEnv(), encoding: 'utf8' });
+  // The throwaway repo has no test suite; the marker makes the hook run the guard alone (tools/ci/fast-tests.mjs).
+  const r = spawnSync('git', ['-c', 'core.hooksPath=.githooks', 'push', ...args], { cwd: dir, env: cleanEnv({ M3_FAST_TESTS_ACTIVE: '1' }), encoding: 'utf8' });
   return { status: r.status, out: (r.stdout || '') + (r.stderr || '') };
 }
 

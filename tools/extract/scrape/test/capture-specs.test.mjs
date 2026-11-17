@@ -18,10 +18,11 @@ test('screenshotDir: only private/reference-screenshots/<date>', () => {
 
 let pw;
 try {
+  if (process.env.M3_NO_BROWSER_TESTS === '1') throw new Error('browser tests off');
   const { chromium } = await import('playwright');
   pw = existsSync(chromium.executablePath()) ? { chromium } : { reason: 'chromium not installed (run in the toolchain env)' };
-} catch {
-  pw = { reason: 'playwright not installed (run in the toolchain env)' };
+} catch (e) {
+  pw = { reason: e.message === 'browser tests off' ? 'browser tests off (M3_NO_BROWSER_TESTS=1)' : 'playwright not installed (run in the toolchain env)' };
 }
 
 test('captureSpecs: full-page PNG per allowed page, robots-disallowed pages skipped', { skip: pw.reason }, async () => {
