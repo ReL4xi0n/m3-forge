@@ -134,6 +134,29 @@
         "url": "https://registry.npmjs.org/wawoff2/-/wawoff2-2.0.1.tgz",
         "sha256": "c356059ab809228e0c93b7da8862bc8b52b7b84d69f16255eaec304fc9d99a56"
       }
+    },
+    {
+      "name": "harfbuzzjs",
+      "version": "1.6.4",
+      "license": "MIT",
+      "path": "scripts/icons/vendor",
+      "archive": {
+        "url": "https://registry.npmjs.org/harfbuzzjs/-/harfbuzzjs-1.6.4.tgz",
+        "sha256": "79451cab97566a87d0d9ed21127bea01e87361f8d8dbf76256cb018b05fdcfd0",
+        "integrity": "sha512-T/PyfhVt1gGR2Tkf5KJUj1DQFkVBXHw552lS1iLEEDhV1Lukb3eq1pk2ov85kgbT2YUiZtJBTak9w+M7YgzUEQ=="
+      },
+      "files": {
+        "hb-subset.wasm": {
+          "from": "dist/harfbuzz-subset.wasm",
+          "sha256": "62415fe6bad92ef16f3e5d2dbed6c66a4adec7f5a59c6d27084811c92cce1ba5",
+          "bytes": 683531
+        },
+        "LICENSE-harfbuzzjs.txt": {
+          "from": "LICENSE",
+          "sha256": "5d09767b2cc476f08028b56d9384dc45061c5a3e90f9ad966e44addc8d26c8b1"
+        }
+      },
+      "modified": "none (the wasm is the unchanged dist/harfbuzz-subset.wasm of the npm archive, renamed); scripts/icons/web.mjs drives it"
     }
   ]
 }

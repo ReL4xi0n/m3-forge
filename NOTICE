@@ -64,3 +64,13 @@ Bundled in plugin/skills/material3/assets/fonts/ (sizes and SHA-256 hashes: plug
   Material Symbols variable font (Outlined) and its codepoints, https://github.com/google/material-design-icons
   at commit 10ecc14790612ca8fd164e3f4ffe9c16fc50d5b7 (variablefont/), Copyright Google LLC, Apache License 2.0.
   License text: plugin/skills/material3/assets/fonts/LICENSE-material-design-icons.txt
+
+------------------------------------------------------------------------
+harfbuzzjs / HarfBuzz hb-subset (bundled binary)
+------------------------------------------------------------------------
+plugin/skills/material3/scripts/icons/vendor/hb-subset.wasm is dist/harfbuzz-subset.wasm of harfbuzzjs
+1.6.4 (https://github.com/harfbuzz/harfbuzzjs, npm build), a WebAssembly build of the HarfBuzz subsetter,
+Copyright (c) 2019-2026 The harfbuzzjs project authors, MIT License. License text:
+plugin/skills/material3/scripts/icons/vendor/LICENSE-harfbuzzjs.txt. HarfBuzz itself is Copyright its
+authors under the "Old MIT" license (https://github.com/harfbuzz/harfbuzz/blob/main/COPYING).
+Not modified. The archive hash and the file hash are in plugin/skills/material3/versions.json.

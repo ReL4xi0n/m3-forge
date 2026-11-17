@@ -64,8 +64,8 @@ test('CLI: path with spaces, closed-port proxy, exit codes', async () => {
   const dir = await mkdtemp(join(tmpdir(), 'm3 icons cli '));
   const env = { ...process.env, HTTPS_PROXY: 'http://127.0.0.1:9', HTTP_PROXY: 'http://127.0.0.1:9' };
   try {
-    const ok = spawnSync(process.execPath, [INDEX, dir, '--platform', 'web', '--names', 'home'], { env, encoding: 'utf8' });
-    assert.equal(ok.status, 5);
+    const ok = spawnSync(process.execPath, [INDEX, dir, '--platform', 'flutter', '--names', 'home'], { env, encoding: 'utf8' });
+    assert.equal(ok.status, 5); // web has a back end since Task 14
     assert.deepEqual(JSON.parse(ok.stdout).known, ['home']);
     const bad = spawnSync(process.execPath, [INDEX, dir, '--platform', 'web', '--names', 'setings'], { env, encoding: 'utf8' });
     assert.equal(bad.status, 4);
