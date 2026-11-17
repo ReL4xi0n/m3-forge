@@ -1,0 +1,87 @@
+/* material3 skill asset: assets/web/components/bottom-sheet.css
+ * Material 3 bottom sheet: modal (a native <dialog> at the bottom over a scrim) or standard (an
+ * element the layout places). Needs tokens.css and the color theme from scripts/color. Every value
+ * is a token variable.
+ *
+ *   <dialog class="m3-bottom-sheet" aria-label="Share">
+ *     <button class="m3-bottom-sheet-drag-handle" type="button" aria-label="Close the sheet"></button>
+ *     …content (lay it out with the --md-sys-space-* steps)…
+ *   </dialog>                                   (open with showModal(), close with close())
+ *   <section class="m3-bottom-sheet" aria-label="Now playing">…</section>     (standard)
+ *
+ * A <dialog> sheet is closed until it has [open]; open with showModal() it sits on the bottom edge,
+ * centered, over the scrim (::backdrop). A standard sheet takes the width the layout gives it, up to
+ * the maximum width. The drag handle is optional; as a button it is a full touch
+ * target with the handle drawn in its middle (Compose pads the handle by 22 above and below:
+ * 4 + 2 x 22 = 48 = --md-target-size). Dragging the sheet is not part of this sheet.
+ *   [impl:compose-material3/commonMain/androidx/compose/material3/SheetDefaults.kt:789] 22
+ *   Handle shape: [impl:compose-material3/commonMain/androidx/compose/material3/SheetDefaults.kt:575] extraLarge
+ *   Maximum width: in tokens.css (--md-impl-bottom-sheet-max-width).
+ */
+
+.m3-bottom-sheet {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  max-inline-size: var(--md-impl-bottom-sheet-max-width);
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+  border: 0;
+  border-radius: var(--md-comp-sheet-bottom-docked-container-shape);
+  background: var(--md-sys-color-surface-container-low); /* md.comp.sheet.bottom.docked.container.color */
+  box-shadow: var(--md-sys-elevation-level1-shadow); /* md.comp.sheet.bottom.docked.{modal,standard}.container.elevation */
+  color: var(--md-sys-color-on-surface);
+}
+
+dialog.m3-bottom-sheet {
+  position: fixed;
+  inset-block: auto 0;
+  inset-inline: 0;
+  inline-size: auto;
+  margin: 0 auto;
+}
+
+dialog.m3-bottom-sheet:not([open]) {
+  display: none;
+}
+
+.m3-bottom-sheet::backdrop {
+  /* md.comp.scrim.container.{color,opacity} */
+  background: rgb(from var(--md-sys-color-scrim) r g b / var(--md-comp-scrim-container-opacity));
+}
+
+/* Drag handle (md.comp.sheet.bottom.docked.drag-handle.*) */
+.m3-bottom-sheet-drag-handle {
+  position: relative;
+  flex: none;
+  align-self: center;
+  box-sizing: border-box;
+  inline-size: var(--md-target-size);
+  block-size: var(--md-target-size);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--md-sys-shape-corner-full);
+  background: none;
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.m3-bottom-sheet-drag-handle::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  inline-size: var(--md-comp-sheet-bottom-docked-drag-handle-width);
+  block-size: var(--md-comp-sheet-bottom-docked-drag-handle-height);
+  margin: auto;
+  border-radius: var(--md-sys-shape-corner-extra-large);
+  background: var(--md-sys-color-on-surface-variant); /* md.comp.sheet.bottom.docked.drag-handle.color */
+}
+
+.m3-bottom-sheet-drag-handle:focus-visible {
+  /* md.comp.sheet.bottom.focus.indicator.{color,thickness,outline.offset} */
+  outline: var(--md-sys-state-focus-indicator-thickness) solid var(--md-sys-color-secondary);
+  outline-offset: var(--md-sys-state-focus-indicator-outer-offset);
+}

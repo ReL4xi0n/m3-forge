@@ -17,7 +17,7 @@ import { tmpdir } from 'node:os';
 import { extname, join, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildSkillTokens } from '../tokens.mjs';
-import { IMPL_VALUES, shadowOf, TARGET_SIZE } from '../emit/web.mjs';
+import { IMPL_VALUES, implCss, shadowOf, TARGET_SIZE } from '../emit/web.mjs';
 import { sourceDir } from '../../extract/sources/lock.mjs';
 import { buildGallerySite, GALLERY_DIR } from '../gallery/web/site.mjs';
 import { MANIFEST, WEB_COMPONENTS } from '../../../plugin/skills/material3/scripts/install-assets/manifest.mjs';
@@ -77,10 +77,15 @@ function declarations(css) {
 //   the height (a very large radius would make CSS scale the small corners of the same box down to
 //   nothing).
 //   100%: the containing block's size, where a position depends on it: an anchored badge's start
-//   (the anchor's end edge) and a slider handle's travel.
-const NUMBER_EXCEPTIONS = [{ prop: 'z-index', value: '-1' }];
+//   (the anchor's end edge), a slider handle's travel and a progress track's length.
+//   1turn: the whole circle, where an angle along a circular progress indicator depends on it.
+//   @keyframes in progress.css: Compose's indeterminate timelines (offsets, 0 and 1 positions, the
+//   circular sweep and rotation angles); the keyframes test below derives each from the Compose
+//   constants.
+const NUMBER_EXCEPTIONS = [{ prop: 'z-index', value: '-1' }, { prop: '--_full-turn', value: '1turn' }];
 const HALVING = /\/\s*2(?![\d.])/g;
-const PERCENT_PROPS = new Set(['inset-inline-start', '--_handle-offset']);
+const PERCENT_PROPS = new Set(['inset-inline-start', '--_handle-offset', '--_length']);
+const KEYFRAME = /^(?:from|to|[\d.]+%)$/;
 
 test('every component style sheet is its own web install part and starts with the asset marker', () => {
   assert.deepEqual(files, WEB_COMPONENTS.map(c => `${c}.css`).sort());
@@ -97,6 +102,7 @@ test('every property value is a token variable or 0 (the listed structural excep
   for (const [f, css] of sheets) {
     for (const d of declarations(css)) {
       n++;
+      if (f === 'progress.css' && KEYFRAME.test(d.selector)) continue;
       let rest = stripVar(d.value).replace(/(["']).*?\1/g, '');
       if (/calc\(/.test(d.value)) rest = rest.replace(HALVING, '');
       if (PERCENT_PROPS.has(d.prop)) rest = rest.replace(/(?<![\w.])100%/g, '');
@@ -109,6 +115,7 @@ test('every property value is a token variable or 0 (the listed structural excep
   assert.ok(n > 400, `only ${n} declarations`);
 });
 
+const GRADIENT_WORDS = '|(?:radial|conic|linear)-gradient|circle|right|left|center|no-repeat|auto|calc|min|max|sin|cos|to';
 test('colors come only from the --md-sys-color-* roles', () => {
   const COLOR = /(?:^|-)(?:color|background|border|outline|shadow|fill|stroke)$/;
   for (const [f, css] of sheets) {
@@ -116,17 +123,19 @@ test('colors come only from the --md-sys-color-* roles', () => {
     for (const d of declarations(css)) {
       if (!COLOR.test(d.prop) || d.prop === 'transition-property') continue;
       for (const v of usedIn(`x{a:${d.value}}`)) {
-        assert.ok(/^--md-sys-color-|^--m3-text-field-notch-color$|^--_|^--md-comp-[\w-]+-(?:opacity|width)$|^--md-sys-elevation-level\d-shadow$|^--md-sys-state-focus-indicator-thickness$|^--md-impl-[\w-]+-width$/.test(v),
+        assert.ok(/^--md-sys-color-|^--m3-text-field-notch-color$|^--_|^--md-comp-[\w-]+-(?:opacity|width|thickness)$|^--md-sys-elevation-level\d-shadow$|^--md-sys-state-focus-indicator-thickness$|^--md-impl-[\w-]+-width$/.test(v),
           `${f}: ${d.prop} uses ${v}`);
       }
-      const rest = stripVar(d.value).replace(/\b(?:transparent|none|inherit|solid|from|r|g|b|rgb|0)\b|[()/,\s]/g, '');
+      // progress.css draws arcs, round ends and the stop indicator as gradients of private variables.
+      const words = f === 'progress.css' ? GRADIENT_WORDS : '';
+      const rest = stripVar(d.value).replace(HALVING, '').replace(new RegExp(`\\b(?:transparent|none|inherit|solid|from|r|g|b|rgb|0${words})\\b|[()/,\\s*+-]`, 'g'), '');
       assert.equal(rest, '', `${f}: ${d.prop}: ${d.value}`);
     }
   }
 });
 
 // Variables the page sets for a component (CSS cannot read them): the slider's position, 0 to 1.
-const PAGE_INPUTS = ['--m3-slider-value', '--m3-text-field-notch-color'];
+const PAGE_INPUTS = ['--m3-slider-value', '--m3-text-field-notch-color', '--m3-progress-value'];
 
 test('every --md-* variable used by the style sheets and galleries is declared in tokens.css or the color theme', () => {
   const declared = new Set([...declaredIn(tokensCss), ...declaredIn(theme)]);
@@ -148,6 +157,14 @@ test('class names are m3-<component> or m3-<component>--<variant>', () => {
     'icon', 'button', 'icon-button', 'fab', 'extended-fab', 'button-group', 'split-button', 'segmented-button-set', 'segmented-button',
     'card', 'list', 'list-item', 'list-item-text', 'list-item-overline', 'list-item-supporting-text', 'list-item-trailing-text',
     'list-item-avatar', 'chip-set', 'chip', 'text-field', 'checkbox', 'radio', 'switch', 'slider', 'divider', 'badge',
+    'top-app-bar', 'top-app-bar-text', 'top-app-bar-title', 'top-app-bar-subtitle', 'top-app-bar-actions',
+    'navigation-bar', 'navigation-bar-item', 'navigation-bar-label',
+    'navigation-rail', 'navigation-rail-header', 'navigation-rail-item', 'navigation-rail-label',
+    'navigation-drawer', 'navigation-drawer-headline', 'navigation-drawer-item', 'navigation-drawer-label', 'navigation-drawer-badge',
+    'tabs', 'tab', 'tab-content', 'tab-label', 'dialog', 'dialog-headline', 'dialog-content', 'dialog-actions',
+    'bottom-sheet', 'bottom-sheet-drag-handle', 'menu', 'menu-item', 'menu-item-text', 'menu-item-supporting-text',
+    'menu-item-trailing-text', 'snackbar', 'snackbar-text', 'tooltip', 'tooltip-subhead', 'tooltip-text', 'tooltip-actions',
+    'search', 'search-input', 'search-view', 'progress', 'loading-indicator',
   ];
   const re = new RegExp(`^m3-(?:${COMPONENTS.join('|')})(?:--[a-z0-9]+(?:-[a-z0-9]+)*)?$`);
   for (const [f, css] of sheets) {
@@ -181,7 +198,7 @@ test('tokens.css: the --md-impl-* values the style sheets use, each with its sou
   const used = new Set([...sheets.values()].flatMap(css => usedIn(css).filter(v => v.startsWith('--md-impl-'))));
   assert.deepEqual([...used].sort(), IMPL_VALUES.map(v => v.name).sort(), 'every [impl:] value is used, and only those');
   for (const v of IMPL_VALUES) {
-    assert.ok(tokensCss.split(/\r?\n/).includes(`  ${v.name}: ${v.px}px; /* [impl:${v.impl}] */`), v.name);
+    assert.ok(tokensCss.split(/\r?\n/).includes(`  ${v.name}: ${implCss(v)}; /* [impl:${v.impl}] */`), v.name);
   }
 });
 
@@ -190,8 +207,55 @@ test('[impl:] values: the cited Compose source line holds the value', { skip: to
   for (const v of IMPL_VALUES) {
     const [, rel, line] = v.impl.match(/^compose-material3\/(.+):(\d+)$/);
     const text = readFileSync(join(sourceDir('compose-material3'), ...rel.split('/')), 'utf8').split('\n')[Number(line) - 1];
-    assert.match(text, new RegExp(`\\b${v.px}(?:\\.0)?\\.dp\\b`), `${v.name}: ${v.impl}: ${text}`);
+    const want = v.ms !== undefined ? `= ${v.ms}\\b` : `\\b${v.px}(?:\\.0)?\\.dp\\b`;
+    assert.match(text, new RegExp(want), `${v.name}: ${v.impl}: ${text}`);
   }
+});
+
+// The "[impl:compose-material3/<file>:<line>] <number>" citations in the style sheets' comments: the
+// cited line holds the number (as N.dp, Nf or a plain N).
+test('[impl:] citations in the style sheets: the cited Compose source line holds the number', { skip: toolchain }, () => {
+  let n = 0;
+  for (const [f, css] of sheets) {
+    for (const m of css.matchAll(/\[impl:compose-material3\/([^\]:]+):(\d+)\] (\d+(?:\.\d+)?)\b/g)) {
+      n++;
+      const text = readFileSync(join(sourceDir('compose-material3'), ...m[1].split('/')), 'utf8').split('\n')[Number(m[2]) - 1];
+      assert.match(text, new RegExp(`(?<![\\w.])${m[3].replace('.', '\\.')}(?:\\.0)?(?:\\.dp|f)?\\b`), `${f}: ${m[0]}: ${text}`);
+    }
+  }
+  assert.ok(n >= 25, `${n} citations`);
+});
+
+// progress.css keyframes: Compose's indeterminate timelines (ProgressIndicator.kt:928-1023 with the
+// constants at :1049-1076; the durations are the [impl:] values in tokens.css).
+test("progress.css: the indeterminate keyframes are Compose's timelines", () => {
+  const css = stripComments(sheets.get('progress.css'));
+  const frames = name => {
+    const body = css.match(new RegExp(`@keyframes ${name} \\{([\\s\\S]*?)\\n\\}`))[1];
+    return [...body.matchAll(/([\d.]+)% \{ [^:]+: ([^;]+);/g)].map(m => [Number(m[1]), m[2]]);
+  };
+  // LinearAnimationDuration 1750; [delay, duration] of FirstLineHead 0/1000, FirstLineTail 250/1000,
+  // SecondLineHead 650/850, SecondLineTail 900/850 (:1049-1061).
+  const LINEAR = 1750;
+  assert.equal(IMPL_VALUES.find(v => v.name === '--md-impl-linear-progress-indeterminate-duration').ms, LINEAR);
+  const pct = ms => Number((ms / LINEAR * 100).toFixed(3));
+  const parts = { 'm3-progress-head-1': [0, 1000], 'm3-progress-tail-1': [250, 1000], 'm3-progress-head-2': [650, 850], 'm3-progress-tail-2': [900, 850] };
+  for (const [name, [delay, dur]] of Object.entries(parts)) {
+    const want = [[0, '0'], ...(delay ? [[pct(delay), '0']] : []), [pct(delay + dur), '1'], ...(delay + dur < LINEAR ? [[100, '1']] : [])];
+    assert.deepEqual(frames(name), want, name);
+  }
+  // CircularAnimationProgressDuration 6000: sweep CircularIndeterminateMinProgress 0.1 -> MaxProgress
+  // 0.87 at 3000 -> 0.1; global rotation 1080 degrees; a quarter turn (300 ms) every 1500 ms.
+  const CIRCULAR = 6000;
+  assert.equal(IMPL_VALUES.find(v => v.name === '--md-impl-circular-progress-indeterminate-duration').ms, CIRCULAR);
+  assert.deepEqual(frames('m3-progress-sweep'), [[0, '0.1'], [50, '0.87'], [100, '0.1']]);
+  assert.deepEqual(frames('m3-progress-rotation'), [[0, '0deg'], [100, '1080deg']]);
+  const steps = [[0, 'rotate(0deg)']];
+  for (let k = 0; k < 4; k++) {
+    steps.push([Number((((k * 1500 + 300) / CIRCULAR) * 100).toFixed(3)), `rotate(${(k + 1) * 90}deg)`]);
+    steps.push([k < 3 ? (((k + 1) * 1500) / CIRCULAR) * 100 : 100, `rotate(${(k + 1) * 90}deg)`]);
+  }
+  assert.deepEqual(frames('m3-progress-steps'), steps);
 });
 
 // Every component token the style sheets read, with its provenance; and the composite label-text
@@ -214,6 +278,13 @@ test('ladder: the component tokens used are the web\'s own, except the ones list
   const used = ladder();
   const notOwn = [...used].filter(([, p]) => p !== 'own').map(([k, p]) => `${k} ${p}`).sort();
   assert.deepEqual(notOwn, [
+    // Top app bar, navigation bar and rail type roles: composite tokens resolved by rung 2.
+    'md.comp.app-bar.large-flexible.subtitle.font derived:md.sys.typescale.title-medium',
+    'md.comp.app-bar.large-flexible.title.font derived:md.sys.typescale.display-small',
+    'md.comp.app-bar.medium-flexible.subtitle.font derived:md.sys.typescale.label-large',
+    'md.comp.app-bar.medium-flexible.title.font derived:md.sys.typescale.headline-medium',
+    'md.comp.app-bar.small.subtitle.font derived:md.sys.typescale.label-medium',
+    'md.comp.app-bar.small.title.font derived:md.sys.typescale.title-large',
     'md.comp.button.large.label-text derived:md.sys.typescale.headline-small',
     'md.comp.button.medium.label-text derived:md.sys.typescale.title-medium',
     'md.comp.button.small.label-text derived:md.sys.typescale.label-large',
@@ -226,10 +297,13 @@ test('ladder: the component tokens used are the web\'s own, except the ones list
     'md.comp.extended-fab.large.label-text derived:md.sys.typescale.headline-small',
     'md.comp.extended-fab.medium.label-text derived:md.sys.typescale.title-large',
     'md.comp.extended-fab.small.label-text derived:md.sys.typescale.title-medium',
+    'md.comp.nav-bar.item.vertical.label-text.font derived:md.sys.typescale.label-medium',
+    'md.comp.nav-rail.item.horizontal.label-text.font derived:md.sys.typescale.label-large',
+    'md.comp.nav-rail.item.vertical.label-text.font derived:md.sys.typescale.label-medium',
   ]);
   // Each rung-2 comment matches the provenance in tokens/comp.json.
   for (const [k, p] of used) if (p.startsWith('derived:')) assert.equal(comp[k].web[1], p, k);
-  assert.ok(used.size > 150, `${used.size} component tokens`);
+  assert.ok(used.size > 300, `${used.size} component tokens`);
 });
 
 // A gallery site (index.html + installed assets + baseline theme) in a folder whose path has spaces.
@@ -303,7 +377,7 @@ for (const g of galleries) {
 }
 
 // Elements the computed check measures on each gallery, at least.
-const MIN_CHECKED = { actions: 100, containment: 10 };
+const MIN_CHECKED = { actions: 100, containment: 10, navigation: 40 };
 
 // Helpers on a page: a root variable, a pseudo-element's computed property, the alpha of a color,
 // the computed value of a box-shadow or color variable (from a probe element).
@@ -390,6 +464,186 @@ const STATE_CHECKS = {
     assert.equal(await focused.evaluate(el => getComputedStyle(el, '::before').outlineWidth), await rootVar(page, '--md-sys-state-focus-indicator-thickness'));
     assert.equal(await focused.evaluate(el => getComputedStyle(el, '::after').opacity), await rootVar(page, '--md-sys-state-focus-state-layer-opacity'));
     await page.screenshot({ path: join(outDir, `state-focus-${scheme}.png`), clip: await clipOf(focused) });
+  },
+
+  async navigation(page, { scheme, outDir }) {
+    const hover = Number(await rootVar(page, '--md-sys-state-hover-state-layer-opacity'));
+    const thickness = await rootVar(page, '--md-sys-state-focus-indicator-thickness');
+    const len = async n => parseFloat(await rootVar(page, n));
+    const shot = async (name, loc) => page.screenshot({ path: join(outDir, `${name}-${scheme}.png`), clip: await clipOf(loc) });
+
+    // Top app bars: the token heights (small; medium and large flexible, with and without subtitle).
+    const bars = await page.$$eval('.m3-top-app-bar', els => els.map(el => [el.className, el.getBoundingClientRect().height, !!el.querySelector('.m3-top-app-bar-subtitle')]));
+    for (const [cls, h, sub] of bars) {
+      const size = /medium-flexible/.test(cls) ? 'medium-flexible' : /large-flexible/.test(cls) ? 'large-flexible' : 'small';
+      const token = size === 'small' ? '--md-comp-app-bar-small-container-height'
+        : `--md-comp-app-bar-${size}-${sub ? 'with-subtitle-' : ''}container-height`;
+      near(h, await len(token), `${cls} height`);
+    }
+    assert.equal(await page.locator('.m3-top-app-bar[data-scrolled]').evaluate(el => getComputedStyle(el).backgroundColor), await probe(page, 'color', '--md-sys-color-surface-container'));
+
+    // Navigation bar: the token height; the active indicator (56 x 32) behind the active icon; the
+    // hover state layer on an inactive item; the keyboard focus ring on the indicator.
+    const bar = page.locator('.m3-navigation-bar');
+    near((await bar.boundingBox()).height, await len('--md-comp-nav-bar-container-height'), 'navigation bar height');
+    const active = bar.locator('[aria-current="page"]');
+    assert.equal(await pseudoOf(active, '::before', 'background-color'), await probe(page, 'color', '--md-sys-color-secondary-container'));
+    near(parseFloat(await pseudoOf(active, '::before', 'width')), await len('--md-comp-nav-bar-item-vertical-active-indicator-width'), 'nav bar indicator width');
+    near(parseFloat(await pseudoOf(active, '::before', 'height')), await len('--md-comp-nav-bar-item-vertical-active-indicator-height'), 'nav bar indicator height');
+    const inactive = bar.locator('.m3-navigation-bar-item:not([aria-current])').first();
+    assert.equal(alphaOf(await pseudoOf(inactive, '::before', 'background-color')), 0);
+    await inactive.hover();
+    assert.equal(alphaOf(await pseudoOf(inactive, '::after', 'background-color')), hover);
+    await shot('state-hover-nav-bar', bar);
+    await page.mouse.move(0, 0);
+    await page.locator('button[aria-label="Sort"]').focus();
+    await page.keyboard.press('Tab');
+    const focusedItem = page.locator(':focus-visible');
+    assert.equal(await focusedItem.evaluate(el => el.matches('.m3-navigation-bar-item')), true);
+    assert.equal(await pseudoOf(focusedItem, '::before', 'outline-width'), thickness);
+    await shot('state-focus-nav-bar', bar);
+    await focusedItem.evaluate(el => el.blur());
+
+    // Navigation rail: collapsed width; the expanded active indicator covers the whole item.
+    near((await page.locator('nav.m3-navigation-rail:not(.m3-navigation-rail--expanded)').boundingBox()).width, await len('--md-comp-nav-rail-collapsed-container-width'), 'collapsed rail width');
+    const wide = page.locator('nav.m3-navigation-rail--expanded [aria-current="page"]');
+    const wb = await wide.boundingBox();
+    near(parseFloat(await pseudoOf(wide, '::before', 'width')), wb.width, 'expanded indicator width');
+    near(wb.height, await len('--md-comp-nav-rail-item-horizontal-active-indicator-height'), 'expanded item height');
+    // Modal overlays shown in place are hidden without [open].
+    for (const sel of ['.m3-navigation-rail--modal', '.m3-navigation-drawer--modal']) {
+      const hidden = await page.locator(sel).evaluate(el => { el.removeAttribute('open'); const d = getComputedStyle(el).display; el.setAttribute('open', ''); return d; });
+      assert.equal(hidden, 'none', `${sel} without [open]`);
+    }
+    // The modal drawer's start edge is the stage's start edge and its height the stage's.
+    const db = await page.locator('.m3-navigation-drawer--modal').boundingBox();
+    const sb = await page.locator('#drawer-stage').boundingBox();
+    near(db.x, sb.x, 'modal drawer start');
+    near(db.height, sb.height, 'modal drawer height');
+    near(db.width, await len('--md-comp-navigation-drawer-container-width'), 'modal drawer width');
+
+    // Tabs: the primary indicator is as wide as the content and sits on the tab's bottom edge; the
+    // secondary one is as wide as the tab; a primary tab with icon and label is the taller one.
+    const ind = async tab => tab.evaluate(el => {
+      const c = el.querySelector('.m3-tab-content');
+      const a = getComputedStyle(c, '::after');
+      return { w: parseFloat(a.width), h: parseFloat(a.height), cw: c.getBoundingClientRect().width, cb: c.getBoundingClientRect().bottom, tb: el.getBoundingClientRect().bottom, tw: el.getBoundingClientRect().width, th: el.getBoundingClientRect().height };
+    });
+    const p1 = await ind(page.locator('.m3-tabs:not(.m3-tabs--secondary) [aria-selected="true"]').first());
+    near(p1.w, p1.cw, 'primary indicator width');
+    near(p1.h, await len('--md-comp-primary-navigation-tab-active-indicator-height'), 'primary indicator height');
+    near(p1.cb, p1.tb, 'primary indicator at the bottom');
+    near(p1.th, await len('--md-comp-primary-navigation-tab-container-height'), 'primary tab height');
+    const p2 = await ind(page.locator('.m3-tabs:not(.m3-tabs--secondary) [aria-selected="true"]').nth(1));
+    near(p2.th, await len('--md-comp-primary-navigation-tab-with-icon-and-label-text-container-height'), 'icon and label tab height');
+    for (const i of [0, 1]) {
+      const s2 = await ind(page.locator('.m3-tabs--secondary [aria-selected="true"]').nth(i));
+      near(s2.w, s2.tw, 'secondary indicator width');
+      near(s2.h, await len('--md-comp-secondary-navigation-tab-active-indicator-height'), 'secondary indicator height');
+      near(s2.th, await len('--md-comp-secondary-navigation-tab-container-height'), 'secondary tab height');
+    }
+
+    // Modal dialog: hidden until showModal(); then centered over the scrim with the level 3 shadow;
+    // Escape closes it.
+    const dlg = page.locator('#modal-dialog');
+    assert.equal(await dlg.evaluate(el => getComputedStyle(el).display), 'none');
+    await dlg.evaluate(el => el.showModal());
+    const d = await dlg.evaluate(el => {
+      const r = el.getBoundingClientRect();
+      return { left: r.left, right: innerWidth - r.right, top: r.top, bottom: innerHeight - r.bottom, w: r.width, backdrop: getComputedStyle(el, '::backdrop').backgroundColor, shadow: getComputedStyle(el).boxShadow };
+    });
+    near(d.left, d.right, 'dialog centered horizontally');
+    near(d.top, d.bottom, 'dialog centered vertically');
+    assert.ok(d.w >= (await len('--md-impl-dialog-min-width')) - 0.5 && d.w <= (await len('--md-impl-dialog-max-width')) + 0.5, `dialog width ${d.w}`);
+    assert.equal(alphaOf(d.backdrop), Number(await rootVar(page, '--md-comp-scrim-container-opacity')));
+    assert.equal(d.shadow, await probe(page, 'box-shadow', '--md-sys-elevation-level3-shadow'));
+    await page.screenshot({ path: join(outDir, `modal-dialog-${scheme}.png`) });
+    await page.keyboard.press('Escape');
+    assert.equal(await dlg.evaluate(el => getComputedStyle(el).display), 'none');
+
+    // Modal bottom sheet: on the bottom edge, centered, at most the maximum width.
+    const sheet = page.locator('#modal-sheet');
+    await sheet.evaluate(el => el.showModal());
+    const sh = await sheet.evaluate(el => { const r = el.getBoundingClientRect(); return { left: r.left, right: innerWidth - r.right, bottom: innerHeight - r.bottom, w: r.width }; });
+    near(sh.bottom, 0, 'sheet on the bottom edge');
+    near(sh.left, sh.right, 'sheet centered');
+    assert.ok(sh.w <= (await len('--md-impl-bottom-sheet-max-width')) + 0.5, `sheet width ${sh.w}`);
+    const handle = await sheet.locator('.m3-bottom-sheet-drag-handle').boundingBox();
+    assert.ok(handle.width >= 48 && handle.height >= 48, `drag handle ${handle.width}x${handle.height}`);
+    await page.screenshot({ path: join(outDir, `modal-sheet-${scheme}.png`) });
+    await sheet.evaluate(el => el.close());
+
+    // Menu: hidden without data-open; the drawn items (44) touch while each target is at least 48.
+    const closed = page.locator('#closed-menu');
+    assert.equal(await closed.evaluate(el => getComputedStyle(el).display), 'none');
+    assert.equal(await closed.evaluate(el => { el.dataset.open = ''; const v = getComputedStyle(el).display; delete el.dataset.open; return v; }), 'flex');
+    const runs = await page.$$eval('.m3-menu[data-open]', menus => menus.map(m => {
+      const out = [];
+      let prev = null;
+      for (const el of m.children) {
+        if (!el.matches('.m3-menu-item')) { prev = null; continue; }
+        const r = el.getBoundingClientRect();
+        const h = parseFloat(getComputedStyle(el, '::before').height);
+        const top = r.top + (r.height - h) / 2;
+        if (prev) out.push({ gap: top - prev, target: r.height, h });
+        prev = top + h;
+      }
+      return out;
+    }).flat());
+    assert.ok(runs.length >= 5, `${runs.length} adjacent menu items`);
+    for (const r of runs) {
+      near(r.gap, 0, 'drawn menu items touch');
+      near(r.h, await len('--md-comp-menus-menu-item-height'), 'menu item height');
+      assert.ok(r.target >= 48, `menu item target ${r.target}`);
+    }
+    const item = page.locator('.m3-menu-item[role="menuitem"]:not(:disabled)').first();
+    await item.hover();
+    assert.equal(alphaOf(await pseudoOf(item, '::after', 'background-color')), hover);
+    await shot('state-hover-menu', page.locator('.m3-menu').first());
+    await page.mouse.move(0, 0);
+
+    // Snackbar and tooltip: hidden without data-open.
+    for (const sel of ['#closed-snackbar', '#closed-tooltip']) {
+      assert.equal(await page.locator(sel).evaluate(el => getComputedStyle(el).display), 'none', sel);
+    }
+
+    // Search bar: the token height; focus on the input draws the focus ring on the bar.
+    const search = page.locator('#search-bar');
+    near((await search.locator('xpath=..').boundingBox()).height, await len('--md-comp-search-bar-container-height'), 'search bar height');
+    await search.focus();
+    assert.equal(await search.locator('xpath=..').evaluate(el => getComputedStyle(el).outlineWidth), thickness);
+    await shot('state-focus-search', search.locator('xpath=..'));
+    await search.blur();
+
+    // Linear progress: the active end is the progress plus a round end, the track starts the
+    // track-active space after it; 0 draws no active indicator, 1 no track.
+    const gap = await len('--md-comp-progress-indicator-linear-track-active-indicator-space');
+    const t = await len('--md-comp-progress-indicator-linear-active-indicator-thickness');
+    const lin = id => page.locator(id).evaluate(el => {
+      const w = el.getBoundingClientRect().width;
+      const a = getComputedStyle(el, '::before');
+      const k = getComputedStyle(el, '::after');
+      return { w, active: parseFloat(a.width), trackStart: parseFloat(k.left), trackW: parseFloat(k.width) };
+    });
+    const l40 = await lin('#p-40');
+    near(l40.active, 0.4 * l40.w + t / 2, 'active end at 40 %');
+    near(l40.trackStart - l40.active, gap, 'gap between active and track');
+    const l0 = await lin('#p-0');
+    near(l0.active, 0, 'no active indicator at 0');
+    near(l0.trackStart, 0, 'track from the start at 0');
+    const l100 = await lin('#p-100');
+    near(l100.active, l100.w, 'active to the end at 1');
+    near(l100.trackW, 0, 'no track at 1');
+    // Indeterminate: Compose's timelines run (4 linear parts, sweep and 2 rotations); at 1000 ms the
+    // first line's head is at the end.
+    const anims = await page.evaluate(() => ['#p-linear-indeterminate', '#c-indeterminate'].map(s => document.querySelector(s).getAnimations().length));
+    assert.deepEqual(anims, [4, 3]);
+    const headEnd = await page.locator('#p-linear-indeterminate').evaluate(el => {
+      el.getAnimations().forEach(a => { a.pause(); a.currentTime = 1000; });
+      return parseFloat(getComputedStyle(el, '::before').right);
+    });
+    near(headEnd, 0, 'first line head at the end at 1000 ms');
+    await shot('progress', page.locator('.gallery-progress'));
   },
 
   async containment(page, { scheme, outDir }) {
@@ -519,16 +773,20 @@ function inPage() {
   const lowContrast = [];
   const badGeometry = [];
   let checked = 0;
-  const SEL = '.m3-button, .m3-icon-button, .m3-segmented-button, .m3-fab, .m3-extended-fab, .m3-chip';
+  const SEL = '.m3-button, .m3-icon-button, .m3-segmented-button, .m3-fab, .m3-extended-fab, .m3-chip, '
+    + '.m3-navigation-bar-item, .m3-navigation-rail-item, .m3-navigation-drawer-item, .m3-tab, .m3-menu-item';
+  // Items whose ::before is an indicator around the icon only (the label is not over it).
+  const ICON_INDICATOR = '.m3-navigation-bar-item, .m3-navigation-rail:not(.m3-navigation-rail--expanded) .m3-navigation-rail-item';
   for (const el of document.querySelectorAll(SEL)) {
     if (el.matches(':disabled, [aria-disabled="true"]')) continue;
+    if (!el.getClientRects().length) continue; // not rendered: in a closed overlay
     checked++;
     const cs = getComputedStyle(el);
     const before = getComputedStyle(el, '::before');
     let bg = backdrop(el);
     const own = parse(cs.backgroundColor);
     if (own && own.a > 0) bg = over(own, bg);
-    if (before.content !== 'none' && before.content !== 'normal') {
+    if (before.content !== 'none' && before.content !== 'normal' && !el.matches(ICON_INDICATOR)) {
       const c = parse(before.backgroundColor);
       if (c) bg = over({ ...c, a: c.a * Number(before.opacity) }, bg);
     }
@@ -541,8 +799,9 @@ function inPage() {
     // Target at least --md-target-size; a drawn container (::before) as tall as --_height, centered.
     const box = el.getBoundingClientRect();
     if (box.width < target || box.height < target) badGeometry.push(`${label}: target ${box.width}x${box.height}`);
-    if (before.content !== 'none' && before.content !== 'normal' && !el.matches('.m3-fab, .m3-extended-fab')) {
-      const h = px(cs.getPropertyValue('--_height'));
+    // (Components without a --_height, such as navigation items and tabs, size their own boxes.)
+    const h = px(cs.getPropertyValue('--_height'));
+    if (before.content !== 'none' && before.content !== 'normal' && !el.matches('.m3-fab, .m3-extended-fab') && !Number.isNaN(h)) {
       if (Math.abs(px(before.height) - h) > 0.01) badGeometry.push(`${label}: container ${before.height} vs ${h}px`);
       if (Math.abs(box.height - Math.max(h, target)) > 0.01) badGeometry.push(`${label}: element ${box.height} vs ${Math.max(h, target)}px`);
     }

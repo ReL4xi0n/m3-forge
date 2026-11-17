@@ -1,0 +1,104 @@
+/* material3 skill asset: assets/web/components/dialog.css
+ * Material 3 basic dialog on the native <dialog> element: optional icon, headline, supporting text
+ * and actions. Needs tokens.css, button.css (text buttons for the actions), fonts.css (for an icon)
+ * and the color theme from scripts/color. Every value is a token variable.
+ *
+ *   <dialog class="m3-dialog" aria-labelledby="discard-title">
+ *     <span class="m3-icon" aria-hidden="true">delete</span>             (optional)
+ *     <h2 class="m3-dialog-headline" id="discard-title">Discard draft?</h2>
+ *     <div class="m3-dialog-content">Your changes will be lost.</div>
+ *     <div class="m3-dialog-actions">
+ *       <button class="m3-button m3-button--text" value="cancel" formmethod="dialog">Cancel</button>
+ *       <button class="m3-button m3-button--text" value="discard">Discard</button>
+ *     </div>
+ *   </dialog>
+ *
+ * Open with showModal() (modal, centered over the scrim) and close with close(); the dialog is not
+ * shown while it has no [open] attribute. With an icon, the icon and the headline are centered.
+ * Layout from Compose's AlertDialog (sizes in tokens.css):
+ *   padding 24, 16 under the icon and the headline, 24 under the supporting text, 8 between actions:
+ *   [impl:compose-material3/commonMain/androidx/compose/material3/AlertDialog.kt:230] 24
+ *   [impl:compose-material3/commonMain/androidx/compose/material3/AlertDialog.kt:419] 16
+ *   [impl:compose-material3/commonMain/androidx/compose/material3/AlertDialog.kt:420] 16
+ *   [impl:compose-material3/commonMain/androidx/compose/material3/AlertDialog.kt:233] 24
+ *   [impl:compose-material3/commonMain/androidx/compose/material3/AlertDialog.kt:415] 8
+ *   [impl:compose-material3/commonMain/androidx/compose/material3/AlertDialog.kt:417] 8
+ * The full-screen dialog is not part of this sheet.
+ */
+
+.m3-dialog {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  min-inline-size: var(--md-impl-dialog-min-width);
+  max-inline-size: var(--md-impl-dialog-max-width);
+  margin: auto;
+  padding: var(--md-sys-space-300);
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--md-comp-dialog-container-shape);
+  background: var(--md-sys-color-surface-container-high); /* md.comp.dialog.container.color */
+  box-shadow: var(--md-sys-elevation-level3-shadow); /* md.comp.dialog.container.elevation */
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.m3-dialog:not([open]) {
+  display: none;
+}
+
+.m3-dialog::backdrop {
+  /* md.comp.scrim.container.{color,opacity} */
+  background: rgb(from var(--md-sys-color-scrim) r g b / var(--md-comp-scrim-container-opacity));
+}
+
+/* Icon (md.comp.dialog.with-icon.icon.*) */
+.m3-dialog > :is(.m3-icon, [class*="material-symbols"]) {
+  align-self: center;
+  flex: none;
+  inline-size: var(--md-comp-dialog-with-icon-icon-size);
+  block-size: var(--md-comp-dialog-with-icon-icon-size);
+  margin-block-end: var(--md-sys-space-200);
+  overflow: hidden;
+  color: var(--md-sys-color-secondary);
+  font-size: var(--md-comp-dialog-with-icon-icon-size);
+  line-height: var(--md-comp-dialog-with-icon-icon-size);
+}
+
+/* Headline (md.comp.dialog.headline.*) */
+.m3-dialog-headline {
+  flex: none;
+  margin: 0 0 var(--md-sys-space-200);
+  color: var(--md-sys-color-on-surface);
+  font-family: var(--md-comp-dialog-headline-font);
+  font-weight: var(--md-comp-dialog-headline-weight);
+  font-size: var(--md-comp-dialog-headline-size);
+  line-height: var(--md-comp-dialog-headline-line-height);
+  letter-spacing: var(--md-comp-dialog-headline-tracking);
+}
+
+.m3-dialog:has(> :is(.m3-icon, [class*="material-symbols"])) .m3-dialog-headline {
+  text-align: center;
+}
+
+/* Supporting text (md.comp.dialog.supporting-text.*); scrolls when the dialog is too tall */
+.m3-dialog-content {
+  flex: auto;
+  min-block-size: 0;
+  margin: 0 0 var(--md-sys-space-300);
+  overflow: auto;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: var(--md-comp-dialog-supporting-text-font);
+  font-weight: var(--md-comp-dialog-supporting-text-weight);
+  font-size: var(--md-comp-dialog-supporting-text-size);
+  line-height: var(--md-comp-dialog-supporting-text-line-height);
+  letter-spacing: var(--md-comp-dialog-supporting-text-tracking);
+}
+
+/* Actions: at the end, wrapping when they do not fit */
+.m3-dialog-actions {
+  display: flex;
+  flex: none;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--md-sys-space-100);
+}

@@ -1,0 +1,168 @@
+/* material3 skill asset: assets/web/components/search.css
+ * Material 3 search: the search bar and the search view (docked under the bar, or full screen).
+ * Needs tokens.css, icon-button.css (for icon buttons), fonts.css (icons are Material Symbols glyphs
+ * in .m3-icon) and the color theme from scripts/color. Every value is a token variable.
+ *
+ *   <form class="m3-search" role="search">
+ *     <span class="m3-icon" aria-hidden="true">search</span>
+ *     <input class="m3-search-input" type="search" placeholder="Search mail" aria-label="Search mail">
+ *     <button class="m3-icon-button" type="button" aria-label="Voice search">…</button>
+ *   </form>
+ *   <div class="m3-search-view" data-open>
+ *     <form class="m3-search" role="search">…</form>      (the header: the same markup as the bar)
+ *     <ul class="m3-list">…suggestions or results…</ul>
+ *   </div>
+ *
+ * The bar takes its icons as plain icons (.m3-icon) or as icon buttons; an icon button at either
+ * end is pulled in so its icon sits where a plain icon would (its target overlaps the padding).
+ * A search view is hidden until it has data-open (the page or behaviors.js sets it while searching);
+ * m3-search-view--fullscreen covers the window. Width limits from Compose's search bar
+ * (in tokens.css). The search bar's level 3 elevation is tonal (the surface-container-high color);
+ * no shadow is drawn (Compose's search bar default shadow is level 0:
+ * [impl:compose-material3/commonMain/androidx/compose/material3/SearchBar.kt:2008] Level0).
+ * The app bar with a search bar and avatars are not part of this sheet.
+ */
+
+/* Search bar (md.comp.search-bar.*) */
+.m3-search {
+  --_state-layer-opacity: 0;
+
+  position: relative;
+  display: flex;
+  align-items: center;
+  /* md.comp.search-bar.leading-icon.leading-icon-label-space, trailing-icon.label-trailing-icon-space */
+  gap: var(--md-comp-search-bar-leading-icon-leading-icon-label-space);
+  box-sizing: border-box;
+  block-size: var(--md-comp-search-bar-container-height);
+  min-inline-size: var(--md-impl-search-bar-min-width);
+  max-inline-size: var(--md-impl-search-bar-max-width);
+  margin: 0;
+  padding: 0 var(--md-comp-search-bar-trailing-space) 0 var(--md-comp-search-bar-leading-space);
+  border-radius: var(--md-comp-search-bar-container-shape);
+  background: var(--md-sys-color-surface-container-high); /* md.comp.search-bar.container.color */
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* State layer (md.comp.search-bar.{hover,pressed}.state-layer.*) */
+.m3-search::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgb(from var(--md-sys-color-on-surface) r g b / var(--_state-layer-opacity));
+  pointer-events: none;
+}
+
+.m3-search:hover {
+  --_state-layer-opacity: var(--md-sys-state-hover-state-layer-opacity);
+}
+
+.m3-search:has(.m3-search-input:focus-visible) {
+  /* md.comp.search-bar.focus.indicator.{color,thickness,outline.offset} */
+  outline: var(--md-sys-state-focus-indicator-thickness) solid var(--md-sys-color-secondary);
+  outline-offset: var(--md-sys-state-focus-indicator-outer-offset);
+}
+
+/* Icons: the leading icon in on-surface, trailing icons in on-surface-variant */
+.m3-search > :is(.m3-icon, [class*="material-symbols"]) {
+  flex: none;
+  inline-size: var(--md-comp-search-bar-icon-size);
+  block-size: var(--md-comp-search-bar-icon-size);
+  overflow: hidden;
+  color: var(--md-sys-color-on-surface-variant); /* md.comp.search-bar.trailing-icon.color */
+  font-size: var(--md-comp-search-bar-icon-size);
+  line-height: var(--md-comp-search-bar-icon-size);
+}
+
+.m3-search > :is(.m3-icon, [class*="material-symbols"]):first-child {
+  color: var(--md-sys-color-on-surface); /* md.comp.search-bar.leading-icon.color */
+}
+
+.m3-search > .m3-icon-button {
+  --_icon-color: var(--md-sys-color-on-surface-variant);
+  --_icon-size: var(--md-comp-search-bar-icon-size);
+  margin-inline: calc((var(--md-comp-search-bar-icon-size) - var(--md-target-size)) / 2);
+}
+
+.m3-search > .m3-icon-button:first-child {
+  --_icon-color: var(--md-sys-color-on-surface);
+}
+
+/* Input (md.comp.search-bar.input-text.*, supporting-text.* for the placeholder) */
+.m3-search-input {
+  flex: auto;
+  align-self: stretch;
+  box-sizing: border-box;
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--md-sys-color-on-surface);
+  font-family: var(--md-comp-search-bar-input-text-font);
+  font-weight: var(--md-comp-search-bar-input-text-weight);
+  font-size: var(--md-comp-search-bar-input-text-size);
+  line-height: var(--md-comp-search-bar-input-text-line-height);
+  letter-spacing: var(--md-comp-search-bar-input-text-tracking);
+  outline: none;
+}
+
+.m3-search-input::placeholder {
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: var(--md-comp-search-bar-supporting-text-font);
+  font-weight: var(--md-comp-search-bar-supporting-text-weight);
+}
+
+/* Search view (md.comp.search-view.*): docked under the bar by default */
+.m3-search-view {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  min-inline-size: var(--md-impl-search-bar-min-width);
+  max-inline-size: var(--md-impl-search-bar-max-width);
+  margin: 0;
+  overflow: auto;
+  border-radius: var(--md-comp-search-view-docked-container-shape);
+  background: var(--md-sys-color-surface-container-high); /* md.comp.search-view.container.color */
+  box-shadow: var(--md-sys-elevation-level3-shadow); /* md.comp.search-view.container.elevation */
+  color: var(--md-sys-color-on-surface);
+}
+
+.m3-search-view:not([data-open]) {
+  display: none;
+}
+
+/* The view's header is a search bar without its own container */
+.m3-search-view > .m3-search {
+  flex: none;
+  block-size: var(--md-comp-search-view-docked-header-container-height);
+  min-inline-size: 0;
+  max-inline-size: none;
+  padding: 0 var(--md-comp-search-view-trailing-space) 0 var(--md-comp-search-view-leading-space);
+  border-block-end: var(--md-comp-divider-thickness) solid var(--md-sys-color-outline); /* md.comp.search-view.divider.color */
+  border-radius: 0;
+  background: none;
+}
+
+.m3-search-view > .m3-search .m3-search-input {
+  color: var(--md-sys-color-on-surface); /* md.comp.search-view.header.input-text.* */
+  font-family: var(--md-comp-search-view-header-input-text-font);
+  font-weight: var(--md-comp-search-view-header-input-text-weight);
+  font-size: var(--md-comp-search-view-header-input-text-size);
+  line-height: var(--md-comp-search-view-header-input-text-line-height);
+  letter-spacing: var(--md-comp-search-view-header-input-text-tracking);
+}
+
+/* Full screen (md.comp.search-view.full-screen.*) */
+.m3-search-view--fullscreen {
+  position: fixed;
+  inset: 0;
+  min-inline-size: 0;
+  max-inline-size: none;
+  border-radius: var(--md-comp-search-view-full-screen-container-shape);
+  box-shadow: none;
+}
+
+.m3-search-view--fullscreen > .m3-search {
+  block-size: var(--md-comp-search-view-full-screen-header-container-height);
+}

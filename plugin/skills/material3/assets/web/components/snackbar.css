@@ -1,0 +1,77 @@
+/* material3 skill asset: assets/web/components/snackbar.css
+ * Material 3 snackbar: one or two lines of text, an optional action (a text button) and an optional
+ * close icon button. Needs tokens.css, button.css and icon-button.css (for the action and the close
+ * button), fonts.css (for the close icon) and the color theme from scripts/color. Every value is a
+ * token variable.
+ *
+ *   <div class="m3-snackbar" role="status" data-open>
+ *     <span class="m3-snackbar-text">Photo archived</span>
+ *     <button class="m3-button m3-button--text">Undo</button>
+ *     <button class="m3-icon-button" aria-label="Dismiss"><span class="m3-icon" aria-hidden="true">close</span></button>
+ *   </div>
+ *
+ * Variant: m3-snackbar--two-line for two lines of text. A snackbar is hidden until it has data-open
+ * (the page or behaviors.js sets it and removes it after the timeout); place it at the bottom of the
+ * window with the layout. The text is centered in the container height.
+ * From Compose's Snackbar (the maximum width is in tokens.css):
+ *   16 before the text, 8 after the action, 8 between the text and the action:
+ *   [impl:compose-material3/commonMain/androidx/compose/material3/Snackbar.kt:608] 16
+ *   [impl:compose-material3/commonMain/androidx/compose/material3/Snackbar.kt:610] 8
+ *   [impl:compose-material3/commonMain/androidx/compose/material3/Snackbar.kt:616] 8
+ * The layout with the action on its own line is not part of this sheet.
+ */
+
+.m3-snackbar {
+  display: flex;
+  align-items: center;
+  gap: var(--md-sys-space-100);
+  box-sizing: border-box;
+  min-block-size: var(--md-comp-snackbar-with-single-line-container-height);
+  max-inline-size: var(--md-impl-snackbar-max-width);
+  margin: 0;
+  padding: 0 var(--md-sys-space-100) 0 var(--md-sys-space-200);
+  border-radius: var(--md-comp-snackbar-container-shape);
+  background: var(--md-sys-color-inverse-surface); /* md.comp.snackbar.container.color */
+  box-shadow: var(--md-sys-elevation-level3-shadow); /* md.comp.snackbar.container.elevation */
+  color: var(--md-sys-color-inverse-on-surface);
+}
+
+.m3-snackbar:not([data-open]) {
+  display: none;
+}
+
+.m3-snackbar--two-line {
+  min-block-size: var(--md-comp-snackbar-with-two-lines-container-height);
+}
+
+/* Supporting text (md.comp.snackbar.supporting-text.*) */
+.m3-snackbar-text {
+  flex: auto;
+  min-inline-size: 0;
+  color: var(--md-sys-color-inverse-on-surface);
+  font-family: var(--md-comp-snackbar-supporting-text-font);
+  font-weight: var(--md-comp-snackbar-supporting-text-weight);
+  font-size: var(--md-comp-snackbar-supporting-text-size);
+  line-height: var(--md-comp-snackbar-supporting-text-line-height);
+  letter-spacing: var(--md-comp-snackbar-supporting-text-tracking);
+}
+
+/* Action: a text button in the inverse primary color (md.comp.snackbar.action.*) */
+.m3-snackbar .m3-button {
+  --_label-color: var(--md-sys-color-inverse-primary);
+  --_state-layer-color: var(--md-sys-color-inverse-primary);
+  flex: none;
+}
+
+/* Close icon (md.comp.snackbar.icon.*) */
+.m3-snackbar .m3-icon-button {
+  --_icon-color: var(--md-sys-color-inverse-on-surface);
+  --_state-layer-color: var(--md-sys-color-inverse-on-surface);
+  --_icon-size: var(--md-comp-snackbar-icon-size);
+  flex: none;
+}
+
+/* A snackbar with an action or a close button ends 8 after it; with text only, 16 after the text. */
+.m3-snackbar:not(:has(.m3-button, .m3-icon-button)) {
+  padding-inline-end: var(--md-sys-space-200);
+}

@@ -1,0 +1,180 @@
+/* material3 skill asset: assets/web/components/top-app-bar.css
+ * Material 3 Expressive top app bars: small, medium flexible and large flexible, with an optional
+ * subtitle. Needs tokens.css, icon-button.css (for the icon buttons) and the color theme from
+ * scripts/color. Every value is a token variable.
+ *
+ *   <header class="m3-top-app-bar m3-top-app-bar--medium-flexible">
+ *     <button class="m3-icon-button" aria-label="Back"><span class="m3-icon" aria-hidden="true">arrow_back</span></button>
+ *     <div class="m3-top-app-bar-text">
+ *       <h1 class="m3-top-app-bar-title">Inbox</h1>
+ *       <p class="m3-top-app-bar-subtitle">24 unread</p>
+ *     </div>
+ *     <div class="m3-top-app-bar-actions">
+ *       <button class="m3-icon-button" aria-label="Search">…</button>
+ *     </div>
+ *   </header>
+ *
+ * Sizes: m3-top-app-bar (small, default) | --medium-flexible | --large-flexible. The bar grows by the
+ * subtitle's height step when it has a subtitle. The first icon button is the navigation icon
+ * (leading icon color); icon buttons in .m3-top-app-bar-actions are actions (trailing icon color).
+ * data-scrolled on the bar (the page sets it while content scrolls under it) shows the on-scroll
+ * container color. The on-scroll elevation (level 2) is tonal: the color is the tone, no shadow is
+ * drawn (Compose draws app bars with a level 0 shadow).
+ */
+
+.m3-top-app-bar {
+  /* Size: small. md.comp.app-bar.small.* */
+  --_height: var(--md-comp-app-bar-small-container-height);
+  --_container-color: var(--md-sys-color-surface);
+
+  display: grid;
+  grid-template-columns: min-content minmax(0, auto) min-content; /* the auto track takes the free space */
+  grid-template-areas: 'leading text actions';
+  align-items: center;
+  box-sizing: border-box;
+  min-block-size: var(--_height);
+  margin: 0;
+  padding-inline: var(--md-comp-app-bar-leading-space) var(--md-comp-app-bar-trailing-space);
+  border-radius: var(--md-comp-app-bar-container-shape);
+  background: var(--_container-color);
+  color: var(--md-sys-color-on-surface);
+}
+
+.m3-top-app-bar[data-scrolled] {
+  --_container-color: var(--md-sys-color-surface-container); /* md.comp.app-bar.on-scroll.container.color */
+}
+
+/* Navigation icon (md.comp.app-bar.leading-icon.color) and actions (md.comp.app-bar.trailing-icon.color) */
+.m3-top-app-bar .m3-icon-button {
+  --_icon-size: var(--md-comp-app-bar-icon-size);
+}
+
+.m3-top-app-bar > .m3-icon-button {
+  grid-area: leading;
+  --_icon-color: var(--md-sys-color-on-surface);
+}
+
+.m3-top-app-bar-actions {
+  grid-area: actions;
+  display: flex;
+  align-items: center;
+  gap: var(--md-comp-app-bar-icon-button-space);
+}
+
+.m3-top-app-bar-actions > .m3-icon-button {
+  --_icon-color: var(--md-sys-color-on-surface-variant);
+}
+
+/* Title and subtitle: the title starts after the navigation icon, or a title inset in from the
+   leading space when there is none: 16 dp from the edge minus the leading space (12, --md-sys-space-150):
+   [impl:compose-material3/commonMain/androidx/compose/material3/AppBar.kt:3615] 16 */
+.m3-top-app-bar-text {
+  grid-area: text;
+  display: grid;
+  min-inline-size: 0;
+}
+
+.m3-top-app-bar-text:first-child {
+  padding-inline-start: var(--md-sys-space-150);
+}
+
+.m3-top-app-bar-title,
+.m3-top-app-bar-subtitle {
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.m3-top-app-bar-title {
+  /* md.comp.app-bar.small.title.font (derived: md.sys.typescale.title-large) */
+  color: var(--md-sys-color-on-surface);
+  font-family: var(--md-sys-typescale-title-large-font);
+  font-weight: var(--md-sys-typescale-title-large-weight);
+  font-size: var(--md-sys-typescale-title-large-size);
+  line-height: var(--md-sys-typescale-title-large-line-height);
+  letter-spacing: var(--md-sys-typescale-title-large-tracking);
+}
+
+.m3-top-app-bar-subtitle {
+  /* md.comp.app-bar.small.subtitle.font (derived: md.sys.typescale.label-medium) */
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: var(--md-sys-typescale-label-medium-font);
+  font-weight: var(--md-sys-typescale-label-medium-weight);
+  font-size: var(--md-sys-typescale-label-medium-size);
+  line-height: var(--md-sys-typescale-label-medium-line-height);
+  letter-spacing: var(--md-sys-typescale-label-medium-tracking);
+}
+
+/* Medium and large flexible: the icons stay in a row as tall as the small bar; the title and
+   subtitle sit in a second row below it, aligned to the bottom of the bar (no title bottom padding
+   in the flexible bars), a title inset in from the leading space:
+   [impl:compose-material3/commonMain/androidx/compose/material3/AppBar.kt:946] 0 */
+.m3-top-app-bar:is(.m3-top-app-bar--medium-flexible, .m3-top-app-bar--large-flexible) {
+  grid-template-rows: var(--md-comp-app-bar-small-container-height) auto;
+  grid-template-areas:
+    'leading . actions'
+    'text text text';
+  min-block-size: var(--_height);
+}
+
+.m3-top-app-bar:is(.m3-top-app-bar--medium-flexible, .m3-top-app-bar--large-flexible) .m3-top-app-bar-text {
+  align-self: end;
+  padding-inline-start: var(--md-sys-space-150);
+}
+
+.m3-top-app-bar:is(.m3-top-app-bar--medium-flexible, .m3-top-app-bar--large-flexible) :is(.m3-top-app-bar-title, .m3-top-app-bar-subtitle) {
+  white-space: normal;
+}
+
+.m3-top-app-bar--medium-flexible {
+  --_height: var(--md-comp-app-bar-medium-flexible-container-height);
+}
+
+.m3-top-app-bar--medium-flexible:has(.m3-top-app-bar-subtitle) {
+  --_height: var(--md-comp-app-bar-medium-flexible-with-subtitle-container-height);
+}
+
+.m3-top-app-bar--medium-flexible .m3-top-app-bar-title {
+  /* md.comp.app-bar.medium-flexible.title.font (derived: md.sys.typescale.headline-medium) */
+  font-family: var(--md-sys-typescale-headline-medium-font);
+  font-weight: var(--md-sys-typescale-headline-medium-weight);
+  font-size: var(--md-sys-typescale-headline-medium-size);
+  line-height: var(--md-sys-typescale-headline-medium-line-height);
+  letter-spacing: var(--md-sys-typescale-headline-medium-tracking);
+}
+
+.m3-top-app-bar--medium-flexible .m3-top-app-bar-subtitle {
+  /* md.comp.app-bar.medium-flexible.subtitle.font (derived: md.sys.typescale.label-large) */
+  font-family: var(--md-sys-typescale-label-large-font);
+  font-weight: var(--md-sys-typescale-label-large-weight);
+  font-size: var(--md-sys-typescale-label-large-size);
+  line-height: var(--md-sys-typescale-label-large-line-height);
+  letter-spacing: var(--md-sys-typescale-label-large-tracking);
+}
+
+.m3-top-app-bar--large-flexible {
+  --_height: var(--md-comp-app-bar-large-flexible-container-height);
+}
+
+.m3-top-app-bar--large-flexible:has(.m3-top-app-bar-subtitle) {
+  --_height: var(--md-comp-app-bar-large-flexible-with-subtitle-container-height);
+}
+
+.m3-top-app-bar--large-flexible .m3-top-app-bar-title {
+  /* md.comp.app-bar.large-flexible.title.font (derived: md.sys.typescale.display-small) */
+  font-family: var(--md-sys-typescale-display-small-font);
+  font-weight: var(--md-sys-typescale-display-small-weight);
+  font-size: var(--md-sys-typescale-display-small-size);
+  line-height: var(--md-sys-typescale-display-small-line-height);
+  letter-spacing: var(--md-sys-typescale-display-small-tracking);
+}
+
+.m3-top-app-bar--large-flexible .m3-top-app-bar-subtitle {
+  /* md.comp.app-bar.large-flexible.subtitle.font (derived: md.sys.typescale.title-medium) */
+  font-family: var(--md-sys-typescale-title-medium-font);
+  font-weight: var(--md-sys-typescale-title-medium-weight);
+  font-size: var(--md-sys-typescale-title-medium-size);
+  line-height: var(--md-sys-typescale-title-medium-line-height);
+  letter-spacing: var(--md-sys-typescale-title-medium-tracking);
+}

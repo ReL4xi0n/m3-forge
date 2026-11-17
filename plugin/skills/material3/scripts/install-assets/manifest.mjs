@@ -29,6 +29,8 @@ const COMPOSE_FONTS = TTF_FONTS.filter((f) => !/MaterialSymbols/.test(f.src));
 export const WEB_COMPONENTS = [
   'button', 'icon-button', 'fab', 'button-group', 'split-button', 'segmented-button',
   'card', 'list', 'chip', 'text-field', 'checkbox', 'radio', 'switch', 'slider', 'divider', 'badge',
+  'top-app-bar', 'navigation-bar', 'navigation-rail', 'navigation-drawer', 'tabs', 'dialog', 'bottom-sheet',
+  'menu', 'snackbar', 'tooltip', 'search', 'progress', 'loading-indicator',
 ];
 
 export const MANIFEST = {

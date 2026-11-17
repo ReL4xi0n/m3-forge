@@ -110,9 +110,13 @@ export function isGeneratedPath(rel) {
 // its text equals the shipped asset after the rewrites install-assets applies (the Compose package
 // line, the Flutter material_ui import). Any other file that carries the marker is scanned as UI
 // code. fonts.css is one of them: its @font-face rules state the weight ranges of the bundled fonts.
+// components/progress.css is one too: it draws the circular arcs, their round ends and the linear stop
+// indicator as gradients of the color roles (CSS has no other way to draw an arc), which the
+// gradient check would flag in every project that installs it.
 export const THEME_ASSETS = new Set([
   'assets/web/tokens.css',
   'assets/web/fonts.css',
+  'assets/web/components/progress.css',
   'assets/flutter/lib/m3/tokens.dart',
   'assets/flutter/lib/m3/type.dart',
   'assets/flutter/lib/m3/shape.dart',

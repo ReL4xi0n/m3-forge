@@ -1,0 +1,435 @@
+<!doctype html>
+<!-- Gallery of the web navigation and overlay components (maintainer page, not shipped). Build a
+     servable folder with `node tools/build/gallery/web/site.mjs navigation <outDir>`: it installs the
+     skill's web assets into <outDir>/assets/m3/ and writes the baseline color theme there. Overlays
+     are shown open in place (each stage below is the containing block of the fixed overlays in it);
+     tools/build/test/web-components.test.mjs opens the modal ones with showModal() and drives states. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Navigation and overlay components</title>
+  <link rel="stylesheet" href="assets/m3/fonts.css">
+  <link rel="stylesheet" href="assets/m3/tokens.css">
+  <link rel="stylesheet" href="assets/m3/theme.css">
+  <link rel="stylesheet" href="assets/m3/button.css">
+  <link rel="stylesheet" href="assets/m3/icon-button.css">
+  <link rel="stylesheet" href="assets/m3/list.css">
+  <link rel="stylesheet" href="assets/m3/divider.css">
+  <link rel="stylesheet" href="assets/m3/top-app-bar.css">
+  <link rel="stylesheet" href="assets/m3/navigation-bar.css">
+  <link rel="stylesheet" href="assets/m3/navigation-rail.css">
+  <link rel="stylesheet" href="assets/m3/navigation-drawer.css">
+  <link rel="stylesheet" href="assets/m3/tabs.css">
+  <link rel="stylesheet" href="assets/m3/dialog.css">
+  <link rel="stylesheet" href="assets/m3/bottom-sheet.css">
+  <link rel="stylesheet" href="assets/m3/menu.css">
+  <link rel="stylesheet" href="assets/m3/snackbar.css">
+  <link rel="stylesheet" href="assets/m3/tooltip.css">
+  <link rel="stylesheet" href="assets/m3/search.css">
+  <link rel="stylesheet" href="assets/m3/progress.css">
+  <link rel="stylesheet" href="assets/m3/loading-indicator.css">
+  <style>
+    body {
+      margin: 0;
+      background: var(--md-sys-color-surface);
+      color: var(--md-sys-color-on-surface);
+      font-family: var(--md-sys-typescale-body-medium-font);
+    }
+    main {
+      display: grid;
+      gap: var(--md-sys-space-400);
+      padding: var(--md-sys-space-200);
+    }
+    section {
+      display: grid;
+      gap: var(--md-sys-space-200);
+      min-inline-size: 0;
+    }
+    h1, h2, h3, p {
+      margin: 0;
+    }
+    h3 {
+      color: var(--md-sys-color-on-surface-variant);
+    }
+    .gallery-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      gap: var(--md-sys-space-200);
+    }
+    .gallery-frame {
+      overflow: hidden;
+      border: var(--md-comp-divider-thickness) solid var(--md-sys-color-outline-variant);
+      border-radius: var(--md-sys-shape-corner-medium);
+    }
+    .gallery-rail {
+      display: flex;
+      block-size: calc(var(--md-sys-space-900) * 6);
+    }
+    /* A stage holds overlays shown open in place: it is the containing block of their fixed position. */
+    .gallery-stage {
+      position: relative;
+      contain: paint;
+      display: grid;
+      justify-items: center;
+      align-content: start;
+      gap: var(--md-sys-space-200);
+      min-block-size: calc(var(--md-sys-space-900) * 5);
+      padding: var(--md-sys-space-300) var(--md-sys-space-200);
+      border-radius: var(--md-sys-shape-corner-medium);
+      background: var(--md-sys-color-surface-container-lowest);
+    }
+    .gallery-scrim {
+      position: absolute;
+      inset: 0;
+      background: rgb(from var(--md-sys-color-scrim) r g b / var(--md-comp-scrim-container-opacity));
+    }
+    .gallery-stage > .m3-dialog {
+      position: relative;
+    }
+    .gallery-sheet-body {
+      display: grid;
+      gap: var(--md-sys-space-100);
+      padding: 0 var(--md-sys-space-200) var(--md-sys-space-300);
+    }
+    .gallery-progress {
+      display: grid;
+      gap: var(--md-sys-space-300);
+      max-inline-size: calc(var(--md-sys-space-900) * 5);
+    }
+    .gallery-progress p {
+      color: var(--md-sys-color-on-surface-variant);
+    }
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-style: normal;
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      font-feature-settings: 'liga';
+      letter-spacing: normal;
+      text-transform: none;
+      white-space: nowrap;
+      direction: ltr;
+      -webkit-font-smoothing: antialiased;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <h1 class="m3-type-headline-medium">Navigation and overlay components</h1>
+
+  <section aria-labelledby="app-bars">
+    <h2 class="m3-type-title-large" id="app-bars">Top app bars</h2>
+    <h3 class="m3-type-title-small">Small, small with subtitle, scrolled</h3>
+    <div class="gallery-frame">
+      <header class="m3-top-app-bar">
+        <button class="m3-icon-button" type="button" aria-label="Open navigation"><span class="material-symbols-outlined" aria-hidden="true">menu</span></button>
+        <div class="m3-top-app-bar-text"><p class="m3-top-app-bar-title">Inbox</p></div>
+        <div class="m3-top-app-bar-actions">
+          <button class="m3-icon-button" type="button" aria-label="Search mail"><span class="material-symbols-outlined" aria-hidden="true">search</span></button>
+          <button class="m3-icon-button" type="button" aria-label="More options"><span class="material-symbols-outlined" aria-hidden="true">more_vert</span></button>
+        </div>
+      </header>
+    </div>
+    <div class="gallery-frame">
+      <header class="m3-top-app-bar">
+        <button class="m3-icon-button" type="button" aria-label="Back"><span class="material-symbols-outlined" aria-hidden="true">arrow_back</span></button>
+        <div class="m3-top-app-bar-text">
+          <p class="m3-top-app-bar-title">Trip to Porto</p>
+          <p class="m3-top-app-bar-subtitle">12 photos, 3 notes</p>
+        </div>
+        <div class="m3-top-app-bar-actions">
+          <button class="m3-icon-button" type="button" aria-label="Share trip"><span class="material-symbols-outlined" aria-hidden="true">share</span></button>
+        </div>
+      </header>
+    </div>
+    <div class="gallery-frame">
+      <header class="m3-top-app-bar" data-scrolled>
+        <div class="m3-top-app-bar-text"><p class="m3-top-app-bar-title">Settings</p></div>
+        <div class="m3-top-app-bar-actions">
+          <button class="m3-icon-button" type="button" aria-label="Help"><span class="material-symbols-outlined" aria-hidden="true">help</span></button>
+        </div>
+      </header>
+    </div>
+    <h3 class="m3-type-title-small">Medium flexible, with subtitle; large flexible</h3>
+    <div class="gallery-frame">
+      <header class="m3-top-app-bar m3-top-app-bar--medium-flexible">
+        <button class="m3-icon-button" type="button" aria-label="Back"><span class="material-symbols-outlined" aria-hidden="true">arrow_back</span></button>
+        <div class="m3-top-app-bar-text">
+          <p class="m3-top-app-bar-title">Recipes</p>
+          <p class="m3-top-app-bar-subtitle">48 saved</p>
+        </div>
+        <div class="m3-top-app-bar-actions">
+          <button class="m3-icon-button" type="button" aria-label="Add a recipe"><span class="material-symbols-outlined" aria-hidden="true">add</span></button>
+        </div>
+      </header>
+    </div>
+    <div class="gallery-frame">
+      <header class="m3-top-app-bar m3-top-app-bar--large-flexible">
+        <button class="m3-icon-button" type="button" aria-label="Back"><span class="material-symbols-outlined" aria-hidden="true">arrow_back</span></button>
+        <div class="m3-top-app-bar-text"><p class="m3-top-app-bar-title">Library</p></div>
+        <div class="m3-top-app-bar-actions">
+          <button class="m3-icon-button" type="button" aria-label="Sort"><span class="material-symbols-outlined" aria-hidden="true">sort</span></button>
+        </div>
+      </header>
+    </div>
+  </section>
+
+  <section aria-labelledby="nav-bar">
+    <h2 class="m3-type-title-large" id="nav-bar">Navigation bar</h2>
+    <nav class="m3-navigation-bar" aria-label="Main">
+      <a class="m3-navigation-bar-item" href="#nav-bar" aria-current="page"><span class="material-symbols-outlined" aria-hidden="true">home</span><span class="m3-navigation-bar-label">Home</span></a>
+      <a class="m3-navigation-bar-item" href="#nav-bar"><span class="material-symbols-outlined" aria-hidden="true">explore</span><span class="m3-navigation-bar-label">Explore</span></a>
+      <a class="m3-navigation-bar-item" href="#nav-bar"><span class="material-symbols-outlined" aria-hidden="true">bookmark</span><span class="m3-navigation-bar-label">Saved</span></a>
+      <a class="m3-navigation-bar-item" href="#nav-bar"><span class="material-symbols-outlined" aria-hidden="true">person</span><span class="m3-navigation-bar-label">Profile</span></a>
+    </nav>
+  </section>
+
+  <section aria-labelledby="nav-rail">
+    <h2 class="m3-type-title-large" id="nav-rail">Navigation rail</h2>
+    <h3 class="m3-type-title-small">Collapsed and expanded</h3>
+    <div class="gallery-row">
+      <div class="gallery-frame gallery-rail">
+        <nav class="m3-navigation-rail" aria-label="Collapsed rail">
+          <div class="m3-navigation-rail-header">
+            <button class="m3-icon-button" type="button" aria-label="Expand the rail"><span class="material-symbols-outlined" aria-hidden="true">menu</span></button>
+          </div>
+          <a class="m3-navigation-rail-item" href="#nav-rail" aria-current="page"><span class="material-symbols-outlined" aria-hidden="true">inbox</span><span class="m3-navigation-rail-label">Inbox</span></a>
+          <a class="m3-navigation-rail-item" href="#nav-rail"><span class="material-symbols-outlined" aria-hidden="true">send</span><span class="m3-navigation-rail-label">Sent</span></a>
+          <a class="m3-navigation-rail-item" href="#nav-rail"><span class="material-symbols-outlined" aria-hidden="true">star</span><span class="m3-navigation-rail-label">Starred</span></a>
+        </nav>
+      </div>
+      <div class="gallery-frame gallery-rail">
+        <nav class="m3-navigation-rail m3-navigation-rail--expanded" aria-label="Expanded rail">
+          <div class="m3-navigation-rail-header">
+            <button class="m3-icon-button" type="button" aria-label="Collapse the rail"><span class="material-symbols-outlined" aria-hidden="true">menu_open</span></button>
+          </div>
+          <a class="m3-navigation-rail-item" href="#nav-rail" aria-current="page"><span class="material-symbols-outlined" aria-hidden="true">inbox</span><span class="m3-navigation-rail-label">Inbox</span></a>
+          <a class="m3-navigation-rail-item" href="#nav-rail"><span class="material-symbols-outlined" aria-hidden="true">send</span><span class="m3-navigation-rail-label">Sent</span></a>
+          <a class="m3-navigation-rail-item" href="#nav-rail"><span class="material-symbols-outlined" aria-hidden="true">star</span><span class="m3-navigation-rail-label">Starred</span></a>
+        </nav>
+      </div>
+    </div>
+    <h3 class="m3-type-title-small">Modal expanded (shown open in place)</h3>
+    <div class="gallery-stage" id="rail-stage">
+      <div class="gallery-scrim"></div>
+      <dialog class="m3-navigation-rail m3-navigation-rail--expanded m3-navigation-rail--modal" aria-label="Modal rail" open>
+        <div class="m3-navigation-rail-header">
+          <button class="m3-icon-button" type="button" aria-label="Close the rail"><span class="material-symbols-outlined" aria-hidden="true">menu_open</span></button>
+        </div>
+        <a class="m3-navigation-rail-item" href="#nav-rail"><span class="material-symbols-outlined" aria-hidden="true">photo</span><span class="m3-navigation-rail-label">Photos</span></a>
+        <a class="m3-navigation-rail-item" href="#nav-rail" aria-current="page"><span class="material-symbols-outlined" aria-hidden="true">photo_album</span><span class="m3-navigation-rail-label">Albums</span></a>
+      </dialog>
+    </div>
+  </section>
+
+  <section aria-labelledby="drawer">
+    <h2 class="m3-type-title-large" id="drawer">Navigation drawer</h2>
+    <h3 class="m3-type-title-small">Standard</h3>
+    <div class="gallery-frame">
+      <nav class="m3-navigation-drawer" aria-label="Mail folders">
+        <h4 class="m3-navigation-drawer-headline">Mail</h4>
+        <a class="m3-navigation-drawer-item" href="#drawer" aria-current="page"><span class="material-symbols-outlined" aria-hidden="true">inbox</span><span class="m3-navigation-drawer-label">Inbox</span><span class="m3-navigation-drawer-badge">24</span></a>
+        <a class="m3-navigation-drawer-item" href="#drawer"><span class="material-symbols-outlined" aria-hidden="true">send</span><span class="m3-navigation-drawer-label">Outbox</span></a>
+        <a class="m3-navigation-drawer-item" href="#drawer"><span class="material-symbols-outlined" aria-hidden="true">favorite</span><span class="m3-navigation-drawer-label">Favorites</span><span class="m3-navigation-drawer-badge">3</span></a>
+        <a class="m3-navigation-drawer-item" href="#drawer"><span class="material-symbols-outlined" aria-hidden="true">delete</span><span class="m3-navigation-drawer-label">Trash</span></a>
+      </nav>
+    </div>
+    <h3 class="m3-type-title-small">Modal (shown open in place)</h3>
+    <div class="gallery-stage" id="drawer-stage">
+      <div class="gallery-scrim"></div>
+      <dialog class="m3-navigation-drawer m3-navigation-drawer--modal" aria-label="Labels" open>
+        <h4 class="m3-navigation-drawer-headline">Labels</h4>
+        <a class="m3-navigation-drawer-item" href="#drawer"><span class="material-symbols-outlined" aria-hidden="true">label</span><span class="m3-navigation-drawer-label">Family</span></a>
+        <a class="m3-navigation-drawer-item" href="#drawer" aria-current="page"><span class="material-symbols-outlined" aria-hidden="true">label</span><span class="m3-navigation-drawer-label">Work</span></a>
+      </dialog>
+    </div>
+  </section>
+
+  <section aria-labelledby="tabs">
+    <h2 class="m3-type-title-large" id="tabs">Tabs</h2>
+    <h3 class="m3-type-title-small">Primary: label, icon and label</h3>
+    <div class="m3-tabs" role="tablist" aria-label="Library">
+      <button class="m3-tab" role="tab" type="button" aria-selected="true"><span class="m3-tab-content"><span class="m3-tab-label">Music</span></span></button>
+      <button class="m3-tab" role="tab" type="button" aria-selected="false" tabindex="-1"><span class="m3-tab-content"><span class="m3-tab-label">Podcasts</span></span></button>
+      <button class="m3-tab" role="tab" type="button" aria-selected="false" tabindex="-1"><span class="m3-tab-content"><span class="m3-tab-label">Books</span></span></button>
+    </div>
+    <div class="m3-tabs" role="tablist" aria-label="Media">
+      <button class="m3-tab" role="tab" type="button" aria-selected="false" tabindex="-1"><span class="m3-tab-content"><span class="material-symbols-outlined" aria-hidden="true">photo</span><span class="m3-tab-label">Photos</span></span></button>
+      <button class="m3-tab" role="tab" type="button" aria-selected="true"><span class="m3-tab-content"><span class="material-symbols-outlined" aria-hidden="true">movie</span><span class="m3-tab-label">Videos</span></span></button>
+      <button class="m3-tab" role="tab" type="button" aria-selected="false" tabindex="-1"><span class="m3-tab-content"><span class="material-symbols-outlined" aria-hidden="true">music_note</span><span class="m3-tab-label">Audio</span></span></button>
+    </div>
+    <h3 class="m3-type-title-small">Secondary: label, icon and label</h3>
+    <div class="m3-tabs m3-tabs--secondary" role="tablist" aria-label="Trip">
+      <button class="m3-tab" role="tab" type="button" aria-selected="true"><span class="m3-tab-content"><span class="m3-tab-label">Overview</span></span></button>
+      <button class="m3-tab" role="tab" type="button" aria-selected="false" tabindex="-1"><span class="m3-tab-content"><span class="m3-tab-label">Flights</span></span></button>
+      <button class="m3-tab" role="tab" type="button" aria-selected="false" tabindex="-1"><span class="m3-tab-content"><span class="m3-tab-label">Hotels</span></span></button>
+    </div>
+    <div class="m3-tabs m3-tabs--secondary" role="tablist" aria-label="Account">
+      <button class="m3-tab" role="tab" type="button" aria-selected="false" tabindex="-1"><span class="m3-tab-content"><span class="material-symbols-outlined" aria-hidden="true">person</span><span class="m3-tab-label">Profile</span></span></button>
+      <button class="m3-tab" role="tab" type="button" aria-selected="true"><span class="m3-tab-content"><span class="material-symbols-outlined" aria-hidden="true">notifications</span><span class="m3-tab-label">Alerts</span></span></button>
+    </div>
+  </section>
+
+  <section aria-labelledby="dialogs">
+    <h2 class="m3-type-title-large" id="dialogs">Dialogs</h2>
+    <h3 class="m3-type-title-small">Basic, with an icon (shown open in place)</h3>
+    <div class="gallery-stage">
+      <div class="gallery-scrim"></div>
+      <dialog class="m3-dialog" aria-labelledby="d1-title" open>
+        <h4 class="m3-dialog-headline" id="d1-title">Discard draft?</h4>
+        <div class="m3-dialog-content">Your message to Ana will be deleted from this device.</div>
+        <div class="m3-dialog-actions">
+          <button class="m3-button m3-button--text" type="button">Cancel</button>
+          <button class="m3-button m3-button--text" type="button">Discard</button>
+        </div>
+      </dialog>
+      <dialog class="m3-dialog" aria-labelledby="d2-title" open>
+        <span class="material-symbols-outlined" aria-hidden="true">restart_alt</span>
+        <h4 class="m3-dialog-headline" id="d2-title">Reset settings?</h4>
+        <div class="m3-dialog-content">Sounds, wallpaper and app layout go back to how they were when you set up the phone.</div>
+        <div class="m3-dialog-actions">
+          <button class="m3-button m3-button--text" type="button">Cancel</button>
+          <button class="m3-button m3-button--text" type="button">Reset</button>
+        </div>
+      </dialog>
+    </div>
+    <dialog class="m3-dialog" id="modal-dialog" aria-labelledby="d3-title">
+      <h4 class="m3-dialog-headline" id="d3-title">Leave the group?</h4>
+      <div class="m3-dialog-content">You will stop getting messages from Hiking club.</div>
+      <div class="m3-dialog-actions">
+        <button class="m3-button m3-button--text" type="button">Stay</button>
+        <button class="m3-button m3-button--text" type="button">Leave</button>
+      </div>
+    </dialog>
+  </section>
+
+  <section aria-labelledby="sheets">
+    <h2 class="m3-type-title-large" id="sheets">Bottom sheets</h2>
+    <h3 class="m3-type-title-small">Modal (shown open in place) and standard</h3>
+    <div class="gallery-stage" id="sheet-stage">
+      <div class="gallery-scrim"></div>
+      <dialog class="m3-bottom-sheet" aria-label="Share the album" open>
+        <button class="m3-bottom-sheet-drag-handle" type="button" aria-label="Close the sheet"></button>
+        <div class="gallery-sheet-body">
+          <p class="m3-type-title-medium">Share the album</p>
+          <p class="m3-type-body-medium">Anyone with the link can see the 32 photos from Coast trip.</p>
+        </div>
+      </dialog>
+    </div>
+    <section class="m3-bottom-sheet" aria-label="Now playing">
+      <div class="gallery-sheet-body">
+        <p class="m3-type-title-medium">Now playing</p>
+        <p class="m3-type-body-medium">Harbour lights, track 4 of 11</p>
+      </div>
+    </section>
+    <dialog class="m3-bottom-sheet" id="modal-sheet" aria-label="Sort by">
+      <button class="m3-bottom-sheet-drag-handle" type="button" aria-label="Close the sheet"></button>
+      <div class="gallery-sheet-body"><p class="m3-type-body-large">Sort by date added</p></div>
+    </dialog>
+  </section>
+
+  <section aria-labelledby="menus">
+    <h2 class="m3-type-title-large" id="menus">Menus</h2>
+    <h3 class="m3-type-title-small">Standard and vibrant</h3>
+    <div class="gallery-row">
+      <div class="m3-menu" role="menu" aria-label="Edit" data-open>
+        <button class="m3-menu-item" role="menuitem" type="button"><span class="material-symbols-outlined" aria-hidden="true">content_cut</span><span class="m3-menu-item-text">Cut</span><span class="m3-menu-item-trailing-text">Ctrl+X</span></button>
+        <button class="m3-menu-item" role="menuitem" type="button"><span class="material-symbols-outlined" aria-hidden="true">content_copy</span><span class="m3-menu-item-text">Copy</span><span class="m3-menu-item-trailing-text">Ctrl+C</span></button>
+        <button class="m3-menu-item" role="menuitem" type="button" disabled><span class="material-symbols-outlined" aria-hidden="true">content_paste</span><span class="m3-menu-item-text">Paste</span><span class="m3-menu-item-trailing-text">Ctrl+V</span></button>
+        <hr class="m3-divider">
+        <button class="m3-menu-item" role="menuitemradio" type="button" aria-checked="true"><span class="material-symbols-outlined" aria-hidden="true">format_align_left</span><span class="m3-menu-item-text">Align left<span class="m3-menu-item-supporting-text">Ragged right edge</span></span></button>
+        <button class="m3-menu-item" role="menuitemradio" type="button" aria-checked="false"><span class="material-symbols-outlined" aria-hidden="true">format_align_center</span><span class="m3-menu-item-text">Center</span></button>
+      </div>
+      <div class="m3-menu m3-menu--vibrant" role="menu" aria-label="Sort" data-open>
+        <button class="m3-menu-item" role="menuitemradio" type="button" aria-checked="true"><span class="m3-menu-item-text">Newest first</span></button>
+        <button class="m3-menu-item" role="menuitemradio" type="button" aria-checked="false"><span class="m3-menu-item-text">Oldest first</span></button>
+        <button class="m3-menu-item" role="menuitemradio" type="button" aria-checked="false"><span class="m3-menu-item-text">Name</span><span class="material-symbols-outlined" aria-hidden="true">sort_by_alpha</span></button>
+      </div>
+      <div class="m3-menu" role="menu" aria-label="Closed menu" id="closed-menu">
+        <button class="m3-menu-item" role="menuitem" type="button"><span class="m3-menu-item-text">Rename</span></button>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="snackbars">
+    <h2 class="m3-type-title-large" id="snackbars">Snackbars</h2>
+    <div class="m3-snackbar" role="status" data-open><span class="m3-snackbar-text">Photo archived</span></div>
+    <div class="m3-snackbar" role="status" data-open>
+      <span class="m3-snackbar-text">Message deleted</span>
+      <button class="m3-button m3-button--text" type="button">Undo</button>
+    </div>
+    <div class="m3-snackbar m3-snackbar--two-line" role="status" data-open>
+      <span class="m3-snackbar-text">Could not upload 2 photos. Check the connection and try again.</span>
+      <button class="m3-button m3-button--text" type="button">Retry</button>
+      <button class="m3-icon-button" type="button" aria-label="Dismiss"><span class="material-symbols-outlined" aria-hidden="true">close</span></button>
+    </div>
+    <div class="m3-snackbar" role="status" id="closed-snackbar"><span class="m3-snackbar-text">Saved</span></div>
+  </section>
+
+  <section aria-labelledby="tooltips">
+    <h2 class="m3-type-title-large" id="tooltips">Tooltips</h2>
+    <div class="gallery-row">
+      <button class="m3-icon-button" type="button" aria-label="Save to library" aria-describedby="tip-save"><span class="material-symbols-outlined" aria-hidden="true">library_add</span></button>
+      <div class="m3-tooltip" role="tooltip" id="tip-save" data-open>Save to library</div>
+    </div>
+    <div class="m3-tooltip m3-tooltip--rich" role="dialog" aria-labelledby="tip-sync" data-open>
+      <p class="m3-tooltip-subhead" id="tip-sync">Sync is off</p>
+      <p class="m3-tooltip-text">Turn on sync to see your playlists on every device you sign in to.</p>
+      <div class="m3-tooltip-actions"><button class="m3-button m3-button--text" type="button">Turn on</button></div>
+    </div>
+    <div class="m3-tooltip" role="tooltip" id="closed-tooltip">Hidden</div>
+  </section>
+
+  <section aria-labelledby="search">
+    <h2 class="m3-type-title-large" id="search">Search</h2>
+    <h3 class="m3-type-title-small">Search bar</h3>
+    <form class="m3-search" role="search" onsubmit="return false">
+      <span class="material-symbols-outlined" aria-hidden="true">search</span>
+      <input class="m3-search-input" id="search-bar" type="search" placeholder="Search recipes" aria-label="Search recipes">
+      <button class="m3-icon-button" type="button" aria-label="Search by voice"><span class="material-symbols-outlined" aria-hidden="true">mic</span></button>
+    </form>
+    <h3 class="m3-type-title-small">Docked search view</h3>
+    <div class="m3-search-view" data-open>
+      <form class="m3-search" role="search" onsubmit="return false">
+        <button class="m3-icon-button" type="button" aria-label="Close search"><span class="material-symbols-outlined" aria-hidden="true">arrow_back</span></button>
+        <input class="m3-search-input" type="search" value="lemon" aria-label="Search recipes">
+        <button class="m3-icon-button" type="button" aria-label="Clear the search"><span class="material-symbols-outlined" aria-hidden="true">close</span></button>
+      </form>
+      <ul class="m3-list" aria-label="Suggestions">
+        <li class="m3-list-item"><span class="material-symbols-outlined" aria-hidden="true">history</span><span class="m3-list-item-text">Lemon risotto</span></li>
+        <li class="m3-list-item"><span class="material-symbols-outlined" aria-hidden="true">history</span><span class="m3-list-item-text">Lemon tart</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section aria-labelledby="progress">
+    <h2 class="m3-type-title-large" id="progress">Progress indicators</h2>
+    <div class="gallery-progress">
+      <h3 class="m3-type-title-small">Linear: 0, 40 %, 100 %, wavy 60 %, indeterminate</h3>
+      <div class="m3-progress" id="p-0" role="progressbar" aria-label="Upload not started" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="--m3-progress-value: 0"></div>
+      <div class="m3-progress" id="p-40" role="progressbar" aria-label="Upload" aria-valuemin="0" aria-valuemax="100" aria-valuenow="40" style="--m3-progress-value: 0.4"></div>
+      <div class="m3-progress" id="p-100" role="progressbar" aria-label="Upload done" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" style="--m3-progress-value: 1"></div>
+      <div class="m3-progress m3-progress--wavy" id="p-wavy" role="progressbar" aria-label="Download" aria-valuemin="0" aria-valuemax="100" aria-valuenow="60" style="--m3-progress-value: 0.6"></div>
+      <div class="m3-progress m3-progress--indeterminate" id="p-linear-indeterminate" role="progressbar" aria-label="Loading messages"></div>
+      <h3 class="m3-type-title-small">Circular: 30 %, 75 %, wavy 60 %, indeterminate</h3>
+      <div class="gallery-row">
+        <div class="m3-progress m3-progress--circular" id="c-30" role="progressbar" aria-label="Backup" aria-valuemin="0" aria-valuemax="100" aria-valuenow="30" style="--m3-progress-value: 0.3"></div>
+        <div class="m3-progress m3-progress--circular" id="c-75" role="progressbar" aria-label="Sync" aria-valuemin="0" aria-valuemax="100" aria-valuenow="75" style="--m3-progress-value: 0.75"></div>
+        <div class="m3-progress m3-progress--circular m3-progress--wavy" id="c-wavy" role="progressbar" aria-label="Import" aria-valuemin="0" aria-valuemax="100" aria-valuenow="60" style="--m3-progress-value: 0.6"></div>
+        <div class="m3-progress m3-progress--circular m3-progress--indeterminate" id="c-indeterminate" role="progressbar" aria-label="Loading photos"></div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="loading">
+    <h2 class="m3-type-title-large" id="loading">Loading indicator</h2>
+    <h3 class="m3-type-title-small">Default and contained</h3>
+    <div class="gallery-row">
+      <div class="m3-loading-indicator" role="progressbar" aria-label="Loading"></div>
+      <div class="m3-loading-indicator m3-loading-indicator--contained" role="progressbar" aria-label="Loading"></div>
+    </div>
+  </section>
+</main>
+</body>
+</html>

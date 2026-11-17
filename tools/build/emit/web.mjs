@@ -32,7 +32,7 @@ export const SHADOW_IMPL = 'material-web/elevation/internal/_elevation.scss:62-1
 // ([impl:] with file and line in the source the knowledge layer pins: compose-material3 1.5.0-rc01, see
 // knowledge/sources.lock.json). Sizes and offsets only; paddings and gaps from library code use the
 // equal --md-sys-space-* step in the style sheet with an [impl:] comment there. tokens.css declares
-// the ones the style sheets use.
+// the ones the style sheets use. Each has `px` (a size) or `ms` (an animation duration).
 const CM3 = 'compose-material3/commonMain/androidx/compose/material3';
 export const IMPL_VALUES = [
   { name: '--md-impl-radio-button-dot-size', px: 12, impl: `${CM3}/RadioButton.kt:321` },
@@ -41,7 +41,24 @@ export const IMPL_VALUES = [
   { name: '--md-impl-badge-offset', px: 6, impl: `${CM3}/Badge.kt:218` },
   { name: '--md-impl-badge-large-offset-x', px: 12, impl: `${CM3}/Badge.kt:209` },
   { name: '--md-impl-badge-large-offset-y', px: 14, impl: `${CM3}/Badge.kt:211` },
+  { name: '--md-impl-dialog-min-width', px: 280, impl: `${CM3}/AlertDialog.kt:410` },
+  { name: '--md-impl-dialog-max-width', px: 560, impl: `${CM3}/AlertDialog.kt:412` },
+  { name: '--md-impl-bottom-sheet-max-width', px: 640, impl: `${CM3}/SheetDefaults.kt:536` },
+  { name: '--md-impl-menu-min-width', px: 112, impl: `${CM3}/Menu.kt:2389` },
+  { name: '--md-impl-menu-max-width', px: 280, impl: `${CM3}/Menu.kt:2391` },
+  { name: '--md-impl-snackbar-max-width', px: 600, impl: `${CM3}/Snackbar.kt:604` },
+  { name: '--md-impl-tooltip-min-width', px: 40, impl: `${CM3}/Tooltip.kt:1453` },
+  { name: '--md-impl-tooltip-min-height', px: 24, impl: `${CM3}/Tooltip.kt:1451` },
+  { name: '--md-impl-plain-tooltip-max-width', px: 200, impl: `${CM3}/Tooltip.kt:535` },
+  { name: '--md-impl-rich-tooltip-max-width', px: 320, impl: `${CM3}/Tooltip.kt:538` },
+  { name: '--md-impl-rich-tooltip-subhead-baseline', px: 28, impl: `${CM3}/Tooltip.kt:1463` },
+  { name: '--md-impl-rich-tooltip-action-min-height', px: 36, impl: `${CM3}/Tooltip.kt:1469` },
+  { name: '--md-impl-search-bar-min-width', px: 360, impl: `${CM3}/SearchBar.kt:4178` },
+  { name: '--md-impl-search-bar-max-width', px: 720, impl: `${CM3}/SearchBar.kt:4180` },
+  { name: '--md-impl-linear-progress-indeterminate-duration', ms: 1750, impl: `${CM3}/ProgressIndicator.kt:1049` },
+  { name: '--md-impl-circular-progress-indeterminate-duration', ms: 6000, impl: `${CM3}/ProgressIndicator.kt:1072` },
 ];
+export const implCss = v => (v.ms !== undefined ? `${v.ms}ms` : `${v.px}px`);
 
 const clamp = (v, max) => Math.min(Math.max(v, 0), max);
 export function shadowOf(level) {
@@ -194,9 +211,9 @@ export function emitWeb(sys, { comp = {}, componentCss = [] } = {}) {
 
   const usedImpl = new Set(componentCss.flatMap(t => [...t.matchAll(/var\((--md-impl-[\w-]+)\)/g)].map(m => m[1])));
   for (const name of usedImpl) if (!IMPL_VALUES.some(v => v.name === name)) throw new Error(`component CSS uses ${name}, which is no [impl:] value`);
-  const implLines = IMPL_VALUES.filter(v => usedImpl.has(v.name)).map(v => `  ${v.name}: ${v.px}px; /* [impl:${v.impl}] */`);
+  const implLines = IMPL_VALUES.filter(v => usedImpl.has(v.name)).map(v => `  ${v.name}: ${implCss(v)}; /* [impl:${v.impl}] */`);
   if (implLines.length) {
-    section(base, 'Component values from library code (not tokens) used by the component style sheets');
+    section(base, 'Component values from library code (not tokens) used by the component style sheets: sizes and durations');
     base.push(...implLines);
   }
 

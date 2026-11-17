@@ -57,8 +57,9 @@ function traced(text) {
 
 test('the emitters write exactly the theme asset files verify allowlists', () => {
   assert.deepEqual([...files.keys()].sort(), [...PATHS].sort());
-  // Plus fonts.css (font files build step), whose @font-face weight ranges are not UI literals.
-  assert.deepEqual([...THEME_ASSETS].sort(), [...PATHS, 'assets/web/fonts.css'].sort());
+  // Plus fonts.css (font files build step), whose @font-face weight ranges are not UI literals, and
+  // the progress component, whose arcs are gradients of the color roles.
+  assert.deepEqual([...THEME_ASSETS].sort(), [...PATHS, 'assets/web/fonts.css', 'assets/web/components/progress.css'].sort());
 });
 
 test('every file starts with the skill asset marker and the generated notice, and names no repo-only terms', () => {

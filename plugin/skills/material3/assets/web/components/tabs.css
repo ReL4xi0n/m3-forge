@@ -1,0 +1,181 @@
+/* material3 skill asset: assets/web/components/tabs.css
+ * Material 3 tabs: primary and secondary, with a label, an icon, or both. Needs tokens.css, fonts.css
+ * (icons are Material Symbols glyphs in .m3-icon) and the color theme from scripts/color. Every value
+ * is a token variable.
+ *
+ *   <div class="m3-tabs" role="tablist" aria-label="Library">
+ *     <button class="m3-tab" role="tab" aria-selected="true" aria-controls="p-music" id="t-music">
+ *       <span class="m3-tab-content">
+ *         <span class="m3-icon" aria-hidden="true">music_note</span>
+ *         <span class="m3-tab-label">Music</span></span></button>
+ *     <button class="m3-tab" role="tab" aria-selected="false" tabindex="-1">…</button>
+ *   </div>
+ *
+ * Kinds: m3-tabs (primary, default) | m3-tabs--secondary. Tabs share the row's width (fixed tabs).
+ * The selected tab has aria-selected="true". A primary tab with an icon and a label stacks them and
+ * is taller; a secondary tab puts the icon before the label. The primary indicator is as wide as the
+ * tab's content, the secondary one as wide as the tab; both sit on the divider under the row.
+ *   Primary indicator width = content width:
+ *   [impl:compose-material3/commonMain/androidx/compose/material3/TabRow.kt:157] true
+ *   Divider under the row (md.comp.divider.*):
+ *   [impl:compose-material3/commonMain/androidx/compose/material3/TabRow.kt:161] HorizontalDivider
+ *   Label side padding 16, 8 between a secondary tab's icon and label:
+ *   [impl:compose-material3/commonMain/androidx/compose/material3/Tab.kt:424] 16
+ *   [impl:compose-material3/commonMain/androidx/compose/material3/Tab.kt:442] 8
+ */
+
+.m3-tabs {
+  display: flex;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border-block-end: var(--md-comp-divider-thickness) solid var(--md-sys-color-outline-variant);
+  background: var(--md-sys-color-surface); /* md.comp.primary-navigation-tab.container.color */
+}
+
+.m3-tab {
+  /* md.comp.primary-navigation-tab.* */
+  --_label-color: var(--md-sys-color-on-surface-variant);
+  --_icon-color: var(--md-sys-color-on-surface-variant);
+  --_state-layer-color: var(--md-sys-color-on-surface);
+  --_state-layer-opacity: 0;
+  --_indicator-color: transparent;
+
+  position: relative;
+  display: flex;
+  flex: auto;
+  flex-basis: 0; /* equal widths */
+  justify-content: center;
+  box-sizing: border-box;
+  min-inline-size: var(--md-target-size);
+  block-size: var(--md-comp-primary-navigation-tab-container-height);
+  margin: 0;
+  padding: 0 var(--md-sys-space-200);
+  border: 0;
+  border-radius: var(--md-comp-primary-navigation-tab-container-shape);
+  background: none;
+  color: var(--_label-color);
+  font-family: var(--md-comp-primary-navigation-tab-with-label-text-label-text-font);
+  font-weight: var(--md-comp-primary-navigation-tab-with-label-text-label-text-weight);
+  font-size: var(--md-comp-primary-navigation-tab-with-label-text-label-text-size);
+  line-height: var(--md-comp-primary-navigation-tab-with-label-text-label-text-line-height);
+  letter-spacing: var(--md-comp-primary-navigation-tab-with-label-text-label-text-tracking);
+  white-space: nowrap;
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* State layer over the whole tab */
+.m3-tab::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgb(from var(--_state-layer-color) r g b / var(--_state-layer-opacity));
+  pointer-events: none;
+}
+
+/* The content box is as tall as the tab; the primary indicator sits at its bottom. */
+.m3-tab-content {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.m3-tab-content::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0;
+  block-size: var(--md-comp-primary-navigation-tab-active-indicator-height);
+  border-radius: var(--md-comp-primary-navigation-tab-active-indicator-shape);
+  background: var(--_indicator-color);
+  pointer-events: none;
+}
+
+.m3-tab :is(.m3-icon, [class*="material-symbols"]) {
+  flex: none;
+  inline-size: var(--md-comp-primary-navigation-tab-with-icon-icon-size);
+  block-size: var(--md-comp-primary-navigation-tab-with-icon-icon-size);
+  overflow: hidden;
+  color: var(--_icon-color);
+  font-size: var(--md-comp-primary-navigation-tab-with-icon-icon-size);
+  line-height: var(--md-comp-primary-navigation-tab-with-icon-icon-size);
+}
+
+/* Primary with icon and label: stacked, taller (md.comp.primary-navigation-tab.with-icon-and-label-text.*) */
+.m3-tabs:not(.m3-tabs--secondary) .m3-tab:has(.m3-tab-label):has(.m3-icon, [class*="material-symbols"]) {
+  block-size: var(--md-comp-primary-navigation-tab-with-icon-and-label-text-container-height);
+}
+
+.m3-tabs:not(.m3-tabs--secondary) .m3-tab:has(.m3-tab-label):has(.m3-icon, [class*="material-symbols"]) .m3-tab-content {
+  flex-direction: column;
+}
+
+/* Selected (md.comp.primary-navigation-tab.with-*.active.*, active-indicator.color) */
+.m3-tab[aria-selected="true"] {
+  --_label-color: var(--md-sys-color-primary);
+  --_icon-color: var(--md-sys-color-primary);
+  --_state-layer-color: var(--md-sys-color-primary);
+  --_indicator-color: var(--md-sys-color-primary);
+}
+
+/* States (md.comp.primary-navigation-tab.{active,inactive}.{hover,focus,pressed}.*) */
+.m3-tab:is(:hover, :focus-visible, :active):not([aria-selected="true"]) {
+  --_label-color: var(--md-sys-color-on-surface);
+  --_icon-color: var(--md-sys-color-on-surface);
+}
+
+.m3-tab:hover {
+  --_state-layer-opacity: var(--md-sys-state-hover-state-layer-opacity);
+}
+
+.m3-tab:focus-visible {
+  --_state-layer-opacity: var(--md-sys-state-focus-state-layer-opacity);
+  /* md.comp.primary-navigation-tab.focus.indicator.{color,thickness,outline.offset} */
+  outline: var(--md-sys-state-focus-indicator-thickness) solid var(--md-sys-color-secondary);
+  outline-offset: var(--md-sys-state-focus-indicator-inner-offset);
+}
+
+.m3-tab:active {
+  --_state-layer-opacity: var(--md-sys-state-pressed-state-layer-opacity);
+  --_state-layer-color: var(--md-sys-color-primary); /* md.comp.primary-navigation-tab.inactive.pressed.state-layer.color */
+}
+
+/* Secondary (md.comp.secondary-navigation-tab.*): icon before the label, indicator as wide as the tab */
+.m3-tabs--secondary .m3-tab {
+  block-size: var(--md-comp-secondary-navigation-tab-container-height);
+  font-family: var(--md-comp-secondary-navigation-tab-label-text-font);
+  font-weight: var(--md-comp-secondary-navigation-tab-label-text-weight);
+  font-size: var(--md-comp-secondary-navigation-tab-label-text-size);
+  line-height: var(--md-comp-secondary-navigation-tab-label-text-line-height);
+  letter-spacing: var(--md-comp-secondary-navigation-tab-label-text-tracking);
+}
+
+.m3-tabs--secondary .m3-tab .m3-tab-content {
+  position: static;
+  gap: var(--md-sys-space-100);
+}
+
+.m3-tabs--secondary .m3-tab :is(.m3-icon, [class*="material-symbols"]) {
+  inline-size: var(--md-comp-secondary-navigation-tab-with-icon-icon-size);
+  block-size: var(--md-comp-secondary-navigation-tab-with-icon-icon-size);
+  font-size: var(--md-comp-secondary-navigation-tab-with-icon-icon-size);
+  line-height: var(--md-comp-secondary-navigation-tab-with-icon-icon-size);
+}
+
+.m3-tabs--secondary .m3-tab .m3-tab-content::after {
+  block-size: var(--md-comp-secondary-navigation-tab-active-indicator-height);
+  border-radius: 0;
+}
+
+.m3-tabs--secondary .m3-tab[aria-selected="true"] {
+  --_label-color: var(--md-sys-color-on-surface);
+  --_icon-color: var(--md-sys-color-on-surface);
+  --_state-layer-color: var(--md-sys-color-on-surface);
+}
+
+.m3-tabs--secondary .m3-tab:active {
+  --_state-layer-color: var(--md-sys-color-on-surface); /* md.comp.secondary-navigation-tab.pressed.state-layer.color */
+}

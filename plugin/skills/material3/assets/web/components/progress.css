@@ -1,0 +1,255 @@
+/* material3 skill asset: assets/web/components/progress.css
+ * Material 3 progress indicators: linear and circular, determinate and indeterminate, in the flat
+ * and the wavy container size. Needs tokens.css and the color theme from scripts/color. Every value
+ * is a token variable, except the animation timelines (see below).
+ *
+ *   <div class="m3-progress" role="progressbar" aria-label="Upload" aria-valuemin="0"
+ *     aria-valuemax="100" aria-valuenow="40" style="--m3-progress-value: 0.4"></div>
+ *   <div class="m3-progress m3-progress--indeterminate" role="progressbar" aria-label="Loading"></div>
+ *   <div class="m3-progress m3-progress--circular" role="progressbar" … style="--m3-progress-value: 0.4"></div>
+ *
+ * Variants: linear (default) | m3-progress--circular; m3-progress--indeterminate; m3-progress--wavy.
+ * Determinate indicators read --m3-progress-value (0 to 1; CSS cannot read aria-valuenow: set both).
+ * A linear indicator is as wide as the layout makes it; a circular one has the token size.
+ * The geometry follows Compose's ProgressIndicator.kt: the active indicator and the track have
+ * round ends, the track starts the track-active space after the active end, the linear stop
+ * indicator sits at the end of the track, and the circular gap is the space plus the thickness
+ * measured on the circumference:
+ *   [impl:compose-material3/commonMain/androidx/compose/material3/ProgressIndicator.kt:170] gapSize
+ *   [impl:compose-material3/commonMain/androidx/compose/material3/ProgressIndicator.kt:546] PI
+ *   Indeterminate circular has no track:
+ *   [impl:compose-material3/commonMain/androidx/compose/material3/ProgressIndicator.kt:835] Transparent
+ * m3-progress--wavy gives the wavy container size (with-wave height and size) but draws the active
+ * indicator flat: Compose draws the wave as a stroked chain of quadratic curves
+ * (internal/LinearWavyProgressModifiers.kt:954), which CSS cannot stroke from variables; flat is
+ * what Compose itself draws at the start and end of the progress range.
+ *
+ * Animation timelines (indeterminate): the keyframe offsets, the 0 and 1 positions, the 0.1 and 0.87
+ * circular sweep and the rotation angles are Compose's (ProgressIndicator.kt:928-1023 with the
+ * constants at :1049-1076; durations in tokens.css). Indeterminate linear: two lines whose head and
+ * tail run from 0 to 1 with the emphasized accelerate easing, each in its own window; the track is
+ * cut a track-active space around each line. Indeterminate circular: the arc grows from 0.1 to 0.87
+ * of the circle and shrinks back (standard easing on the way back) while the indicator turns three
+ * times and steps a further quarter turn every quarter of the cycle.
+ */
+
+@property --_progress-head-1 { syntax: '<number>'; inherits: true; initial-value: 0; }
+@property --_progress-tail-1 { syntax: '<number>'; inherits: true; initial-value: 0; }
+@property --_progress-head-2 { syntax: '<number>'; inherits: true; initial-value: 0; }
+@property --_progress-tail-2 { syntax: '<number>'; inherits: true; initial-value: 0; }
+@property --_progress-sweep { syntax: '<number>'; inherits: true; initial-value: 0; }
+
+/* Linear (md.comp.progress-indicator.linear.*) */
+.m3-progress {
+  --_value: var(--m3-progress-value, 0);
+  --_length: 100%; /* the track's full length, for positions along it */
+  --_thickness: var(--md-comp-progress-indicator-linear-active-indicator-thickness);
+  --_track-thickness: var(--md-comp-progress-indicator-linear-track-thickness);
+  --_gap: var(--md-comp-progress-indicator-linear-track-active-indicator-space);
+  --_stop: var(--md-comp-progress-indicator-linear-stop-indicator-size);
+  --_stop-offset: var(--md-comp-progress-indicator-linear-stop-indicator-trailing-space);
+  --_active-color: var(--md-sys-color-primary); /* md.comp.progress-indicator.active-indicator.color */
+  --_track-color: var(--md-sys-color-secondary-container); /* md.comp.progress-indicator.track.color */
+  /* Active end: progress plus a round end, never past the end; 0 draws nothing. */
+  --_active-end: min(var(--_length), calc(var(--_value) * var(--_length) + var(--_thickness) / 2), calc(var(--_value) * var(--_length) + var(--_value) * var(--_length)));
+  /* Track start: the active end plus the gap (less when the progress is shorter than the gap). */
+  --_track-start: max(var(--md-sys-space-0), calc(var(--_value) * var(--_length) + min(calc(var(--_value) * var(--_length)), calc(var(--_gap) + var(--_thickness))) - var(--_thickness) / 2));
+  --_progress-head-1: 0;
+  --_progress-tail-1: 0;
+  --_progress-head-2: 0;
+  --_progress-tail-2: 0;
+  --_progress-sweep: 0;
+
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  block-size: var(--md-comp-progress-indicator-linear-height);
+  margin: 0;
+  padding: 0;
+}
+
+.m3-progress::before,
+.m3-progress::after {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  margin-block: auto;
+  pointer-events: none;
+}
+
+/* Active indicator */
+.m3-progress::before {
+  inset-inline-start: 0;
+  inline-size: var(--_active-end);
+  block-size: var(--_thickness);
+  border-radius: var(--md-comp-progress-indicator-active-indicator-shape);
+  background: var(--_active-color);
+}
+
+/* Track, with the stop indicator at its end (md.comp.progress-indicator.stop-indicator.*) */
+.m3-progress::after {
+  inset-inline: var(--_track-start) 0;
+  block-size: var(--_track-thickness);
+  border-radius: var(--md-comp-progress-indicator-track-shape);
+  background:
+    radial-gradient(circle calc(var(--_stop) / 2), var(--md-sys-color-primary) calc(var(--_stop) / 2), transparent calc(var(--_stop) / 2))
+      right var(--_stop-offset) center / var(--_stop) var(--_stop) no-repeat,
+    var(--_track-color);
+}
+
+.m3-progress:dir(rtl)::after {
+  background-position: left var(--_stop-offset) center, 0 0;
+}
+
+.m3-progress--wavy {
+  block-size: var(--md-comp-progress-indicator-linear-with-wave-height);
+}
+
+/* Indeterminate linear: line 1 (::before) and line 2 (::after) over the track (the element) */
+.m3-progress--indeterminate {
+  --_ext-1: min(calc(var(--_thickness) / 2), calc((var(--_progress-head-1) - var(--_progress-tail-1)) * var(--_length)));
+  --_ext-2: min(calc(var(--_thickness) / 2), calc((var(--_progress-head-2) - var(--_progress-tail-2)) * var(--_length)));
+  --_start-1: max(var(--md-sys-space-0), calc(var(--_progress-tail-1) * var(--_length) - var(--_ext-1)));
+  --_end-1: min(var(--_length), calc(var(--_progress-head-1) * var(--_length) + var(--_ext-1)));
+  --_start-2: max(var(--md-sys-space-0), calc(var(--_progress-tail-2) * var(--_length) - var(--_ext-2)));
+  --_end-2: min(var(--_length), calc(var(--_progress-head-2) * var(--_length) + var(--_ext-2)));
+
+  background: linear-gradient(var(--_track-color), var(--_track-color)) center / auto var(--_track-thickness) no-repeat;
+  border-radius: var(--md-comp-progress-indicator-track-shape);
+  /* The track is cut a gap before and after each line. */
+  mask:
+    linear-gradient(to right, var(--_active-color) calc(var(--_start-1) - var(--_gap)), transparent 0 var(--_start-1), var(--_active-color) 0 var(--_end-1), transparent 0 calc(var(--_end-1) + var(--_gap)), var(--_active-color) 0),
+    linear-gradient(to right, var(--_active-color) calc(var(--_start-2) - var(--_gap)), transparent 0 var(--_start-2), var(--_active-color) 0 var(--_end-2), transparent 0 calc(var(--_end-2) + var(--_gap)), var(--_active-color) 0);
+  mask-composite: intersect;
+  animation:
+    m3-progress-head-1 var(--md-impl-linear-progress-indeterminate-duration) infinite,
+    m3-progress-tail-1 var(--md-impl-linear-progress-indeterminate-duration) infinite,
+    m3-progress-head-2 var(--md-impl-linear-progress-indeterminate-duration) infinite,
+    m3-progress-tail-2 var(--md-impl-linear-progress-indeterminate-duration) infinite;
+}
+
+.m3-progress--indeterminate::before,
+.m3-progress--indeterminate::after {
+  inset-inline: var(--_start-1) calc(var(--_length) - var(--_end-1));
+  inline-size: auto;
+  block-size: var(--_thickness);
+  border-radius: var(--md-comp-progress-indicator-active-indicator-shape);
+  background: var(--_active-color);
+}
+
+.m3-progress--indeterminate::after {
+  inset-inline: var(--_start-2) calc(var(--_length) - var(--_end-2));
+}
+
+.m3-progress--indeterminate:dir(rtl) {
+  mask:
+    linear-gradient(to left, var(--_active-color) calc(var(--_start-1) - var(--_gap)), transparent 0 var(--_start-1), var(--_active-color) 0 var(--_end-1), transparent 0 calc(var(--_end-1) + var(--_gap)), var(--_active-color) 0),
+    linear-gradient(to left, var(--_active-color) calc(var(--_start-2) - var(--_gap)), transparent 0 var(--_start-2), var(--_active-color) 0 var(--_end-2), transparent 0 calc(var(--_end-2) + var(--_gap)), var(--_active-color) 0);
+  mask-composite: intersect;
+}
+
+@keyframes m3-progress-head-1 {
+  0% { --_progress-head-1: 0; animation-timing-function: var(--md-sys-motion-easing-emphasized-accelerate); }
+  57.143% { --_progress-head-1: 1; }
+  100% { --_progress-head-1: 1; }
+}
+
+@keyframes m3-progress-tail-1 {
+  0% { --_progress-tail-1: 0; }
+  14.286% { --_progress-tail-1: 0; animation-timing-function: var(--md-sys-motion-easing-emphasized-accelerate); }
+  71.429% { --_progress-tail-1: 1; }
+  100% { --_progress-tail-1: 1; }
+}
+
+@keyframes m3-progress-head-2 {
+  0% { --_progress-head-2: 0; }
+  37.143% { --_progress-head-2: 0; animation-timing-function: var(--md-sys-motion-easing-emphasized-accelerate); }
+  85.714% { --_progress-head-2: 1; }
+  100% { --_progress-head-2: 1; }
+}
+
+@keyframes m3-progress-tail-2 {
+  0% { --_progress-tail-2: 0; }
+  51.429% { --_progress-tail-2: 0; animation-timing-function: var(--md-sys-motion-easing-emphasized-accelerate); }
+  100% { --_progress-tail-2: 1; }
+}
+
+/* Circular (md.comp.progress-indicator.circular.*): the arcs are a conic gradient in a ring mask,
+   the round ends are dots on the ring's center line. */
+.m3-progress--circular {
+  --_size: var(--md-comp-progress-indicator-circular-size);
+  --_thickness: var(--md-comp-progress-indicator-circular-active-indicator-thickness);
+  --_track-thickness: var(--md-comp-progress-indicator-circular-track-thickness);
+  --_gap: var(--md-comp-progress-indicator-circular-track-active-indicator-space);
+  --_full-turn: 1turn; /* the whole circle, for angles along it */
+  --_sweep: calc(var(--_value) * var(--_full-turn));
+  /* (gap + thickness) / (pi x size) of a turn; tan(atan2(a, b)) is a / b as a number */
+  --_gap-turn: min(var(--_sweep), calc(tan(atan2(calc(var(--_gap) + var(--_thickness)), calc(pi * var(--_size)))) * var(--_full-turn)));
+  --_track-from: calc(var(--_sweep) + var(--_gap-turn));
+  --_track-to: calc(var(--_full-turn) - var(--_gap-turn));
+  --_radius: calc((var(--_size) - var(--_thickness)) / 2);
+  /* Round ends: dot radius, 0 when the arc is empty */
+  --_active-dot: min(calc(var(--_thickness) / 2), calc(var(--_value) * var(--_size)));
+  --_track-dot: max(var(--md-sys-space-0), min(calc(var(--_track-thickness) / 2), calc(tan(atan2(calc(var(--_track-to) - var(--_track-from)), var(--_full-turn))) * var(--_size))));
+
+  display: inline-block;
+  flex: none;
+  inline-size: var(--_size);
+  block-size: var(--_size);
+  vertical-align: middle;
+  border-radius: var(--md-sys-shape-corner-full);
+  background:
+    radial-gradient(circle calc(var(--_thickness) / 2), var(--_active-color) var(--_active-dot), transparent var(--_active-dot))
+      calc(var(--_size) / 2 - var(--_thickness) / 2) calc(var(--_size) / 2 - var(--_radius) - var(--_thickness) / 2) / var(--_thickness) var(--_thickness) no-repeat,
+    radial-gradient(circle calc(var(--_thickness) / 2), var(--_active-color) var(--_active-dot), transparent var(--_active-dot))
+      calc(var(--_size) / 2 + var(--_radius) * sin(var(--_sweep)) - var(--_thickness) / 2) calc(var(--_size) / 2 - var(--_radius) * cos(var(--_sweep)) - var(--_thickness) / 2) / var(--_thickness) var(--_thickness) no-repeat,
+    radial-gradient(circle calc(var(--_thickness) / 2), var(--_track-color) var(--_track-dot), transparent var(--_track-dot))
+      calc(var(--_size) / 2 + var(--_radius) * sin(var(--_track-from)) - var(--_thickness) / 2) calc(var(--_size) / 2 - var(--_radius) * cos(var(--_track-from)) - var(--_thickness) / 2) / var(--_thickness) var(--_thickness) no-repeat,
+    radial-gradient(circle calc(var(--_thickness) / 2), var(--_track-color) var(--_track-dot), transparent var(--_track-dot))
+      calc(var(--_size) / 2 + var(--_radius) * sin(var(--_track-to)) - var(--_thickness) / 2) calc(var(--_size) / 2 - var(--_radius) * cos(var(--_track-to)) - var(--_thickness) / 2) / var(--_thickness) var(--_thickness) no-repeat,
+    conic-gradient(var(--_active-color) 0 var(--_sweep), transparent 0 var(--_track-from), var(--_track-color) 0 var(--_track-to), transparent 0);
+  /* The ring: from the inner edge to the outer edge of the stroke */
+  mask: radial-gradient(circle, transparent calc(var(--_size) / 2 - var(--_thickness)), var(--_active-color) 0);
+}
+
+.m3-progress--circular::before,
+.m3-progress--circular::after {
+  content: none;
+}
+
+.m3-progress--circular.m3-progress--wavy {
+  --_size: var(--md-comp-progress-indicator-circular-with-wave-size);
+}
+
+.m3-progress--circular.m3-progress--indeterminate {
+  --_value: var(--_progress-sweep);
+  --_track-color: transparent;
+  mask: radial-gradient(circle, transparent calc(var(--_size) / 2 - var(--_thickness)), var(--_active-color) 0);
+  animation:
+    m3-progress-sweep var(--md-impl-circular-progress-indeterminate-duration) linear infinite,
+    m3-progress-rotation var(--md-impl-circular-progress-indeterminate-duration) linear infinite,
+    m3-progress-steps var(--md-impl-circular-progress-indeterminate-duration) linear infinite;
+}
+
+@keyframes m3-progress-sweep {
+  0% { --_progress-sweep: 0.1; }
+  50% { --_progress-sweep: 0.87; animation-timing-function: var(--md-sys-motion-easing-standard); }
+  100% { --_progress-sweep: 0.1; }
+}
+
+@keyframes m3-progress-rotation {
+  0% { rotate: 0deg; }
+  100% { rotate: 1080deg; }
+}
+
+@keyframes m3-progress-steps {
+  0% { transform: rotate(0deg); }
+  5% { transform: rotate(90deg); }
+  25% { transform: rotate(90deg); }
+  30% { transform: rotate(180deg); }
+  50% { transform: rotate(180deg); }
+  55% { transform: rotate(270deg); }
+  75% { transform: rotate(270deg); }
+  80% { transform: rotate(360deg); }
+  100% { transform: rotate(360deg); }
+}

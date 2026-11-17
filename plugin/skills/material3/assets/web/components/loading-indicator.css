@@ -1,0 +1,45 @@
+/* material3 skill asset: assets/web/components/loading-indicator.css
+ * Material 3 Expressive loading indicator: default and contained. Needs tokens.css and the color
+ * theme from scripts/color. Every value is a token variable.
+ *
+ *   <div class="m3-loading-indicator" role="progressbar" aria-label="Loading"></div>
+ *   <div class="m3-loading-indicator m3-loading-indicator--contained" role="progressbar" aria-label="Loading"></div>
+ *
+ * Variant: m3-loading-indicator--contained draws the container behind the indicator.
+ * Limit: the indicator's shapes and their morph come from the library's shape set (Compose
+ * MaterialShapes), which has no web asset and no token. This sheet draws the active indicator with
+ * the shape tokens that exist (the container's full corner) at the active indicator size, without
+ * the morph. Give it an accessible name; for a known amount of progress use progress.css.
+ */
+
+.m3-loading-indicator {
+  --_container-color: transparent;
+  --_indicator-color: var(--md-sys-color-primary); /* md.comp.loading-indicator.active-indicator.color */
+
+  position: relative;
+  display: inline-block;
+  flex: none;
+  box-sizing: border-box;
+  inline-size: var(--md-comp-loading-indicator-container-width);
+  block-size: var(--md-comp-loading-indicator-container-height);
+  vertical-align: middle;
+  border-radius: var(--md-comp-loading-indicator-container-shape);
+  background: var(--_container-color);
+}
+
+.m3-loading-indicator::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  inline-size: var(--md-comp-loading-indicator-active-indicator-size);
+  block-size: var(--md-comp-loading-indicator-active-indicator-size);
+  margin: auto;
+  border-radius: var(--md-comp-loading-indicator-container-shape);
+  background: var(--_indicator-color);
+}
+
+/* Contained (md.comp.loading-indicator.contained.*) */
+.m3-loading-indicator--contained {
+  --_container-color: var(--md-sys-color-primary-container);
+  --_indicator-color: var(--md-sys-color-on-primary-container);
+}

@@ -1,0 +1,110 @@
+/* material3 skill asset: assets/web/components/tooltip.css
+ * Material 3 tooltips: plain (a short label for an icon button) and rich (subhead, text and
+ * actions). Needs tokens.css, button.css (text buttons for rich tooltip actions) and the color theme
+ * from scripts/color. Every value is a token variable.
+ *
+ *   <div class="m3-tooltip" role="tooltip" id="tip-save" data-open>Save to library</div>
+ *   <div class="m3-tooltip m3-tooltip--rich" role="dialog" aria-labelledby="tip-sync-title" data-open>
+ *     <p class="m3-tooltip-subhead" id="tip-sync-title">Sync is off</p>
+ *     <p class="m3-tooltip-text">Turn on sync to see your playlists on every device.</p>
+ *     <div class="m3-tooltip-actions"><button class="m3-button m3-button--text">Turn on</button></div>
+ *   </div>
+ *
+ * Kinds: m3-tooltip (plain) | m3-tooltip--rich. A tooltip is hidden until it has data-open (the page
+ * or behaviors.js sets it on hover or focus of the anchor and places the tooltip next to it); the
+ * anchor names it with aria-describedby (plain) or controls it (rich).
+ * Sizes from Compose's tooltips (minimum and maximum sizes in tokens.css):
+ *   plain padding 4 above and below, 8 at the sides:
+ *   [impl:compose-material3/commonMain/androidx/compose/material3/Tooltip.kt:1455] 4
+ *   [impl:compose-material3/commonMain/androidx/compose/material3/Tooltip.kt:1457] 8
+ *   rich: 16 at the sides, 24 between the subhead and the text baselines, 16 under the text,
+ *   actions at least 36 tall with 8 under them:
+ *   [impl:compose-material3/commonMain/androidx/compose/material3/Tooltip.kt:1461] 16
+ *   (the first baseline 28 from the top is --md-impl-rich-tooltip-subhead-baseline in tokens.css)
+ *   [impl:compose-material3/commonMain/androidx/compose/material3/Tooltip.kt:1465] 24
+ *   [impl:compose-material3/commonMain/androidx/compose/material3/Tooltip.kt:1467] 16
+ *   [impl:compose-material3/commonMain/androidx/compose/material3/Tooltip.kt:1469] 36
+ *   [impl:compose-material3/commonMain/androidx/compose/material3/Tooltip.kt:1471] 8
+ * Compose measures the rich tooltip's vertical spacing to text baselines; CSS has none, so each
+ * baseline distance is applied to the bottom of the line box (the line height is subtracted).
+ */
+
+/* Plain (md.comp.plain-tooltip.*) */
+.m3-tooltip {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  inline-size: max-content;
+  min-inline-size: var(--md-impl-tooltip-min-width);
+  max-inline-size: var(--md-impl-plain-tooltip-max-width);
+  min-block-size: var(--md-impl-tooltip-min-height);
+  margin: 0;
+  padding: var(--md-sys-space-50) var(--md-sys-space-100);
+  border-radius: var(--md-comp-plain-tooltip-container-shape);
+  background: var(--md-sys-color-inverse-surface); /* md.comp.plain-tooltip.container.color */
+  color: var(--md-sys-color-inverse-on-surface); /* md.comp.plain-tooltip.supporting-text.color */
+  font-family: var(--md-comp-plain-tooltip-supporting-text-font);
+  font-weight: var(--md-comp-plain-tooltip-supporting-text-weight);
+  font-size: var(--md-comp-plain-tooltip-supporting-text-size);
+  line-height: var(--md-comp-plain-tooltip-supporting-text-line-height);
+  letter-spacing: var(--md-comp-plain-tooltip-supporting-text-tracking);
+}
+
+.m3-tooltip:not([data-open]) {
+  display: none;
+}
+
+/* Rich (md.comp.rich-tooltip.*) */
+.m3-tooltip--rich {
+  flex-direction: column;
+  align-items: stretch;
+  max-inline-size: var(--md-impl-rich-tooltip-max-width);
+  padding: 0 var(--md-sys-space-200) var(--md-sys-space-200);
+  border-radius: var(--md-comp-rich-tooltip-container-shape);
+  background: var(--md-sys-color-surface-container); /* md.comp.rich-tooltip.container.color */
+  box-shadow: var(--md-sys-elevation-level2-shadow); /* md.comp.rich-tooltip.container.elevation */
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.m3-tooltip-subhead {
+  margin: 0;
+  padding-block-start: calc(var(--md-impl-rich-tooltip-subhead-baseline) - var(--md-comp-rich-tooltip-subhead-line-height));
+  color: var(--md-sys-color-on-surface-variant); /* md.comp.rich-tooltip.subhead.color */
+  font-family: var(--md-comp-rich-tooltip-subhead-font);
+  font-weight: var(--md-comp-rich-tooltip-subhead-weight);
+  font-size: var(--md-comp-rich-tooltip-subhead-size);
+  line-height: var(--md-comp-rich-tooltip-subhead-line-height);
+  letter-spacing: var(--md-comp-rich-tooltip-subhead-tracking);
+}
+
+.m3-tooltip-text {
+  margin: 0;
+  padding-block-start: calc(var(--md-impl-rich-tooltip-subhead-baseline) - var(--md-comp-rich-tooltip-supporting-text-line-height));
+  color: var(--md-sys-color-on-surface-variant); /* md.comp.rich-tooltip.supporting-text.color */
+  font-family: var(--md-comp-rich-tooltip-supporting-text-font);
+  font-weight: var(--md-comp-rich-tooltip-supporting-text-weight);
+  font-size: var(--md-comp-rich-tooltip-supporting-text-size);
+  line-height: var(--md-comp-rich-tooltip-supporting-text-line-height);
+  letter-spacing: var(--md-comp-rich-tooltip-supporting-text-tracking);
+}
+
+.m3-tooltip-subhead + .m3-tooltip-text {
+  padding-block-start: calc(var(--md-sys-space-300) - var(--md-comp-rich-tooltip-supporting-text-line-height));
+}
+
+/* Actions: text buttons at the start (md.comp.rich-tooltip.action.*) */
+.m3-tooltip-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  min-block-size: var(--md-impl-rich-tooltip-action-min-height);
+  margin: 0 0 calc(var(--md-sys-space-100) - var(--md-sys-space-200));
+}
+
+.m3-tooltip-actions .m3-button {
+  font-family: var(--md-comp-rich-tooltip-action-label-text-font);
+  font-weight: var(--md-comp-rich-tooltip-action-label-text-weight);
+  font-size: var(--md-comp-rich-tooltip-action-label-text-size);
+  line-height: var(--md-comp-rich-tooltip-action-label-text-line-height);
+  letter-spacing: var(--md-comp-rich-tooltip-action-label-text-tracking);
+}
