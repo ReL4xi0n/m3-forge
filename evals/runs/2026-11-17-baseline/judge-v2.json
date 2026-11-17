@@ -1,0 +1,765 @@
+{
+  "runId": "baseline-2026-11-17",
+  "byPlatform": {
+    "web": {
+      "v1": {
+        "component-choice": 2.78,
+        "hierarchy-typography": 2.78,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2.44,
+        "interaction-states": 2.56,
+        "dark-mode": 3,
+        "overall-polish": 2.33
+      },
+      "v2": {
+        "component-choice": 2.67,
+        "hierarchy-typography": 2.44,
+        "color-roles": 2.67,
+        "shape-expressive": 2.67,
+        "spacing-layout": 2.11,
+        "interaction-states": 2.78,
+        "dark-mode": 2.78,
+        "overall-polish": 1.89
+      },
+      "threes": {
+        "v1": 54,
+        "v2": 39,
+        "of": 72
+      }
+    },
+    "flutter": {
+      "v1": {
+        "component-choice": 2,
+        "hierarchy-typography": 2.44,
+        "color-roles": 2.56,
+        "shape-expressive": 2.56,
+        "spacing-layout": 2.22,
+        "interaction-states": 2.11,
+        "dark-mode": 2.22,
+        "overall-polish": 1
+      },
+      "v2": {
+        "component-choice": 2.44,
+        "hierarchy-typography": 2.33,
+        "color-roles": 2.67,
+        "shape-expressive": 2.56,
+        "spacing-layout": 2.22,
+        "interaction-states": 2.78,
+        "dark-mode": 3,
+        "overall-polish": 2
+      },
+      "threes": {
+        "v1": 22,
+        "v2": 39,
+        "of": 72
+      }
+    },
+    "compose": {
+      "v1": {
+        "component-choice": 2.63,
+        "hierarchy-typography": 3,
+        "color-roles": 2.5,
+        "shape-expressive": 2.5,
+        "spacing-layout": 2.38,
+        "interaction-states": 2.75,
+        "dark-mode": 2.88,
+        "overall-polish": 2.38
+      },
+      "v2": {
+        "component-choice": 2.63,
+        "hierarchy-typography": 2.75,
+        "color-roles": 2.63,
+        "shape-expressive": 2.63,
+        "spacing-layout": 2.25,
+        "interaction-states": 3,
+        "dark-mode": 2.88,
+        "overall-polish": 2.13
+      },
+      "threes": {
+        "v1": 40,
+        "v2": 39,
+        "of": 64
+      }
+    }
+  },
+  "overall": {
+    "v1": {
+      "component-choice": 2.46,
+      "hierarchy-typography": 2.73,
+      "color-roles": 2.69,
+      "shape-expressive": 2.69,
+      "spacing-layout": 2.35,
+      "interaction-states": 2.46,
+      "dark-mode": 2.69,
+      "overall-polish": 1.88
+    },
+    "v2": {
+      "component-choice": 2.58,
+      "hierarchy-typography": 2.5,
+      "color-roles": 2.65,
+      "shape-expressive": 2.62,
+      "spacing-layout": 2.19,
+      "interaction-states": 2.85,
+      "dark-mode": 2.88,
+      "overall-polish": 2
+    },
+    "threes": {
+      "v1": 116,
+      "v2": 117,
+      "of": 208
+    }
+  },
+  "cells": [
+    {
+      "cell": "landing.web.web-empty.default",
+      "platform": "web",
+      "harness": "v1",
+      "v1": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 3,
+        "interaction-states": 2,
+        "dark-mode": 3,
+        "overall-polish": 3
+      },
+      "v2": {
+        "component-choice": 3,
+        "hierarchy-typography": 2,
+        "color-roles": 2,
+        "shape-expressive": 3,
+        "spacing-layout": 3,
+        "interaction-states": 3,
+        "dark-mode": 2,
+        "overall-polish": 2
+      }
+    },
+    {
+      "cell": "landing.flutter.flutter-material_ui.default",
+      "platform": "flutter",
+      "harness": "v2",
+      "v1": {
+        "component-choice": 2,
+        "hierarchy-typography": 3,
+        "color-roles": 2,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 2,
+        "dark-mode": 2,
+        "overall-polish": 1
+      },
+      "v2": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 2,
+        "shape-expressive": 2,
+        "spacing-layout": 3,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "cell": "landing.compose.compose-1.5.default",
+      "platform": "compose",
+      "harness": "v2",
+      "v1": {
+        "component-choice": 2,
+        "hierarchy-typography": 3,
+        "color-roles": 2,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 2,
+        "dark-mode": 2,
+        "overall-polish": 2
+      },
+      "v2": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 2,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 2,
+        "overall-polish": 2
+      }
+    },
+    {
+      "cell": "settings.web.web-react.default",
+      "platform": "web",
+      "harness": "v1",
+      "v1": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 3,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 3
+      },
+      "v2": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 2,
+        "shape-expressive": 3,
+        "spacing-layout": 3,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "cell": "settings.flutter.flutter-material_ui.default",
+      "platform": "flutter",
+      "harness": "v2",
+      "v1": {
+        "component-choice": 2,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 3,
+        "interaction-states": 2,
+        "dark-mode": 3,
+        "overall-polish": 1
+      },
+      "v2": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 3,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 3
+      }
+    },
+    {
+      "cell": "settings.compose.compose-1.5.default",
+      "platform": "compose",
+      "harness": "v2",
+      "v1": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 2,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      },
+      "v2": {
+        "component-choice": 2,
+        "hierarchy-typography": 3,
+        "color-roles": 2,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "cell": "dashboard.web.web-react.default",
+      "platform": "web",
+      "harness": "v1",
+      "v1": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      },
+      "v2": {
+        "component-choice": 3,
+        "hierarchy-typography": 2,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "cell": "dashboard.flutter.flutter-material_ui.default",
+      "platform": "flutter",
+      "harness": "v2",
+      "v1": {
+        "component-choice": 1,
+        "hierarchy-typography": 2,
+        "color-roles": 2,
+        "shape-expressive": 3,
+        "spacing-layout": 1,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 1
+      },
+      "v2": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "cell": "dashboard.compose.compose-1.5.default",
+      "platform": "compose",
+      "harness": "v2",
+      "v1": {
+        "component-choice": 2,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      },
+      "v2": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "cell": "product-detail.web.web-empty.default",
+      "platform": "web",
+      "harness": "v1",
+      "v1": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 3
+      },
+      "v2": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 2,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "cell": "product-detail.flutter.flutter-material_ui.default",
+      "platform": "flutter",
+      "harness": "v2",
+      "v1": {
+        "component-choice": 2,
+        "hierarchy-typography": 1,
+        "color-roles": 2,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 2,
+        "dark-mode": 2,
+        "overall-polish": 1
+      },
+      "v2": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 2,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "cell": "product-detail.compose.compose-1.5.default",
+      "platform": "compose",
+      "harness": "v2",
+      "v1": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 2,
+        "shape-expressive": 3,
+        "spacing-layout": 3,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 3
+      },
+      "v2": {
+        "component-choice": 2,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 3,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "cell": "onboarding.web.web-react.default",
+      "platform": "web",
+      "harness": "v1",
+      "v1": {
+        "component-choice": 2,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 3,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 3
+      },
+      "v2": {
+        "component-choice": 2,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "cell": "onboarding.flutter.flutter-material_ui.default",
+      "platform": "flutter",
+      "harness": "v2",
+      "v1": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 3,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 2,
+        "dark-mode": 2,
+        "overall-polish": 1
+      },
+      "v2": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 2,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 2,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "cell": "onboarding.compose.compose-1.5.default",
+      "platform": "compose",
+      "harness": "v2",
+      "v1": {
+        "component-choice": 2,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      },
+      "v2": {
+        "component-choice": 3,
+        "hierarchy-typography": 2,
+        "color-roles": 3,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "cell": "empty-error.web.web-empty.default",
+      "platform": "web",
+      "harness": "v1",
+      "v1": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 2,
+        "dark-mode": 3,
+        "overall-polish": 2
+      },
+      "v2": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 1,
+        "interaction-states": 3,
+        "dark-mode": 2,
+        "overall-polish": 2
+      }
+    },
+    {
+      "cell": "empty-error.flutter.flutter-material_ui.default",
+      "platform": "flutter",
+      "harness": "v2",
+      "v1": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 2,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 2,
+        "dark-mode": 2,
+        "overall-polish": 1
+      },
+      "v2": {
+        "component-choice": 2,
+        "hierarchy-typography": 1,
+        "color-roles": 3,
+        "shape-expressive": 2,
+        "spacing-layout": 1,
+        "interaction-states": 2,
+        "dark-mode": 3,
+        "overall-polish": 1
+      }
+    },
+    {
+      "cell": "empty-error.compose.compose-1.5.default",
+      "platform": "compose",
+      "harness": "v2",
+      "v1": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 2,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 2,
+        "dark-mode": 3,
+        "overall-polish": 2
+      },
+      "v2": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 2,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "cell": "onboarding.web.web-vue.default",
+      "platform": "web",
+      "harness": "v1",
+      "v1": {
+        "component-choice": 2,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 3,
+        "interaction-states": 2,
+        "dark-mode": 3,
+        "overall-polish": 2
+      },
+      "v2": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "cell": "settings.flutter.flutter-legacy.default",
+      "platform": "flutter",
+      "harness": "v2",
+      "v1": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 3,
+        "interaction-states": 2,
+        "dark-mode": 2,
+        "overall-polish": 1
+      },
+      "v2": {
+        "component-choice": 3,
+        "hierarchy-typography": 2,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 3,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "cell": "settings.web.web-react.classic",
+      "platform": "web",
+      "harness": "v1",
+      "v1": {
+        "component-choice": 3,
+        "hierarchy-typography": 2,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      },
+      "v2": {
+        "component-choice": 3,
+        "hierarchy-typography": 2,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "cell": "settings.flutter.flutter-material_ui.classic",
+      "platform": "flutter",
+      "harness": "v2",
+      "v1": {
+        "component-choice": 2,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 2,
+        "dark-mode": 2,
+        "overall-polish": 1
+      },
+      "v2": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "cell": "settings.compose.compose-1.5.classic",
+      "platform": "compose",
+      "harness": "v2",
+      "v1": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 3,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 3
+      },
+      "v2": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "cell": "dashboard.web.web-empty.seed-B5651D",
+      "platform": "web",
+      "harness": "v1",
+      "v1": {
+        "component-choice": 3,
+        "hierarchy-typography": 2,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 2,
+        "dark-mode": 3,
+        "overall-polish": 1
+      },
+      "v2": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 1,
+        "dark-mode": 3,
+        "overall-polish": 1
+      }
+    },
+    {
+      "cell": "dashboard.flutter.flutter-material_ui.seed-B5651D",
+      "platform": "flutter",
+      "harness": "v2",
+      "v1": {
+        "component-choice": 2,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 3,
+        "interaction-states": 2,
+        "dark-mode": 2,
+        "overall-polish": 1
+      },
+      "v2": {
+        "component-choice": 2,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "cell": "dashboard.compose.compose-1.5.seed-B5651D",
+      "platform": "compose",
+      "harness": "v2",
+      "v1": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 2,
+        "spacing-layout": 3,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 3
+      },
+      "v2": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 2,
+        "spacing-layout": 3,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 3
+      }
+    }
+  ]
+}
