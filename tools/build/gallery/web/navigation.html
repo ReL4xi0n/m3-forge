@@ -430,6 +430,25 @@
       <div class="m3-loading-indicator m3-loading-indicator--contained" role="progressbar" aria-label="Loading"></div>
     </div>
   </section>
+  <section aria-labelledby="live">
+    <h2 class="m3-type-title-large" id="live">Live behaviors (behaviors.js)</h2>
+    <div class="gallery-row">
+      <button class="m3-button m3-button--tonal" type="button" id="live-menu-button">Sort</button>
+      <div class="m3-menu" role="menu" id="live-menu" aria-label="Sort live">
+        <button class="m3-menu-item" role="menuitem" type="button"><span class="m3-menu-item-text">Newest first</span></button>
+        <button class="m3-menu-item" role="menuitem" type="button"><span class="m3-menu-item-text">Oldest first</span></button>
+      </div>
+      <button class="m3-button m3-button--outlined" type="button" id="live-dialog-button">Leave the group</button>
+    </div>
+  </section>
 </main>
+<script src="assets/m3/behaviors.js"></script>
+<script>
+  M3.ripple(document.body);
+  M3.menu(document.getElementById('live-menu-button'), document.getElementById('live-menu'));
+  const leave = M3.dialog(document.getElementById('modal-dialog'));
+  document.getElementById('live-dialog-button').addEventListener('click', leave.open);
+  for (const b of document.querySelectorAll('#modal-dialog .m3-button')) b.addEventListener('click', leave.close);
+</script>
 </body>
 </html>

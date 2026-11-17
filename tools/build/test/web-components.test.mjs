@@ -809,7 +809,7 @@ function inPage() {
   return { lowContrast, badGeometry, checked, scrollWidth: document.documentElement.scrollWidth };
 }
 
-const MIME = { '.html': 'text/html', '.css': 'text/css', '.woff2': 'font/woff2', '.ttf': 'font/ttf', '.txt': 'text/plain' };
+const MIME = { '.html': 'text/html', '.js': 'text/javascript','.css': 'text/css', '.woff2': 'font/woff2', '.ttf': 'font/ttf', '.txt': 'text/plain' };
 function serve(dir) {
   const base = resolve(dir);
   const server = createServer((req, res) => {

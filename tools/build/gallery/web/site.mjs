@@ -28,7 +28,8 @@ export function buildGallerySite(name, outDir) {
   // page does not use would be an unused asset).
   const html = readFileSync(page, 'utf8');
   const linked = WEB_COMPONENTS.filter(c => html.includes(`href="assets/m3/${c}.css"`));
-  const parts = Object.keys(MANIFEST.web).filter(p => !WEB_COMPONENTS.includes(p) || linked.includes(p));
+  const script = html.includes('src="assets/m3/behaviors.js"');
+  const parts = Object.keys(MANIFEST.web).filter(p => (p === 'behaviors' ? script : !WEB_COMPONENTS.includes(p) || linked.includes(p)));
   const r = installAssets({ projectDir: dir, platform: 'web', parts });
   if (r.conflicts.length) throw new Error(`install conflicts: ${r.conflicts.join(', ')}`);
   writeTheme({ platform: 'web', seed: BASELINE_SEED, out: join(dir, THEME_PATH) });

@@ -364,7 +364,9 @@
     </div>
   </section>
 </main>
+<script src="assets/m3/behaviors.js"></script>
 <script>
+  M3.ripple(document.body);
   document.getElementById('indeterminate').indeterminate = true;
   for (const input of document.querySelectorAll('.m3-slider > input')) {
     input.addEventListener('input', () => {

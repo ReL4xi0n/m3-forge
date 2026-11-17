@@ -44,6 +44,8 @@ export const MANIFEST = {
       { src: 'fonts/MaterialSymbolsOutlined.woff2', group: 'fonts' },
       ...LICENSES,
     ],
+    // Behaviors script (global M3: motion, ripple, dialog, menu); a page opts in with <script src="assets/m3/behaviors.js">.
+    behaviors: [{ src: 'web/behaviors.js', group: 'main' }],
     // Component style sheets, one part each. button-group and split-button style m3-button and
     // m3-icon-button children, so they go with button (and icon-button).
     ...Object.fromEntries(WEB_COMPONENTS.map((c) => [c, [{ src: `web/components/${c}.css`, group: 'main' }]])),
