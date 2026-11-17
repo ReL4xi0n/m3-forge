@@ -1,7 +1,7 @@
 // Jetpack Compose checks: src/main/**/*.kt of any module.
 import {
   callArgs, countNonBlank, findEmoji, looksGenerated, onGrid, radiusOnScale, readText, SHAPE_SCALE,
-  stripComments, walk,
+  stripComments, themeAsset, themeAssetReason, walk,
 } from './common.mjs';
 import { composeVectors, describeProblems, pathLiterals, xmlVectorIcon } from './symbols.mjs';
 
@@ -97,9 +97,10 @@ export async function scanCompose(projectDir, collector) {
   let scanned = 0;
   for (const rel of files) {
     const text = await readText(projectDir, rel);
-    if (looksGenerated(text)) continue;
+    const asset = themeAsset(rel, text);
+    if (!asset && looksGenerated(text)) continue;
     scanned++;
-    const reason = themeReason(rel);
+    const reason = asset ? themeAssetReason(asset) : themeReason(rel);
     let exempt = () => null;
     if (reason) {
       const entry = collector.allow({ file: rel, line: null, reason, suppressed: {} });

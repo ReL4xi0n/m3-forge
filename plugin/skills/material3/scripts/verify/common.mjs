@@ -63,6 +63,36 @@ export function looksGenerated(text) {
   return GENERATED_HEADER.test(text.split('\n', 6).join('\n'));
 }
 
+// Theme assets of the material3 skill: token files copied into the project. Each starts with the
+// marker `material3 skill asset: <asset path>`. A file whose first lines name one of these paths, and
+// whose own file name matches it, is a theme file (its literals are the tokens themselves); it is
+// scanned as such even though its header says it is generated.
+export const THEME_ASSETS = new Set([
+  'assets/web/tokens.css',
+  'assets/flutter/lib/m3/tokens.dart',
+  'assets/flutter/lib/m3/type.dart',
+  'assets/flutter/lib/m3/shape.dart',
+  'assets/flutter/lib/m3/space.dart',
+  'assets/flutter/lib/m3/motion.dart',
+  'assets/compose/theme/Type.kt',
+  'assets/compose/theme/Shape.kt',
+  'assets/compose/theme/Space.kt',
+  'assets/compose/theme/Motion.kt',
+  'assets/compose/theme/Tokens.kt',
+]);
+
+const ASSET_MARKER = /material3 skill asset: (\S+)/;
+const baseName = p => p.slice(p.lastIndexOf('/') + 1);
+
+// The theme asset path a file declares, or null.
+export function themeAsset(rel, text) {
+  const m = text.split('\n', 3).join('\n').match(ASSET_MARKER);
+  if (!m || !THEME_ASSETS.has(m[1]) || baseName(m[1]) !== baseName(rel)) return null;
+  return m[1];
+}
+
+export const themeAssetReason = asset => `material3 skill theme asset (${asset})`;
+
 // Recursive walk below `root`, skipping SKIP_DIRS. Returns sorted posix paths relative to `base`.
 export async function walk(base, root = base, prefix = '') {
   let entries;

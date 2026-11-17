@@ -1,7 +1,7 @@
 // Web checks: HTML, CSS/SCSS, JS/TS (JSX/TSX) and Vue single-file components.
 import {
   countNonBlank, findEmoji, lineAt, lineStarts, looksGenerated, onGrid, radiusOnScale,
-  readText, SHAPE_SCALE, stripComments, walk,
+  readText, SHAPE_SCALE, stripComments, themeAsset, themeAssetReason, walk,
 } from './common.mjs';
 import { describeProblems, pathLiterals, svgRanges, webSvgIcons } from './symbols.mjs';
 
@@ -302,7 +302,7 @@ function classAttrs(text, start, end, cb) {
 
 const NAV_CONTEXT = /(?:href|to|querySelector(?:All)?|getElementById|closest|matches|hash|scrollIntoView|navigate|router|anchor)\W*$/i;
 
-function scanFile(rel, text, ctx, collector) {
+function scanFile(rel, text, ctx, collector, asset = null) {
   const { clean: src, parts } = regions(rel, text);
   const exemptRanges = [];
 
@@ -320,7 +320,12 @@ function scanFile(rel, text, ctx, collector) {
   }
   const starts = lineStarts(text);
   const entries = new Map();
+  // A skill theme asset (tokens.css) is a theme file as a whole.
+  const assetEntry = asset
+    ? collector.allow({ file: rel, line: null, reason: themeAssetReason(asset), suppressed: {} })
+    : null;
   const exempt = (pos) => {
+    if (assetEntry) return assetEntry;
     const r = exemptRanges.find(r => r.start <= pos && pos <= r.end);
     if (!r) return null;
     if (!entries.has(r)) {
@@ -426,7 +431,7 @@ function scanFile(rel, text, ctx, collector) {
       }
     }
   }
-  return { themeLines: themeLines.size, nonBlank: countNonBlank(text) };
+  return { themeLines: asset ? countNonBlank(text) : themeLines.size, nonBlank: countNonBlank(text) };
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -464,14 +469,15 @@ export async function scanWeb(projectDir, collector) {
   const texts = [];
   for (const rel of files) {
     const text = await readText(projectDir, rel);
-    if (looksGenerated(text)) continue;
-    texts.push([rel, text]);
+    const asset = themeAsset(rel, text);
+    if (!asset && looksGenerated(text)) continue;
+    texts.push([rel, text, asset]);
   }
   const ctx = await projectContext(projectDir, all, texts);
   let uiLines = 0;
   let themeLines = 0;
-  for (const [rel, text] of texts) {
-    const r = scanFile(rel, text, ctx, collector);
+  for (const [rel, text, asset] of texts) {
+    const r = scanFile(rel, text, ctx, collector, asset);
     uiLines += r.nonBlank - r.themeLines;
     themeLines += r.themeLines;
   }

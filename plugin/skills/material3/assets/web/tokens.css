@@ -1,0 +1,577 @@
+/* material3 skill asset: assets/web/tokens.css
+ * Material 3 design tokens for the web: type scale, shape, elevation, motion, state and spacing.
+ * Built from the skill token files (tokens/sys.json); generated, do not edit.
+ * Color roles are not here: scripts/color writes them.
+ * Material 3 Expressive is the default. data-m3-style="classic" on the root element turns the
+ * Expressive-only values off: emphasized type becomes the same role of the type scale, the added
+ * shape steps become the standard step they enlarge, and springs use the standard scheme.
+ * Use the variables (and the .m3-type-* classes) instead of literal sizes, radii and spacing.
+ */
+
+:root {
+  /* Typefaces */
+  --md-ref-typeface-brand: Roboto; /* md.ref.typeface.brand */
+  --md-ref-typeface-plain: Roboto; /* md.ref.typeface.plain */
+  --md-ref-typeface-variable-brand: 'Roboto Flex'; /* md.ref.typeface.variable.brand */
+  --md-ref-typeface-variable-plain: 'Roboto Flex'; /* md.ref.typeface.variable.plain */
+  --md-ref-typeface-weight-bold: 700; /* md.ref.typeface.weight-bold */
+  --md-ref-typeface-weight-medium: 500; /* md.ref.typeface.weight-medium */
+  --md-ref-typeface-weight-regular: 400; /* md.ref.typeface.weight-regular */
+
+  /* Type scale */
+  --md-sys-typescale-display-large-font: var(--md-ref-typeface-brand); /* md.sys.typescale.display-large.font */
+  --md-sys-typescale-display-large-weight: var(--md-ref-typeface-weight-regular); /* md.sys.typescale.display-large.weight */
+  --md-sys-typescale-display-large-size: 3.5625rem; /* md.sys.typescale.display-large.size */
+  --md-sys-typescale-display-large-line-height: 4rem; /* md.sys.typescale.display-large.line-height */
+  --md-sys-typescale-display-large-tracking: -0.015625rem; /* md.sys.typescale.display-large.tracking */
+  --md-sys-typescale-display-medium-font: var(--md-ref-typeface-brand); /* md.sys.typescale.display-medium.font */
+  --md-sys-typescale-display-medium-weight: var(--md-ref-typeface-weight-regular); /* md.sys.typescale.display-medium.weight */
+  --md-sys-typescale-display-medium-size: 2.8125rem; /* md.sys.typescale.display-medium.size */
+  --md-sys-typescale-display-medium-line-height: 3.25rem; /* md.sys.typescale.display-medium.line-height */
+  --md-sys-typescale-display-medium-tracking: 0rem; /* md.sys.typescale.display-medium.tracking */
+  --md-sys-typescale-display-small-font: var(--md-ref-typeface-brand); /* md.sys.typescale.display-small.font */
+  --md-sys-typescale-display-small-weight: var(--md-ref-typeface-weight-regular); /* md.sys.typescale.display-small.weight */
+  --md-sys-typescale-display-small-size: 2.25rem; /* md.sys.typescale.display-small.size */
+  --md-sys-typescale-display-small-line-height: 2.75rem; /* md.sys.typescale.display-small.line-height */
+  --md-sys-typescale-display-small-tracking: 0rem; /* md.sys.typescale.display-small.tracking */
+  --md-sys-typescale-headline-large-font: var(--md-ref-typeface-brand); /* md.sys.typescale.headline-large.font */
+  --md-sys-typescale-headline-large-weight: var(--md-ref-typeface-weight-regular); /* md.sys.typescale.headline-large.weight */
+  --md-sys-typescale-headline-large-size: 2rem; /* md.sys.typescale.headline-large.size */
+  --md-sys-typescale-headline-large-line-height: 2.5rem; /* md.sys.typescale.headline-large.line-height */
+  --md-sys-typescale-headline-large-tracking: 0rem; /* md.sys.typescale.headline-large.tracking */
+  --md-sys-typescale-headline-medium-font: var(--md-ref-typeface-brand); /* md.sys.typescale.headline-medium.font */
+  --md-sys-typescale-headline-medium-weight: var(--md-ref-typeface-weight-regular); /* md.sys.typescale.headline-medium.weight */
+  --md-sys-typescale-headline-medium-size: 1.75rem; /* md.sys.typescale.headline-medium.size */
+  --md-sys-typescale-headline-medium-line-height: 2.25rem; /* md.sys.typescale.headline-medium.line-height */
+  --md-sys-typescale-headline-medium-tracking: 0rem; /* md.sys.typescale.headline-medium.tracking */
+  --md-sys-typescale-headline-small-font: var(--md-ref-typeface-brand); /* md.sys.typescale.headline-small.font */
+  --md-sys-typescale-headline-small-weight: var(--md-ref-typeface-weight-regular); /* md.sys.typescale.headline-small.weight */
+  --md-sys-typescale-headline-small-size: 1.5rem; /* md.sys.typescale.headline-small.size */
+  --md-sys-typescale-headline-small-line-height: 2rem; /* md.sys.typescale.headline-small.line-height */
+  --md-sys-typescale-headline-small-tracking: 0rem; /* md.sys.typescale.headline-small.tracking */
+  --md-sys-typescale-title-large-font: var(--md-ref-typeface-brand); /* md.sys.typescale.title-large.font */
+  --md-sys-typescale-title-large-weight: var(--md-ref-typeface-weight-regular); /* md.sys.typescale.title-large.weight */
+  --md-sys-typescale-title-large-size: 1.375rem; /* md.sys.typescale.title-large.size */
+  --md-sys-typescale-title-large-line-height: 1.75rem; /* md.sys.typescale.title-large.line-height */
+  --md-sys-typescale-title-large-tracking: 0rem; /* md.sys.typescale.title-large.tracking */
+  --md-sys-typescale-title-medium-font: var(--md-ref-typeface-plain); /* md.sys.typescale.title-medium.font */
+  --md-sys-typescale-title-medium-weight: var(--md-ref-typeface-weight-medium); /* md.sys.typescale.title-medium.weight */
+  --md-sys-typescale-title-medium-size: 1rem; /* md.sys.typescale.title-medium.size */
+  --md-sys-typescale-title-medium-line-height: 1.5rem; /* md.sys.typescale.title-medium.line-height */
+  --md-sys-typescale-title-medium-tracking: 0.009375rem; /* md.sys.typescale.title-medium.tracking */
+  --md-sys-typescale-title-small-font: var(--md-ref-typeface-plain); /* md.sys.typescale.title-small.font */
+  --md-sys-typescale-title-small-weight: var(--md-ref-typeface-weight-medium); /* md.sys.typescale.title-small.weight */
+  --md-sys-typescale-title-small-size: 0.875rem; /* md.sys.typescale.title-small.size */
+  --md-sys-typescale-title-small-line-height: 1.25rem; /* md.sys.typescale.title-small.line-height */
+  --md-sys-typescale-title-small-tracking: 0.00625rem; /* md.sys.typescale.title-small.tracking */
+  --md-sys-typescale-body-large-font: var(--md-ref-typeface-plain); /* md.sys.typescale.body-large.font */
+  --md-sys-typescale-body-large-weight: var(--md-ref-typeface-weight-regular); /* md.sys.typescale.body-large.weight */
+  --md-sys-typescale-body-large-size: 1rem; /* md.sys.typescale.body-large.size */
+  --md-sys-typescale-body-large-line-height: 1.5rem; /* md.sys.typescale.body-large.line-height */
+  --md-sys-typescale-body-large-tracking: 0.03125rem; /* md.sys.typescale.body-large.tracking */
+  --md-sys-typescale-body-medium-font: var(--md-ref-typeface-plain); /* md.sys.typescale.body-medium.font */
+  --md-sys-typescale-body-medium-weight: var(--md-ref-typeface-weight-regular); /* md.sys.typescale.body-medium.weight */
+  --md-sys-typescale-body-medium-size: 0.875rem; /* md.sys.typescale.body-medium.size */
+  --md-sys-typescale-body-medium-line-height: 1.25rem; /* md.sys.typescale.body-medium.line-height */
+  --md-sys-typescale-body-medium-tracking: 0.015625rem; /* md.sys.typescale.body-medium.tracking */
+  --md-sys-typescale-body-small-font: var(--md-ref-typeface-plain); /* md.sys.typescale.body-small.font */
+  --md-sys-typescale-body-small-weight: var(--md-ref-typeface-weight-regular); /* md.sys.typescale.body-small.weight */
+  --md-sys-typescale-body-small-size: 0.75rem; /* md.sys.typescale.body-small.size */
+  --md-sys-typescale-body-small-line-height: 1rem; /* md.sys.typescale.body-small.line-height */
+  --md-sys-typescale-body-small-tracking: 0.025rem; /* md.sys.typescale.body-small.tracking */
+  --md-sys-typescale-label-large-font: var(--md-ref-typeface-plain); /* md.sys.typescale.label-large.font */
+  --md-sys-typescale-label-large-weight: var(--md-ref-typeface-weight-medium); /* md.sys.typescale.label-large.weight */
+  --md-sys-typescale-label-large-size: 0.875rem; /* md.sys.typescale.label-large.size */
+  --md-sys-typescale-label-large-line-height: 1.25rem; /* md.sys.typescale.label-large.line-height */
+  --md-sys-typescale-label-large-tracking: 0.00625rem; /* md.sys.typescale.label-large.tracking */
+  --md-sys-typescale-label-medium-font: var(--md-ref-typeface-plain); /* md.sys.typescale.label-medium.font */
+  --md-sys-typescale-label-medium-weight: var(--md-ref-typeface-weight-medium); /* md.sys.typescale.label-medium.weight */
+  --md-sys-typescale-label-medium-size: 0.75rem; /* md.sys.typescale.label-medium.size */
+  --md-sys-typescale-label-medium-line-height: 1rem; /* md.sys.typescale.label-medium.line-height */
+  --md-sys-typescale-label-medium-tracking: 0.03125rem; /* md.sys.typescale.label-medium.tracking */
+  --md-sys-typescale-label-small-font: var(--md-ref-typeface-plain); /* md.sys.typescale.label-small.font */
+  --md-sys-typescale-label-small-weight: var(--md-ref-typeface-weight-medium); /* md.sys.typescale.label-small.weight */
+  --md-sys-typescale-label-small-size: 0.6875rem; /* md.sys.typescale.label-small.size */
+  --md-sys-typescale-label-small-line-height: 1rem; /* md.sys.typescale.label-small.line-height */
+  --md-sys-typescale-label-small-tracking: 0.03125rem; /* md.sys.typescale.label-small.tracking */
+
+  /* Emphasized type scale (Expressive); Classic uses the same role of the type scale */
+  --md-sys-typescale-emphasized-display-large-font: var(--md-sys-typescale-display-large-font);
+  --md-sys-typescale-emphasized-display-large-weight: var(--md-sys-typescale-display-large-weight);
+  --md-sys-typescale-emphasized-display-large-size: var(--md-sys-typescale-display-large-size);
+  --md-sys-typescale-emphasized-display-large-line-height: var(--md-sys-typescale-display-large-line-height);
+  --md-sys-typescale-emphasized-display-large-tracking: var(--md-sys-typescale-display-large-tracking);
+  --md-sys-typescale-emphasized-display-medium-font: var(--md-sys-typescale-display-medium-font);
+  --md-sys-typescale-emphasized-display-medium-weight: var(--md-sys-typescale-display-medium-weight);
+  --md-sys-typescale-emphasized-display-medium-size: var(--md-sys-typescale-display-medium-size);
+  --md-sys-typescale-emphasized-display-medium-line-height: var(--md-sys-typescale-display-medium-line-height);
+  --md-sys-typescale-emphasized-display-medium-tracking: var(--md-sys-typescale-display-medium-tracking);
+  --md-sys-typescale-emphasized-display-small-font: var(--md-sys-typescale-display-small-font);
+  --md-sys-typescale-emphasized-display-small-weight: var(--md-sys-typescale-display-small-weight);
+  --md-sys-typescale-emphasized-display-small-size: var(--md-sys-typescale-display-small-size);
+  --md-sys-typescale-emphasized-display-small-line-height: var(--md-sys-typescale-display-small-line-height);
+  --md-sys-typescale-emphasized-display-small-tracking: var(--md-sys-typescale-display-small-tracking);
+  --md-sys-typescale-emphasized-headline-large-font: var(--md-sys-typescale-headline-large-font);
+  --md-sys-typescale-emphasized-headline-large-weight: var(--md-sys-typescale-headline-large-weight);
+  --md-sys-typescale-emphasized-headline-large-size: var(--md-sys-typescale-headline-large-size);
+  --md-sys-typescale-emphasized-headline-large-line-height: var(--md-sys-typescale-headline-large-line-height);
+  --md-sys-typescale-emphasized-headline-large-tracking: var(--md-sys-typescale-headline-large-tracking);
+  --md-sys-typescale-emphasized-headline-medium-font: var(--md-sys-typescale-headline-medium-font);
+  --md-sys-typescale-emphasized-headline-medium-weight: var(--md-sys-typescale-headline-medium-weight);
+  --md-sys-typescale-emphasized-headline-medium-size: var(--md-sys-typescale-headline-medium-size);
+  --md-sys-typescale-emphasized-headline-medium-line-height: var(--md-sys-typescale-headline-medium-line-height);
+  --md-sys-typescale-emphasized-headline-medium-tracking: var(--md-sys-typescale-headline-medium-tracking);
+  --md-sys-typescale-emphasized-headline-small-font: var(--md-sys-typescale-headline-small-font);
+  --md-sys-typescale-emphasized-headline-small-weight: var(--md-sys-typescale-headline-small-weight);
+  --md-sys-typescale-emphasized-headline-small-size: var(--md-sys-typescale-headline-small-size);
+  --md-sys-typescale-emphasized-headline-small-line-height: var(--md-sys-typescale-headline-small-line-height);
+  --md-sys-typescale-emphasized-headline-small-tracking: var(--md-sys-typescale-headline-small-tracking);
+  --md-sys-typescale-emphasized-title-large-font: var(--md-sys-typescale-title-large-font);
+  --md-sys-typescale-emphasized-title-large-weight: var(--md-sys-typescale-title-large-weight);
+  --md-sys-typescale-emphasized-title-large-size: var(--md-sys-typescale-title-large-size);
+  --md-sys-typescale-emphasized-title-large-line-height: var(--md-sys-typescale-title-large-line-height);
+  --md-sys-typescale-emphasized-title-large-tracking: var(--md-sys-typescale-title-large-tracking);
+  --md-sys-typescale-emphasized-title-medium-font: var(--md-sys-typescale-title-medium-font);
+  --md-sys-typescale-emphasized-title-medium-weight: var(--md-sys-typescale-title-medium-weight);
+  --md-sys-typescale-emphasized-title-medium-size: var(--md-sys-typescale-title-medium-size);
+  --md-sys-typescale-emphasized-title-medium-line-height: var(--md-sys-typescale-title-medium-line-height);
+  --md-sys-typescale-emphasized-title-medium-tracking: var(--md-sys-typescale-title-medium-tracking);
+  --md-sys-typescale-emphasized-title-small-font: var(--md-sys-typescale-title-small-font);
+  --md-sys-typescale-emphasized-title-small-weight: var(--md-sys-typescale-title-small-weight);
+  --md-sys-typescale-emphasized-title-small-size: var(--md-sys-typescale-title-small-size);
+  --md-sys-typescale-emphasized-title-small-line-height: var(--md-sys-typescale-title-small-line-height);
+  --md-sys-typescale-emphasized-title-small-tracking: var(--md-sys-typescale-title-small-tracking);
+  --md-sys-typescale-emphasized-body-large-font: var(--md-sys-typescale-body-large-font);
+  --md-sys-typescale-emphasized-body-large-weight: var(--md-sys-typescale-body-large-weight);
+  --md-sys-typescale-emphasized-body-large-size: var(--md-sys-typescale-body-large-size);
+  --md-sys-typescale-emphasized-body-large-line-height: var(--md-sys-typescale-body-large-line-height);
+  --md-sys-typescale-emphasized-body-large-tracking: var(--md-sys-typescale-body-large-tracking);
+  --md-sys-typescale-emphasized-body-medium-font: var(--md-sys-typescale-body-medium-font);
+  --md-sys-typescale-emphasized-body-medium-weight: var(--md-sys-typescale-body-medium-weight);
+  --md-sys-typescale-emphasized-body-medium-size: var(--md-sys-typescale-body-medium-size);
+  --md-sys-typescale-emphasized-body-medium-line-height: var(--md-sys-typescale-body-medium-line-height);
+  --md-sys-typescale-emphasized-body-medium-tracking: var(--md-sys-typescale-body-medium-tracking);
+  --md-sys-typescale-emphasized-body-small-font: var(--md-sys-typescale-body-small-font);
+  --md-sys-typescale-emphasized-body-small-weight: var(--md-sys-typescale-body-small-weight);
+  --md-sys-typescale-emphasized-body-small-size: var(--md-sys-typescale-body-small-size);
+  --md-sys-typescale-emphasized-body-small-line-height: var(--md-sys-typescale-body-small-line-height);
+  --md-sys-typescale-emphasized-body-small-tracking: var(--md-sys-typescale-body-small-tracking);
+  --md-sys-typescale-emphasized-label-large-font: var(--md-sys-typescale-label-large-font);
+  --md-sys-typescale-emphasized-label-large-weight: var(--md-sys-typescale-label-large-weight);
+  --md-sys-typescale-emphasized-label-large-size: var(--md-sys-typescale-label-large-size);
+  --md-sys-typescale-emphasized-label-large-line-height: var(--md-sys-typescale-label-large-line-height);
+  --md-sys-typescale-emphasized-label-large-tracking: var(--md-sys-typescale-label-large-tracking);
+  --md-sys-typescale-emphasized-label-medium-font: var(--md-sys-typescale-label-medium-font);
+  --md-sys-typescale-emphasized-label-medium-weight: var(--md-sys-typescale-label-medium-weight);
+  --md-sys-typescale-emphasized-label-medium-size: var(--md-sys-typescale-label-medium-size);
+  --md-sys-typescale-emphasized-label-medium-line-height: var(--md-sys-typescale-label-medium-line-height);
+  --md-sys-typescale-emphasized-label-medium-tracking: var(--md-sys-typescale-label-medium-tracking);
+  --md-sys-typescale-emphasized-label-small-font: var(--md-sys-typescale-label-small-font);
+  --md-sys-typescale-emphasized-label-small-weight: var(--md-sys-typescale-label-small-weight);
+  --md-sys-typescale-emphasized-label-small-size: var(--md-sys-typescale-label-small-size);
+  --md-sys-typescale-emphasized-label-small-line-height: var(--md-sys-typescale-label-small-line-height);
+  --md-sys-typescale-emphasized-label-small-tracking: var(--md-sys-typescale-label-small-tracking);
+
+  /* Shape (corner radius) */
+  --md-sys-shape-corner-none: 0px; /* md.sys.shape.corner.none */
+  --md-sys-shape-corner-extra-small: 4px; /* md.sys.shape.corner.extra-small */
+  --md-sys-shape-corner-small: 8px; /* md.sys.shape.corner.small */
+  --md-sys-shape-corner-medium: 12px; /* md.sys.shape.corner.medium */
+  --md-sys-shape-corner-large: 16px; /* md.sys.shape.corner.large */
+  --md-sys-shape-corner-large-increased: var(--md-sys-shape-corner-large);
+  --md-sys-shape-corner-extra-large: 28px; /* md.sys.shape.corner.extra-large */
+  --md-sys-shape-corner-extra-large-increased: var(--md-sys-shape-corner-extra-large);
+  --md-sys-shape-corner-extra-extra-large: var(--md-sys-shape-corner-extra-large);
+  --md-sys-shape-corner-full: 9999px; /* md.sys.shape.corner.full */
+  --md-sys-shape-corner-extra-large-top: 28px 28px 0px 0px; /* md.sys.shape.corner.extra-large.top */
+  --md-sys-shape-corner-extra-small-top: 4px 4px 0px 0px; /* md.sys.shape.corner.extra-small.top */
+  --md-sys-shape-corner-large-end: 0px 16px 16px 0px; /* md.sys.shape.corner.large.end */
+  --md-sys-shape-corner-large-start: 16px 0px 0px 16px; /* md.sys.shape.corner.large.start */
+  --md-sys-shape-corner-large-top: 16px 16px 0px 0px; /* md.sys.shape.corner.large.top */
+
+  /* Elevation */
+  --md-sys-elevation-level0: 0px; /* md.sys.elevation.level0 */
+  --md-sys-elevation-level1: 1px; /* md.sys.elevation.level1 */
+  --md-sys-elevation-level2: 3px; /* md.sys.elevation.level2 */
+  --md-sys-elevation-level3: 6px; /* md.sys.elevation.level3 */
+  --md-sys-elevation-level4: 8px; /* md.sys.elevation.level4 */
+  --md-sys-elevation-level5: 12px; /* md.sys.elevation.level5 */
+
+  /* Motion: durations and easings */
+  --md-sys-motion-duration-short1: 50ms; /* md.sys.motion.duration.short1 */
+  --md-sys-motion-duration-short2: 100ms; /* md.sys.motion.duration.short2 */
+  --md-sys-motion-duration-short3: 150ms; /* md.sys.motion.duration.short3 */
+  --md-sys-motion-duration-short4: 200ms; /* md.sys.motion.duration.short4 */
+  --md-sys-motion-duration-medium1: 250ms; /* md.sys.motion.duration.medium1 */
+  --md-sys-motion-duration-medium2: 300ms; /* md.sys.motion.duration.medium2 */
+  --md-sys-motion-duration-medium3: 350ms; /* md.sys.motion.duration.medium3 */
+  --md-sys-motion-duration-medium4: 400ms; /* md.sys.motion.duration.medium4 */
+  --md-sys-motion-duration-long1: 450ms; /* md.sys.motion.duration.long1 */
+  --md-sys-motion-duration-long2: 500ms; /* md.sys.motion.duration.long2 */
+  --md-sys-motion-duration-long3: 550ms; /* md.sys.motion.duration.long3 */
+  --md-sys-motion-duration-long4: 600ms; /* md.sys.motion.duration.long4 */
+  --md-sys-motion-duration-extra-long1: 700ms; /* md.sys.motion.duration.extra-long1 */
+  --md-sys-motion-duration-extra-long2: 800ms; /* md.sys.motion.duration.extra-long2 */
+  --md-sys-motion-duration-extra-long3: 900ms; /* md.sys.motion.duration.extra-long3 */
+  --md-sys-motion-duration-extra-long4: 1000ms; /* md.sys.motion.duration.extra-long4 */
+  --md-sys-motion-easing-emphasized: var(--md-sys-motion-easing-standard); /* md.sys.motion.easing.emphasized */
+  --md-sys-motion-easing-emphasized-accelerate: cubic-bezier(0.3, 0, 0.8, 0.15); /* md.sys.motion.easing.emphasized.accelerate */
+  --md-sys-motion-easing-emphasized-decelerate: cubic-bezier(0.05, 0.7, 0.1, 1); /* md.sys.motion.easing.emphasized.decelerate */
+  --md-sys-motion-easing-legacy: cubic-bezier(0.4, 0, 0.2, 1); /* md.sys.motion.easing.legacy */
+  --md-sys-motion-easing-legacy-accelerate: cubic-bezier(0.4, 0, 1, 1); /* md.sys.motion.easing.legacy.accelerate */
+  --md-sys-motion-easing-legacy-decelerate: cubic-bezier(0, 0, 0.2, 1); /* md.sys.motion.easing.legacy.decelerate */
+  --md-sys-motion-easing-linear: cubic-bezier(0, 0, 1, 1); /* md.sys.motion.easing.linear */
+  --md-sys-motion-easing-standard: cubic-bezier(0.2, 0, 0, 1); /* md.sys.motion.easing.standard */
+  --md-sys-motion-easing-standard-accelerate: cubic-bezier(0.3, 0, 1, 1); /* md.sys.motion.easing.standard.accelerate */
+  --md-sys-motion-easing-standard-decelerate: cubic-bezier(0, 0, 0, 1); /* md.sys.motion.easing.standard.decelerate */
+
+  /* Motion: springs (standard scheme; the expressive scheme is set below) */
+  --md-sys-motion-spring-fast-spatial-stiffness: 1400; /* md.sys.motion.spring.fast.spatial.stiffness@standard */
+  --md-sys-motion-spring-fast-spatial-damping: 0.9; /* md.sys.motion.spring.fast.spatial.damping@standard */
+  --md-sys-motion-spring-fast-effects-stiffness: 3800; /* md.sys.motion.spring.fast.effects.stiffness@standard */
+  --md-sys-motion-spring-fast-effects-damping: 1; /* md.sys.motion.spring.fast.effects.damping@standard */
+  --md-sys-motion-spring-default-spatial-stiffness: 700; /* md.sys.motion.spring.default.spatial.stiffness@standard */
+  --md-sys-motion-spring-default-spatial-damping: 0.9; /* md.sys.motion.spring.default.spatial.damping@standard */
+  --md-sys-motion-spring-default-effects-stiffness: 1600; /* md.sys.motion.spring.default.effects.stiffness@standard */
+  --md-sys-motion-spring-default-effects-damping: 1; /* md.sys.motion.spring.default.effects.damping@standard */
+  --md-sys-motion-spring-slow-spatial-stiffness: 300; /* md.sys.motion.spring.slow.spatial.stiffness@standard */
+  --md-sys-motion-spring-slow-spatial-damping: 0.9; /* md.sys.motion.spring.slow.spatial.damping@standard */
+  --md-sys-motion-spring-slow-effects-stiffness: 800; /* md.sys.motion.spring.slow.effects.stiffness@standard */
+  --md-sys-motion-spring-slow-effects-damping: 1; /* md.sys.motion.spring.slow.effects.damping@standard */
+
+  /* State */
+  --md-sys-state-disabled-state-layer-opacity: 0.38; /* md.sys.state.disabled.state-layer-opacity */
+  --md-sys-state-dragged-state-layer-opacity: 0.16; /* md.sys.state.dragged.state-layer-opacity */
+  --md-sys-state-focus-indicator-inner-offset: -3px; /* md.sys.state.focus-indicator.inner-offset */
+  --md-sys-state-focus-indicator-outer-offset: 2px; /* md.sys.state.focus-indicator.outer-offset */
+  --md-sys-state-focus-indicator-thickness: 3px; /* md.sys.state.focus-indicator.thickness */
+  --md-sys-state-focus-state-layer-opacity: 0.1; /* md.sys.state.focus.state-layer-opacity */
+  --md-sys-state-hover-state-layer-opacity: 0.08; /* md.sys.state.hover.state-layer-opacity */
+  --md-sys-state-pressed-state-layer-opacity: 0.1; /* md.sys.state.pressed.state-layer-opacity */
+
+  /* Spacing (md.sys.measurement steps on the 4 dp grid) */
+  --md-sys-space-0: 0px; /* md.sys.measurement.space0 */
+  --md-sys-space-50: 4px; /* md.sys.measurement.space50 */
+  --md-sys-space-100: 8px; /* md.sys.measurement.space100 */
+  --md-sys-space-150: 12px; /* md.sys.measurement.space150 */
+  --md-sys-space-200: 16px; /* md.sys.measurement.space200 */
+  --md-sys-space-250: 20px; /* md.sys.measurement.space250 */
+  --md-sys-space-300: 24px; /* md.sys.measurement.space300 */
+  --md-sys-space-400: 32px; /* md.sys.measurement.space400 */
+  --md-sys-space-450: 36px; /* md.sys.measurement.space450 */
+  --md-sys-space-500: 40px; /* md.sys.measurement.space500 */
+  --md-sys-space-600: 48px; /* md.sys.measurement.space600 */
+  --md-sys-space-700: 56px; /* md.sys.measurement.space700 */
+  --md-sys-space-800: 64px; /* md.sys.measurement.space800 */
+  --md-sys-space-900: 72px; /* md.sys.measurement.space900 */
+}
+
+:root:not([data-m3-style="classic"]) {
+  /* Emphasized type scale */
+  --md-sys-typescale-emphasized-display-large-font: var(--md-ref-typeface-brand); /* md.sys.typescale.emphasized.display-large.font */
+  --md-sys-typescale-emphasized-display-large-weight: var(--md-ref-typeface-weight-medium); /* md.sys.typescale.emphasized.display-large.weight */
+  --md-sys-typescale-emphasized-display-large-size: 3.5625rem; /* md.sys.typescale.emphasized.display-large.size */
+  --md-sys-typescale-emphasized-display-large-line-height: 4rem; /* md.sys.typescale.emphasized.display-large.line-height */
+  --md-sys-typescale-emphasized-display-large-tracking: -0.015625rem; /* md.sys.typescale.emphasized.display-large.tracking */
+  --md-sys-typescale-emphasized-display-medium-font: var(--md-ref-typeface-brand); /* md.sys.typescale.emphasized.display-medium.font */
+  --md-sys-typescale-emphasized-display-medium-weight: var(--md-ref-typeface-weight-medium); /* md.sys.typescale.emphasized.display-medium.weight */
+  --md-sys-typescale-emphasized-display-medium-size: 2.8125rem; /* md.sys.typescale.emphasized.display-medium.size */
+  --md-sys-typescale-emphasized-display-medium-line-height: 3.25rem; /* md.sys.typescale.emphasized.display-medium.line-height */
+  --md-sys-typescale-emphasized-display-medium-tracking: 0rem; /* md.sys.typescale.emphasized.display-medium.tracking */
+  --md-sys-typescale-emphasized-display-small-font: var(--md-ref-typeface-brand); /* md.sys.typescale.emphasized.display-small.font */
+  --md-sys-typescale-emphasized-display-small-weight: var(--md-ref-typeface-weight-medium); /* md.sys.typescale.emphasized.display-small.weight */
+  --md-sys-typescale-emphasized-display-small-size: 2.25rem; /* md.sys.typescale.emphasized.display-small.size */
+  --md-sys-typescale-emphasized-display-small-line-height: 2.75rem; /* md.sys.typescale.emphasized.display-small.line-height */
+  --md-sys-typescale-emphasized-display-small-tracking: 0rem; /* md.sys.typescale.emphasized.display-small.tracking */
+  --md-sys-typescale-emphasized-headline-large-font: var(--md-ref-typeface-brand); /* md.sys.typescale.emphasized.headline-large.font */
+  --md-sys-typescale-emphasized-headline-large-weight: var(--md-ref-typeface-weight-medium); /* md.sys.typescale.emphasized.headline-large.weight */
+  --md-sys-typescale-emphasized-headline-large-size: 2rem; /* md.sys.typescale.emphasized.headline-large.size */
+  --md-sys-typescale-emphasized-headline-large-line-height: 2.5rem; /* md.sys.typescale.emphasized.headline-large.line-height */
+  --md-sys-typescale-emphasized-headline-large-tracking: 0rem; /* md.sys.typescale.emphasized.headline-large.tracking */
+  --md-sys-typescale-emphasized-headline-medium-font: var(--md-ref-typeface-brand); /* md.sys.typescale.emphasized.headline-medium.font */
+  --md-sys-typescale-emphasized-headline-medium-weight: var(--md-ref-typeface-weight-medium); /* md.sys.typescale.emphasized.headline-medium.weight */
+  --md-sys-typescale-emphasized-headline-medium-size: 1.75rem; /* md.sys.typescale.emphasized.headline-medium.size */
+  --md-sys-typescale-emphasized-headline-medium-line-height: 2.25rem; /* md.sys.typescale.emphasized.headline-medium.line-height */
+  --md-sys-typescale-emphasized-headline-medium-tracking: 0rem; /* md.sys.typescale.emphasized.headline-medium.tracking */
+  --md-sys-typescale-emphasized-headline-small-font: var(--md-ref-typeface-brand); /* md.sys.typescale.emphasized.headline-small.font */
+  --md-sys-typescale-emphasized-headline-small-weight: var(--md-ref-typeface-weight-medium); /* md.sys.typescale.emphasized.headline-small.weight */
+  --md-sys-typescale-emphasized-headline-small-size: 1.5rem; /* md.sys.typescale.emphasized.headline-small.size */
+  --md-sys-typescale-emphasized-headline-small-line-height: 2rem; /* md.sys.typescale.emphasized.headline-small.line-height */
+  --md-sys-typescale-emphasized-headline-small-tracking: 0rem; /* md.sys.typescale.emphasized.headline-small.tracking */
+  --md-sys-typescale-emphasized-title-large-font: var(--md-ref-typeface-brand); /* md.sys.typescale.emphasized.title-large.font */
+  --md-sys-typescale-emphasized-title-large-weight: var(--md-ref-typeface-weight-medium); /* md.sys.typescale.emphasized.title-large.weight */
+  --md-sys-typescale-emphasized-title-large-size: 1.375rem; /* md.sys.typescale.emphasized.title-large.size */
+  --md-sys-typescale-emphasized-title-large-line-height: 1.75rem; /* md.sys.typescale.emphasized.title-large.line-height */
+  --md-sys-typescale-emphasized-title-large-tracking: 0rem; /* md.sys.typescale.emphasized.title-large.tracking */
+  --md-sys-typescale-emphasized-title-medium-font: var(--md-ref-typeface-plain); /* md.sys.typescale.emphasized.title-medium.font */
+  --md-sys-typescale-emphasized-title-medium-weight: var(--md-ref-typeface-weight-bold); /* md.sys.typescale.emphasized.title-medium.weight */
+  --md-sys-typescale-emphasized-title-medium-size: 1rem; /* md.sys.typescale.emphasized.title-medium.size */
+  --md-sys-typescale-emphasized-title-medium-line-height: 1.5rem; /* md.sys.typescale.emphasized.title-medium.line-height */
+  --md-sys-typescale-emphasized-title-medium-tracking: 0.009375rem; /* md.sys.typescale.emphasized.title-medium.tracking */
+  --md-sys-typescale-emphasized-title-small-font: var(--md-ref-typeface-plain); /* md.sys.typescale.emphasized.title-small.font */
+  --md-sys-typescale-emphasized-title-small-weight: var(--md-ref-typeface-weight-bold); /* md.sys.typescale.emphasized.title-small.weight */
+  --md-sys-typescale-emphasized-title-small-size: 0.875rem; /* md.sys.typescale.emphasized.title-small.size */
+  --md-sys-typescale-emphasized-title-small-line-height: 1.25rem; /* md.sys.typescale.emphasized.title-small.line-height */
+  --md-sys-typescale-emphasized-title-small-tracking: 0.00625rem; /* md.sys.typescale.emphasized.title-small.tracking */
+  --md-sys-typescale-emphasized-body-large-font: var(--md-ref-typeface-plain); /* md.sys.typescale.emphasized.body-large.font */
+  --md-sys-typescale-emphasized-body-large-weight: var(--md-ref-typeface-weight-medium); /* md.sys.typescale.emphasized.body-large.weight */
+  --md-sys-typescale-emphasized-body-large-size: 1rem; /* md.sys.typescale.emphasized.body-large.size */
+  --md-sys-typescale-emphasized-body-large-line-height: 1.5rem; /* md.sys.typescale.emphasized.body-large.line-height */
+  --md-sys-typescale-emphasized-body-large-tracking: 0.03125rem; /* md.sys.typescale.emphasized.body-large.tracking */
+  --md-sys-typescale-emphasized-body-medium-font: var(--md-ref-typeface-plain); /* md.sys.typescale.emphasized.body-medium.font */
+  --md-sys-typescale-emphasized-body-medium-weight: var(--md-ref-typeface-weight-medium); /* md.sys.typescale.emphasized.body-medium.weight */
+  --md-sys-typescale-emphasized-body-medium-size: 0.875rem; /* md.sys.typescale.emphasized.body-medium.size */
+  --md-sys-typescale-emphasized-body-medium-line-height: 1.25rem; /* md.sys.typescale.emphasized.body-medium.line-height */
+  --md-sys-typescale-emphasized-body-medium-tracking: 0.015625rem; /* md.sys.typescale.emphasized.body-medium.tracking */
+  --md-sys-typescale-emphasized-body-small-font: var(--md-ref-typeface-plain); /* md.sys.typescale.emphasized.body-small.font */
+  --md-sys-typescale-emphasized-body-small-weight: var(--md-ref-typeface-weight-medium); /* md.sys.typescale.emphasized.body-small.weight */
+  --md-sys-typescale-emphasized-body-small-size: 0.75rem; /* md.sys.typescale.emphasized.body-small.size */
+  --md-sys-typescale-emphasized-body-small-line-height: 1rem; /* md.sys.typescale.emphasized.body-small.line-height */
+  --md-sys-typescale-emphasized-body-small-tracking: 0.025rem; /* md.sys.typescale.emphasized.body-small.tracking */
+  --md-sys-typescale-emphasized-label-large-font: var(--md-ref-typeface-plain); /* md.sys.typescale.emphasized.label-large.font */
+  --md-sys-typescale-emphasized-label-large-weight: var(--md-ref-typeface-weight-bold); /* md.sys.typescale.emphasized.label-large.weight */
+  --md-sys-typescale-emphasized-label-large-size: 0.875rem; /* md.sys.typescale.emphasized.label-large.size */
+  --md-sys-typescale-emphasized-label-large-line-height: 1.25rem; /* md.sys.typescale.emphasized.label-large.line-height */
+  --md-sys-typescale-emphasized-label-large-tracking: 0.00625rem; /* md.sys.typescale.emphasized.label-large.tracking */
+  --md-sys-typescale-emphasized-label-medium-font: var(--md-ref-typeface-plain); /* md.sys.typescale.emphasized.label-medium.font */
+  --md-sys-typescale-emphasized-label-medium-weight: var(--md-ref-typeface-weight-bold); /* md.sys.typescale.emphasized.label-medium.weight */
+  --md-sys-typescale-emphasized-label-medium-size: 0.75rem; /* md.sys.typescale.emphasized.label-medium.size */
+  --md-sys-typescale-emphasized-label-medium-line-height: 1rem; /* md.sys.typescale.emphasized.label-medium.line-height */
+  --md-sys-typescale-emphasized-label-medium-tracking: 0.03125rem; /* md.sys.typescale.emphasized.label-medium.tracking */
+  --md-sys-typescale-emphasized-label-small-font: var(--md-ref-typeface-plain); /* md.sys.typescale.emphasized.label-small.font */
+  --md-sys-typescale-emphasized-label-small-weight: var(--md-ref-typeface-weight-bold); /* md.sys.typescale.emphasized.label-small.weight */
+  --md-sys-typescale-emphasized-label-small-size: 0.6875rem; /* md.sys.typescale.emphasized.label-small.size */
+  --md-sys-typescale-emphasized-label-small-line-height: 1rem; /* md.sys.typescale.emphasized.label-small.line-height */
+  --md-sys-typescale-emphasized-label-small-tracking: 0.03125rem; /* md.sys.typescale.emphasized.label-small.tracking */
+
+  /* Shape steps added by Expressive */
+  --md-sys-shape-corner-large-increased: 20px; /* md.sys.shape.corner.large-increased */
+  --md-sys-shape-corner-extra-large-increased: 32px; /* md.sys.shape.corner.extra-large-increased */
+  --md-sys-shape-corner-extra-extra-large: 48px; /* md.sys.shape.corner.extra-extra-large */
+
+  /* Springs: expressive scheme */
+  --md-sys-motion-spring-fast-spatial-stiffness: 800; /* md.sys.motion.spring.fast.spatial.stiffness@expressive */
+  --md-sys-motion-spring-fast-spatial-damping: 0.6; /* md.sys.motion.spring.fast.spatial.damping@expressive */
+  --md-sys-motion-spring-fast-effects-stiffness: 3800; /* md.sys.motion.spring.fast.effects.stiffness@expressive */
+  --md-sys-motion-spring-fast-effects-damping: 1; /* md.sys.motion.spring.fast.effects.damping@expressive */
+  --md-sys-motion-spring-default-spatial-stiffness: 380; /* md.sys.motion.spring.default.spatial.stiffness@expressive */
+  --md-sys-motion-spring-default-spatial-damping: 0.8; /* md.sys.motion.spring.default.spatial.damping@expressive */
+  --md-sys-motion-spring-default-effects-stiffness: 1600; /* md.sys.motion.spring.default.effects.stiffness@expressive */
+  --md-sys-motion-spring-default-effects-damping: 1; /* md.sys.motion.spring.default.effects.damping@expressive */
+  --md-sys-motion-spring-slow-spatial-stiffness: 200; /* md.sys.motion.spring.slow.spatial.stiffness@expressive */
+  --md-sys-motion-spring-slow-spatial-damping: 0.8; /* md.sys.motion.spring.slow.spatial.damping@expressive */
+  --md-sys-motion-spring-slow-effects-stiffness: 800; /* md.sys.motion.spring.slow.effects.stiffness@expressive */
+  --md-sys-motion-spring-slow-effects-damping: 1; /* md.sys.motion.spring.slow.effects.damping@expressive */
+}
+
+/* Type roles */
+.m3-type-display-large {
+  font-family: var(--md-sys-typescale-display-large-font);
+  font-weight: var(--md-sys-typescale-display-large-weight);
+  font-size: var(--md-sys-typescale-display-large-size);
+  line-height: var(--md-sys-typescale-display-large-line-height);
+  letter-spacing: var(--md-sys-typescale-display-large-tracking);
+}
+.m3-type-display-medium {
+  font-family: var(--md-sys-typescale-display-medium-font);
+  font-weight: var(--md-sys-typescale-display-medium-weight);
+  font-size: var(--md-sys-typescale-display-medium-size);
+  line-height: var(--md-sys-typescale-display-medium-line-height);
+  letter-spacing: var(--md-sys-typescale-display-medium-tracking);
+}
+.m3-type-display-small {
+  font-family: var(--md-sys-typescale-display-small-font);
+  font-weight: var(--md-sys-typescale-display-small-weight);
+  font-size: var(--md-sys-typescale-display-small-size);
+  line-height: var(--md-sys-typescale-display-small-line-height);
+  letter-spacing: var(--md-sys-typescale-display-small-tracking);
+}
+.m3-type-headline-large {
+  font-family: var(--md-sys-typescale-headline-large-font);
+  font-weight: var(--md-sys-typescale-headline-large-weight);
+  font-size: var(--md-sys-typescale-headline-large-size);
+  line-height: var(--md-sys-typescale-headline-large-line-height);
+  letter-spacing: var(--md-sys-typescale-headline-large-tracking);
+}
+.m3-type-headline-medium {
+  font-family: var(--md-sys-typescale-headline-medium-font);
+  font-weight: var(--md-sys-typescale-headline-medium-weight);
+  font-size: var(--md-sys-typescale-headline-medium-size);
+  line-height: var(--md-sys-typescale-headline-medium-line-height);
+  letter-spacing: var(--md-sys-typescale-headline-medium-tracking);
+}
+.m3-type-headline-small {
+  font-family: var(--md-sys-typescale-headline-small-font);
+  font-weight: var(--md-sys-typescale-headline-small-weight);
+  font-size: var(--md-sys-typescale-headline-small-size);
+  line-height: var(--md-sys-typescale-headline-small-line-height);
+  letter-spacing: var(--md-sys-typescale-headline-small-tracking);
+}
+.m3-type-title-large {
+  font-family: var(--md-sys-typescale-title-large-font);
+  font-weight: var(--md-sys-typescale-title-large-weight);
+  font-size: var(--md-sys-typescale-title-large-size);
+  line-height: var(--md-sys-typescale-title-large-line-height);
+  letter-spacing: var(--md-sys-typescale-title-large-tracking);
+}
+.m3-type-title-medium {
+  font-family: var(--md-sys-typescale-title-medium-font);
+  font-weight: var(--md-sys-typescale-title-medium-weight);
+  font-size: var(--md-sys-typescale-title-medium-size);
+  line-height: var(--md-sys-typescale-title-medium-line-height);
+  letter-spacing: var(--md-sys-typescale-title-medium-tracking);
+}
+.m3-type-title-small {
+  font-family: var(--md-sys-typescale-title-small-font);
+  font-weight: var(--md-sys-typescale-title-small-weight);
+  font-size: var(--md-sys-typescale-title-small-size);
+  line-height: var(--md-sys-typescale-title-small-line-height);
+  letter-spacing: var(--md-sys-typescale-title-small-tracking);
+}
+.m3-type-body-large {
+  font-family: var(--md-sys-typescale-body-large-font);
+  font-weight: var(--md-sys-typescale-body-large-weight);
+  font-size: var(--md-sys-typescale-body-large-size);
+  line-height: var(--md-sys-typescale-body-large-line-height);
+  letter-spacing: var(--md-sys-typescale-body-large-tracking);
+}
+.m3-type-body-medium {
+  font-family: var(--md-sys-typescale-body-medium-font);
+  font-weight: var(--md-sys-typescale-body-medium-weight);
+  font-size: var(--md-sys-typescale-body-medium-size);
+  line-height: var(--md-sys-typescale-body-medium-line-height);
+  letter-spacing: var(--md-sys-typescale-body-medium-tracking);
+}
+.m3-type-body-small {
+  font-family: var(--md-sys-typescale-body-small-font);
+  font-weight: var(--md-sys-typescale-body-small-weight);
+  font-size: var(--md-sys-typescale-body-small-size);
+  line-height: var(--md-sys-typescale-body-small-line-height);
+  letter-spacing: var(--md-sys-typescale-body-small-tracking);
+}
+.m3-type-label-large {
+  font-family: var(--md-sys-typescale-label-large-font);
+  font-weight: var(--md-sys-typescale-label-large-weight);
+  font-size: var(--md-sys-typescale-label-large-size);
+  line-height: var(--md-sys-typescale-label-large-line-height);
+  letter-spacing: var(--md-sys-typescale-label-large-tracking);
+}
+.m3-type-label-medium {
+  font-family: var(--md-sys-typescale-label-medium-font);
+  font-weight: var(--md-sys-typescale-label-medium-weight);
+  font-size: var(--md-sys-typescale-label-medium-size);
+  line-height: var(--md-sys-typescale-label-medium-line-height);
+  letter-spacing: var(--md-sys-typescale-label-medium-tracking);
+}
+.m3-type-label-small {
+  font-family: var(--md-sys-typescale-label-small-font);
+  font-weight: var(--md-sys-typescale-label-small-weight);
+  font-size: var(--md-sys-typescale-label-small-size);
+  line-height: var(--md-sys-typescale-label-small-line-height);
+  letter-spacing: var(--md-sys-typescale-label-small-tracking);
+}
+.m3-type-emphasized-display-large {
+  font-family: var(--md-sys-typescale-emphasized-display-large-font);
+  font-weight: var(--md-sys-typescale-emphasized-display-large-weight);
+  font-size: var(--md-sys-typescale-emphasized-display-large-size);
+  line-height: var(--md-sys-typescale-emphasized-display-large-line-height);
+  letter-spacing: var(--md-sys-typescale-emphasized-display-large-tracking);
+}
+.m3-type-emphasized-display-medium {
+  font-family: var(--md-sys-typescale-emphasized-display-medium-font);
+  font-weight: var(--md-sys-typescale-emphasized-display-medium-weight);
+  font-size: var(--md-sys-typescale-emphasized-display-medium-size);
+  line-height: var(--md-sys-typescale-emphasized-display-medium-line-height);
+  letter-spacing: var(--md-sys-typescale-emphasized-display-medium-tracking);
+}
+.m3-type-emphasized-display-small {
+  font-family: var(--md-sys-typescale-emphasized-display-small-font);
+  font-weight: var(--md-sys-typescale-emphasized-display-small-weight);
+  font-size: var(--md-sys-typescale-emphasized-display-small-size);
+  line-height: var(--md-sys-typescale-emphasized-display-small-line-height);
+  letter-spacing: var(--md-sys-typescale-emphasized-display-small-tracking);
+}
+.m3-type-emphasized-headline-large {
+  font-family: var(--md-sys-typescale-emphasized-headline-large-font);
+  font-weight: var(--md-sys-typescale-emphasized-headline-large-weight);
+  font-size: var(--md-sys-typescale-emphasized-headline-large-size);
+  line-height: var(--md-sys-typescale-emphasized-headline-large-line-height);
+  letter-spacing: var(--md-sys-typescale-emphasized-headline-large-tracking);
+}
+.m3-type-emphasized-headline-medium {
+  font-family: var(--md-sys-typescale-emphasized-headline-medium-font);
+  font-weight: var(--md-sys-typescale-emphasized-headline-medium-weight);
+  font-size: var(--md-sys-typescale-emphasized-headline-medium-size);
+  line-height: var(--md-sys-typescale-emphasized-headline-medium-line-height);
+  letter-spacing: var(--md-sys-typescale-emphasized-headline-medium-tracking);
+}
+.m3-type-emphasized-headline-small {
+  font-family: var(--md-sys-typescale-emphasized-headline-small-font);
+  font-weight: var(--md-sys-typescale-emphasized-headline-small-weight);
+  font-size: var(--md-sys-typescale-emphasized-headline-small-size);
+  line-height: var(--md-sys-typescale-emphasized-headline-small-line-height);
+  letter-spacing: var(--md-sys-typescale-emphasized-headline-small-tracking);
+}
+.m3-type-emphasized-title-large {
+  font-family: var(--md-sys-typescale-emphasized-title-large-font);
+  font-weight: var(--md-sys-typescale-emphasized-title-large-weight);
+  font-size: var(--md-sys-typescale-emphasized-title-large-size);
+  line-height: var(--md-sys-typescale-emphasized-title-large-line-height);
+  letter-spacing: var(--md-sys-typescale-emphasized-title-large-tracking);
+}
+.m3-type-emphasized-title-medium {
+  font-family: var(--md-sys-typescale-emphasized-title-medium-font);
+  font-weight: var(--md-sys-typescale-emphasized-title-medium-weight);
+  font-size: var(--md-sys-typescale-emphasized-title-medium-size);
+  line-height: var(--md-sys-typescale-emphasized-title-medium-line-height);
+  letter-spacing: var(--md-sys-typescale-emphasized-title-medium-tracking);
+}
+.m3-type-emphasized-title-small {
+  font-family: var(--md-sys-typescale-emphasized-title-small-font);
+  font-weight: var(--md-sys-typescale-emphasized-title-small-weight);
+  font-size: var(--md-sys-typescale-emphasized-title-small-size);
+  line-height: var(--md-sys-typescale-emphasized-title-small-line-height);
+  letter-spacing: var(--md-sys-typescale-emphasized-title-small-tracking);
+}
+.m3-type-emphasized-body-large {
+  font-family: var(--md-sys-typescale-emphasized-body-large-font);
+  font-weight: var(--md-sys-typescale-emphasized-body-large-weight);
+  font-size: var(--md-sys-typescale-emphasized-body-large-size);
+  line-height: var(--md-sys-typescale-emphasized-body-large-line-height);
+  letter-spacing: var(--md-sys-typescale-emphasized-body-large-tracking);
+}
+.m3-type-emphasized-body-medium {
+  font-family: var(--md-sys-typescale-emphasized-body-medium-font);
+  font-weight: var(--md-sys-typescale-emphasized-body-medium-weight);
+  font-size: var(--md-sys-typescale-emphasized-body-medium-size);
+  line-height: var(--md-sys-typescale-emphasized-body-medium-line-height);
+  letter-spacing: var(--md-sys-typescale-emphasized-body-medium-tracking);
+}
+.m3-type-emphasized-body-small {
+  font-family: var(--md-sys-typescale-emphasized-body-small-font);
+  font-weight: var(--md-sys-typescale-emphasized-body-small-weight);
+  font-size: var(--md-sys-typescale-emphasized-body-small-size);
+  line-height: var(--md-sys-typescale-emphasized-body-small-line-height);
+  letter-spacing: var(--md-sys-typescale-emphasized-body-small-tracking);
+}
+.m3-type-emphasized-label-large {
+  font-family: var(--md-sys-typescale-emphasized-label-large-font);
+  font-weight: var(--md-sys-typescale-emphasized-label-large-weight);
+  font-size: var(--md-sys-typescale-emphasized-label-large-size);
+  line-height: var(--md-sys-typescale-emphasized-label-large-line-height);
+  letter-spacing: var(--md-sys-typescale-emphasized-label-large-tracking);
+}
+.m3-type-emphasized-label-medium {
+  font-family: var(--md-sys-typescale-emphasized-label-medium-font);
+  font-weight: var(--md-sys-typescale-emphasized-label-medium-weight);
+  font-size: var(--md-sys-typescale-emphasized-label-medium-size);
+  line-height: var(--md-sys-typescale-emphasized-label-medium-line-height);
+  letter-spacing: var(--md-sys-typescale-emphasized-label-medium-tracking);
+}
+.m3-type-emphasized-label-small {
+  font-family: var(--md-sys-typescale-emphasized-label-small-font);
+  font-weight: var(--md-sys-typescale-emphasized-label-small-weight);
+  font-size: var(--md-sys-typescale-emphasized-label-small-size);
+  line-height: var(--md-sys-typescale-emphasized-label-small-line-height);
+  letter-spacing: var(--md-sys-typescale-emphasized-label-small-tracking);
+}

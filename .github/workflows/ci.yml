@@ -22,6 +22,8 @@ jobs:
         run: node tools/extract/tokens/report.mjs --check
       - name: skill token files are up to date
         run: node tools/build/tokens.mjs --check
+      - name: token asset files (tokens.css, Dart, Kotlin) are up to date
+        run: node tools/build/emit.mjs --check
       - name: knowledge notes lint
         run: node tools/extract/knowledge/lint.mjs --check
       - name: guard (all tracked files)

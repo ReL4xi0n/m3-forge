@@ -2,7 +2,7 @@
 import { join } from 'node:path';
 import {
   callArgs, countNonBlank, findEmoji, looksGenerated, matchClose, onGrid, radiusOnScale, readText,
-  SHAPE_SCALE, stripComments, walk,
+  SHAPE_SCALE, stripComments, themeAsset, themeAssetReason, walk,
 } from './common.mjs';
 
 const GENERATED_NAME = /(?:\.(?:g|freezed|gr|mocks|config|pb|pbenum|pbjson|pbserver)\.dart|(?:^|\/)generated_plugin_registrant\.dart)$/;
@@ -114,10 +114,11 @@ export async function scanFlutter(projectDir, collector) {
   for (const f of files) {
     const rel = `lib/${f}`;
     const text = await readText(projectDir, rel);
-    if (looksGenerated(text)) continue;
+    const asset = themeAsset(rel, text);
+    if (!asset && looksGenerated(text)) continue;
     scanned++;
     const src = stripComments(text, { triple: true });
-    const reason = themeReason(rel, src);
+    const reason = asset ? themeAssetReason(asset) : themeReason(rel, src);
     let exempt = () => null;
     if (reason) {
       const entry = collector.allow({ file: rel, line: null, reason, suppressed: {} });
