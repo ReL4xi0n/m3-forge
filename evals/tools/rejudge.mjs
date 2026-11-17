@@ -4,7 +4,7 @@
 // un-blinding only after every batch is scored. Flutter and Compose outputs use their harness v2
 // screenshots (<cell>/v2/) when recorded; web outputs keep their recorded screenshots (the web
 // harness did not change). The run's v1 judging is not touched.
-//   node evals/tools/rejudge.mjs --run-id <id> [--out evals/runs/<folder>]
+//   node evals/tools/rejudge.mjs --run-id <id> [--set eval|dev] [--out evals/runs/<folder>]
 import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { basename, dirname, join } from 'node:path';
@@ -15,6 +15,7 @@ import { checkFrozen } from './frozen.mjs';
 import { ITEMS, runJudgeBatch } from './judge.mjs';
 import { cellTarget, pairAnchors } from './pairing.mjs';
 import { judgeRequest } from './pipeline.mjs';
+import { devCells, evalCells } from './cells.mjs';
 
 const round = (x, n = 2) => (x === null ? null : Math.round(x * 10 ** n) / 10 ** n);
 const mean = xs => { const v = xs.filter(x => typeof x === 'number'); return v.length ? v.reduce((a, b) => a + b, 0) / v.length : null; };
@@ -30,6 +31,17 @@ export function shotsOf(priv, cellId) {
     return { harness: dir.endsWith('v2') ? 'v2' : 'v1', shots };
   }
   return { harness: null, shots: [] };
+}
+
+// The cell set of a run: `set` ('eval' | 'dev') when given, else detected from the run's cell folders
+// (a run holding dev cell folders and no eval cell folder is a dev run). A dev run is judged on the dev
+// cells it actually ran; an eval run keeps the whole eval matrix.
+export function resolveCells(priv, set = null) {
+  const has = c => existsSync(join(priv, c.cell));
+  const kind = set ?? (devCells().some(has) && !evalCells().some(has) ? 'dev' : 'eval');
+  if (kind === 'dev') return { set: 'dev', cells: devCells().filter(has) };
+  if (kind === 'eval') return { set: 'eval', cells: evalCells() };
+  throw new Error(`unknown cell set: ${kind}`);
 }
 
 // Judges outputs [{cell, condition, repeat, runId, request, shots, target}] with judge v2.
@@ -107,9 +119,9 @@ async function main() {
   const arg = k => { const i = process.argv.indexOf(k); return i > 0 ? process.argv[i + 1] : null; };
   const runId = arg('--run-id');
   const out = arg('--out');
-  if (!runId) { console.error('usage: rejudge.mjs --run-id <id> [--out <public folder>] [--note <text>]...'); process.exit(2); }
+  if (!runId) { console.error('usage: rejudge.mjs --run-id <id> [--set eval|dev] [--out <public folder>] [--note <text>]...'); process.exit(2); }
   const priv = join(root, 'private', 'evals', 'runs', runId);
-  const cells = JSON.parse(readFileSync(join(root, 'evals', 'cells.json'), 'utf8'));
+  const { cells } = resolveCells(priv, arg('--set'));
   const outputs = [];
   const harness = {};
   for (const cell of cells) {

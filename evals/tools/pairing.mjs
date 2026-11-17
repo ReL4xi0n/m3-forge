@@ -33,9 +33,12 @@ export function pairAnchors(target, anchors) {
   return [first, second].filter(Boolean).map(a => a.file);
 }
 
-// A cell (evals/cells.json entry) -> pairing target.
+// Development requests (evals/dev) -> the screen type of the closest anchors.
+export const DEV_SCREENS = { 'podcast-player': 'app', 'expense-report': 'form', 'plant-shop': 'list', 'clinic-schedule': 'list' };
+
+// A cell (evals/cells.json or evals/dev/cells.json entry) -> pairing target.
 export const cellTarget = cell => ({
   family: cell.platform === 'web' ? 'web' : 'android',
-  screen: cell.request,
+  screen: cell.set === 'dev' ? (DEV_SCREENS[cell.request] ?? cell.request) : cell.request,
   formFactors: cell.platform === 'web' ? ['phone', 'desktop'] : ['phone'],
 });
