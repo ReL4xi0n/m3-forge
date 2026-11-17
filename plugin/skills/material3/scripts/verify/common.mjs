@@ -109,9 +109,10 @@ export function isGeneratedPath(rel) {
 // themselves) only when its first lines name one of these paths, its own file name matches it, and
 // its text equals the shipped asset after the rewrites install-assets applies (the Compose package
 // line, the Flutter material_ui import). Any other file that carries the marker is scanned as UI
-// code.
+// code. fonts.css is one of them: its @font-face rules state the weight ranges of the bundled fonts.
 export const THEME_ASSETS = new Set([
   'assets/web/tokens.css',
+  'assets/web/fonts.css',
   'assets/flutter/lib/m3/tokens.dart',
   'assets/flutter/lib/m3/type.dart',
   'assets/flutter/lib/m3/shape.dart',

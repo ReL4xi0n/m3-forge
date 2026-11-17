@@ -1,0 +1,152 @@
+/* material3 skill asset: assets/web/components/segmented-button.css
+ * Material 3 outlined segmented buttons: a set of two to five segments for single or multiple
+ * selection. M3 Expressive prefers the connected button group (button-group.css) for new designs.
+ * Needs tokens.css and the color theme from scripts/color. Every value is a token variable.
+ *
+ *   <div class="m3-segmented-button-set" role="radiogroup" aria-label="Distance">
+ *     <button class="m3-segmented-button" role="radio" aria-checked="true">
+ *       <span class="m3-icon" aria-hidden="true">check</span>Walk</button>
+ *     <button class="m3-segmented-button" role="radio" aria-checked="false">Bike</button>
+ *   </div>
+ *
+ * Selected: aria-checked="true" (single select, role="radio"), aria-pressed="true" (multiple
+ * select) or aria-selected="true". A selected segment shows the check icon in place of its icon.
+ * The element is at least --md-target-size tall (touch target); the visible segment is drawn by
+ * ::before and the state layer by ::after.
+ */
+
+.m3-segmented-button-set {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  vertical-align: middle;
+}
+
+.m3-segmented-button {
+  /* md.comp.outlined-segmented-button.* */
+  --_height: var(--md-comp-outlined-segmented-button-container-height);
+  --_icon-size: var(--md-comp-outlined-segmented-button-with-icon-icon-size);
+  --_outline-width: var(--md-comp-outlined-segmented-button-outline-width);
+  --_outer-corner: var(--md-comp-outlined-segmented-button-shape);
+  --_start-corner: var(--md-sys-shape-corner-none);
+  --_end-corner: var(--md-sys-shape-corner-none);
+  --_container-color: transparent;
+  --_outline-color: var(--md-sys-color-outline);
+  --_label-color: var(--md-sys-color-on-surface);
+  --_state-layer-color: var(--md-sys-color-on-surface);
+
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  /* No segment padding or icon gap token exists: Compose's code uses 12 and 8
+     [impl:compose-material3/commonMain/androidx/compose/material3/SegmentedButton.kt:619]
+     [impl:compose-material3/commonMain/androidx/compose/material3/SegmentedButton.kt:854],
+     the spacing steps md.sys.measurement.space150 and space100. */
+  gap: var(--md-sys-space-100);
+  box-sizing: border-box;
+  block-size: var(--_height);
+  min-block-size: var(--md-target-size);
+  min-inline-size: var(--md-target-size);
+  margin: 0;
+  padding-block: 0;
+  padding-inline: var(--md-sys-space-150);
+  border: 0;
+  background: none;
+  color: var(--_label-color);
+  font-family: var(--md-comp-outlined-segmented-button-label-text-font);
+  font-weight: var(--md-comp-outlined-segmented-button-label-text-weight);
+  font-size: var(--md-comp-outlined-segmented-button-label-text-size);
+  line-height: var(--md-comp-outlined-segmented-button-label-text-line-height);
+  letter-spacing: var(--md-comp-outlined-segmented-button-label-text-tracking);
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.m3-segmented-button:first-child {
+  --_start-corner: var(--_outer-corner);
+}
+
+.m3-segmented-button:last-child {
+  --_end-corner: var(--_outer-corner);
+}
+
+.m3-segmented-button::before,
+.m3-segmented-button::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  box-sizing: border-box;
+  block-size: var(--_height);
+  margin-block: auto;
+  border-start-start-radius: var(--_start-corner);
+  border-end-start-radius: var(--_start-corner);
+  border-start-end-radius: var(--_end-corner);
+  border-end-end-radius: var(--_end-corner);
+  pointer-events: none;
+}
+
+.m3-segmented-button::before {
+  border: var(--_outline-width) solid var(--_outline-color);
+  background: var(--_container-color);
+}
+
+/* Neighbors share one outline: every segment after the first drops its start edge. */
+.m3-segmented-button + .m3-segmented-button::before {
+  border-inline-start-width: 0;
+}
+
+.m3-segmented-button::after {
+  background: var(--_state-layer-color);
+  opacity: 0;
+}
+
+.m3-segmented-button :is(.m3-icon, [class*="material-symbols"]) {
+  flex: none;
+  inline-size: var(--_icon-size);
+  block-size: var(--_icon-size);
+  overflow: hidden;
+  font-size: var(--_icon-size);
+  line-height: var(--_icon-size);
+}
+
+/* Selected (md.comp.outlined-segmented-button.selected.*) */
+.m3-segmented-button:is([aria-checked="true"], [aria-pressed="true"], [aria-selected="true"]) {
+  --_container-color: var(--md-sys-color-secondary-container);
+  --_label-color: var(--md-sys-color-on-secondary-container);
+  --_state-layer-color: var(--md-sys-color-on-secondary-container);
+}
+
+/* States (md.comp.outlined-segmented-button.{hover,focus,pressed}.*) */
+.m3-segmented-button:hover:not(:disabled, [aria-disabled="true"])::after {
+  opacity: var(--md-comp-outlined-segmented-button-hover-state-layer-opacity);
+}
+
+.m3-segmented-button:focus-visible::after {
+  opacity: var(--md-comp-outlined-segmented-button-focus-state-layer-opacity);
+}
+
+.m3-segmented-button:focus-visible::before {
+  /* md.comp.outlined-segmented-button.focus.indicator.{color,thickness,outline.offset} */
+  outline: var(--md-sys-state-focus-indicator-thickness) solid var(--md-sys-color-secondary);
+  outline-offset: var(--md-sys-state-focus-indicator-outer-offset);
+}
+
+.m3-segmented-button:active:not(:disabled, [aria-disabled="true"])::after {
+  opacity: var(--md-comp-outlined-segmented-button-pressed-state-layer-opacity);
+}
+
+/* Disabled (md.comp.outlined-segmented-button.disabled.*) */
+.m3-segmented-button:is(:disabled, [aria-disabled="true"]) {
+  --_outline-color: rgb(from var(--md-sys-color-on-surface) r g b / var(--md-comp-outlined-segmented-button-disabled-outline-opacity));
+  color: rgb(from var(--md-sys-color-on-surface) r g b / var(--md-comp-outlined-segmented-button-disabled-label-text-opacity));
+  cursor: default;
+  pointer-events: none;
+}

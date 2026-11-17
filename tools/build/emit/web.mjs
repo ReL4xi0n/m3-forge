@@ -1,6 +1,8 @@
 // Web emitter: assets/web/tokens.css (CSS custom properties and type role classes).
-//   --md-ref-typeface-*, --md-sys-typescale-*, --md-sys-shape-*, --md-sys-elevation-*,
-//   --md-sys-motion-*, --md-sys-state-*, --md-sys-space-<step>; .m3-type-<role> classes.
+//   --md-ref-typeface-*, --md-sys-typescale-*, --md-sys-shape-*, --md-sys-elevation-* (levels and
+//   their material-web shadows), --md-target-size, --md-sys-motion-*, --md-sys-state-*,
+//   --md-sys-space-<step>, the --md-comp-* tokens that assets/web/components/*.css use;
+//   .m3-type-<role> classes.
 // The Expressive-only values (shape steps, emphasized type, expressive springs) live in
 // `:root:not([data-m3-style="classic"])`; `:root` holds the standard set, and the Expressive-only names
 // there point at their standard counterpart, so data-m3-style="classic" on the root falls back to it.
@@ -18,6 +20,73 @@ const CLASSIC_OFF = ':root:not([data-m3-style="classic"])';
 export const cssName = id => `--${id.replace(/\./g, '-')}`;
 const spaceName = step => `--md-sys-space-${step}`;
 
+// Values from material-web code, not tokens ([impl:] at material-web 37aa14b, the commit in
+// knowledge/sources.lock.json).
+//   Touch target: the `.touch` element of buttons is max(48px, 100%) tall.
+export const TARGET_SIZE = { name: '--md-target-size', px: 48, impl: 'material-web/button/internal/_touch-target.scss:10' };
+//   Elevation shadow: material-web draws two shadows from the level number (0-5 on the web, not the dp
+//   value: tokens/_md-sys-elevation.scss:8-19), a key shadow at opacity 0.3 and an ambient shadow at
+//   opacity 0.15, with these clamp() sums (elevation/internal/_elevation.scss:62-175).
+export const SHADOW_IMPL = 'material-web/elevation/internal/_elevation.scss:62-175';
+const clamp = (v, max) => Math.min(Math.max(v, 0), max);
+export function shadowOf(level) {
+  const L = level;
+  return {
+    key: { y: clamp(L, 1) + clamp(L - 3, 1) + 2 * clamp(L - 4, 1), blur: 2 * clamp(L, 1) + clamp(L - 2, 1) + clamp(L - 4, 1), spread: 0, opacity: 0.3 },
+    ambient: { y: clamp(L, 1) + clamp(L - 1, 1) + 2 * clamp(L - 2, 3), blur: 3 * clamp(L, 2) + 2 * clamp(L - 2, 3), spread: clamp(L, 4) + 2 * clamp(L - 4, 1), opacity: 0.15 },
+  };
+}
+const shadowCss = ({ key, ambient }) => {
+  if (![key, ambient].some(s => s.y || s.blur || s.spread)) return 'none';
+  const one = s => `0px ${s.y}px ${s.blur}px ${s.spread}px rgb(from var(--md-sys-color-shadow) r g b / ${s.opacity})`;
+  return `${one(key)}, ${one(ambient)}`;
+};
+
+// Component tokens: only the ones the component style sheets (assets/web/components/*.css) use, so
+// tokens.css stays small. Colors are not component tokens here: the style sheets use the
+// --md-sys-color-* roles that scripts/color writes, and elevation uses the level shadows above.
+function compDeclarations(sys, comp, componentCss, skipped) {
+  const byName = new Map();
+  for (const key of Object.keys(comp)) {
+    if (key.includes('@')) continue;
+    const name = cssName(key);
+    if (byName.has(name)) throw new Error(`two component tokens map to ${name}`);
+    byName.set(name, key);
+  }
+  const used = new Set();
+  for (const text of componentCss) for (const m of text.matchAll(/var\((--md-comp-[\w-]+)\)/g)) used.add(m[1]);
+  const out = [];
+  for (const name of [...used].sort()) {
+    const key = byName.get(name);
+    if (!key) throw new Error(`component CSS uses ${name}, which is no component token`);
+    const [v, provenance] = comp[key][P];
+    if (v === null) throw new Error(`component CSS uses ${name}, but ${key} has no web value (${provenance})`);
+    let value;
+    if (v.ref) {
+      let ref = v.ref;
+      // md.sys.shape.corner-value.* duplicates md.sys.shape.corner.* (not emitted); use the step itself.
+      const step = ref.match(/^md\.sys\.shape\.corner-value\.(.+)$/)?.[1];
+      if (step) {
+        const a = cell(sys, ref, P)?.value?.dp;
+        const b = cell(sys, `md.sys.shape.corner.${step}`, P)?.value?.dp;
+        if (typeof a !== 'number' || a !== b) throw new Error(`${key}: ${ref} differs from md.sys.shape.corner.${step}`);
+        ref = `md.sys.shape.corner.${step}`;
+      }
+      if (/^md\.sys\.(color|elevation)\./.test(ref) || /^md\.sys\.typescale\.[a-z-]+$/.test(ref)) {
+        throw new Error(`component CSS uses ${name} (${ref}); use the system variables directly`);
+      }
+      value = `var(${cssName(ref)})`;
+    } else {
+      // A unitless number is an opacity, or a length in dp (common.mjs rule: unit by token kind).
+      value = cssValue(v, /opacity$/.test(key) ? 'plain' : 'dp');
+    }
+    if (!value) throw new Error(`${key}: no CSS form for ${JSON.stringify(v)}`);
+    out.push(`  ${name}: ${value}; /* ${key} */`);
+  }
+  if (!out.length) skipped.push({ key: 'md.comp.*', platform: P, reason: 'no component style sheet uses a component token' });
+  return out;
+}
+
 // CSS text for one cell value; kind: 'dp' (px), 'plain' (unitless), 'ms', 'font', 'easing', 'raw'.
 function cssValue(v, kind) {
   if (!v) return null;
@@ -31,7 +100,7 @@ function cssValue(v, kind) {
   return null;
 }
 
-export function emitWeb(sys) {
+export function emitWeb(sys, { comp = {}, componentCss = [] } = {}) {
   const skipped = [];
   const base = [];
   const expressive = [];
@@ -69,6 +138,13 @@ export function emitWeb(sys) {
 
   section(base, 'Elevation');
   for (const id of elevationIds(sys)) decl(base, id, 'dp');
+  section(base, 'Elevation shadows: the shadow of each level, from material-web code (not tokens)');
+  for (const id of elevationIds(sys)) {
+    const level = Number(id.match(/level(\d+)$/)[1]);
+    base.push(`  ${cssName(id)}-shadow: ${shadowCss(shadowOf(level))}; /* [impl:${SHADOW_IMPL}] */`);
+  }
+  section(base, 'Touch target: the minimum size of every interactive element, from material-web code (not a token)');
+  base.push(`  ${TARGET_SIZE.name}: ${TARGET_SIZE.px}px; /* [impl:${TARGET_SIZE.impl}] */`);
 
   section(base, 'Motion: durations and easings');
   for (const id of durationIds(sys)) decl(base, id, 'ms');
@@ -100,6 +176,12 @@ export function emitWeb(sys) {
 
   section(base, 'Spacing (md.sys.measurement steps on the 4 dp grid)');
   for (const s of spaceSteps(sys, P, skipped)) decl(base, s.id, 'dp', { name: spaceName(s.step) });
+
+  const compLines = compDeclarations(sys, comp, componentCss, skipped);
+  if (compLines.length) {
+    section(base, 'Component tokens used by the component style sheets (assets/web/components/)');
+    base.push(...compLines);
+  }
 
   section(expressive, 'Emphasized type scale');
   for (const role of ROLES) for (const a of TYPE_ATTRS) decl(expressive, `md.sys.typescale.emphasized.${role}.${a}`, 'raw');
@@ -138,6 +220,8 @@ export function emitWeb(sys) {
     ' * Expressive-only values off: emphasized type becomes the same role of the type scale, the added',
     ' * shape steps become the standard step they enlarge, and springs use the standard scheme.',
     ' * Use the variables (and the .m3-type-* classes) instead of literal sizes, radii and spacing.',
+    ' * --md-sys-elevation-level<N>-shadow and --md-target-size come from material-web code ([impl:]);',
+    ' * the --md-comp-* variables are the component tokens the shipped component style sheets use.',
     ' */',
     '',
     ':root {',
@@ -153,10 +237,10 @@ export function emitWeb(sys) {
     '',
   ].join('\n');
 
-  // Every var() must point at a declared variable.
+  // Every var() must point at a declared variable (color roles come from the scripts/color theme).
   const declared = new Set([...text.matchAll(/^\s*(--[\w-]+):/gm)].map(m => m[1]));
   for (const m of text.matchAll(/var\((--[\w-]+)\)/g)) {
-    if (!declared.has(m[1])) throw new Error(`tokens.css uses undeclared ${m[1]}`);
+    if (!declared.has(m[1]) && !m[1].startsWith('--md-sys-color-')) throw new Error(`tokens.css uses undeclared ${m[1]}`);
   }
   return { files: new Map([[PATH, text]]), skipped };
 }

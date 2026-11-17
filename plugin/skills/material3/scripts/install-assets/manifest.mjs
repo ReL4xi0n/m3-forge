@@ -25,6 +25,9 @@ const TTF_FONTS = [
 const COMPOSE_LICENSES = LICENSES.filter((l) => !/material-design-icons/.test(l.src));
 const COMPOSE_FONTS = TTF_FONTS.filter((f) => !/MaterialSymbols/.test(f.src));
 
+// Web component style sheets (assets/web/components/<name>.css), each installed by the part <name>.
+export const WEB_COMPONENTS = ['button', 'icon-button', 'fab', 'button-group', 'split-button', 'segmented-button'];
+
 export const MANIFEST = {
   web: {
     tokens: [{ src: 'web/tokens.css', group: 'main' }],
@@ -36,6 +39,9 @@ export const MANIFEST = {
       { src: 'fonts/MaterialSymbolsOutlined.woff2', group: 'fonts' },
       ...LICENSES,
     ],
+    // Component style sheets, one part each. button-group and split-button style m3-button and
+    // m3-icon-button children, so they go with button (and icon-button).
+    ...Object.fromEntries(WEB_COMPONENTS.map((c) => [c, [{ src: `web/components/${c}.css`, group: 'main' }]])),
   },
   flutter: {
     tokens: ['motion', 'shape', 'space', 'tokens', 'type'].map((n) => ({ src: `flutter/lib/m3/${n}.dart`, group: 'main' })),

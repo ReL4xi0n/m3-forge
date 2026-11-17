@@ -5,11 +5,12 @@
 //   --out <dir>                               another skill folder (tests)
 //   --skipped                                 also list the tokens each platform leaves out, and why
 //
-// Input: buildSkillTokens() (tools/build/tokens.mjs). Output: assets/web/tokens.css,
+// Input: buildSkillTokens() (tools/build/tokens.mjs) and, for the component tokens in tokens.css, the
+// component style sheets in assets/web/components/. Output: assets/web/tokens.css,
 // assets/flutter/lib/m3/*.dart, assets/compose/theme/*.kt (see emit/web.mjs, emit/flutter.mjs,
 // emit/compose.mjs). Only the files listed here are checked; other files in those folders belong to
 // other build steps.
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildSkillTokens } from './tokens.mjs';
@@ -19,12 +20,20 @@ import { emitCompose } from './emit/compose.mjs';
 
 export const SKILL = fileURLToPath(new URL('../../plugin/skills/material3/', import.meta.url));
 
+// The web component style sheets (assets/web/components/*.css, hand-written): tokens.css declares the
+// component tokens they use.
+export function componentCss(dir = SKILL) {
+  const d = join(dir, 'assets', 'web', 'components');
+  if (!existsSync(d)) return [];
+  return readdirSync(d).filter(n => n.endsWith('.css')).sort().map(n => readFileSync(join(d, n), 'utf8'));
+}
+
 // { files: Map(skill-relative path -> text), skipped: [{ key, platform, reason }] }
-export function emitAll(built = buildSkillTokens()) {
+export function emitAll(built = buildSkillTokens(), css = componentCss()) {
   const files = new Map();
   const skipped = [];
   for (const emit of [emitWeb, emitFlutter, emitCompose]) {
-    const r = emit(built.sys);
+    const r = emit(built.sys, { comp: built.comp, componentCss: css });
     for (const [p, t] of r.files) files.set(p, t);
     skipped.push(...r.skipped);
   }

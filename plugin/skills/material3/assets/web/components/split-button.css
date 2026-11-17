@@ -1,0 +1,146 @@
+/* material3 skill asset: assets/web/components/split-button.css
+ * Material 3 Expressive split button: a leading button for the main action and a trailing menu
+ * button, touching, in the elevated, filled, tonal or outlined button colors. Both halves are
+ * m3-button elements (button.css) of the same kind and size. Needs tokens.css and the color theme.
+ * Every value is a token variable.
+ *
+ *   <div class="m3-split-button">
+ *     <button class="m3-button m3-button--filled"><span class="m3-icon" aria-hidden="true">send</span>Send</button>
+ *     <button class="m3-button m3-button--filled" aria-label="More send options" aria-haspopup="menu"
+ *       aria-expanded="false"><span class="m3-icon" aria-hidden="true">keyboard_arrow_down</span></button>
+ *   </div>
+ *
+ * Sizes: m3-split-button--xsmall | --small (default) | --medium | --large | --xlarge; give both
+ * halves the same size class (m3-button--medium, ...). The inner corners grow when a half is hovered,
+ * focused or pressed; the trailing half turns fully round while its menu is open
+ * (aria-expanded="true"). Swap the trailing icon (keyboard_arrow_down / keyboard_arrow_up) when the
+ * menu opens: no motion token gives the rotation.
+ */
+
+.m3-split-button {
+  /* Size: small. md.comp.split-button.small.* */
+  --_between-space: var(--md-comp-split-button-small-between-space);
+  --_outer-corner: var(--md-comp-split-button-small-container-shape);
+  --_inner-corner: var(--md-comp-split-button-small-inner-corner-corner-size);
+  --_inner-corner-hovered: var(--md-comp-split-button-small-inner-corner-hovered-corner-size);
+  --_inner-corner-pressed: var(--md-comp-split-button-small-inner-corner-pressed-corner-size);
+  --_leading-button-leading-space: var(--md-comp-split-button-small-leading-button-leading-space);
+  --_leading-button-trailing-space: var(--md-comp-split-button-small-leading-button-trailing-space);
+  --_trailing-button-leading-space: var(--md-comp-split-button-small-trailing-button-leading-space);
+  --_trailing-button-trailing-space: var(--md-comp-split-button-small-trailing-button-trailing-space);
+  --_trailing-button-icon-size: var(--md-comp-split-button-small-trailing-button-icon-size);
+
+  display: inline-flex;
+  flex: none;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: var(--_between-space);
+  vertical-align: middle;
+}
+
+.m3-split-button--xsmall {
+  --_between-space: var(--md-comp-split-button-xsmall-between-space);
+  --_outer-corner: var(--md-comp-split-button-xsmall-container-shape);
+  --_inner-corner: var(--md-comp-split-button-xsmall-inner-corner-corner-size);
+  --_inner-corner-hovered: var(--md-comp-split-button-xsmall-inner-corner-hovered-corner-size);
+  --_inner-corner-pressed: var(--md-comp-split-button-xsmall-inner-corner-pressed-corner-size);
+  --_leading-button-leading-space: var(--md-comp-split-button-xsmall-leading-button-leading-space);
+  --_leading-button-trailing-space: var(--md-comp-split-button-xsmall-leading-button-trailing-space);
+  --_trailing-button-leading-space: var(--md-comp-split-button-xsmall-trailing-button-leading-space);
+  --_trailing-button-trailing-space: var(--md-comp-split-button-xsmall-trailing-button-trailing-space);
+  --_trailing-button-icon-size: var(--md-comp-split-button-xsmall-trailing-button-icon-size);
+}
+
+.m3-split-button--medium {
+  --_between-space: var(--md-comp-split-button-medium-between-space);
+  --_outer-corner: var(--md-comp-split-button-medium-container-shape);
+  --_inner-corner: var(--md-comp-split-button-medium-inner-corner-corner-size);
+  --_inner-corner-hovered: var(--md-comp-split-button-medium-inner-corner-hovered-corner-size);
+  --_inner-corner-pressed: var(--md-comp-split-button-medium-inner-corner-pressed-corner-size);
+  --_leading-button-leading-space: var(--md-comp-split-button-medium-leading-button-leading-space);
+  --_leading-button-trailing-space: var(--md-comp-split-button-medium-leading-button-trailing-space);
+  --_trailing-button-leading-space: var(--md-comp-split-button-medium-trailing-button-leading-space);
+  --_trailing-button-trailing-space: var(--md-comp-split-button-medium-trailing-button-trailing-space);
+  --_trailing-button-icon-size: var(--md-comp-split-button-medium-trailing-button-icon-size);
+}
+
+.m3-split-button--large {
+  --_between-space: var(--md-comp-split-button-large-between-space);
+  --_outer-corner: var(--md-comp-split-button-large-container-shape);
+  --_inner-corner: var(--md-comp-split-button-large-inner-corner-corner-size);
+  --_inner-corner-hovered: var(--md-comp-split-button-large-inner-corner-hovered-corner-size);
+  --_inner-corner-pressed: var(--md-comp-split-button-large-inner-corner-pressed-corner-size);
+  --_leading-button-leading-space: var(--md-comp-split-button-large-leading-button-leading-space);
+  --_leading-button-trailing-space: var(--md-comp-split-button-large-leading-button-trailing-space);
+  --_trailing-button-leading-space: var(--md-comp-split-button-large-trailing-button-leading-space);
+  --_trailing-button-trailing-space: var(--md-comp-split-button-large-trailing-button-trailing-space);
+  --_trailing-button-icon-size: var(--md-comp-split-button-large-trailing-button-icon-size);
+}
+
+.m3-split-button--xlarge {
+  --_between-space: var(--md-comp-split-button-xlarge-between-space);
+  --_outer-corner: var(--md-comp-split-button-xlarge-container-shape);
+  --_inner-corner: var(--md-comp-split-button-xlarge-inner-corner-corner-size);
+  --_inner-corner-hovered: var(--md-comp-split-button-xlarge-inner-corner-hovered-corner-size);
+  --_inner-corner-pressed: var(--md-comp-split-button-xlarge-inner-corner-pressed-corner-size);
+  --_leading-button-leading-space: var(--md-comp-split-button-xlarge-leading-button-leading-space);
+  --_leading-button-trailing-space: var(--md-comp-split-button-xlarge-leading-button-trailing-space);
+  --_trailing-button-leading-space: var(--md-comp-split-button-xlarge-trailing-button-leading-space);
+  --_trailing-button-trailing-space: var(--md-comp-split-button-xlarge-trailing-button-trailing-space);
+  --_trailing-button-icon-size: var(--md-comp-split-button-xlarge-trailing-button-icon-size);
+}
+
+/* A fully round corner is half the container height. The full corner token (a very large radius)
+   cannot be used next to a small one: CSS scales every corner of a box down by the same factor
+   until the largest fit, which would flatten the inner corners. */
+.m3-split-button > .m3-button {
+  --_half-height: calc(var(--_height) / 2);
+  --_round-corner: min(var(--_outer-corner), var(--_half-height));
+  --_split-corner: var(--_inner-corner);
+}
+
+.m3-split-button > .m3-button:is(:hover, :focus-visible):not(:disabled, [aria-disabled="true"]) {
+  --_split-corner: var(--_inner-corner-hovered);
+}
+
+.m3-split-button > .m3-button:active:not(:disabled, [aria-disabled="true"]) {
+  --_split-corner: var(--_inner-corner-pressed);
+}
+
+.m3-split-button > .m3-button:first-child {
+  --_leading-space: var(--_leading-button-leading-space);
+  --_trailing-space: var(--_leading-button-trailing-space);
+}
+
+.m3-split-button > .m3-button:last-child {
+  --_leading-space: var(--_trailing-button-leading-space);
+  --_trailing-space: var(--_trailing-button-trailing-space);
+  --_icon-size: var(--_trailing-button-icon-size);
+}
+
+/* md.comp.split-button.<size>.trailing-button.inner-corner.selected.corner-size is 50%: half the
+   smaller side, as Compose's percent corner reads it (CSS would read 50% per axis: an ellipse). */
+.m3-split-button > .m3-button:last-child[aria-expanded="true"] {
+  --_split-corner: var(--_half-height);
+}
+
+.m3-split-button > .m3-button:first-child::before,
+.m3-split-button > .m3-button:first-child::after {
+  border-start-start-radius: var(--_round-corner);
+  border-end-start-radius: var(--_round-corner);
+  border-start-end-radius: var(--_split-corner);
+  border-end-end-radius: var(--_split-corner);
+}
+
+.m3-split-button > .m3-button:last-child::before,
+.m3-split-button > .m3-button:last-child::after {
+  border-start-start-radius: var(--_split-corner);
+  border-end-start-radius: var(--_split-corner);
+  border-start-end-radius: var(--_round-corner);
+  border-end-end-radius: var(--_round-corner);
+}
+
+.m3-split-button > .m3-button::before,
+.m3-split-button > .m3-button::after {
+  transition-property: border-start-start-radius, border-end-start-radius, border-start-end-radius, border-end-end-radius;
+}

@@ -13,7 +13,7 @@ import { verify } from '../../../plugin/skills/material3/scripts/verify/index.mj
 const root = fileURLToPath(new URL('../../../', import.meta.url));
 const skillDir = join(root, 'plugin/skills/material3');
 const cli = join(root, 'tools/build/emit.mjs');
-const { sys } = buildSkillTokens();
+const { sys, comp } = buildSkillTokens();
 const { files } = emitAll();
 const shapeScale = JSON.parse(readFileSync(join(skillDir, 'scripts/verify/shape-scale.json'), 'utf8'));
 
@@ -46,7 +46,8 @@ function traced(text) {
   return noBlock.split('\n').map((line, i) => {
     const m = line.match(/(?:\/\*|\/\/)\s*(md\.[^\s,*]+(?:,\s*md\.[^\s,*]+)*)\s*(?:\*\/)?\s*$/);
     // Derived lines (spring easing and duration) carry no token numbers; web-motion-fonts.test.mjs checks them.
-    if (/\/\*\s*derived from md\./.test(text.split('\n')[i])) return { n: i + 1, code: '', keys: [] };
+    // [impl:] lines (material-web shadows, touch target) carry library-code values; web-components.test.mjs checks them.
+    if (/\/\*\s*(?:derived from md\.|\[impl:)/.test(text.split('\n')[i])) return { n: i + 1, code: '', keys: [] };
     const keys = m ? m[1].split(/,\s*/) : [];
     let code = m ? line.slice(0, m.index) : line;
     code = code.replace(/\/\/.*$/, '');
@@ -56,7 +57,8 @@ function traced(text) {
 
 test('the emitters write exactly the theme asset files verify allowlists', () => {
   assert.deepEqual([...files.keys()].sort(), [...PATHS].sort());
-  assert.deepEqual([...THEME_ASSETS].sort(), [...PATHS].sort());
+  // Plus fonts.css (font files build step), whose @font-face weight ranges are not UI literals.
+  assert.deepEqual([...THEME_ASSETS].sort(), [...PATHS, 'assets/web/fonts.css'].sort());
 });
 
 test('every file starts with the skill asset marker and the generated notice, and names no repo-only terms', () => {
@@ -80,8 +82,9 @@ test('every number in every emitted file traces to its token cell (parsed back f
       if (!keys.length) continue;
       tracedLines++;
       const cells = keys.map(k => {
-        assert.ok(sys[k], `${where}: unknown token ${k}`);
-        const [value, provenance] = sys[k][platform];
+        const cells = sys[k] ?? comp[k];
+        assert.ok(cells, `${where}: unknown token ${k}`);
+        const [value, provenance] = cells[platform];
         assert.notEqual(value, null, `${where}: ${k} is ${provenance} on ${platform}`);
         return value;
       });
@@ -187,9 +190,9 @@ test('tokens.css: Expressive-only values are scoped so data-m3-style="classic" f
   assert.equal(springs, 24);
   // Nothing else is overridden, and nothing Expressive-only leaks into the base block.
   for (const name of expressive.keys()) assert.ok(/^--md-sys-(typescale-emphasized-|shape-corner-(large-increased|extra-large-increased|extra-extra-large)$|motion-spring-)/.test(name), name);
-  // Every var() the file uses is declared in it.
+  // Every var() the file uses is declared in it, except the color roles (the scripts/color theme).
   const declared = new Set([...blocks.values()].flatMap(d => [...d.keys()]));
-  for (const m of css.matchAll(/var\((--[\w-]+)\)/g)) assert.ok(declared.has(m[1]), m[1]);
+  for (const m of css.matchAll(/var\((--[\w-]+)\)/g)) assert.ok(declared.has(m[1]) || m[1].startsWith('--md-sys-color-'), m[1]);
   // Type role classes use only the variables.
   assert.match(css, /\.m3-type-body-large \{[^}]*font-size: var\(--md-sys-typescale-body-large-size\);/);
   assert.match(css, /\.m3-type-emphasized-title-medium \{[^}]*font-weight: var\(--md-sys-typescale-emphasized-title-medium-weight\);/);

@@ -6,6 +6,8 @@
  * Expressive-only values off: emphasized type becomes the same role of the type scale, the added
  * shape steps become the standard step they enlarge, and springs use the standard scheme.
  * Use the variables (and the .m3-type-* classes) instead of literal sizes, radii and spacing.
+ * --md-sys-elevation-level<N>-shadow and --md-target-size come from material-web code ([impl:]);
+ * the --md-comp-* variables are the component tokens the shipped component style sheets use.
  */
 
 :root {
@@ -197,6 +199,17 @@
   --md-sys-elevation-level4: 8px; /* md.sys.elevation.level4 */
   --md-sys-elevation-level5: 12px; /* md.sys.elevation.level5 */
 
+  /* Elevation shadows: the shadow of each level, from material-web code (not tokens) */
+  --md-sys-elevation-level0-shadow: none; /* [impl:material-web/elevation/internal/_elevation.scss:62-175] */
+  --md-sys-elevation-level1-shadow: 0px 1px 2px 0px rgb(from var(--md-sys-color-shadow) r g b / 0.3), 0px 1px 3px 1px rgb(from var(--md-sys-color-shadow) r g b / 0.15); /* [impl:material-web/elevation/internal/_elevation.scss:62-175] */
+  --md-sys-elevation-level2-shadow: 0px 1px 2px 0px rgb(from var(--md-sys-color-shadow) r g b / 0.3), 0px 2px 6px 2px rgb(from var(--md-sys-color-shadow) r g b / 0.15); /* [impl:material-web/elevation/internal/_elevation.scss:62-175] */
+  --md-sys-elevation-level3-shadow: 0px 1px 3px 0px rgb(from var(--md-sys-color-shadow) r g b / 0.3), 0px 4px 8px 3px rgb(from var(--md-sys-color-shadow) r g b / 0.15); /* [impl:material-web/elevation/internal/_elevation.scss:62-175] */
+  --md-sys-elevation-level4-shadow: 0px 2px 3px 0px rgb(from var(--md-sys-color-shadow) r g b / 0.3), 0px 6px 10px 4px rgb(from var(--md-sys-color-shadow) r g b / 0.15); /* [impl:material-web/elevation/internal/_elevation.scss:62-175] */
+  --md-sys-elevation-level5-shadow: 0px 4px 4px 0px rgb(from var(--md-sys-color-shadow) r g b / 0.3), 0px 8px 12px 6px rgb(from var(--md-sys-color-shadow) r g b / 0.15); /* [impl:material-web/elevation/internal/_elevation.scss:62-175] */
+
+  /* Touch target: the minimum size of every interactive element, from material-web code (not a token) */
+  --md-target-size: 48px; /* [impl:material-web/button/internal/_touch-target.scss:10] */
+
   /* Motion: durations and easings */
   --md-sys-motion-duration-short1: 50ms; /* md.sys.motion.duration.short1 */
   --md-sys-motion-duration-short2: 100ms; /* md.sys.motion.duration.short2 */
@@ -276,6 +289,256 @@
   --md-sys-space-700: 56px; /* md.sys.measurement.space700 */
   --md-sys-space-800: 64px; /* md.sys.measurement.space800 */
   --md-sys-space-900: 72px; /* md.sys.measurement.space900 */
+
+  /* Component tokens used by the component style sheets (assets/web/components/) */
+  --md-comp-button-disabled-container-opacity: 0.1; /* md.comp.button.disabled.container.opacity */
+  --md-comp-button-disabled-label-text-opacity: 0.38; /* md.comp.button.disabled.label-text.opacity */
+  --md-comp-button-group-connected-large-between-space: 2px; /* md.comp.button-group.connected.large.between-space */
+  --md-comp-button-group-connected-large-container-shape: var(--md-sys-shape-corner-full); /* md.comp.button-group.connected.large.container.shape */
+  --md-comp-button-group-connected-large-inner-corner-corner-size: var(--md-sys-shape-corner-large); /* md.comp.button-group.connected.large.inner-corner.corner-size */
+  --md-comp-button-group-connected-large-pressed-inner-corner-corner-size: var(--md-sys-shape-corner-medium); /* md.comp.button-group.connected.large.pressed.inner-corner.corner-size */
+  --md-comp-button-group-connected-medium-between-space: 2px; /* md.comp.button-group.connected.medium.between-space */
+  --md-comp-button-group-connected-medium-container-shape: var(--md-sys-shape-corner-full); /* md.comp.button-group.connected.medium.container.shape */
+  --md-comp-button-group-connected-medium-inner-corner-corner-size: var(--md-sys-shape-corner-small); /* md.comp.button-group.connected.medium.inner-corner.corner-size */
+  --md-comp-button-group-connected-medium-pressed-inner-corner-corner-size: var(--md-sys-shape-corner-extra-small); /* md.comp.button-group.connected.medium.pressed.inner-corner.corner-size */
+  --md-comp-button-group-connected-small-between-space: 2px; /* md.comp.button-group.connected.small.between-space */
+  --md-comp-button-group-connected-small-container-shape: var(--md-sys-shape-corner-full); /* md.comp.button-group.connected.small.container.shape */
+  --md-comp-button-group-connected-small-inner-corner-corner-size: var(--md-sys-shape-corner-small); /* md.comp.button-group.connected.small.inner-corner.corner-size */
+  --md-comp-button-group-connected-small-pressed-inner-corner-corner-size: var(--md-sys-shape-corner-extra-small); /* md.comp.button-group.connected.small.pressed.inner-corner.corner-size */
+  --md-comp-button-group-connected-xlarge-between-space: 2px; /* md.comp.button-group.connected.xlarge.between-space */
+  --md-comp-button-group-connected-xlarge-container-shape: var(--md-sys-shape-corner-full); /* md.comp.button-group.connected.xlarge.container.shape */
+  --md-comp-button-group-connected-xlarge-inner-corner-corner-size: var(--md-sys-shape-corner-large-increased); /* md.comp.button-group.connected.xlarge.inner-corner.corner-size */
+  --md-comp-button-group-connected-xlarge-pressed-inner-corner-corner-size: var(--md-sys-shape-corner-large); /* md.comp.button-group.connected.xlarge.pressed.inner-corner.corner-size */
+  --md-comp-button-group-connected-xsmall-between-space: 2px; /* md.comp.button-group.connected.xsmall.between-space */
+  --md-comp-button-group-connected-xsmall-container-shape: var(--md-sys-shape-corner-full); /* md.comp.button-group.connected.xsmall.container.shape */
+  --md-comp-button-group-connected-xsmall-inner-corner-corner-size: var(--md-sys-shape-corner-small); /* md.comp.button-group.connected.xsmall.inner-corner.corner-size */
+  --md-comp-button-group-connected-xsmall-pressed-inner-corner-corner-size: var(--md-sys-shape-corner-extra-small); /* md.comp.button-group.connected.xsmall.pressed.inner-corner.corner-size */
+  --md-comp-button-group-standard-large-between-space: 8px; /* md.comp.button-group.standard.large.between-space */
+  --md-comp-button-group-standard-medium-between-space: 8px; /* md.comp.button-group.standard.medium.between-space */
+  --md-comp-button-group-standard-small-between-space: 12px; /* md.comp.button-group.standard.small.between-space */
+  --md-comp-button-group-standard-xlarge-between-space: 8px; /* md.comp.button-group.standard.xlarge.between-space */
+  --md-comp-button-group-standard-xsmall-between-space: 18px; /* md.comp.button-group.standard.xsmall.between-space */
+  --md-comp-button-large-container-height: 96px; /* md.comp.button.large.container.height */
+  --md-comp-button-large-container-shape-round: var(--md-sys-shape-corner-full); /* md.comp.button.large.container.shape.round */
+  --md-comp-button-large-container-shape-square: var(--md-sys-shape-corner-extra-large); /* md.comp.button.large.container.shape.square */
+  --md-comp-button-large-icon-label-space: 12px; /* md.comp.button.large.icon-label-space */
+  --md-comp-button-large-icon-size: 32px; /* md.comp.button.large.icon.size */
+  --md-comp-button-large-leading-space: 48px; /* md.comp.button.large.leading-space */
+  --md-comp-button-large-outlined-outline-width: 2px; /* md.comp.button.large.outlined.outline.width */
+  --md-comp-button-large-pressed-container-shape: var(--md-sys-shape-corner-large); /* md.comp.button.large.pressed.container.shape */
+  --md-comp-button-large-selected-container-shape-round: var(--md-sys-shape-corner-extra-large); /* md.comp.button.large.selected.container.shape.round */
+  --md-comp-button-large-selected-container-shape-square: var(--md-sys-shape-corner-full); /* md.comp.button.large.selected.container.shape.square */
+  --md-comp-button-large-trailing-space: 48px; /* md.comp.button.large.trailing-space */
+  --md-comp-button-medium-container-height: 56px; /* md.comp.button.medium.container.height */
+  --md-comp-button-medium-container-shape-round: var(--md-sys-shape-corner-full); /* md.comp.button.medium.container.shape.round */
+  --md-comp-button-medium-container-shape-square: var(--md-sys-shape-corner-large); /* md.comp.button.medium.container.shape.square */
+  --md-comp-button-medium-icon-label-space: 8px; /* md.comp.button.medium.icon-label-space */
+  --md-comp-button-medium-icon-size: 24px; /* md.comp.button.medium.icon.size */
+  --md-comp-button-medium-leading-space: 24px; /* md.comp.button.medium.leading-space */
+  --md-comp-button-medium-outlined-outline-width: 1px; /* md.comp.button.medium.outlined.outline.width */
+  --md-comp-button-medium-pressed-container-shape: var(--md-sys-shape-corner-medium); /* md.comp.button.medium.pressed.container.shape */
+  --md-comp-button-medium-selected-container-shape-round: var(--md-sys-shape-corner-large); /* md.comp.button.medium.selected.container.shape.round */
+  --md-comp-button-medium-selected-container-shape-square: var(--md-sys-shape-corner-full); /* md.comp.button.medium.selected.container.shape.square */
+  --md-comp-button-medium-trailing-space: 24px; /* md.comp.button.medium.trailing-space */
+  --md-comp-button-small-container-height: 40px; /* md.comp.button.small.container.height */
+  --md-comp-button-small-container-shape-round: var(--md-sys-shape-corner-full); /* md.comp.button.small.container.shape.round */
+  --md-comp-button-small-container-shape-square: var(--md-sys-shape-corner-medium); /* md.comp.button.small.container.shape.square */
+  --md-comp-button-small-icon-label-space: 8px; /* md.comp.button.small.icon-label-space */
+  --md-comp-button-small-icon-size: 20px; /* md.comp.button.small.icon.size */
+  --md-comp-button-small-leading-space: 16px; /* md.comp.button.small.leading-space */
+  --md-comp-button-small-outlined-outline-width: 1px; /* md.comp.button.small.outlined.outline.width */
+  --md-comp-button-small-pressed-container-shape: var(--md-sys-shape-corner-small); /* md.comp.button.small.pressed.container.shape */
+  --md-comp-button-small-selected-container-shape-round: var(--md-sys-shape-corner-medium); /* md.comp.button.small.selected.container.shape.round */
+  --md-comp-button-small-selected-container-shape-square: var(--md-sys-shape-corner-full); /* md.comp.button.small.selected.container.shape.square */
+  --md-comp-button-small-trailing-space: 16px; /* md.comp.button.small.trailing-space */
+  --md-comp-button-xlarge-container-height: 136px; /* md.comp.button.xlarge.container.height */
+  --md-comp-button-xlarge-container-shape-round: var(--md-sys-shape-corner-full); /* md.comp.button.xlarge.container.shape.round */
+  --md-comp-button-xlarge-container-shape-square: var(--md-sys-shape-corner-extra-large); /* md.comp.button.xlarge.container.shape.square */
+  --md-comp-button-xlarge-icon-label-space: 16px; /* md.comp.button.xlarge.icon-label-space */
+  --md-comp-button-xlarge-icon-size: 40px; /* md.comp.button.xlarge.icon.size */
+  --md-comp-button-xlarge-leading-space: 64px; /* md.comp.button.xlarge.leading-space */
+  --md-comp-button-xlarge-outlined-outline-width: 3px; /* md.comp.button.xlarge.outlined.outline.width */
+  --md-comp-button-xlarge-pressed-container-shape: var(--md-sys-shape-corner-large); /* md.comp.button.xlarge.pressed.container.shape */
+  --md-comp-button-xlarge-selected-container-shape-round: var(--md-sys-shape-corner-extra-large); /* md.comp.button.xlarge.selected.container.shape.round */
+  --md-comp-button-xlarge-selected-container-shape-square: var(--md-sys-shape-corner-full); /* md.comp.button.xlarge.selected.container.shape.square */
+  --md-comp-button-xlarge-trailing-space: 64px; /* md.comp.button.xlarge.trailing-space */
+  --md-comp-button-xsmall-container-height: 32px; /* md.comp.button.xsmall.container.height */
+  --md-comp-button-xsmall-container-shape-round: var(--md-sys-shape-corner-full); /* md.comp.button.xsmall.container.shape.round */
+  --md-comp-button-xsmall-container-shape-square: var(--md-sys-shape-corner-medium); /* md.comp.button.xsmall.container.shape.square */
+  --md-comp-button-xsmall-icon-label-space: 8px; /* md.comp.button.xsmall.icon-label-space */
+  --md-comp-button-xsmall-icon-size: 20px; /* md.comp.button.xsmall.icon.size */
+  --md-comp-button-xsmall-leading-space: 12px; /* md.comp.button.xsmall.leading-space */
+  --md-comp-button-xsmall-outlined-outline-width: 1px; /* md.comp.button.xsmall.outlined.outline.width */
+  --md-comp-button-xsmall-pressed-container-shape: var(--md-sys-shape-corner-small); /* md.comp.button.xsmall.pressed.container.shape */
+  --md-comp-button-xsmall-selected-container-shape-round: var(--md-sys-shape-corner-medium); /* md.comp.button.xsmall.selected.container.shape.round */
+  --md-comp-button-xsmall-selected-container-shape-square: var(--md-sys-shape-corner-full); /* md.comp.button.xsmall.selected.container.shape.square */
+  --md-comp-button-xsmall-trailing-space: 12px; /* md.comp.button.xsmall.trailing-space */
+  --md-comp-extended-fab-large-container-height: 96px; /* md.comp.extended-fab.large.container.height */
+  --md-comp-extended-fab-large-container-shape: var(--md-sys-shape-corner-extra-large); /* md.comp.extended-fab.large.container.shape */
+  --md-comp-extended-fab-large-icon-label-space: 16px; /* md.comp.extended-fab.large.icon-label-space */
+  --md-comp-extended-fab-large-icon-size: 36px; /* md.comp.extended-fab.large.icon.size */
+  --md-comp-extended-fab-large-leading-space: 28px; /* md.comp.extended-fab.large.leading-space */
+  --md-comp-extended-fab-large-trailing-space: 28px; /* md.comp.extended-fab.large.trailing-space */
+  --md-comp-extended-fab-medium-container-height: 80px; /* md.comp.extended-fab.medium.container.height */
+  --md-comp-extended-fab-medium-container-shape: var(--md-sys-shape-corner-large-increased); /* md.comp.extended-fab.medium.container.shape */
+  --md-comp-extended-fab-medium-icon-label-space: 12px; /* md.comp.extended-fab.medium.icon-label-space */
+  --md-comp-extended-fab-medium-icon-size: 28px; /* md.comp.extended-fab.medium.icon.size */
+  --md-comp-extended-fab-medium-leading-space: 26px; /* md.comp.extended-fab.medium.leading-space */
+  --md-comp-extended-fab-medium-trailing-space: 26px; /* md.comp.extended-fab.medium.trailing-space */
+  --md-comp-extended-fab-small-container-height: 56px; /* md.comp.extended-fab.small.container.height */
+  --md-comp-extended-fab-small-container-shape: var(--md-sys-shape-corner-large); /* md.comp.extended-fab.small.container.shape */
+  --md-comp-extended-fab-small-icon-label-space: 8px; /* md.comp.extended-fab.small.icon-label-space */
+  --md-comp-extended-fab-small-icon-size: 24px; /* md.comp.extended-fab.small.icon.size */
+  --md-comp-extended-fab-small-leading-space: 16px; /* md.comp.extended-fab.small.leading-space */
+  --md-comp-extended-fab-small-trailing-space: 16px; /* md.comp.extended-fab.small.trailing-space */
+  --md-comp-fab-container-height: 56px; /* md.comp.fab.container.height */
+  --md-comp-fab-container-shape: var(--md-sys-shape-corner-large); /* md.comp.fab.container.shape */
+  --md-comp-fab-container-width: 56px; /* md.comp.fab.container.width */
+  --md-comp-fab-icon-size: 24px; /* md.comp.fab.icon.size */
+  --md-comp-fab-large-container-height: 96px; /* md.comp.fab.large.container.height */
+  --md-comp-fab-large-container-shape: var(--md-sys-shape-corner-extra-large); /* md.comp.fab.large.container.shape */
+  --md-comp-fab-large-container-width: 96px; /* md.comp.fab.large.container.width */
+  --md-comp-fab-large-icon-size: 36px; /* md.comp.fab.large.icon.size */
+  --md-comp-fab-medium-container-height: 80px; /* md.comp.fab.medium.container.height */
+  --md-comp-fab-medium-container-shape: var(--md-sys-shape-corner-large-increased); /* md.comp.fab.medium.container.shape */
+  --md-comp-fab-medium-container-width: 80px; /* md.comp.fab.medium.container.width */
+  --md-comp-fab-medium-icon-size: 28px; /* md.comp.fab.medium.icon.size */
+  --md-comp-icon-button-disabled-container-opacity: 0.1; /* md.comp.icon-button.disabled.container.opacity */
+  --md-comp-icon-button-disabled-icon-opacity: 0.38; /* md.comp.icon-button.disabled.icon.opacity */
+  --md-comp-icon-button-large-container-height: 96px; /* md.comp.icon-button.large.container.height */
+  --md-comp-icon-button-large-container-shape-round: var(--md-sys-shape-corner-full); /* md.comp.icon-button.large.container.shape.round */
+  --md-comp-icon-button-large-container-shape-square: var(--md-sys-shape-corner-extra-large); /* md.comp.icon-button.large.container.shape.square */
+  --md-comp-icon-button-large-default-leading-space: 32px; /* md.comp.icon-button.large.default.leading-space */
+  --md-comp-icon-button-large-default-trailing-space: 32px; /* md.comp.icon-button.large.default.trailing-space */
+  --md-comp-icon-button-large-icon-size: 32px; /* md.comp.icon-button.large.icon.size */
+  --md-comp-icon-button-large-narrow-leading-space: 16px; /* md.comp.icon-button.large.narrow.leading-space */
+  --md-comp-icon-button-large-narrow-trailing-space: 16px; /* md.comp.icon-button.large.narrow.trailing-space */
+  --md-comp-icon-button-large-outlined-outline-width: 2px; /* md.comp.icon-button.large.outlined.outline.width */
+  --md-comp-icon-button-large-pressed-container-shape: var(--md-sys-shape-corner-large); /* md.comp.icon-button.large.pressed.container.shape */
+  --md-comp-icon-button-large-selected-container-shape-round: var(--md-sys-shape-corner-extra-large); /* md.comp.icon-button.large.selected.container.shape.round */
+  --md-comp-icon-button-large-selected-container-shape-square: var(--md-sys-shape-corner-full); /* md.comp.icon-button.large.selected.container.shape.square */
+  --md-comp-icon-button-large-wide-leading-space: 48px; /* md.comp.icon-button.large.wide.leading-space */
+  --md-comp-icon-button-large-wide-trailing-space: 48px; /* md.comp.icon-button.large.wide.trailing-space */
+  --md-comp-icon-button-medium-container-height: 56px; /* md.comp.icon-button.medium.container.height */
+  --md-comp-icon-button-medium-container-shape-round: var(--md-sys-shape-corner-full); /* md.comp.icon-button.medium.container.shape.round */
+  --md-comp-icon-button-medium-container-shape-square: var(--md-sys-shape-corner-large); /* md.comp.icon-button.medium.container.shape.square */
+  --md-comp-icon-button-medium-default-leading-space: 16px; /* md.comp.icon-button.medium.default.leading-space */
+  --md-comp-icon-button-medium-default-trailing-space: 16px; /* md.comp.icon-button.medium.default.trailing-space */
+  --md-comp-icon-button-medium-icon-size: 24px; /* md.comp.icon-button.medium.icon.size */
+  --md-comp-icon-button-medium-narrow-leading-space: 12px; /* md.comp.icon-button.medium.narrow.leading-space */
+  --md-comp-icon-button-medium-narrow-trailing-space: 12px; /* md.comp.icon-button.medium.narrow.trailing-space */
+  --md-comp-icon-button-medium-outlined-outline-width: 1px; /* md.comp.icon-button.medium.outlined.outline.width */
+  --md-comp-icon-button-medium-pressed-container-shape: var(--md-sys-shape-corner-medium); /* md.comp.icon-button.medium.pressed.container.shape */
+  --md-comp-icon-button-medium-selected-container-shape-round: var(--md-sys-shape-corner-large); /* md.comp.icon-button.medium.selected.container.shape.round */
+  --md-comp-icon-button-medium-selected-container-shape-square: var(--md-sys-shape-corner-full); /* md.comp.icon-button.medium.selected.container.shape.square */
+  --md-comp-icon-button-medium-wide-leading-space: 24px; /* md.comp.icon-button.medium.wide.leading-space */
+  --md-comp-icon-button-medium-wide-trailing-space: 24px; /* md.comp.icon-button.medium.wide.trailing-space */
+  --md-comp-icon-button-small-container-height: 40px; /* md.comp.icon-button.small.container.height */
+  --md-comp-icon-button-small-container-shape-round: var(--md-sys-shape-corner-full); /* md.comp.icon-button.small.container.shape.round */
+  --md-comp-icon-button-small-container-shape-square: var(--md-sys-shape-corner-medium); /* md.comp.icon-button.small.container.shape.square */
+  --md-comp-icon-button-small-default-leading-space: 8px; /* md.comp.icon-button.small.default.leading-space */
+  --md-comp-icon-button-small-default-trailing-space: 8px; /* md.comp.icon-button.small.default.trailing-space */
+  --md-comp-icon-button-small-icon-size: 24px; /* md.comp.icon-button.small.icon.size */
+  --md-comp-icon-button-small-narrow-leading-space: 4px; /* md.comp.icon-button.small.narrow.leading-space */
+  --md-comp-icon-button-small-narrow-trailing-space: 4px; /* md.comp.icon-button.small.narrow.trailing-space */
+  --md-comp-icon-button-small-outlined-outline-width: 1px; /* md.comp.icon-button.small.outlined.outline.width */
+  --md-comp-icon-button-small-pressed-container-shape: var(--md-sys-shape-corner-small); /* md.comp.icon-button.small.pressed.container.shape */
+  --md-comp-icon-button-small-selected-container-shape-round: var(--md-sys-shape-corner-medium); /* md.comp.icon-button.small.selected.container.shape.round */
+  --md-comp-icon-button-small-selected-container-shape-square: var(--md-sys-shape-corner-full); /* md.comp.icon-button.small.selected.container.shape.square */
+  --md-comp-icon-button-small-wide-leading-space: 14px; /* md.comp.icon-button.small.wide.leading-space */
+  --md-comp-icon-button-small-wide-trailing-space: 14px; /* md.comp.icon-button.small.wide.trailing-space */
+  --md-comp-icon-button-xlarge-container-height: 136px; /* md.comp.icon-button.xlarge.container.height */
+  --md-comp-icon-button-xlarge-container-shape-round: var(--md-sys-shape-corner-full); /* md.comp.icon-button.xlarge.container.shape.round */
+  --md-comp-icon-button-xlarge-container-shape-square: var(--md-sys-shape-corner-extra-large); /* md.comp.icon-button.xlarge.container.shape.square */
+  --md-comp-icon-button-xlarge-default-leading-space: 48px; /* md.comp.icon-button.xlarge.default.leading-space */
+  --md-comp-icon-button-xlarge-default-trailing-space: 48px; /* md.comp.icon-button.xlarge.default.trailing-space */
+  --md-comp-icon-button-xlarge-icon-size: 40px; /* md.comp.icon-button.xlarge.icon.size */
+  --md-comp-icon-button-xlarge-narrow-leading-space: 32px; /* md.comp.icon-button.xlarge.narrow.leading-space */
+  --md-comp-icon-button-xlarge-narrow-trailing-space: 32px; /* md.comp.icon-button.xlarge.narrow.trailing-space */
+  --md-comp-icon-button-xlarge-outlined-outline-width: 3px; /* md.comp.icon-button.xlarge.outlined.outline.width */
+  --md-comp-icon-button-xlarge-pressed-container-shape: var(--md-sys-shape-corner-large); /* md.comp.icon-button.xlarge.pressed.container.shape */
+  --md-comp-icon-button-xlarge-selected-container-shape-round: var(--md-sys-shape-corner-extra-large); /* md.comp.icon-button.xlarge.selected.container.shape.round */
+  --md-comp-icon-button-xlarge-selected-container-shape-square: var(--md-sys-shape-corner-full); /* md.comp.icon-button.xlarge.selected.container.shape.square */
+  --md-comp-icon-button-xlarge-wide-leading-space: 72px; /* md.comp.icon-button.xlarge.wide.leading-space */
+  --md-comp-icon-button-xlarge-wide-trailing-space: 72px; /* md.comp.icon-button.xlarge.wide.trailing-space */
+  --md-comp-icon-button-xsmall-container-height: 32px; /* md.comp.icon-button.xsmall.container.height */
+  --md-comp-icon-button-xsmall-container-shape-round: var(--md-sys-shape-corner-full); /* md.comp.icon-button.xsmall.container.shape.round */
+  --md-comp-icon-button-xsmall-container-shape-square: var(--md-sys-shape-corner-medium); /* md.comp.icon-button.xsmall.container.shape.square */
+  --md-comp-icon-button-xsmall-default-leading-space: 6px; /* md.comp.icon-button.xsmall.default.leading-space */
+  --md-comp-icon-button-xsmall-default-trailing-space: 6px; /* md.comp.icon-button.xsmall.default.trailing-space */
+  --md-comp-icon-button-xsmall-icon-size: 20px; /* md.comp.icon-button.xsmall.icon.size */
+  --md-comp-icon-button-xsmall-narrow-leading-space: 4px; /* md.comp.icon-button.xsmall.narrow.leading-space */
+  --md-comp-icon-button-xsmall-narrow-trailing-space: 4px; /* md.comp.icon-button.xsmall.narrow.trailing-space */
+  --md-comp-icon-button-xsmall-outlined-outline-width: 1px; /* md.comp.icon-button.xsmall.outlined.outline.width */
+  --md-comp-icon-button-xsmall-pressed-container-shape: var(--md-sys-shape-corner-small); /* md.comp.icon-button.xsmall.pressed.container.shape */
+  --md-comp-icon-button-xsmall-selected-container-shape-round: var(--md-sys-shape-corner-medium); /* md.comp.icon-button.xsmall.selected.container.shape.round */
+  --md-comp-icon-button-xsmall-selected-container-shape-square: var(--md-sys-shape-corner-full); /* md.comp.icon-button.xsmall.selected.container.shape.square */
+  --md-comp-icon-button-xsmall-wide-leading-space: 10px; /* md.comp.icon-button.xsmall.wide.leading-space */
+  --md-comp-icon-button-xsmall-wide-trailing-space: 10px; /* md.comp.icon-button.xsmall.wide.trailing-space */
+  --md-comp-outlined-segmented-button-container-height: 40px; /* md.comp.outlined-segmented-button.container.height */
+  --md-comp-outlined-segmented-button-disabled-label-text-opacity: 0.38; /* md.comp.outlined-segmented-button.disabled.label-text.opacity */
+  --md-comp-outlined-segmented-button-disabled-outline-opacity: 0.12; /* md.comp.outlined-segmented-button.disabled.outline.opacity */
+  --md-comp-outlined-segmented-button-focus-state-layer-opacity: var(--md-sys-state-focus-state-layer-opacity); /* md.comp.outlined-segmented-button.focus.state-layer.opacity */
+  --md-comp-outlined-segmented-button-hover-state-layer-opacity: var(--md-sys-state-hover-state-layer-opacity); /* md.comp.outlined-segmented-button.hover.state-layer.opacity */
+  --md-comp-outlined-segmented-button-label-text-font: var(--md-sys-typescale-label-large-font); /* md.comp.outlined-segmented-button.label-text.font */
+  --md-comp-outlined-segmented-button-label-text-line-height: var(--md-sys-typescale-label-large-line-height); /* md.comp.outlined-segmented-button.label-text.line-height */
+  --md-comp-outlined-segmented-button-label-text-size: var(--md-sys-typescale-label-large-size); /* md.comp.outlined-segmented-button.label-text.size */
+  --md-comp-outlined-segmented-button-label-text-tracking: var(--md-sys-typescale-label-large-tracking); /* md.comp.outlined-segmented-button.label-text.tracking */
+  --md-comp-outlined-segmented-button-label-text-weight: var(--md-sys-typescale-label-large-weight); /* md.comp.outlined-segmented-button.label-text.weight */
+  --md-comp-outlined-segmented-button-outline-width: 1px; /* md.comp.outlined-segmented-button.outline.width */
+  --md-comp-outlined-segmented-button-pressed-state-layer-opacity: var(--md-sys-state-focus-state-layer-opacity); /* md.comp.outlined-segmented-button.pressed.state-layer.opacity */
+  --md-comp-outlined-segmented-button-shape: var(--md-sys-shape-corner-full); /* md.comp.outlined-segmented-button.shape */
+  --md-comp-outlined-segmented-button-with-icon-icon-size: 18px; /* md.comp.outlined-segmented-button.with-icon.icon.size */
+  --md-comp-split-button-large-between-space: 2px; /* md.comp.split-button.large.between-space */
+  --md-comp-split-button-large-container-shape: var(--md-sys-shape-corner-full); /* md.comp.split-button.large.container.shape */
+  --md-comp-split-button-large-inner-corner-corner-size: var(--md-sys-shape-corner-small); /* md.comp.split-button.large.inner-corner.corner-size */
+  --md-comp-split-button-large-inner-corner-hovered-corner-size: var(--md-sys-shape-corner-large-increased); /* md.comp.split-button.large.inner-corner.hovered.corner-size */
+  --md-comp-split-button-large-inner-corner-pressed-corner-size: var(--md-sys-shape-corner-large-increased); /* md.comp.split-button.large.inner-corner.pressed.corner-size */
+  --md-comp-split-button-large-leading-button-leading-space: 48px; /* md.comp.split-button.large.leading-button.leading-space */
+  --md-comp-split-button-large-leading-button-trailing-space: 48px; /* md.comp.split-button.large.leading-button.trailing-space */
+  --md-comp-split-button-large-trailing-button-icon-size: 38px; /* md.comp.split-button.large.trailing-button.icon.size */
+  --md-comp-split-button-large-trailing-button-leading-space: 29px; /* md.comp.split-button.large.trailing-button.leading-space */
+  --md-comp-split-button-large-trailing-button-trailing-space: 29px; /* md.comp.split-button.large.trailing-button.trailing-space */
+  --md-comp-split-button-medium-between-space: 2px; /* md.comp.split-button.medium.between-space */
+  --md-comp-split-button-medium-container-shape: var(--md-sys-shape-corner-full); /* md.comp.split-button.medium.container.shape */
+  --md-comp-split-button-medium-inner-corner-corner-size: var(--md-sys-shape-corner-extra-small); /* md.comp.split-button.medium.inner-corner.corner-size */
+  --md-comp-split-button-medium-inner-corner-hovered-corner-size: var(--md-sys-shape-corner-medium); /* md.comp.split-button.medium.inner-corner.hovered.corner-size */
+  --md-comp-split-button-medium-inner-corner-pressed-corner-size: var(--md-sys-shape-corner-medium); /* md.comp.split-button.medium.inner-corner.pressed.corner-size */
+  --md-comp-split-button-medium-leading-button-leading-space: 24px; /* md.comp.split-button.medium.leading-button.leading-space */
+  --md-comp-split-button-medium-leading-button-trailing-space: 24px; /* md.comp.split-button.medium.leading-button.trailing-space */
+  --md-comp-split-button-medium-trailing-button-icon-size: 26px; /* md.comp.split-button.medium.trailing-button.icon.size */
+  --md-comp-split-button-medium-trailing-button-leading-space: 15px; /* md.comp.split-button.medium.trailing-button.leading-space */
+  --md-comp-split-button-medium-trailing-button-trailing-space: 15px; /* md.comp.split-button.medium.trailing-button.trailing-space */
+  --md-comp-split-button-small-between-space: 2px; /* md.comp.split-button.small.between-space */
+  --md-comp-split-button-small-container-shape: var(--md-sys-shape-corner-full); /* md.comp.split-button.small.container.shape */
+  --md-comp-split-button-small-inner-corner-corner-size: var(--md-sys-shape-corner-extra-small); /* md.comp.split-button.small.inner-corner.corner-size */
+  --md-comp-split-button-small-inner-corner-hovered-corner-size: var(--md-sys-shape-corner-medium); /* md.comp.split-button.small.inner-corner.hovered.corner-size */
+  --md-comp-split-button-small-inner-corner-pressed-corner-size: var(--md-sys-shape-corner-medium); /* md.comp.split-button.small.inner-corner.pressed.corner-size */
+  --md-comp-split-button-small-leading-button-leading-space: 16px; /* md.comp.split-button.small.leading-button.leading-space */
+  --md-comp-split-button-small-leading-button-trailing-space: 12px; /* md.comp.split-button.small.leading-button.trailing-space */
+  --md-comp-split-button-small-trailing-button-icon-size: 22px; /* md.comp.split-button.small.trailing-button.icon.size */
+  --md-comp-split-button-small-trailing-button-leading-space: 13px; /* md.comp.split-button.small.trailing-button.leading-space */
+  --md-comp-split-button-small-trailing-button-trailing-space: 13px; /* md.comp.split-button.small.trailing-button.trailing-space */
+  --md-comp-split-button-xlarge-between-space: 2px; /* md.comp.split-button.xlarge.between-space */
+  --md-comp-split-button-xlarge-container-shape: var(--md-sys-shape-corner-full); /* md.comp.split-button.xlarge.container.shape */
+  --md-comp-split-button-xlarge-inner-corner-corner-size: var(--md-sys-shape-corner-medium); /* md.comp.split-button.xlarge.inner-corner.corner-size */
+  --md-comp-split-button-xlarge-inner-corner-hovered-corner-size: var(--md-sys-shape-corner-large-increased); /* md.comp.split-button.xlarge.inner-corner.hovered.corner-size */
+  --md-comp-split-button-xlarge-inner-corner-pressed-corner-size: var(--md-sys-shape-corner-large-increased); /* md.comp.split-button.xlarge.inner-corner.pressed.corner-size */
+  --md-comp-split-button-xlarge-leading-button-leading-space: 64px; /* md.comp.split-button.xlarge.leading-button.leading-space */
+  --md-comp-split-button-xlarge-leading-button-trailing-space: 64px; /* md.comp.split-button.xlarge.leading-button.trailing-space */
+  --md-comp-split-button-xlarge-trailing-button-icon-size: 50px; /* md.comp.split-button.xlarge.trailing-button.icon.size */
+  --md-comp-split-button-xlarge-trailing-button-leading-space: 43px; /* md.comp.split-button.xlarge.trailing-button.leading-space */
+  --md-comp-split-button-xlarge-trailing-button-trailing-space: 43px; /* md.comp.split-button.xlarge.trailing-button.trailing-space */
+  --md-comp-split-button-xsmall-between-space: 2px; /* md.comp.split-button.xsmall.between-space */
+  --md-comp-split-button-xsmall-container-shape: var(--md-sys-shape-corner-full); /* md.comp.split-button.xsmall.container.shape */
+  --md-comp-split-button-xsmall-inner-corner-corner-size: var(--md-sys-shape-corner-extra-small); /* md.comp.split-button.xsmall.inner-corner.corner-size */
+  --md-comp-split-button-xsmall-inner-corner-hovered-corner-size: var(--md-sys-shape-corner-small); /* md.comp.split-button.xsmall.inner-corner.hovered.corner-size */
+  --md-comp-split-button-xsmall-inner-corner-pressed-corner-size: var(--md-sys-shape-corner-small); /* md.comp.split-button.xsmall.inner-corner.pressed.corner-size */
+  --md-comp-split-button-xsmall-leading-button-leading-space: 12px; /* md.comp.split-button.xsmall.leading-button.leading-space */
+  --md-comp-split-button-xsmall-leading-button-trailing-space: 10px; /* md.comp.split-button.xsmall.leading-button.trailing-space */
+  --md-comp-split-button-xsmall-trailing-button-icon-size: 22px; /* md.comp.split-button.xsmall.trailing-button.icon.size */
+  --md-comp-split-button-xsmall-trailing-button-leading-space: 13px; /* md.comp.split-button.xsmall.trailing-button.leading-space */
+  --md-comp-split-button-xsmall-trailing-button-trailing-space: 13px; /* md.comp.split-button.xsmall.trailing-button.trailing-space */
 }
 
 :root:not([data-m3-style="classic"]) {
