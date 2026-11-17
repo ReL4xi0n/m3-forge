@@ -18,6 +18,8 @@ const isZero = sha => /^0+$/.test(sha);
 export function fastTestEnv(env) {
   const out = { ...env, M3_NO_BROWSER_TESTS: '1', [ACTIVE_VAR]: '1' };
   delete out.M3_TOOLCHAIN_TESTS;
+  // The hook exports these for the guard; the guard's own tests expect to set them themselves.
+  for (const k of ['GUARD_REQUIRE_TERMS', 'GUARD_REQUIRE_CORPUS', 'GUARD_FORBIDDEN_TERMS']) delete out[k];
   // A test runner's child (NODE_TEST_CONTEXT set) skips `node --test` files; this run is its own suite.
   delete out.NODE_TEST_CONTEXT;
   return out;

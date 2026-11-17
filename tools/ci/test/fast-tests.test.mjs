@@ -29,6 +29,11 @@ test('fastTestEnv: no toolchain tests, no browser tests, recursion marker set, r
   assert.equal(env.HOME, 'h');
 });
 
+test('fastTestEnv: the guard settings the hook exports do not reach the tests', () => {
+  const env = fastTestEnv({ GUARD_REQUIRE_TERMS: '1', GUARD_REQUIRE_CORPUS: '1', GUARD_FORBIDDEN_TERMS: 't', PATH: 'p' });
+  for (const k of ['GUARD_REQUIRE_TERMS', 'GUARD_REQUIRE_CORPUS', 'GUARD_FORBIDDEN_TERMS']) assert.equal(env[k], undefined, k);
+});
+
 test('prePushProblem: clean tree pushing HEAD passes; deletions are ignored', () => {
   const lines = [`refs/heads/x ${A} refs/heads/x ${B}`, `(delete) ${ZERO} refs/heads/old ${B}`];
   assert.equal(prePushProblem({ head: A, pushed: lines, peel: s => s, status: '' }), null);
