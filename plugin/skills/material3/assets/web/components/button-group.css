@@ -17,7 +17,8 @@
  * children the same size class (m3-button--medium, m3-icon-button--medium, ...).
  * Connected: the inner corners get smaller when pressed and fully round when selected
  * (aria-pressed="true"). The standard group's pressed-width change needs layout animation and is
- * left out.
+ * left out. Small icon buttons keep a 48 px touch target that overlaps their neighbours, so the
+ * visible gap between containers is the group's token gap.
  */
 
 .m3-button-group {
@@ -28,6 +29,13 @@
   flex-wrap: nowrap;
   align-items: center;
   gap: var(--_between-space);
+}
+
+/* An icon button narrower than the touch target keeps its --md-target-size wide element (the touch
+   target) but takes only its container's width in the row: negative inline margins of half the
+   difference let the targets overlap instead of adding a visible gap. */
+.m3-button-group > .m3-icon-button {
+  margin-inline: calc((var(--_width) - max(var(--_width), var(--md-target-size))) / 2);
 }
 
 .m3-button-group--xsmall {

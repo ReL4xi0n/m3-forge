@@ -5,8 +5,9 @@
 //   verify on a gallery site (no scored finding).
 //   Toolchain (M3_TOOLCHAIN_TESTS=1): the harness capture of each gallery (no touch-target or
 //   contrast finding in either theme or viewport) and computed checks in Chromium (label contrast over
-//   the drawn container, which axe cannot measure on a pseudo-element; state layers; focus ring;
-//   container geometry; no sideways scroll).
+//   the drawn container, which axe cannot measure on a pseudo-element; state layers, elevation and
+//   focus rings per gallery (STATE_CHECKS); container geometry and button group gaps; text field labels;
+//   no sideways scroll).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
@@ -67,13 +68,18 @@ function declarations(css) {
 }
 
 // The only literal numbers besides 0, each with its reason.
-const NUMBER_EXCEPTIONS = [
-  // The container and state layer sit under the label inside the element's own stacking context.
-  { prop: 'z-index', value: '-1' },
-  // A fully round corner next to a small one: half the container height (a very large radius would
-  // make CSS scale the small corners of the same box down to nothing).
-  { prop: '--_half-height', value: 'calc(var(--_height) / 2)' },
-];
+//   z-index: -1: the container and state layer sit under the label inside the element's own
+//   stacking context.
+//   "/ 2" inside calc(): halving, to center one box in another (a container in its touch target, a
+//   handle on its track, a ring around a dot, a label on an outline, an icon button's target over
+//   its neighbours in a button group) or to draw a fully round corner next to a small one as half
+//   the height (a very large radius would make CSS scale the small corners of the same box down to
+//   nothing).
+//   100%: the containing block's size, where a position depends on it: an anchored badge's start
+//   (the anchor's end edge) and a slider handle's travel.
+const NUMBER_EXCEPTIONS = [{ prop: 'z-index', value: '-1' }];
+const HALVING = /\/\s*2(?![\d.])/g;
+const PERCENT_PROPS = new Set(['inset-inline-start', '--_handle-offset']);
 
 test('every component style sheet is its own web install part and starts with the asset marker', () => {
   assert.deepEqual(files, WEB_COMPONENTS.map(c => `${c}.css`).sort());
@@ -90,7 +96,9 @@ test('every property value is a token variable or 0 (the listed structural excep
   for (const [f, css] of sheets) {
     for (const d of declarations(css)) {
       n++;
-      const rest = stripVar(d.value).replace(/(["']).*?\1/g, '');
+      let rest = stripVar(d.value).replace(/(["']).*?\1/g, '');
+      if (/calc\(/.test(d.value)) rest = rest.replace(HALVING, '');
+      if (PERCENT_PROPS.has(d.prop)) rest = rest.replace(/(?<![\w.])100%/g, '');
       const nums = (rest.match(/(?<![\w#-])-?\d*\.?\d+(?:[a-z%]+)?/gi) || []).filter(x => !/^-?0+(?:\.0+)?$/.test(x));
       if (!nums.length) continue;
       const ok = NUMBER_EXCEPTIONS.some(e => e.prop === d.prop && e.value === d.value);
@@ -107,14 +115,17 @@ test('colors come only from the --md-sys-color-* roles', () => {
     for (const d of declarations(css)) {
       if (!COLOR.test(d.prop) || d.prop === 'transition-property') continue;
       for (const v of usedIn(`x{a:${d.value}}`)) {
-        assert.ok(/^--md-sys-color-|^--_|^--md-comp-[\w-]+-(?:opacity|width)$|^--md-sys-elevation-level\d-shadow$|^--md-sys-state-focus-indicator-thickness$/.test(v),
+        assert.ok(/^--md-sys-color-|^--_|^--md-comp-[\w-]+-(?:opacity|width)$|^--md-sys-elevation-level\d-shadow$|^--md-sys-state-focus-indicator-thickness$|^--md-impl-[\w-]+-width$/.test(v),
           `${f}: ${d.prop} uses ${v}`);
       }
-      const rest = stripVar(d.value).replace(/\b(?:transparent|none|solid|from|r|g|b|rgb|0)\b|[()/,\s]/g, '');
+      const rest = stripVar(d.value).replace(/\b(?:transparent|none|inherit|solid|from|r|g|b|rgb|0)\b|[()/,\s]/g, '');
       assert.equal(rest, '', `${f}: ${d.prop}: ${d.value}`);
     }
   }
 });
+
+// Variables the page sets for a component (CSS cannot read them): the slider's position, 0 to 1.
+const PAGE_INPUTS = ['--m3-slider-value'];
 
 test('every --md-* variable used by the style sheets and galleries is declared in tokens.css or the color theme', () => {
   const declared = new Set([...declaredIn(tokensCss), ...declaredIn(theme)]);
@@ -123,6 +134,7 @@ test('every --md-* variable used by the style sheets and galleries is declared i
   for (const [f, text] of [...sheets, ...pages]) {
     for (const v of usedIn(text)) {
       if (v.startsWith('--_')) assert.ok(own.has(v), `${f}: private ${v} is declared in no component sheet`);
+      else if (PAGE_INPUTS.includes(v)) continue;
       else assert.ok(declared.has(v), `${f}: ${v} is not declared in tokens.css or the color theme`);
     }
   }
@@ -130,7 +142,12 @@ test('every --md-* variable used by the style sheets and galleries is declared i
 
 test('class names are m3-<component> or m3-<component>--<variant>', () => {
   // m3-icon: the icon element inside a component (the class verify knows for Material Symbols).
-  const COMPONENTS = ['icon', 'button','icon-button', 'fab', 'extended-fab', 'button-group', 'split-button', 'segmented-button-set', 'segmented-button'];
+  // Parts of a component that need their own class: m3-<component>-<part> (list item text, avatar).
+  const COMPONENTS = [
+    'icon', 'button', 'icon-button', 'fab', 'extended-fab', 'button-group', 'split-button', 'segmented-button-set', 'segmented-button',
+    'card', 'list', 'list-item', 'list-item-text', 'list-item-overline', 'list-item-supporting-text', 'list-item-trailing-text',
+    'list-item-avatar', 'chip-set', 'chip', 'text-field', 'checkbox', 'radio', 'switch', 'slider', 'divider', 'badge',
+  ];
   const re = new RegExp(`^m3-(?:${COMPONENTS.join('|')})(?:--[a-z0-9]+(?:-[a-z0-9]+)*)?$`);
   for (const [f, css] of sheets) {
     for (const m of stripComments(css).matchAll(/\.(m3-[\w-]+)/g)) assert.match(m[1], re, f);
@@ -175,7 +192,7 @@ function ladder() {
   return used;
 }
 
-test('ladder: the component tokens used are the web\'s own, except the rung-2 label type roles listed here', () => {
+test('ladder: the component tokens used are the web\'s own, except the ones listed here', () => {
   const used = ladder();
   const notOwn = [...used].filter(([, p]) => p !== 'own').map(([k, p]) => `${k} ${p}`).sort();
   assert.deepEqual(notOwn, [
@@ -250,29 +267,10 @@ for (const g of galleries) {
         const report = await page.evaluate(inPage);
         assert.deepEqual(report.lowContrast, [], `${scheme}: labels below the minimum contrast`);
         assert.deepEqual(report.badGeometry, [], `${scheme}: container or target size`);
-        assert.ok(report.checked > 100, `${scheme}: ${report.checked} elements checked`);
+        assert.ok(report.checked > MIN_CHECKED[name], `${scheme}: ${report.checked} elements checked`);
         assert.ok(report.scrollWidth <= 412, `${scheme}: page scrolls sideways (${report.scrollWidth}px)`);
 
-        // Hover, keyboard focus and press on a filled button (state layer, focus ring, pressed shape).
-        const btn = page.locator('.m3-button--filled:not([aria-pressed]):not(:disabled)').first();
-        const pseudo = (which, prop) => btn.evaluate((el, [w, p]) => getComputedStyle(el, w).getPropertyValue(p), [which, prop]);
-        const sys = p => page.evaluate(n => getComputedStyle(document.documentElement).getPropertyValue(n).trim(), p);
-        await btn.hover();
-        assert.equal(await pseudo('::after', 'opacity'), await sys('--md-sys-state-hover-state-layer-opacity'));
-        await page.screenshot({ path: join(outDir, `state-hover-${scheme}.png`), clip: await clipOf(btn) });
-        await page.mouse.down();
-        assert.equal(await pseudo('::after', 'opacity'), await sys('--md-sys-state-pressed-state-layer-opacity'));
-        assert.equal(await pseudo('::before', 'border-top-left-radius'), await sys('--md-sys-shape-corner-small'));
-        await page.screenshot({ path: join(outDir, `state-pressed-${scheme}.png`), clip: await clipOf(btn) });
-        await page.mouse.up();
-        await page.mouse.move(0, 0);
-        await btn.evaluate(el => el.blur());
-        await page.keyboard.press('Tab');
-        const focused = page.locator(':focus-visible');
-        assert.equal(await focused.evaluate(el => getComputedStyle(el, '::before').outlineStyle), 'solid');
-        assert.equal(await focused.evaluate(el => getComputedStyle(el, '::before').outlineWidth), await sys('--md-sys-state-focus-indicator-thickness'));
-        assert.equal(await focused.evaluate(el => getComputedStyle(el, '::after').opacity), await sys('--md-sys-state-focus-state-layer-opacity'));
-        await page.screenshot({ path: join(outDir, `state-focus-${scheme}.png`), clip: await clipOf(focused) });
+        await STATE_CHECKS[name](page, { scheme, outDir });
         await page.close();
       }
     } finally {
@@ -282,7 +280,193 @@ for (const g of galleries) {
   });
 }
 
+// Elements the computed check measures on each gallery, at least.
+const MIN_CHECKED = { actions: 100, containment: 10 };
+
+// Helpers on a page: a root variable, a pseudo-element's computed property, the alpha of a color,
+// the computed value of a box-shadow or color variable (from a probe element).
+const rootVar = (page, n) => page.evaluate(v => getComputedStyle(document.documentElement).getPropertyValue(v).trim(), n);
+const pseudoOf = (loc, which, prop) => loc.evaluate((el, [w, p]) => getComputedStyle(el, w).getPropertyValue(p), [which, prop]);
+const alphaOf = c => {
+  const slash = c.match(/\/\s*([\d.]+)\s*\)$/); // rgb(r g b / a), color(srgb r g b / a)
+  if (slash) return Number(slash[1]);
+  const m = c.match(/rgba?\(([^)]+)\)/);
+  if (!m) return null;
+  const parts = m[1].split(/[\s,]+/).filter(Boolean).map(Number);
+  return parts.length > 3 ? parts[3] : 1;
+};
+const probe = (page, prop, v) => page.evaluate(([p, x]) => {
+  const d = document.createElement('div');
+  d.style.setProperty(p, `var(${x})`);
+  document.body.append(d);
+  const s = getComputedStyle(d).getPropertyValue(p);
+  d.remove();
+  return s;
+}, [prop, v]);
+const near = (a, b, what) => assert.ok(Math.abs(a - b) <= 0.5, `${what}: ${a} vs ${b}`);
+
+// State and geometry checks per gallery (light and dark), with crops of the states for reading.
+const STATE_CHECKS = {
+  async actions(page, { scheme, outDir }) {
+    // Hover, keyboard focus and press on a filled button (state layer, focus ring, pressed shape).
+    const btn = page.locator('.m3-button--filled:not([aria-pressed]):not(:disabled)').first();
+    await btn.hover();
+    assert.equal(await pseudoOf(btn, '::after', 'opacity'), await rootVar(page, '--md-sys-state-hover-state-layer-opacity'));
+    // md.comp.button.filled.hovered.container.elevation: level1
+    assert.equal(await pseudoOf(btn, '::before', 'box-shadow'), await probe(page, 'box-shadow', '--md-sys-elevation-level1-shadow'));
+    await page.screenshot({ path: join(outDir, `state-hover-${scheme}.png`), clip: await clipOf(btn) });
+    await page.mouse.down();
+    assert.equal(await pseudoOf(btn, '::after', 'opacity'), await rootVar(page, '--md-sys-state-pressed-state-layer-opacity'));
+    assert.equal(await pseudoOf(btn, '::before', 'border-top-left-radius'), await rootVar(page, '--md-sys-shape-corner-small'));
+    assert.equal(await pseudoOf(btn, '::before', 'box-shadow'), 'none');
+    await page.screenshot({ path: join(outDir, `state-pressed-${scheme}.png`), clip: await clipOf(btn) });
+    await page.mouse.up();
+    await page.mouse.move(0, 0);
+    await btn.evaluate(el => el.blur());
+
+    // Elevated button: level1 at rest, level2 on hover; text button: no elevation on hover.
+    const elevated = page.locator('.m3-button--elevated:not([aria-pressed]):not(:disabled)').first();
+    assert.equal(await pseudoOf(elevated, '::before', 'box-shadow'), await probe(page, 'box-shadow', '--md-sys-elevation-level1-shadow'));
+    await elevated.hover();
+    assert.equal(await pseudoOf(elevated, '::before', 'box-shadow'), await probe(page, 'box-shadow', '--md-sys-elevation-level2-shadow'));
+    await page.screenshot({ path: join(outDir, `state-hover-elevated-${scheme}.png`), clip: await clipOf(elevated) });
+    const text = page.locator('.m3-button--text:not(:disabled)').first();
+    await text.hover();
+    assert.equal(await pseudoOf(text, '::before', 'box-shadow'), 'none');
+    await page.mouse.move(0, 0);
+
+    // A text button ignores aria-pressed (no toggle tokens): it looks like the plain text button.
+    const same = await page.evaluate(() => {
+      const plain = document.querySelector('.m3-button--text:not(:disabled)');
+      const look = el => [getComputedStyle(el).color, getComputedStyle(el, '::before').backgroundColor, getComputedStyle(el, '::before').borderTopLeftRadius];
+      const out = [];
+      for (const v of ['true', 'false']) {
+        const b = plain.cloneNode(true);
+        b.setAttribute('aria-pressed', v);
+        plain.after(b);
+        out.push([look(plain), look(b)]);
+        b.remove();
+      }
+      return out;
+    });
+    for (const [a, b] of same) assert.deepEqual(b, a, 'text button with aria-pressed');
+
+    // Icon buttons in button groups: the visible gap between containers is the group's token gap
+    // (the 48 px targets overlap instead of adding to it).
+    const gaps = await page.evaluate(() => {
+      const out = [];
+      const box = el => {
+        const r = el.getBoundingClientRect();
+        const w = parseFloat(getComputedStyle(el, '::before').width);
+        return { start: r.left + (r.width - w) / 2, end: r.left + (r.width + w) / 2 };
+      };
+      for (const group of document.querySelectorAll('.m3-button-group')) {
+        const kids = [...group.children].filter(k => k.matches('.m3-icon-button'));
+        const want = parseFloat(getComputedStyle(group).columnGap);
+        for (let i = 1; i < kids.length; i++) out.push({ group: group.getAttribute('aria-label'), gap: box(kids[i]).start - box(kids[i - 1]).end, want });
+      }
+      return out;
+    });
+    assert.ok(gaps.length >= 10, `${gaps.length} icon button pairs in groups`);
+    for (const g of gaps) near(g.gap, g.want, `gap in "${g.group}"`);
+    const xs = page.locator('.m3-button-group--xsmall:not(.m3-button-group--connected)').first();
+    await page.screenshot({ path: join(outDir, `group-xsmall-${scheme}.png`), clip: await clipOf(xs) });
+
+    // Keyboard focus: the focus ring on the container and the focus state layer.
+    await page.keyboard.press('Tab');
+    const focused = page.locator(':focus-visible');
+    assert.equal(await focused.evaluate(el => getComputedStyle(el, '::before').outlineStyle), 'solid');
+    assert.equal(await focused.evaluate(el => getComputedStyle(el, '::before').outlineWidth), await rootVar(page, '--md-sys-state-focus-indicator-thickness'));
+    assert.equal(await focused.evaluate(el => getComputedStyle(el, '::after').opacity), await rootVar(page, '--md-sys-state-focus-state-layer-opacity'));
+    await page.screenshot({ path: join(outDir, `state-focus-${scheme}.png`), clip: await clipOf(focused) });
+  },
+
+  async containment(page, { scheme, outDir }) {
+    const hover = Number(await rootVar(page, '--md-sys-state-hover-state-layer-opacity'));
+    const thickness = await rootVar(page, '--md-sys-state-focus-indicator-thickness');
+    const space = async step => parseFloat(await rootVar(page, `--md-sys-space-${step}`));
+
+    // Interactive elevated card: level1 at rest, level2 and the state layer on hover.
+    const card = page.locator('a.m3-card--elevated').first();
+    assert.equal(await card.evaluate(el => getComputedStyle(el).boxShadow), await probe(page, 'box-shadow', '--md-sys-elevation-level1-shadow'));
+    await card.hover();
+    assert.equal(await card.evaluate(el => getComputedStyle(el).boxShadow), await probe(page, 'box-shadow', '--md-sys-elevation-level2-shadow'));
+    assert.equal(alphaOf(await pseudoOf(card, '::after', 'background-color')), hover);
+    await page.screenshot({ path: join(outDir, `state-hover-card-${scheme}.png`), clip: await clipOf(card) });
+
+    // Filter chip: hover state layer.
+    const chip = page.locator('.m3-chip--filter[aria-pressed="false"]').first();
+    await chip.hover();
+    assert.equal(alphaOf(await pseudoOf(chip, '::after', 'background-color')), hover);
+    await page.screenshot({ path: join(outDir, `state-hover-chip-${scheme}.png`), clip: await clipOf(page.locator('.m3-chip-set').nth(1)) });
+    await page.mouse.move(0, 0);
+
+    // Input chip remove button: a full touch target around an icon-sized slot.
+    const rb = await page.locator('.m3-chip--input > button').first().boundingBox();
+    assert.ok(rb.width >= 48 && rb.height >= 48, `remove button ${rb.width}x${rb.height}`);
+
+    // Checkbox: the checked box shows the check glyph on the primary color; indeterminate a dash.
+    const checked = page.locator('.m3-checkbox:checked:not(:disabled):not([aria-invalid])').first();
+    assert.equal(await pseudoOf(checked, '::after', 'content'), '"check"');
+    assert.equal(await pseudoOf(checked, '::after', 'background-color'), await probe(page, 'color', '--md-sys-color-primary'));
+    assert.equal(await pseudoOf(page.locator('#indeterminate'), '::after', 'content'), '"remove"');
+
+    // Switch: the handle is centered half the track height in from the start (off) or end (on).
+    for (const [sel, on] of [['.m3-switch:not(:checked):not(:disabled):not(.m3-switch--icons)', false], ['.m3-switch:checked:not(:disabled):not(.m3-switch--icons)', true]]) {
+      const g = await page.locator(sel).last().evaluate(el => {
+        const a = getComputedStyle(el, '::after');
+        return { left: parseFloat(a.left), w: parseFloat(a.width), trackW: el.getBoundingClientRect().width, trackH: parseFloat(getComputedStyle(el, '::before').height) };
+      });
+      near(g.left + g.w / 2, on ? g.trackW - g.trackH / 2 : g.trackH / 2, `switch ${on ? 'on' : 'off'} handle center`);
+    }
+    await page.screenshot({ path: join(outDir, `selection-${scheme}.png`), clip: await clipOf(page.locator('section[aria-labelledby="selection"]')) });
+
+    // Slider: the active track ends a gap before the handle and the inactive one starts a gap after.
+    const sg = await page.locator('.m3-slider').first().evaluate(el => {
+      const cs = getComputedStyle(el);
+      return {
+        v: parseFloat(cs.getPropertyValue('--m3-slider-value')),
+        hw: parseFloat(cs.getPropertyValue('--_handle-width')),
+        gap: parseFloat(cs.getPropertyValue('--_gap')),
+        w: el.getBoundingClientRect().width,
+        active: parseFloat(getComputedStyle(el, '::before').width),
+        start: parseFloat(getComputedStyle(el, '::after').left),
+      };
+    });
+    near(sg.active, sg.v * (sg.w - sg.hw) - sg.gap, 'slider active track');
+    near(sg.start, sg.v * (sg.w - sg.hw) + sg.hw + sg.gap, 'slider inactive track start');
+    await page.screenshot({ path: join(outDir, `sliders-${scheme}.png`), clip: await clipOf(page.locator('section[aria-labelledby="sliders"]')) });
+
+    // Text fields: focus floats the label and thickens the indicator (filled) or outline (outlined).
+    for (const [id, outlined] of [['#f-name', false], ['#o-name', true]]) {
+      const input = page.locator(id);
+      const label = page.locator(`${id} ~ label`);
+      near(await label.evaluate(el => parseFloat(getComputedStyle(el).top)), await space(200), `${id} resting label`);
+      await input.focus();
+      const floating = await label.evaluate(el => parseFloat(getComputedStyle(el).top));
+      const lineHeight = await label.evaluate(el => parseFloat(getComputedStyle(el).lineHeight)); // the populated (body small) line height
+      near(floating, outlined ? -lineHeight / 2 : await space(100), `${id} floating label`);
+      const container = input.locator('xpath=..');
+      assert.equal(await pseudoOf(container, '::before', outlined ? 'border-top-width' : 'border-bottom-width'), thickness, `${id} focus indicator`);
+      const ib = await input.boundingBox();
+      assert.ok(ib.height >= 48, `${id} input height ${ib.height}`);
+      await page.screenshot({ path: join(outDir, `state-focus-${id.slice(1)}-${scheme}.png`), clip: await clipOf(container) });
+      await input.blur();
+    }
+
+    // Keyboard focus on the interactive elevated card (Shift+Tab from the card after it): the ring.
+    await page.locator('button.m3-card').focus();
+    await page.keyboard.press('Shift+Tab');
+    const focused = page.locator(':focus-visible');
+    assert.equal(await focused.evaluate(el => el.matches('a.m3-card--elevated')), true);
+    assert.equal(await focused.evaluate(el => getComputedStyle(el).outlineStyle), 'solid');
+    assert.equal(await focused.evaluate(el => getComputedStyle(el).outlineWidth), thickness);
+    await page.screenshot({ path: join(outDir, `state-focus-${scheme}.png`), clip: await clipOf(focused) });
+  },
+};
+
 async function clipOf(locator) {
+  await locator.scrollIntoViewIfNeeded();
   const b = await locator.boundingBox();
   return { x: Math.max(0, b.x - 16), y: Math.max(0, b.y - 16), width: b.width + 32, height: b.height + 32 };
 }
@@ -316,7 +500,7 @@ function inPage() {
   const lowContrast = [];
   const badGeometry = [];
   let checked = 0;
-  const SEL = '.m3-button, .m3-icon-button, .m3-segmented-button, .m3-fab, .m3-extended-fab';
+  const SEL = '.m3-button, .m3-icon-button, .m3-segmented-button, .m3-fab, .m3-extended-fab, .m3-chip';
   for (const el of document.querySelectorAll(SEL)) {
     if (el.matches(':disabled, [aria-disabled="true"]')) continue;
     checked++;
