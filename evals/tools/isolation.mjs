@@ -1,7 +1,7 @@
 // Isolation guarantees and checks for eval runs (Phase 2 plan, Task 4: G1–G6, V1–V3).
 // Every check fails closed: a missing field or an unreadable folder is a problem, not a pass.
 import { existsSync, readdirSync, statSync, mkdirSync, rmSync } from 'node:fs';
-import { dirname, join, resolve, sep } from 'node:path';
+import { dirname, join, resolve, sep, win32 } from 'node:path';
 import { execFileSync, spawnSync } from 'node:child_process';
 
 // Tools a run may not have: skills (G4), and tools that act outside the work folder or publish.
@@ -14,7 +14,9 @@ const ANCESTOR_MARKERS = ['CLAUDE.md', 'CLAUDE.local.md', 'AGENTS.md', '.claude'
 const FORBIDDEN_ENV = /^(CLAUDE|ANTHROPIC|MCP|npm_config)_|^CLAUDECODE$/i;
 const SUSPECT_NAME = /superpowers|claude-mem|graphify|m3-forge|material3/i;
 
-const norm = p => resolve(p).replace(/[\\/]+/g, '/').replace(/\/$/, '').toLowerCase();
+// Drive and UNC paths resolve with Windows rules on every OS (CI runs on Linux).
+const WIN_ABS = /^(?:[A-Za-z]:[\\/]|\\\\)/;
+const norm = p => (WIN_ABS.test(p) ? win32.resolve(p) : resolve(p)).replace(/[\\/]+/g, '/').replace(/\/$/, '').toLowerCase();
 const inside = (p, root) => { const a = norm(p); const b = norm(root); return a === b || a.startsWith(`${b}/`); };
 
 // G6: the child's environment. Removes every CLAUDE_*/ANTHROPIC_*/MCP_*/npm_config_* key, then adds ours.
