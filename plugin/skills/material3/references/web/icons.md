@@ -19,6 +19,9 @@ node "S/scripts/icons/index.mjs" <project> --platform web --names home,search,fa
 - Output `subset: true` means only the requested glyphs are in the font (a few KB). `subset: false`
   means the full font was copied (the subsetter could not run): every icon works, the file is just
   large; say so in the report.
+- Every icon showing as its name, although every name was passed, means the font did not load (the
+  browser console shows a font decode error). Copy the full font as in "Without Node" below and say
+  so in the report.
 
 ## Markup and class
 

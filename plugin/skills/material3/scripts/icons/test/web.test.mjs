@@ -102,6 +102,37 @@ test('the woff2 wrapper is a well-formed woff2 that decodes to the subset tables
   assert.equal(raw.length, lens.reduce((a, b) => a + b, 0));
 });
 
+// A woff2 file ends on a 4-byte boundary: the compressed block starts right after the table directory
+// (any offset) and is padded so that its END is 4-byte aligned. Browsers (OTS) reject a file that is
+// not ("Failed to convert WOFF 2.0 font to SFNT") and every icon then shows as its ligature name.
+// This name set (an expense report) gives a 102-byte header plus directory, so padding the compressed
+// length alone left the file 2 bytes short of alignment.
+const UNALIGNED_DIR_NAMES = ['receipt_long', 'add', 'content_copy', 'delete', 'attach_file', 'upload_file', 'close',
+  'arrow_drop_down', 'send', 'check_circle', 'error', 'flight', 'restaurant', 'hotel', 'inventory_2', 'category',
+  'arrow_back', 'currency_exchange', 'image', 'description', 'check', 'info', 'save'];
+
+function woff2Layout(w) {
+  let o = 48;
+  for (let i = 0; i < w.readUInt16BE(12); i++) {
+    const flags = w[o++];
+    if ((flags & 63) === 63) o += 4;
+    for (;;) { const b = w[o++]; if (!(b & 128)) break; }
+  }
+  return { dirEnd: o, compEnd: o + w.readUInt32BE(20) };
+}
+
+test('the woff2 ends on a 4-byte boundary whatever the directory length', () => {
+  for (const names of [NAMES, UNALIGNED_DIR_NAMES, ['favorite'], ['search', 'close', 'shopping_cart']]) {
+    const w = subsetFont(names).woff2;
+    const { compEnd } = woff2Layout(w);
+    assert.equal(w.readUInt32BE(8), w.length, `${names[0]}: header length`);
+    assert.equal(w.length % 4, 0, `${names[0]}: file length ${w.length} is 4-byte aligned`);
+    assert.equal(w.length, (compEnd + 3) & ~3, `${names[0]}: only the padding follows the compressed block`);
+    assert.ok(w.subarray(compEnd).every((b) => b === 0), `${names[0]}: padding is zero`);
+  }
+  assert.notEqual(woff2Layout(subsetFont(UNALIGNED_DIR_NAMES).woff2).dirEnd % 4, 0, 'the case this guards still occurs');
+});
+
 test('the subset of 20 icons is at most 10% of the full woff2', () => {
   const full = statSync(FULL_WOFF2).size;
   assert.ok(sub.woff2.length <= full * 0.1, `${sub.woff2.length} of ${full}`);
@@ -186,6 +217,24 @@ test('a page using the subset renders an icon with FILL 0 and FILL 1', { skip: t
     assert.ok(outline.width < 140, `ligature collapsed to one glyph (${outline.width}px)`);
     assert.ok(missing.width > 140, 'an icon that was not requested is not rendered as an icon');
     assert.notDeepEqual(outline.png, filled.png, 'FILL 0 and FILL 1 draw differently');
+  } finally {
+    await browser.close();
+  }
+});
+
+test('Chromium decodes a subset whose table directory is not 4-byte aligned', { skip: toolchain || noBrowser, timeout: 120_000 }, async () => {
+  process.env.PLAYWRIGHT_BROWSERS_PATH ??= join(process.env.M3_TOOLCHAIN || join(homedir(), '.m3-toolchain'), 'ms-playwright');
+  const { chromium } = await import('playwright');
+  const b64 = subsetFont(UNALIGNED_DIR_NAMES).woff2.toString('base64');
+  const browser = await chromium.launch();
+  try {
+    const page = await browser.newPage();
+    await page.setContent(`<style>@font-face { font-family: 'MS'; src: url(data:font/woff2;base64,${b64}) format('woff2'); }
+      span { font-family: 'MS'; font-size: 24px; display: inline-block; white-space: nowrap; }</style><span id="i">check_circle</span>`);
+    const status = await page.evaluate(() => document.fonts.load('24px MS').then(() => [...document.fonts][0].status, () => 'error'));
+    assert.equal(status, 'loaded', 'the font decodes');
+    const width = await page.locator('#i').evaluate((e) => e.getBoundingClientRect().width);
+    assert.ok(width < 40, `check_circle renders as one icon (${width}px)`);
   } finally {
     await browser.close();
   }

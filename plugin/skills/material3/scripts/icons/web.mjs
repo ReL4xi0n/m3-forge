@@ -82,7 +82,9 @@ export function ttfToWoff2(ttf) {
     },
   });
   const directory = Buffer.concat(dir);
-  const total = 48 + directory.length + ((packed.length + 3) & ~3);
+  // The compressed block starts right after the directory (any offset); the file ends on a 4-byte
+  // boundary, so pad the END of the block, not its length. Browsers reject an unaligned file.
+  const total = (48 + directory.length + packed.length + 3) & ~3;
   const head = Buffer.alloc(48);
   head.write('wOF2', 0, 'latin1');
   head.writeUInt32BE(flavor, 4);
