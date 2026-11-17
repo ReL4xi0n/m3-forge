@@ -2,7 +2,7 @@
 // M3_TOOLCHAIN_TESTS=1; the manifest parsing tests run everywhere.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { appendFileSync, cpSync, existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { appendFileSync, cpSync, existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { basename, dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -62,6 +62,47 @@ test('a Kotlin compile error gives buildOk false with the log tail', { skip, tim
     assert.ok(cap.reason && cap.reason.split('\n').length <= 40, 'reason is the last 40 lines at most');
     assert.match(cap.reason, /FAILED|error/i);
     assert.ok(existsSync(join(outDir, 'capture.json')));
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+// Found in the baseline (landing and onboarding): with an endless animation, ActivityScenario.launch's
+// idle() ran frames until the Recomposer failed, 20-25 minutes later. The harness now captures with
+// reduced motion (animator duration scale 0), so such an app settles at once.
+test('an app with an endless animation is captured in both themes within minutes', { skip, timeout: GRADLE_TIMEOUT }, async () => {
+  const { root, projectDir, outDir } = copySample();
+  try {
+    const main = join(projectDir, 'app/src/main/kotlin/dev/m3forge/sample/MainActivity.kt');
+    writeFileSync(join(dirname(main), 'Spin.kt'), [
+      'package dev.m3forge.sample',
+      'import androidx.compose.animation.core.LinearEasing',
+      'import androidx.compose.animation.core.animateFloat',
+      'import androidx.compose.animation.core.infiniteRepeatable',
+      'import androidx.compose.animation.core.rememberInfiniteTransition',
+      'import androidx.compose.animation.core.tween',
+      'import androidx.compose.foundation.layout.Box',
+      'import androidx.compose.foundation.layout.size',
+      'import androidx.compose.runtime.Composable',
+      'import androidx.compose.runtime.getValue',
+      'import androidx.compose.ui.Modifier',
+      'import androidx.compose.ui.draw.rotate',
+      'import androidx.compose.ui.unit.dp',
+      '@Composable',
+      'fun M3Spin() {',
+      '    val t = rememberInfiniteTransition(label = "spin")',
+      '    val r by t.animateFloat(0f, 360f, infiniteRepeatable(tween(2_000, easing = LinearEasing)), label = "r")',
+      '    Box(Modifier.size(8.dp).rotate(r))',
+      '}',
+      '',
+    ].join('\n'));
+    writeFileSync(main, readFileSync(main, 'utf8').replace('setContent {', 'setContent {\n            M3Spin()'));
+    const t0 = Date.now();
+    const cap = await captureCompose({ projectDir, outDir, timeoutMs: 15 * 60_000 });
+    assert.equal(cap.buildOk, true, cap.reason);
+    assert.equal(cap.reason, undefined);
+    assert.deepEqual(cap.shots.map(s => s.theme).sort(), ['dark', 'light']);
+    assert.ok(Date.now() - t0 < 10 * 60_000, `took ${Math.round((Date.now() - t0) / 1000)} s`);
   } finally {
     rmSync(root, { recursive: true, force: true });
   }

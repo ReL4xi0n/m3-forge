@@ -1,7 +1,7 @@
-# Discrimination test (protocol change PC-1: prepared, not run)
+# Discrimination test (protocol change PC-1)
 
-**Status.** Prepared on 2026-11-17 at the owner's request. It has **not been run**. It runs only after
-the owner decides to run it, with `node evals/tools/discriminate.mjs --run-id <id> --owner-approved`.
+**Status.** Prepared on 2026-11-17 at the owner's request and run once the same day on the owner's
+decision (results below). It runs with `node evals/tools/discriminate.mjs --run-id <id> --owner-approved`.
 The script refuses to start without that flag.
 
 **Why.** In the pilot, the judge gave the skill-less web landing page 3 on 7 of 8 judged items. The
@@ -65,6 +65,45 @@ too lenient at the top of the scale if both of these hold:
 - the same images got 3 on most items under judge v1.
 In that case, the options are a judge v2 or rubric v2 with a new calibration and freeze (protocol
 change PC-2), or keeping v1 and reporting this test next to it.
+
+## Results (run 2026-11-17)
+
+Run once on the owner's decision of 2026-11-17, on the baseline `baseline-2026-11-17`, seed 20261117. One isolated session, valid on the first attempt. Verdict reasons and the mapping stay private.
+
+- Images: 34 (17 real, 17 generated; no bucket shortfall).
+- Accuracy 1.00, recall on real 1.00, recall on generated 1.00, AUC of pReal 1.00.
+- The highest pReal given to a generated image was 0.05; the lowest given to a real image was 0.80.
+
+Cues the verdicts rested on:
+
+| source | design | brand | content | language | system-ui | rendering | other |
+|---|---|---|---|---|---|---|---|
+| real | 6 | 1 | 0 | 2 | 8 | 0 | 0 |
+| generated | 0 | 8 | 2 | 0 | 0 | 6 | 1 |
+
+Generated images, with their cell's judge v1 scores (read after un-blinding):
+
+| cell | verdict | pReal | cue | component-choice | hierarchy-typography | color-roles | shape-expressive | spacing-layout | interaction-states | dark-mode | overall-polish |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| dashboard.compose.compose-1.5.default | generated | 0.04 | brand | 2 | 3 | 3 | 3 | 2 | 3 | 3 | 2 |
+| dashboard.flutter.flutter-material_ui.default | generated | 0.02 | rendering | 1 | 2 | 2 | 3 | 1 | 3 | 3 | 1 |
+| dashboard.flutter.flutter-material_ui.seed-B5651D | generated | 0.02 | rendering | 2 | 3 | 3 | 3 | 3 | 2 | 2 | 1 |
+| dashboard.web.web-react.default | generated | 0.03 | brand | 3 | 3 | 3 | 3 | 2 | 3 | 3 | 2 |
+| empty-error.flutter.flutter-material_ui.default | generated | 0.02 | rendering | 2 | 2 | 2 | 2 | 2 | 2 | 2 | 1 |
+| empty-error.web.web-empty.default | generated | 0.03 | other | 3 | 3 | 3 | 3 | 2 | 2 | 3 | 2 |
+| landing.compose.compose-1.5.default | generated | 0.03 | brand | 2 | 3 | 2 | 3 | 2 | 2 | 2 | 2 |
+| landing.web.web-empty.default | generated | 0.03 | brand | 3 | 3 | 3 | 3 | 3 | 2 | 3 | 3 |
+| onboarding.flutter.flutter-material_ui.default | generated | 0.02 | rendering | 2 | 2 | 3 | 2 | 2 | 2 | 2 | 1 |
+| onboarding.web.web-react.default | generated | 0.03 | brand | 2 | 3 | 3 | 3 | 3 | 3 | 3 | 3 |
+| onboarding.web.web-vue.default | generated | 0.03 | brand | 2 | 3 | 3 | 3 | 3 | 2 | 3 | 2 |
+| product-detail.web.web-empty.default | generated | 0.03 | brand | 3 | 3 | 3 | 3 | 2 | 3 | 3 | 3 |
+| settings.compose.compose-1.5.default | generated | 0.05 | content | 3 | 3 | 2 | 2 | 2 | 3 | 3 | 2 |
+| settings.flutter.flutter-material_ui.classic | generated | 0.02 | rendering | 2 | 3 | 3 | 2 | 2 | 2 | 2 | 1 |
+| settings.flutter.flutter-material_ui.default | generated | 0.02 | rendering | 2 | 3 | 3 | 3 | 3 | 2 | 3 | 1 |
+| settings.web.web-react.classic | generated | 0.05 | brand | 3 | 2 | 3 | 3 | 2 | 3 | 3 | 2 |
+| settings.web.web-react.default | generated | 0.04 | content | 3 | 3 | 3 | 3 | 3 | 3 | 3 | 3 |
+
+**Reading.** Every image was classified correctly, but no generated image was caught on a design cue: the tells were made-up brands and placeholder content, and, for all six Flutter images, icons drawn as empty boxes. That last tell was a harness defect (the Flutter harness v1 did not load the app's icon font), fixed in harness v2 (`evals/automated-v2.md`). The test therefore does not measure design quality on its own; it shows that a judge looking for differences finds them easily, while judge v1 gave the same web images 3 on most items.
 
 ## Prompt
 

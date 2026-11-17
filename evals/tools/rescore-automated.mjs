@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 // Re-scores a finished run's automated items with v2 (evals/automated-v2.md) from its recorded code,
-// without running the cells again. Web and Compose reuse the recorded runtime results (their harness
-// scope did not change); Flutter cells are captured again with harness v2 (touch-target scope, app
-// fonts) when --recapture-flutter is given. Verify runs again on the recorded work folders.
-//   node evals/tools/rescore-automated.mjs --run-id <id> --out evals/runs/<folder> [--recapture-flutter]
+// without running the cells again. Cells of the platforms named by --recapture (flutter, compose) are
+// captured again with harness v2 from their recorded work folders; web cells reuse the recorded
+// runtime results (the web harness did not change). Verify runs again on the recorded work folders.
+//   node evals/tools/rescore-automated.mjs --run-id <id> --out evals/runs/<folder> [--recapture flutter,compose]
 import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { join, dirname, isAbsolute } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -38,7 +38,7 @@ export function renderComparison(runId, rows, notes = []) {
   return [
     `# Automated items: v1 and v2 (run \`${runId}\`)`,
     '',
-    'v1 is rubric v1\'s automated table with harness v1, as published in summary.md. v2 is `evals/automated-v2.md`: icon source is its own item, Flutter touch targets have the web and Compose scope, and the Flutter harness loads the app\'s fonts. The recorded code was scored again; no cell was run again.',
+    'v1 is rubric v1\'s automated table with harness v1, as published in summary.md. v2 is `evals/automated-v2.md` with harness v2: icon source is its own item, Flutter touch targets have the web and Compose scope, the Flutter harness loads the app\'s fonts, and the Compose harness captures with reduced motion. The recorded code was scored again (Flutter and Compose captured again from it); no cell was run again.',
     ...(notes.length ? ['', ...notes.map(n => `- ${n}`)] : []),
     '',
     '## Means by platform',
@@ -58,12 +58,14 @@ async function main() {
   const arg = k => { const i = process.argv.indexOf(k); return i > 0 ? process.argv[i + 1] : null; };
   const runId = arg('--run-id');
   const out = arg('--out');
-  const recapture = process.argv.includes('--recapture-flutter');
-  if (!runId || !out) { console.error('usage: --run-id <id> --out <public folder> [--recapture-flutter] [--note <text>]...'); process.exit(2); }
+  const recapture = (arg('--recapture') ?? '').split(',').filter(Boolean);
+  if (!runId || !out || recapture.some(p => !['flutter', 'compose'].includes(p))) { console.error('usage: --run-id <id> --out <public folder> [--recapture flutter,compose] [--note <text>]...'); process.exit(2); }
   const priv = join(root, 'private', 'evals', 'runs', runId);
   const cells = JSON.parse(readFileSync(join(root, 'evals', 'cells.json'), 'utf8'));
   const { verify } = await import('../../plugin/skills/material3/scripts/verify/index.mjs');
   const { captureFlutter } = await import('../../harness/flutter/capture.mjs');
+  const { captureCompose } = await import('../../harness/compose/capture.mjs');
+  const { stopGradle } = await import('./pipeline.mjs');
   const rows = [];
   const detail = [];
   for (const cell of cells) {
@@ -74,11 +76,13 @@ async function main() {
     if (!existsSync(workDir ?? '')) { console.error(`work folder gone for ${cell.cell}: ${workDir}`); process.exit(2); }
     let cap = saved.cap;
     let captureMs = null;
-    if (cell.platform === 'flutter' && recapture) {
+    if (recapture.includes(cell.platform)) {
       const shotDir = join('C:\\m3-eval', 'shots', `${runId}-v2`, cell.cell);
       rmSync(shotDir, { recursive: true, force: true });
       const t0 = Date.now();
-      cap = await captureFlutter({ projectDir: workDir, outDir: shotDir });
+      if (cell.platform === 'compose') stopGradle(workDir);
+      cap = cell.platform === 'flutter' ? await captureFlutter({ projectDir: workDir, outDir: shotDir }) : await captureCompose({ projectDir: workDir, outDir: shotDir });
+      if (cell.platform === 'compose') stopGradle(workDir);
       captureMs = Date.now() - t0;
       cap.shots = cap.shots.map(s => ({ ...s, file: isAbsolute(s.file) ? s.file : join(shotDir, s.file) }));
       const dest = join(priv, cell.cell, 'v2');
@@ -99,7 +103,7 @@ async function main() {
     detail.push({ cell: cell.cell, buildOk: cap.buildOk, shots: cap.shots?.length ?? 0, captureMs, countsV1: saved.ver?.counts, countsV2: ver.counts, uiLines: ver.uiLines, staticSameAsV1: staticDiff.length === 0, staticDiff });
     if (staticDiff.length) console.warn(`static counts differ from v1 for ${cell.cell}: ${staticDiff.join(', ')}`);
   }
-  writeFileSync(join(priv, 'automated-v2.json'), JSON.stringify({ runId, at: new Date().toISOString(), recaptureFlutter: recapture, rows, detail }, null, 2));
+  writeFileSync(join(priv, 'automated-v2.json'), JSON.stringify({ runId, at: new Date().toISOString(), recapture, rows, detail }, null, 2));
   const notes = process.argv.flatMap((a, i) => (a === '--note' ? [process.argv[i + 1]] : []));
   mkdirSync(join(root, out), { recursive: true });
   writeFileSync(join(root, out, 'automated-v2.json'), `${JSON.stringify({ runId, ...compareAutomated(rows), cells: rows.map((r, i) => ({ ...r, counts: detail[i].countsV2, uiLines: detail[i].uiLines })) }, null, 2)}\n`);

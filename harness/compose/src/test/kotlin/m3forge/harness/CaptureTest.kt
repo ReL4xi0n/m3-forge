@@ -13,6 +13,7 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Looper
+import android.provider.Settings
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ViewRootForTest
@@ -40,6 +41,7 @@ import org.robolectric.Shadows.shadowOf
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 import org.robolectric.shadows.ShadowBuild
+import org.robolectric.shadows.ShadowTrace
 
 @RunWith(RobolectricTestRunner::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
@@ -58,6 +60,14 @@ class M3CaptureTest {
         outDir.mkdirs()
         val context = ApplicationProvider.getApplicationContext<Context>()
         val intent = launchIntent(context)
+        disableTraceRecording()
+        // Reduced motion, as the web harness emulates it: animator duration scale 0, which Compose reads
+        // as its MotionDurationScale. Robolectric runs each vsync inside idle() and moves the clock
+        // itself, so an app with an endless animation kept ActivityScenario.launch's idle() busy until
+        // something failed (baseline landing and onboarding: 20-25 minutes, ended by an
+        // OutOfMemoryError in the Recomposer).
+        Settings.Global.putFloat(context.contentResolver, Settings.Global.ANIMATOR_DURATION_SCALE, 0f)
+        runCatching { android.animation.ValueAnimator::class.java.getMethod("setDurationScale", Float::class.javaPrimitiveType).invoke(null, 0f) }
 
         ActivityScenario.launch<android.app.Activity>(intent).use { scenario ->
             settle()
@@ -104,7 +114,26 @@ class M3CaptureTest {
     // animations finish. Fixed time, not "until idle", so infinite animations cannot hang it.
     private fun settle() {
         val looper = shadowOf(Looper.getMainLooper())
-        repeat(SETTLE_FRAMES) { looper.idleFor(Duration.ofMillis(16)) }
+        repeat(SETTLE_FRAMES) {
+            looper.idleFor(Duration.ofMillis(16))
+            ShadowTrace.reset()
+        }
+    }
+
+    // Robolectric's ShadowTrace keeps every finished android.os.Trace section in a queue for test
+    // assertions. Compose traces each recomposition, so an app with an endless animation filled the
+    // test JVM's heap (OutOfMemoryError once the heap was bounded at 1536m; found 2026-11-17).
+    // Trace.setAppTracingAllowed(false) sets ShadowTrace's tags to 0, which turns recording off; the
+    // reset() in settle() bounds the queue if it does not.
+    private fun disableTraceRecording() {
+        try {
+            android.os.Trace::class.java.getDeclaredMethod("setAppTracingAllowed", Boolean::class.javaPrimitiveType)
+                .apply { isAccessible = true }
+                .invoke(null, false)
+        } catch (_: Throwable) {
+            // Hidden API missing: settle() still resets the queue every frame.
+        }
+        ShadowTrace.reset()
     }
 
     private fun runAtf(root: View, png: File): JSONArray {

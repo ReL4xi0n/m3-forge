@@ -1,0 +1,824 @@
+{
+  "runId": "baseline-2026-11-17",
+  "v1Items": [
+    "token-fidelity",
+    "contrast-targets",
+    "anti-patterns"
+  ],
+  "v2Items": [
+    "token-fidelity",
+    "contrast-targets",
+    "anti-patterns",
+    "icon-source"
+  ],
+  "byPlatform": {
+    "web": {
+      "v1": {
+        "token-fidelity": 0.78,
+        "contrast-targets": 0.78,
+        "anti-patterns": 1
+      },
+      "v2": {
+        "token-fidelity": 0.78,
+        "contrast-targets": 0.78,
+        "anti-patterns": 1,
+        "icon-source": 2.89
+      }
+    },
+    "flutter": {
+      "v1": {
+        "token-fidelity": 2.11,
+        "contrast-targets": 2.78,
+        "anti-patterns": 0
+      },
+      "v2": {
+        "token-fidelity": 2.11,
+        "contrast-targets": 2.78,
+        "anti-patterns": 2.44,
+        "icon-source": 0
+      }
+    },
+    "compose": {
+      "v1": {
+        "token-fidelity": 2,
+        "contrast-targets": 0.88,
+        "anti-patterns": 2.38
+      },
+      "v2": {
+        "token-fidelity": 2,
+        "contrast-targets": 0.88,
+        "anti-patterns": 2.38,
+        "icon-source": 3
+      }
+    }
+  },
+  "overall": {
+    "v1": {
+      "token-fidelity": 1.62,
+      "contrast-targets": 1.5,
+      "anti-patterns": 1.08
+    },
+    "v2": {
+      "token-fidelity": 1.62,
+      "contrast-targets": 1.5,
+      "anti-patterns": 1.92,
+      "icon-source": 1.92
+    }
+  },
+  "cells": [
+    {
+      "cell": "landing.web.web-empty.default",
+      "platform": "web",
+      "v1": {
+        "token-fidelity": 0,
+        "contrast-targets": 1,
+        "anti-patterns": 0
+      },
+      "v2": {
+        "token-fidelity": 0,
+        "contrast-targets": 1,
+        "anti-patterns": 0,
+        "icon-source": 3
+      },
+      "targetsV1": 3,
+      "targetsV2": 3,
+      "counts": {
+        "hardcoded-color": 5,
+        "off-token-type": 63,
+        "off-token-radius": 2,
+        "off-grid-spacing": 12,
+        "shadow-gradient": 5,
+        "icon-source": 0,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 3
+      },
+      "uiLines": 1347
+    },
+    {
+      "cell": "landing.flutter.flutter-material_ui.default",
+      "platform": "flutter",
+      "v1": {
+        "token-fidelity": 2,
+        "contrast-targets": 3,
+        "anti-patterns": 0
+      },
+      "v2": {
+        "token-fidelity": 2,
+        "contrast-targets": 3,
+        "anti-patterns": 1,
+        "icon-source": 0
+      },
+      "targetsV1": 0,
+      "targetsV2": 0,
+      "counts": {
+        "hardcoded-color": 0,
+        "off-token-type": 0,
+        "off-token-radius": 2,
+        "off-grid-spacing": 9,
+        "shadow-gradient": 2,
+        "icon-source": 17,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 0
+      },
+      "uiLines": 1786
+    },
+    {
+      "cell": "landing.compose.compose-1.5.default",
+      "platform": "compose",
+      "v1": {
+        "token-fidelity": 2,
+        "contrast-targets": 2,
+        "anti-patterns": 1
+      },
+      "v2": {
+        "token-fidelity": 2,
+        "contrast-targets": 2,
+        "anti-patterns": 1,
+        "icon-source": 3
+      },
+      "targetsV1": 2,
+      "targetsV2": 2,
+      "counts": {
+        "hardcoded-color": 2,
+        "off-token-type": 5,
+        "off-token-radius": 3,
+        "off-grid-spacing": 12,
+        "shadow-gradient": 2,
+        "icon-source": 0,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 2
+      },
+      "uiLines": 1649
+    },
+    {
+      "cell": "settings.web.web-react.default",
+      "platform": "web",
+      "v1": {
+        "token-fidelity": 1,
+        "contrast-targets": 1,
+        "anti-patterns": 1
+      },
+      "v2": {
+        "token-fidelity": 1,
+        "contrast-targets": 1,
+        "anti-patterns": 1,
+        "icon-source": 3
+      },
+      "targetsV1": 5,
+      "targetsV2": 5,
+      "counts": {
+        "hardcoded-color": 2,
+        "off-token-type": 25,
+        "off-token-radius": 1,
+        "off-grid-spacing": 3,
+        "shadow-gradient": 3,
+        "icon-source": 0,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 5
+      },
+      "uiLines": 1226
+    },
+    {
+      "cell": "settings.flutter.flutter-material_ui.default",
+      "platform": "flutter",
+      "v1": {
+        "token-fidelity": 2,
+        "contrast-targets": 3,
+        "anti-patterns": 0
+      },
+      "v2": {
+        "token-fidelity": 2,
+        "contrast-targets": 3,
+        "anti-patterns": 3,
+        "icon-source": 0
+      },
+      "targetsV1": 0,
+      "targetsV2": 0,
+      "counts": {
+        "hardcoded-color": 1,
+        "off-token-type": 0,
+        "off-token-radius": 2,
+        "off-grid-spacing": 3,
+        "shadow-gradient": 0,
+        "icon-source": 26,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 0
+      },
+      "uiLines": 691
+    },
+    {
+      "cell": "settings.compose.compose-1.5.default",
+      "platform": "compose",
+      "v1": {
+        "token-fidelity": 2,
+        "contrast-targets": 0,
+        "anti-patterns": 3
+      },
+      "v2": {
+        "token-fidelity": 2,
+        "contrast-targets": 0,
+        "anti-patterns": 3,
+        "icon-source": 3
+      },
+      "targetsV1": 10,
+      "targetsV2": 10,
+      "counts": {
+        "hardcoded-color": 1,
+        "off-token-type": 0,
+        "off-token-radius": 0,
+        "off-grid-spacing": 0,
+        "shadow-gradient": 0,
+        "icon-source": 0,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 10
+      },
+      "uiLines": 772
+    },
+    {
+      "cell": "dashboard.web.web-react.default",
+      "platform": "web",
+      "v1": {
+        "token-fidelity": 1,
+        "contrast-targets": 0,
+        "anti-patterns": 2
+      },
+      "v2": {
+        "token-fidelity": 1,
+        "contrast-targets": 0,
+        "anti-patterns": 2,
+        "icon-source": 3
+      },
+      "targetsV1": 18,
+      "targetsV2": 18,
+      "counts": {
+        "hardcoded-color": 0,
+        "off-token-type": 60,
+        "off-token-radius": 3,
+        "off-grid-spacing": 11,
+        "shadow-gradient": 1,
+        "icon-source": 0,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 18
+      },
+      "uiLines": 2037
+    },
+    {
+      "cell": "dashboard.flutter.flutter-material_ui.default",
+      "platform": "flutter",
+      "v1": {
+        "token-fidelity": 2,
+        "contrast-targets": 3,
+        "anti-patterns": 0
+      },
+      "v2": {
+        "token-fidelity": 2,
+        "contrast-targets": 3,
+        "anti-patterns": 2,
+        "icon-source": 0
+      },
+      "targetsV1": 0,
+      "targetsV2": 0,
+      "counts": {
+        "hardcoded-color": 4,
+        "off-token-type": 0,
+        "off-token-radius": 2,
+        "off-grid-spacing": 6,
+        "shadow-gradient": 1,
+        "icon-source": 24,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 0
+      },
+      "uiLines": 1464
+    },
+    {
+      "cell": "dashboard.compose.compose-1.5.default",
+      "platform": "compose",
+      "v1": {
+        "token-fidelity": 2,
+        "contrast-targets": 0,
+        "anti-patterns": 2
+      },
+      "v2": {
+        "token-fidelity": 2,
+        "contrast-targets": 0,
+        "anti-patterns": 2,
+        "icon-source": 3
+      },
+      "targetsV1": 12,
+      "targetsV2": 12,
+      "counts": {
+        "hardcoded-color": 2,
+        "off-token-type": 0,
+        "off-token-radius": 1,
+        "off-grid-spacing": 4,
+        "shadow-gradient": 1,
+        "icon-source": 0,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 12
+      },
+      "uiLines": 1214
+    },
+    {
+      "cell": "product-detail.web.web-empty.default",
+      "platform": "web",
+      "v1": {
+        "token-fidelity": 0,
+        "contrast-targets": 0,
+        "anti-patterns": 0
+      },
+      "v2": {
+        "token-fidelity": 0,
+        "contrast-targets": 0,
+        "anti-patterns": 0,
+        "icon-source": 3
+      },
+      "targetsV1": 21,
+      "targetsV2": 21,
+      "counts": {
+        "hardcoded-color": 13,
+        "off-token-type": 72,
+        "off-token-radius": 2,
+        "off-grid-spacing": 11,
+        "shadow-gradient": 11,
+        "icon-source": 0,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 21
+      },
+      "uiLines": 1708
+    },
+    {
+      "cell": "product-detail.flutter.flutter-material_ui.default",
+      "platform": "flutter",
+      "v1": {
+        "token-fidelity": 2,
+        "contrast-targets": 2,
+        "anti-patterns": 0
+      },
+      "v2": {
+        "token-fidelity": 2,
+        "contrast-targets": 2,
+        "anti-patterns": 2,
+        "icon-source": 0
+      },
+      "targetsV1": 0,
+      "targetsV2": 0,
+      "counts": {
+        "hardcoded-color": 9,
+        "off-token-type": 1,
+        "off-token-radius": 5,
+        "off-grid-spacing": 19,
+        "shadow-gradient": 1,
+        "icon-source": 36,
+        "foreign-styling": 0,
+        "contrast": 1,
+        "touch-target": 0
+      },
+      "uiLines": 2093
+    },
+    {
+      "cell": "product-detail.compose.compose-1.5.default",
+      "platform": "compose",
+      "v1": {
+        "token-fidelity": 2,
+        "contrast-targets": 0,
+        "anti-patterns": 3
+      },
+      "v2": {
+        "token-fidelity": 2,
+        "contrast-targets": 0,
+        "anti-patterns": 3,
+        "icon-source": 3
+      },
+      "targetsV1": 24,
+      "targetsV2": 24,
+      "counts": {
+        "hardcoded-color": 10,
+        "off-token-type": 0,
+        "off-token-radius": 0,
+        "off-grid-spacing": 8,
+        "shadow-gradient": 0,
+        "icon-source": 0,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 24
+      },
+      "uiLines": 1123
+    },
+    {
+      "cell": "onboarding.web.web-react.default",
+      "platform": "web",
+      "v1": {
+        "token-fidelity": 1,
+        "contrast-targets": 1,
+        "anti-patterns": 0
+      },
+      "v2": {
+        "token-fidelity": 1,
+        "contrast-targets": 1,
+        "anti-patterns": 0,
+        "icon-source": 3
+      },
+      "targetsV1": 4,
+      "targetsV2": 4,
+      "counts": {
+        "hardcoded-color": 1,
+        "off-token-type": 46,
+        "off-token-radius": 5,
+        "off-grid-spacing": 12,
+        "shadow-gradient": 8,
+        "icon-source": 0,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 4
+      },
+      "uiLines": 2619
+    },
+    {
+      "cell": "onboarding.flutter.flutter-material_ui.default",
+      "platform": "flutter",
+      "v1": {
+        "token-fidelity": 3,
+        "contrast-targets": 2,
+        "anti-patterns": 0
+      },
+      "v2": {
+        "token-fidelity": 3,
+        "contrast-targets": 2,
+        "anti-patterns": 3,
+        "icon-source": 0
+      },
+      "targetsV1": 0,
+      "targetsV2": 0,
+      "counts": {
+        "hardcoded-color": 0,
+        "off-token-type": 0,
+        "off-token-radius": 0,
+        "off-grid-spacing": 6,
+        "shadow-gradient": 0,
+        "icon-source": 26,
+        "foreign-styling": 0,
+        "contrast": 1,
+        "touch-target": 0
+      },
+      "uiLines": 1205
+    },
+    {
+      "cell": "onboarding.compose.compose-1.5.default",
+      "platform": "compose",
+      "v1": {
+        "token-fidelity": 2,
+        "contrast-targets": 1,
+        "anti-patterns": 3
+      },
+      "v2": {
+        "token-fidelity": 2,
+        "contrast-targets": 1,
+        "anti-patterns": 3,
+        "icon-source": 3
+      },
+      "targetsV1": 4,
+      "targetsV2": 4,
+      "counts": {
+        "hardcoded-color": 1,
+        "off-token-type": 0,
+        "off-token-radius": 0,
+        "off-grid-spacing": 4,
+        "shadow-gradient": 0,
+        "icon-source": 0,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 4
+      },
+      "uiLines": 1510
+    },
+    {
+      "cell": "empty-error.web.web-empty.default",
+      "platform": "web",
+      "v1": {
+        "token-fidelity": 1,
+        "contrast-targets": 0,
+        "anti-patterns": 1
+      },
+      "v2": {
+        "token-fidelity": 1,
+        "contrast-targets": 0,
+        "anti-patterns": 1,
+        "icon-source": 2
+      },
+      "targetsV1": 9,
+      "targetsV2": 9,
+      "counts": {
+        "hardcoded-color": 1,
+        "off-token-type": 24,
+        "off-token-radius": 2,
+        "off-grid-spacing": 14,
+        "shadow-gradient": 3,
+        "icon-source": 1,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 9
+      },
+      "uiLines": 889
+    },
+    {
+      "cell": "empty-error.flutter.flutter-material_ui.default",
+      "platform": "flutter",
+      "v1": {
+        "token-fidelity": 2,
+        "contrast-targets": 3,
+        "anti-patterns": 0
+      },
+      "v2": {
+        "token-fidelity": 2,
+        "contrast-targets": 3,
+        "anti-patterns": 3,
+        "icon-source": 0
+      },
+      "targetsV1": 0,
+      "targetsV2": 0,
+      "counts": {
+        "hardcoded-color": 1,
+        "off-token-type": 1,
+        "off-token-radius": 0,
+        "off-grid-spacing": 9,
+        "shadow-gradient": 0,
+        "icon-source": 25,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 0
+      },
+      "uiLines": 1232
+    },
+    {
+      "cell": "empty-error.compose.compose-1.5.default",
+      "platform": "compose",
+      "v1": {
+        "token-fidelity": 2,
+        "contrast-targets": 0,
+        "anti-patterns": 2
+      },
+      "v2": {
+        "token-fidelity": 2,
+        "contrast-targets": 0,
+        "anti-patterns": 2,
+        "icon-source": 3
+      },
+      "targetsV1": 12,
+      "targetsV2": 12,
+      "counts": {
+        "hardcoded-color": 1,
+        "off-token-type": 0,
+        "off-token-radius": 1,
+        "off-grid-spacing": 2,
+        "shadow-gradient": 1,
+        "icon-source": 0,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 12
+      },
+      "uiLines": 830
+    },
+    {
+      "cell": "onboarding.web.web-vue.default",
+      "platform": "web",
+      "v1": {
+        "token-fidelity": 1,
+        "contrast-targets": 1,
+        "anti-patterns": 1
+      },
+      "v2": {
+        "token-fidelity": 1,
+        "contrast-targets": 1,
+        "anti-patterns": 1,
+        "icon-source": 3
+      },
+      "targetsV1": 3,
+      "targetsV2": 3,
+      "counts": {
+        "hardcoded-color": 0,
+        "off-token-type": 36,
+        "off-token-radius": 2,
+        "off-grid-spacing": 9,
+        "shadow-gradient": 4,
+        "icon-source": 0,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 3
+      },
+      "uiLines": 2714
+    },
+    {
+      "cell": "settings.flutter.flutter-legacy.default",
+      "platform": "flutter",
+      "v1": {
+        "token-fidelity": 2,
+        "contrast-targets": 3,
+        "anti-patterns": 0
+      },
+      "v2": {
+        "token-fidelity": 2,
+        "contrast-targets": 3,
+        "anti-patterns": 3,
+        "icon-source": 0
+      },
+      "targetsV1": 0,
+      "targetsV2": 0,
+      "counts": {
+        "hardcoded-color": 0,
+        "off-token-type": 1,
+        "off-token-radius": 1,
+        "off-grid-spacing": 6,
+        "shadow-gradient": 0,
+        "icon-source": 28,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 0
+      },
+      "uiLines": 718
+    },
+    {
+      "cell": "settings.web.web-react.classic",
+      "platform": "web",
+      "v1": {
+        "token-fidelity": 1,
+        "contrast-targets": 3,
+        "anti-patterns": 3
+      },
+      "v2": {
+        "token-fidelity": 1,
+        "contrast-targets": 3,
+        "anti-patterns": 3,
+        "icon-source": 3
+      },
+      "targetsV1": 0,
+      "targetsV2": 0,
+      "counts": {
+        "hardcoded-color": 1,
+        "off-token-type": 22,
+        "off-token-radius": 0,
+        "off-grid-spacing": 2,
+        "shadow-gradient": 0,
+        "icon-source": 0,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 0
+      },
+      "uiLines": 1358
+    },
+    {
+      "cell": "settings.flutter.flutter-material_ui.classic",
+      "platform": "flutter",
+      "v1": {
+        "token-fidelity": 2,
+        "contrast-targets": 3,
+        "anti-patterns": 0
+      },
+      "v2": {
+        "token-fidelity": 2,
+        "contrast-targets": 3,
+        "anti-patterns": 3,
+        "icon-source": 0
+      },
+      "targetsV1": 0,
+      "targetsV2": 0,
+      "counts": {
+        "hardcoded-color": 1,
+        "off-token-type": 0,
+        "off-token-radius": 0,
+        "off-grid-spacing": 0,
+        "shadow-gradient": 0,
+        "icon-source": 24,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 0
+      },
+      "uiLines": 420
+    },
+    {
+      "cell": "settings.compose.compose-1.5.classic",
+      "platform": "compose",
+      "v1": {
+        "token-fidelity": 2,
+        "contrast-targets": 2,
+        "anti-patterns": 3
+      },
+      "v2": {
+        "token-fidelity": 2,
+        "contrast-targets": 2,
+        "anti-patterns": 3,
+        "icon-source": 3
+      },
+      "targetsV1": 2,
+      "targetsV2": 2,
+      "counts": {
+        "hardcoded-color": 1,
+        "off-token-type": 0,
+        "off-token-radius": 0,
+        "off-grid-spacing": 0,
+        "shadow-gradient": 0,
+        "icon-source": 0,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 2
+      },
+      "uiLines": 600
+    },
+    {
+      "cell": "dashboard.web.web-empty.seed-B5651D",
+      "platform": "web",
+      "v1": {
+        "token-fidelity": 1,
+        "contrast-targets": 0,
+        "anti-patterns": 1
+      },
+      "v2": {
+        "token-fidelity": 1,
+        "contrast-targets": 0,
+        "anti-patterns": 1,
+        "icon-source": 3
+      },
+      "targetsV1": 8,
+      "targetsV2": 8,
+      "counts": {
+        "hardcoded-color": 0,
+        "off-token-type": 14,
+        "off-token-radius": 3,
+        "off-grid-spacing": 10,
+        "shadow-gradient": 3,
+        "icon-source": 0,
+        "foreign-styling": 0,
+        "contrast": 1,
+        "touch-target": 8
+      },
+      "uiLines": 1536
+    },
+    {
+      "cell": "dashboard.flutter.flutter-material_ui.seed-B5651D",
+      "platform": "flutter",
+      "v1": {
+        "token-fidelity": 2,
+        "contrast-targets": 3,
+        "anti-patterns": 0
+      },
+      "v2": {
+        "token-fidelity": 2,
+        "contrast-targets": 3,
+        "anti-patterns": 2,
+        "icon-source": 0
+      },
+      "targetsV1": 0,
+      "targetsV2": 0,
+      "counts": {
+        "hardcoded-color": 1,
+        "off-token-type": 0,
+        "off-token-radius": 2,
+        "off-grid-spacing": 8,
+        "shadow-gradient": 1,
+        "icon-source": 25,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 0
+      },
+      "uiLines": 1485
+    },
+    {
+      "cell": "dashboard.compose.compose-1.5.seed-B5651D",
+      "platform": "compose",
+      "v1": {
+        "token-fidelity": 2,
+        "contrast-targets": 2,
+        "anti-patterns": 2
+      },
+      "v2": {
+        "token-fidelity": 2,
+        "contrast-targets": 2,
+        "anti-patterns": 2,
+        "icon-source": 3
+      },
+      "targetsV1": 2,
+      "targetsV2": 2,
+      "counts": {
+        "hardcoded-color": 2,
+        "off-token-type": 0,
+        "off-token-radius": 1,
+        "off-grid-spacing": 7,
+        "shadow-gradient": 1,
+        "icon-source": 0,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 2
+      },
+      "uiLines": 1062
+    }
+  ]
+}

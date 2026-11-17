@@ -39,3 +39,24 @@ Rates are per 100 non-blank lines of UI source.
 | Icon source | icon-source findings (legacy icon sets, other icon libraries, emoji) | 0 | 1 | 2–4 | 5 or more, or no buildable output |
 
 Implementation: `evals/tools/automated.mjs` (`automatedScores(verify, buildOk, 'v2')`).
+
+## Amendment: Compose harness v2 (2026-11-17, after the first v2 computation)
+
+Added after the first v2 re-scoring had been computed (Flutter recaptured, web and Compose reusing
+their recorded runtime results), while showing that a Compose cell still builds under the new memory
+limits. It changes no item definition or band.
+
+4. **The Compose harness captures with reduced motion**, as the web harness already does: animator
+   duration scale 0, which Compose reads as its motion duration scale. With an endless animation,
+   Robolectric's `idle()` inside `ActivityScenario.launch` ran frames until the Recomposer failed with
+   an `OutOfMemoryError` (baseline landing and onboarding: 20 and 25 capture minutes; with the test JVM
+   heap bounded at 1536m, past the 45-minute timeout). The same cell now captures in about 75 seconds;
+   its light screenshot differs from v1's only in the phase of the endless animation.
+5. **Robolectric's trace recording is off** in the capture test (its queue of finished trace sections
+   grew without bound with an endless animation).
+6. **Memory limits** (`tools/toolchain/gradle.properties`): Gradle daemon heap 2 GB, Kotlin daemon
+   1.5 GB, test JVM 1.5 GB, idle daemons exit after 10 minutes, and the pipeline stops a Compose
+   cell's daemons before and after its capture.
+
+All 8 Compose cells are captured again with harness v2 for the v2 re-scoring, so that the baseline and
+Phase 4 use the same harness.

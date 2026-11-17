@@ -131,6 +131,8 @@ async function main() {
     let cap ={ buildOk: false, reason: `run status ${rec.status}`, shots: [], runtime: { contrast: [], targets: [] } };
     if (['ok', 'secret-redacted', 'asked-question', 'timeout', 'session-error'].includes(rec.status) && !isQuotaStop(rec) && existsSync(rec.workDir ?? '')) {
       const shotDir = join('C:\\m3-eval', 'shots', runId, cell.cell);
+      // The session's own Gradle daemon is idle by now; stop it before the capture starts another.
+      if (cell.platform === 'compose') stopGradle(rec.workDir);
       const t0 = Date.now();
       try { cap = await capture(cell, rec.workDir, shotDir); } catch (e) { cap = { ...cap, reason: `capture error: ${e.message}` }; }
       cap.captureMs = Date.now() - t0;
