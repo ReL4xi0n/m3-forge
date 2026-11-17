@@ -32,8 +32,8 @@ the request asks for classic Material 3. Everything below is the order of work. 
 
 ## 3. Load references
 
-- Always read `references/core/color.md`, `typography.md`, `shape.md`, `layout.md`, `icons.md`,
-  `content.md` and `components.md`. (W)
+- Always read `CHECKLIST.md` (before building, as the recipe) and `references/core/color.md`,
+  `typography.md`, `shape.md`, `layout.md`, `icons.md`, `content.md` and `components.md`. (W)
 - Then every file in `references/<platform>/`, and from `references/core/` only the other notes
   the request needs (`elevation.md`, `motion.md`, `states.md`, `accessibility.md`,
   `expressive.md`, `anti-patterns.md`). (W)

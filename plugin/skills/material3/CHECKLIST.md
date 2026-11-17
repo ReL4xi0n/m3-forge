@@ -24,6 +24,10 @@ line says what a first-party screen has. Fix anything that does not match before
   collection. (F9)
 - Large screens reflow (navigation rail or drawer, panes, wider grids) instead of stretching the
   phone layout. (F9)
+- Fixed and floating elements (app bars, bottom bars, FABs, sticky totals) reserve their own
+  space: the scrolling content has matching padding, so nothing is covered at any width. (F9)
+- Text never collides: titles, avatars and trailing actions sit in separate slots; metadata fits
+  on one line at its role or moves to its own line. (F9, F10)
 
 ## Components and character
 
@@ -32,6 +36,15 @@ line says what a first-party screen has. Fix anything that does not match before
   action, navigation bar or rail for top-level destinations. (F9)
 - Exactly one primary action per screen region carries the strongest emphasis (filled button or
   FAB); others step down (tonal, outlined, text). (F9)
+- Each action appears once per view: no second toolbar or summary panel repeating the same
+  buttons. (F9)
+- Everything the request names is visible in the delivered UI without interaction: a requested
+  panel, player, picker, badge, empty or error state is rendered (inline, docked, or as its own
+  clearly labelled screen or section), not only reachable behind a tap. (F9)
+- Selection is always shown: filters, chips, tabs, segmented buttons and list items display
+  their selected state when one is active. (F9)
+- M3 Expressive cards, sheets and hero containers use the large to extra-extra-large corner
+  steps; small corners are for small controls. (F4)
 - M3 Expressive shows in shape (larger and contrasting corners, shape morphs on selection),
   emphasized type and spring motion, used where they guide attention. Classic M3 uses none of
   them. (F4, F9)
@@ -43,6 +56,8 @@ line says what a first-party screen has. Fix anything that does not match before
 
 - Surfaces use the surface-container roles to show depth; primary, secondary and tertiary
   containers mark emphasis, not decoration. (F2, F5)
+- Picture placeholders and decorative shapes in one collection all use the same container role,
+  and only theme-changing roles (never `*-fixed`), so they darken with the dark scheme. (F2, F8)
 - Dark mode comes from the dark scheme alone: no inverted images, no hard-coded overrides, the
   same hierarchy in both themes. (F2, F8)
 - Disabled, selected, hovered, focused and pressed states use the state-layer opacities and the
