@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { automatedScores, judgeRequest } from '../pipeline.mjs';
+import { automatedScores, judgeRequest, schedule, isQuotaStop, canaryDue } from '../pipeline.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 const v = (counts, uiLines = 200) => ({ counts, uiLines });
@@ -33,4 +33,33 @@ test('judgeRequest: the request, the style line and the platform, without the fo
   assert.match(t, /M3 Expressive style/);
   assert.match(t, /Platform: Flutter\.$/);
   assert.doesNotMatch(t, /folder/);
+});
+
+const C = (name, platform) => ({ cell: name, platform });
+
+test('schedule: the first Compose cell runs alone first; web and Flutter cells run in pairs; other Compose cells run alone', () => {
+  const cells = [C('w1', 'web'), C('f1', 'flutter'), C('c1', 'compose'), C('w2', 'web'), C('c2', 'compose'), C('f2', 'flutter'), C('w3', 'web')];
+  const groups = schedule(cells, { pair: 2 }).map(g => g.map(c => c.cell));
+  assert.deepEqual(groups[0], ['c1']);
+  for (const g of groups) {
+    if (g.some(n => n.startsWith('c'))) assert.equal(g.length, 1, `compose alone: ${g}`);
+    else assert.ok(g.length <= 2, `${g}`);
+  }
+  assert.deepEqual(groups.flat().sort(), cells.map(c => c.cell).sort());
+  assert.deepEqual(schedule(cells, { pair: 1 }).map(g => g.length), cells.map(() => 1));
+});
+
+test('canaryDue: before the first group, and again once 6 or more cells have run since the last canary', () => {
+  assert.equal(canaryDue({ sinceCanary: null, next: 2 }), true);
+  assert.equal(canaryDue({ sinceCanary: 4, next: 2 }), false);
+  assert.equal(canaryDue({ sinceCanary: 5, next: 2 }), true);
+  assert.equal(canaryDue({ sinceCanary: 6, next: 1 }), true);
+});
+
+test('isQuotaStop: a session that ends on a usage or rate limit stops the batch; other errors do not', () => {
+  assert.equal(isQuotaStop({ status: 'session-error', resultText: "Claude AI usage limit reached|1794600000" }), true);
+  assert.equal(isQuotaStop({ status: 'session-error', resultText: "You've hit your limit · resets 3am" }), true);
+  assert.equal(isQuotaStop({ status: 'session-error', resultText: 'API Error: 429 rate_limit_error' }), true);
+  assert.equal(isQuotaStop({ status: 'session-error', resultText: 'API Error: 500 overloaded' }), false);
+  assert.equal(isQuotaStop({ status: 'ok', resultText: null }), false);
 });

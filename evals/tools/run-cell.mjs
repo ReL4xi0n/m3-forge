@@ -198,6 +198,7 @@ export async function runCell(o) {
   if (!checks.init.ok || !checks.audit.ok) status = 'invalid-isolation';
   const rec = record(status, {
     durationMs: res?.duration_ms ?? null, costUsd: res?.total_cost_usd ?? null, usage: res?.usage ?? null,
+    resultText: res?.is_error ? String(res.result ?? res.subtype ?? '').slice(0, 500) : null,
     claudeVersion: init?.claude_code_version ?? null, exitCode: p.code, workDir, checks,
   });
   writeFileSync(join(dest, 'meta.json'), JSON.stringify({ ...rec, checks: undefined }, null, 2));

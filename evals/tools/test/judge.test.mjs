@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtempSync, mkdirSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
@@ -79,4 +79,16 @@ test('runJudgeBatch: three invalid replies mark the batch failed; scores are nev
   assert.equal(r.ok, false);
   assert.equal(r.attempts, 3);
   assert.equal(r.scores, null);
+});
+
+test('runJudgeBatch: the discrimination test passes its own prompt and output check; no requests.json is needed', async () => {
+  const { base, d, token } = judgeDir();
+  rmSync(join(d, 'requests.json'));
+  rmSync(join(d, 'anchors'), { recursive: true });
+  const reply = JSON.stringify(ids.map(id => ({ id, verdict: 'real', pReal: 0.5, cue: 'design', reason: 'r' })));
+  const r = await runJudgeBatch({ judgeDir: d, ids, root, evalRoot: join(base, 'eval'), batchId: 'b3', tokenFile: token,
+    claudeCmd: fakeJudge(base, [reply]), requireFrozen: false, requireSecretsAcl: false, skipPreflightAncestors: true,
+    prompt: 'Say which are real.', validate: text => ({ ok: JSON.parse(text).length === ids.length, problems: [], scores: JSON.parse(text) }) });
+  assert.equal(r.ok, true);
+  assert.equal(r.scores[0].verdict, 'real');
 });

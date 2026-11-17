@@ -622,3 +622,22 @@ still hold:
 - every request type keeps at least one image;
 - both platforms have a dark image;
 - the ★ set covers six Android screens and six web screens.
+
+## Protocol changes after the pilot (owner, 2026-11-17)
+
+- **PC-1: discrimination test (prepared, not run).**
+  - In the pilot, the judge gave the skill-less web landing page 3 on 7 of 8 items, while the
+    automated items gave it 1, 1 and 1. To test this, `evals/discrimination.md` and
+    `evals/tools/discriminate.mjs` mix the 17 owner references with generated screenshots that are
+    matched by form factor and theme.
+  - A rubric-free judge session then says which images are real Google products, with a cue for
+    each verdict.
+  - Rubric v1 and judge v1 stay frozen and unchanged.
+  - It runs only on the owner's decision; the script refuses to start without `--owner-approved`.
+- **Concurrency for Task 13.**
+  - Web and Flutter cells run two at a time (`--pair 2`). Compose cells run one at a time.
+  - The first Compose cell runs first. Its time, cost and memory are reported to the owner, and the
+    run then continues.
+  - A canary runs before every group that would take the count past 6 cells.
+  - A session that ends on a usage or rate limit stops the batch (`isQuotaStop`). `--resume` reuses
+    finished cells.

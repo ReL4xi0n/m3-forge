@@ -148,3 +148,15 @@ test('copyRunScanned: files unchanged from the fixture are not copied (they are 
   assert.equal(readFileSync(join(dst, 'main.dart'), 'utf8'), 'new\n');
   assert.equal(r.unchanged, 1);
 });
+
+test('runCell: a session that ends in an error keeps the error text, so the pipeline can tell a quota stop', async () => {
+  const { base, fixture, tokenFile } = setup();
+  const limit = { type: 'result', is_error: true, result: 'Claude AI usage limit reached|1794600000', duration_ms: 10, total_cost_usd: 0, usage: {} };
+  const r = await runCell({
+    cell: { cell: 'q', request: 'settings', platform: 'web', fixture: 'web-empty', variant: 'default' },
+    runId: 't6', root, evalRoot: join(base, 'eval'), fixtureDir: fixture, privateDir: join(base, 'private'),
+    tokenFile, claudeCmd: fakeClaude(base, [init, limit]), repoRoot: root, realCfg: join(base, 'no'), requireFrozen: false, skipPreflightAncestors: true, requireSecretsAcl: false,
+  });
+  assert.equal(r.status, 'session-error');
+  assert.match(r.resultText, /usage limit reached/);
+});

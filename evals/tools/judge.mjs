@@ -56,10 +56,10 @@ function batchFolder(judgeDir, ids, dest) {
   rmSync(dest, { recursive: true, force: true });
   mkdirSync(dest, { recursive: true });
   const views = JSON.parse(readFileSync(join(judgeDir, 'views.json'), 'utf8'));
-  const requests = JSON.parse(readFileSync(join(judgeDir, 'requests.json'), 'utf8'));
+  const requests = existsSync(join(judgeDir, 'requests.json')) ? JSON.parse(readFileSync(join(judgeDir, 'requests.json'), 'utf8')) : null;
   const pick = o => Object.fromEntries(ids.map(id => [id, o[id]]));
   writeFileSync(join(dest, 'views.json'), JSON.stringify(pick(views), null, 2));
-  writeFileSync(join(dest, 'requests.json'), JSON.stringify(pick(requests), null, 2));
+  if (requests) writeFileSync(join(dest, 'requests.json'), JSON.stringify(pick(requests), null, 2));
   for (const id of ids) for (const v of views[id] ?? []) cpSync(join(judgeDir, v.file), join(dest, v.file));
   if (existsSync(join(judgeDir, 'anchors'))) cpSync(join(judgeDir, 'anchors'), join(dest, 'anchors'), { recursive: true });
 }
@@ -77,7 +77,9 @@ export async function runJudgeBatch(o) {
   }
   if (requireSecretsAcl && !aclOwnerOnly(dirname(tokenFile)).ok) return { ok: false, attempts: 0, scores: null, problems: ['secrets folder ACL is not owner-only'] };
   const token = readFileSync(tokenFile, 'utf8').trim();
-  const prompt = judgePrompt({ ids, root });
+  // prompt and validate default to judge v1; the discrimination test (PC-1) passes its own.
+  const prompt = o.prompt ?? judgePrompt({ ids, root });
+  const validate = o.validate ?? (text => validateScores(text, ids));
   const attemptsLog = [];
   for (let attempt = 1; attempt <= retries + 1; attempt++) {
     const work = join(evalRoot, 'judge', `${batchId}-${attempt}`);
@@ -98,7 +100,7 @@ export async function runJudgeBatch(o) {
     const fi = findInit(r.lines);
     const init = checkInit(fi.init, { workDir: work, cfgDir: cfg, forbiddenNames: forbiddenFor(realCfg, evalRoot, o.builtIns), preInit: fi.preInit });
     const res = events.filter(e => e.type === 'result').pop();
-    const v = init.ok ? validateScores(res?.result ?? '', ids) : { ok: false, problems: init.problems, scores: null };
+    const v = init.ok ? validate(res?.result ?? '') : { ok: false, problems: init.problems, scores: null };
     attemptsLog.push({ attempt, ok: v.ok, problems: v.problems.slice(0, 10), costUsd: res?.total_cost_usd ?? null, durationMs: res?.duration_ms ?? null });
     if (v.ok) return { ok: true, attempts: attempt, scores: v.scores, log: attemptsLog, model };
   }
