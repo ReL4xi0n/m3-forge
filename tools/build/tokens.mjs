@@ -82,6 +82,9 @@ export function renderFiles(built) {
   return files;
 }
 
+// Files in the same folder that another build step writes (tools/build/precompute-schemes.mjs).
+export const OTHER_BUILD_FILES = new Set(['precomputed-schemes.json']);
+
 export function staleFiles(files, dir) {
   const stale = [];
   for (const [name, text] of files) {
@@ -90,7 +93,9 @@ export function staleFiles(files, dir) {
     if (cur !== text) stale.push(name);
   }
   // The folder holds only generated files: anything else is stale too.
-  if (existsSync(dir)) for (const name of readdirSync(dir).sort()) if (!files.has(name)) stale.push(`${name} (unexpected)`);
+  if (existsSync(dir)) {
+    for (const name of readdirSync(dir).sort()) if (!files.has(name) && !OTHER_BUILD_FILES.has(name)) stale.push(`${name} (unexpected)`);
+  }
   return stale;
 }
 

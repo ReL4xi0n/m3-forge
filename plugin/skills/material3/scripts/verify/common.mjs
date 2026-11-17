@@ -1,8 +1,11 @@
 // Shared helpers for the verify checks: file walking, comment stripping, line lookup, emoji,
-// the corner scale and the hit collector. Zero dependencies; regexes and light parsing only.
+// the corner scale and the hit collector. No npm dependencies; regexes and light parsing only (plus
+// the skill's color script, to recognize the color theme files it writes).
 import { readdir, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { readFileSync } from 'node:fs';
+
+import { generatedTheme } from '../color/index.mjs';
 
 export const CHECKS = [
   'hardcoded-color',
@@ -84,14 +87,20 @@ export const THEME_ASSETS = new Set([
 const ASSET_MARKER = /material3 skill asset: (\S+)/;
 const baseName = p => p.slice(p.lastIndexOf('/') + 1);
 
-// The theme asset path a file declares, or null.
+// The theme asset path a file declares, or null. A color theme file written by scripts/color (header
+// `material3 skill generated: color <seed> <variant>`) counts only when its whole text is exactly what
+// the color script writes for that header; it is returned as 'generated: color <seed> <variant>'.
 export function themeAsset(rel, text) {
+  const gen = generatedTheme(rel, text);
+  if (gen) return `generated: ${gen}`;
   const m = text.split('\n', 3).join('\n').match(ASSET_MARKER);
   if (!m || !THEME_ASSETS.has(m[1]) || baseName(m[1]) !== baseName(rel)) return null;
   return m[1];
 }
 
-export const themeAssetReason = asset => `material3 skill theme asset (${asset})`;
+export const themeAssetReason = asset => (asset.startsWith('generated: ')
+  ? `material3 skill generated theme (${asset.slice('generated: '.length)})`
+  : `material3 skill theme asset (${asset})`);
 
 // Recursive walk below `root`, skipping SKIP_DIRS. Returns sorted posix paths relative to `base`.
 export async function walk(base, root = base, prefix = '') {

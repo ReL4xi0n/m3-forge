@@ -6,7 +6,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { resolveEntry, ladderUses, ladderUseLine, keyOf } from '../ladder.mjs';
-import { buildSkillTokens, resolveToken, renderFiles, loadMerged, MAX_BYTES } from '../tokens.mjs';
+import { buildSkillTokens, resolveToken, renderFiles, loadMerged, MAX_BYTES, OTHER_BUILD_FILES } from '../tokens.mjs';
 import { renderAll } from '../../extract/tokens/report.mjs';
 
 const root = fileURLToPath(new URL('../../../', import.meta.url));
@@ -212,6 +212,7 @@ test('committed token files: up to date, at most 1.5 MB, no forbidden terms', ()
   assert.deepEqual([...files.keys()].sort(), ['comp.json', 'sys.json']);
   let total = 0;
   for (const name of readdirSync(tokensDir)) {
+    if (OTHER_BUILD_FILES.has(name)) continue; // precompute-schemes.mjs output, checked by the color tests
     const text = readFileSync(join(tokensDir, name), 'utf8').replace(/\r\n/g, '\n');
     assert.equal(text, files.get(name), `${name} is stale`);
     assert.doesNotMatch(text, /m3-forge|holdout|reference-screenshots/i, name);

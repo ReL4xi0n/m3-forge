@@ -29,6 +29,16 @@ Source repositories (token values and names extracted; see knowledge/sources.loc
   Apache License 2.0
 
 ------------------------------------------------------------------------
+material-color-utilities (bundled code)
+------------------------------------------------------------------------
+plugin/skills/material3/scripts/color/vendor/mcu/ holds part of @material/material-color-utilities
+0.4.0 (https://github.com/material-foundation/material-color-utilities, npm build), Copyright Google
+LLC, Apache License 2.0. License text: plugin/skills/material3/scripts/color/vendor/mcu/LICENSE.
+Modified: import specifiers only (".js" appended to extensionless relative imports so that Node can
+load the modules). The archive hash, the file list and its hash are in plugin/skills/material3/versions.json.
+plugin/skills/material3/tokens/precomputed-schemes.json holds color schemes computed with it.
+
+------------------------------------------------------------------------
 Material Symbols icons
 ------------------------------------------------------------------------
 Material Symbols (https://github.com/google/material-design-icons), Copyright Google LLC,

@@ -3,3 +3,4 @@ evals/**/*.json text eol=lf
 plugin/skills/material3/assets/fonts/** -text
 *.ttf binary
 *.woff2 binary
+plugin/skills/material3/scripts/color/vendor/** -text

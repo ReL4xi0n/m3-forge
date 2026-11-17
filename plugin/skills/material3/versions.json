@@ -63,5 +63,45 @@
       "source": "google/fonts@b78877b777ed3a18a1b431b0df7d8ee3f84c2e5f ofl/robotoflex (OFL-1.1)"
     }
   ],
-  "tools": []
+  "tools": [
+    {
+      "name": "@material/material-color-utilities",
+      "version": "0.4.0",
+      "license": "Apache-2.0",
+      "path": "scripts/color/vendor/mcu",
+      "archive": {
+        "url": "https://registry.npmjs.org/@material/material-color-utilities/-/material-color-utilities-0.4.0.tgz",
+        "sha256": "2f0b759749846357dd2d9ce0e1d5e8071e5b51bda24178b3d24ba75afa7f723d"
+      },
+      "tree": {
+        "sha256": "6bb944227cb1f9db1071077c2f1267c23989d1bd10102b7f5d8a724972225f49",
+        "method": "sha256 over the sorted lines \"<sha256 of file>  <path>\\n\" for the files listed",
+        "files": [
+          "LICENSE",
+          "blend/blend.js",
+          "contrast/contrast.js",
+          "dislike/dislike_analyzer.js",
+          "dynamiccolor/color_spec_2021.js",
+          "dynamiccolor/color_spec_2025.js",
+          "dynamiccolor/contrast_curve.js",
+          "dynamiccolor/dynamic_color.js",
+          "dynamiccolor/dynamic_scheme.js",
+          "dynamiccolor/material_dynamic_colors.js",
+          "dynamiccolor/tone_delta_pair.js",
+          "dynamiccolor/variant.js",
+          "hct/cam16.js",
+          "hct/hct.js",
+          "hct/hct_solver.js",
+          "hct/viewing_conditions.js",
+          "package.json",
+          "palettes/tonal_palette.js",
+          "temperature/temperature_cache.js",
+          "utils/color_utils.js",
+          "utils/math_utils.js",
+          "utils/string_utils.js"
+        ]
+      },
+      "modified": "import specifiers only: .js appended to extensionless relative imports (dynamiccolor/color_spec_2025.js)"
+    }
+  ]
 }
