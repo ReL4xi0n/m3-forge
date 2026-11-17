@@ -28,5 +28,18 @@ Source repositories (token values and names extracted; see knowledge/sources.loc
 - AndroidX Compose material3 (https://developer.android.com/jetpack/androidx/releases/compose-material3),
   Apache License 2.0
 
-Fonts and icons (Material Symbols, Roboto Flex, Roboto) are attributed here when they are added to
-the repository, together with their own license files.
+------------------------------------------------------------------------
+Material Symbols icons
+------------------------------------------------------------------------
+Material Symbols (https://github.com/google/material-design-icons), Copyright Google LLC,
+Apache License 2.0, at commit 10ecc14790612ca8fd164e3f4ffe9c16fc50d5b7.
+- plugin/skills/material3/scripts/verify/symbols-paths.json holds hashes of the official path data
+  (Outlined, Rounded and Sharp; weight 400, grade 0, 24 px; unfilled and filled).
+- plugin/skills/material3/assets/icons/symbols-outlined-24.tsv holds the official Android vector
+  path data of the Outlined style at the same instance, copied unchanged and repacked one icon per
+  line. The skill writes it back into the official vector drawable form for the icons a project uses.
+- The Material Symbols variable font and its codepoints file are listed under Fonts when they are
+  added.
+
+Fonts (Roboto Flex, Roboto, Material Symbols) are attributed here when they are added to the
+repository, together with their own license files.

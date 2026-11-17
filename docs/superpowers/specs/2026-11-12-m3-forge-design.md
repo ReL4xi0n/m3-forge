@@ -431,8 +431,8 @@ expressive character, motion appropriateness, and the overall "Google-polish" ba
 
 ### Icons (narrow scope; owner decision)
 The only icon sources are the official Material Symbols variable font and its official `codepoints`
-file, both bundled (§3). No icon set is drawn, converted to vectors, or taken from a community
-package.
+file, both bundled (§3), and on Compose the official Material Symbols vector files (below). No icon
+is drawn, converted to vectors, edited, or taken from a community package.
 
 - **Web:** the copied woff2 with ligatures (`<span class="m3-icon">settings</span>`), styled via
   `font-variation-settings` for FILL, wght, GRAD and opsz.
@@ -442,17 +442,24 @@ package.
     for the icons the UI uses, for example `M3Symbols.settings`.
   - Each constant uses the Symbols font family. Fill and weight come from `Icon`'s
     `fill`/`weight`/`grade`/`opticalSize`.
-- **Compose:**
-  - The TTF goes to `res/font`.
-  - `scripts/icons` generates `M3Symbols.kt`, holding name → codepoint `String` constants for the
-    icons used.
-  - A ~20-line `M3Icon(symbol, fill, weight, …)` composable renders the codepoint as `Text` with the
-    Symbols `FontFamily` and `FontVariation.Settings`. It sets the content description through
-    semantics.
+- **Compose** (owner decision, 2026-11-17; replaces the font-based `M3Icon`):
+  - The official Material Symbols Android vector drawables, copied unchanged. The skill bundles the
+    Outlined style at the default instance (weight 400, grade 0, 24 dp; unfilled and filled) as
+    `assets/icons/symbols-outlined-24.tsv`, one icon per line, path data only.
+  - `scripts/icons` writes `res/drawable/m3s_<name>.xml` (and `_fill1.xml`) in the official vector
+    form, only for the icons the UI uses. The UI uses `Icon(painterResource(R.drawable.m3s_<name>),
+    contentDescription)`. An icon XML that no code references is flagged by verify
+    (`asset-unused`).
+  - Without Node, the path line is extracted from the TSV with a documented shell one-liner; path
+    data is never retyped.
+  - Rounded or Sharp on request: the used icons' XML is downloaded at the pinned commit and each
+    path must hash into the verify index; otherwise the bundled Outlined icon is used and the report
+    says so.
+  - Other weights, grades and optical sizes do not exist as official vectors, so Compose icons use
+    the default instance only.
 - **Size.** Flutter's `--tree-shake-icons` should subset the font for const `IconData`. Whether
   that keeps the variable axes intact is unverified and is checked in Phase 3. If it doesn't, the
-  full font ships and the report says so. Compose ships the full TTF in v1, and the report notes the
-  APK size cost.
+  full font ships and the report says so. Compose ships no icon font; each used icon is about 1 KB.
 
 A golden or screenshot covers icon rendering on each platform: filled and unfilled, two weights.
 
@@ -774,6 +781,14 @@ results, screenshots, green CI, and both install paths shown working.
   - icons come only from the official Symbols variable font and codepoints, with name → icon
     constants for Flutter and Compose and no drawing or vector conversion (§10).
 
+- Phase 3 plan approved on 2026-11-17, with four decisions:
+  - **Compose icons** are the official Outlined vector drawables from a bundled set; only the icons
+    a UI uses are copied into the project, and verify's `asset-unused` check catches unused ones
+    (§10). NOTICE attributes the icons.
+  - The dev request set (`evals/dev/`) and its gate, as in the Phase 3 plan.
+  - New verify checks that are not scored (`placeholder-content`, `brand`, `unknown-icon`,
+    `asset-unused`).
+  - Every sub-phase checkpoint (3a–3d) is a stop for owner review.
 - Phase 1 approved on 2026-11-13, with three decisions:
   - **Conflict policy.** This is the precedence in `knowledge/README.md`, with one exception. When
     the site disagrees with material-web and both Flutter and Compose give the site's value,
