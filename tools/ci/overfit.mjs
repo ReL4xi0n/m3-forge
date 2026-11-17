@@ -12,6 +12,12 @@ const SKIP_DIRS = new Set(['node_modules', '.git']);
 const MIN_LENGTH = 5;
 const STOP = new Set(['Material', 'Android', 'Flutter', 'Compose', 'Jetpack', 'Platform', 'Expressive', 'Design']);
 
+// Generic screen and control words: ordinary vocabulary, never a distinct term.
+const GENERIC = new Set(`settings account profile notifications notification privacy about preferences theme home search cart
+dashboard orders order customers customer books pricing support terms login signin signup sign pre-order submit cancel save delete
+edit done next back close open menu help trips paid shipped refunded pending loading error offline retry filter filters sort
+monday sunday december october`.split(/\s+/));
+
 export function distinctTerms(markdown) {
   const terms = new Set();
   const text = markdown.replace(/^#.*$/gm, '');
@@ -23,7 +29,7 @@ export function distinctTerms(markdown) {
   for (const m of unquoted.matchAll(/(?<![.!?:;]\s)(?<!^\s*)(?<!^\s*[-\d.]+\s+)(?<=[\p{L}\d,)(]\s+)\b[A-Z][a-z]{3,}\b/gmu)) {
     if (!STOP.has(m[0])) terms.add(m[0]);
   }
-  return [...terms].filter(t => t.length >= MIN_LENGTH || /\d/.test(t)).sort();
+  return [...terms].filter(t => (t.length >= MIN_LENGTH || /\d/.test(t)) && !GENERIC.has(t.toLowerCase())).sort();
 }
 
 function* textFiles(dir) {
@@ -41,10 +47,12 @@ export function overfitHits(skillDir, promptsDir) {
     if (!f.endsWith('.md') || f === 'variants.md') continue;
     for (const t of distinctTerms(readFileSync(join(promptsDir, f), 'utf8'))) terms.add(t);
   }
+  const esc = t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const patterns = [...terms].map(t => [t, new RegExp(`(?<![\\p{L}\\p{N}_])${esc(t)}(?![\\p{L}\\p{N}_])`, 'iu')]);
   const hits = [];
   for (const file of textFiles(skillDir)) {
-    const body = readFileSync(file, 'utf8').toLowerCase();
-    for (const term of terms) if (body.includes(term.toLowerCase())) hits.push({ file, term });
+    const body = readFileSync(file, 'utf8');
+    for (const [term, re] of patterns) if (re.test(body)) hits.push({ file, term });
   }
   return hits;
 }

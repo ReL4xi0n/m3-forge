@@ -72,3 +72,11 @@ test('buildPrompt reads dev requests from evals/dev', () => {
   assert.match(prompt, /Ledgerleaf/);
   assert.match(prompt, /#2F6F5E/);
 });
+
+test('generic words and partial matches are not hits', async () => {
+  const dir = await mkdtemp(join(tmpdir(), 'overfit words '));
+  await writeFile(join(dir, 'a.md'), 'Settings screen, settings.gradle, 13 linked items, Pocketbooks.');
+  assert.deepEqual(overfitHits(dir, PROMPTS), []);
+  await writeFile(join(dir, 'b.md'), 'like POCKETBOOK, here.');
+  assert.deepEqual(overfitHits(dir, PROMPTS).map(h => h.term), ['Pocketbook']);
+});
