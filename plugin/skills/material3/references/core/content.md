@@ -25,14 +25,20 @@ make it specific to the request.
 5. Contact details belong to the invented product: emails at its own domain (for example
    `<name>@<productname>.<tld>` with a plausible top-level domain), phone numbers in the local
    format.
-6. Imagery: no image files or URLs. Show a placeholder as a shape-token container (a scale step
-   from shape.md) filled with a container role (`primaryContainer`, `secondaryContainer`,
-   `tertiaryContainer`, `surfaceContainerHighest`) and a centered Material Symbols icon in the
-   matching on role that says what the picture would be (`landscape`, `restaurant`, `person`,
-   `directions_car`). Avatars: initials or the `person` icon in a full-shape container.
-7. Every visible destination works. Each tab, navigation item, menu item and link opens a screen or
-   panel with its own real content. Do not show a destination you will not build: remove it from
-   the navigation instead.
+6. Imagery: no image files or URLs. In place of a picture:
+   - M3 Expressive on Compose and Flutter: a shape from the Material shape library (expressive.md,
+     "Imagery and decoration"), filled with a container role (`primaryContainer`,
+     `secondaryContainer`, `tertiaryContainer`) and, when it helps, a centered Material Symbols
+     icon in the matching on role that names the subject (`landscape`, `restaurant`,
+     `directions_car`). Use library shapes sparingly, for decoration and image crops only.
+   - Web, and classic M3 everywhere: a container with a shape-scale corner (shape.md) filled the
+     same way. The library shape geometry for the web is [NOT FOUND] in our sources; never draw an
+     imitation.
+   - Avatars: the person's initials in a full-shape (circular) container filled with a container
+     role, text in its on role; the `person` icon when there is no name.
+7. Destinations: the requested screen is complete. Every other visible destination (tab,
+   navigation item, menu entry, link) opens a simple but credible screen with real content (a
+   short list, a summary or a form with plausible data), never a blank or "coming soon" page.
 8. Empty, loading and error states exist where the data could be empty or slow, written with the
    same care (what happened, what to do next, one action).
 

@@ -18,6 +18,21 @@ classic, baseline or non-Expressive Material 3.
 - Hierarchy: one primary task per screen; frame it with space, size and color. Do not stack every
   expressive tactic on one screen.
 
+
+## Imagery and decoration
+
+- The Material shape library holds 35 shapes [site:/foundations/usability/overview] for
+  decorative elements: image crops, avatar masks, graphics and empty areas. Never on text-heavy
+  containers; use them sparingly and only where they add emphasis.
+- Compose: `MaterialShapes.<name>.toShape()` (for example `Cookie9Sided`, `Sunny`, `Heart`;
+  the list is `MaterialShapes`), clipped or drawn with a container-role fill. Needs
+  `@OptIn(ExperimentalMaterial3ExpressiveApi::class)`.
+- Flutter (`material_ui`): `MaterialShapeBorder` with a `MaterialShapes` member as the shape of a
+  `Container`/`DecoratedBox` decoration, filled with a container role.
+- Web: no official shape-library asset or geometry in our sources [NOT FOUND]. Use shape-scale
+  corners instead; never hand-draw a library shape.
+- Fill decorative shapes with `primaryContainer`, `secondaryContainer` or `tertiaryContainer`;
+  content on them uses the matching on role.
 ## Use the current component, not the retired one
 
 | Instead of | Use |

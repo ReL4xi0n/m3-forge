@@ -71,9 +71,11 @@ judgment calls are not machine-checked).
 - Icons only from `icons` output. Never draw an icon, import another icon set, use the legacy
   `Icons.*`, or put an emoji in place of an icon. (F7)
 - Text pairs only on-role over its role (`on-surface` on `surface`, and so on). (F8)
+- Every icon-only button has an accessible label: `aria-label` (web), `tooltip` or
+  `semanticLabel` (Flutter), `contentDescription` (Compose). (W)
 - Content follows `references/core/content.md`: an invented but credible product, people, numbers
-  and addresses. No lorem ipsum, `example.com`, "Acme", "John Doe" or "Item 1", and no image
-  URLs. (F11)
+  and addresses; imagery as shape containers, avatars as initials. No lorem ipsum, `example.com`,
+  "Acme", "John Doe" or "Item 1", and no image URLs. (F11)
 - No Google brand: no "Google", no Google product names or logos, no copy of a Google product.
   (F12)
 - Judgment calls (hierarchy, rhythm, density, component choice, Expressive character) follow

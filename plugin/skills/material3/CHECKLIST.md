@@ -35,8 +35,9 @@ line says what a first-party screen has. Fix anything that does not match before
 - M3 Expressive shows in shape (larger and contrasting corners, shape morphs on selection),
   emphasized type and spring motion, used where they guide attention. Classic M3 uses none of
   them. (F4, F9)
-- Every visible destination (tab, nav item, menu entry) leads to real content, not a stub
-  screen. (F9, F11)
+- The requested screen is complete; every other visible destination (tab, nav item, menu entry)
+  opens a simple but credible screen with real content, never a blank or "coming soon" page.
+  (F9, F11)
 
 ## Color and dark mode
 
@@ -56,5 +57,6 @@ line says what a first-party screen has. Fix anything that does not match before
 ## Final pass
 
 - Verify reports nothing (errors and the two must-fix warnings). (F1, F2, F3, F4, F5, F6, F7, F8, F11, F12)
+- Every icon-only button has an accessible label. (W)
 - Screenshots in light and dark show nothing clipped, no overflow, no text on a color without
   its on-role, and every touch target at least 48 dp. (F6, F8, F9)
