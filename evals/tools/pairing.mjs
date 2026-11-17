@@ -2,7 +2,7 @@
 // paired with up to two anchor screenshots (real first-party screens, the frozen anchor set) of the
 // same platform family: the closest screen type and form factor first, then one in the other theme,
 // so the judge sees the first-party bar for light and dark.
-import { parseRefName } from './calibrate.mjs';
+import { parseRefName } from './refs.mjs';
 
 // Request (evals/prompts/<name>.md) or reference screen -> screen types an anchor can match.
 export const SCREENS = {
