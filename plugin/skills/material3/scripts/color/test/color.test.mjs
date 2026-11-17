@@ -7,10 +7,11 @@ import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import {
-  BASELINE_SEED, CONTRASTS, ROLES, VARIANTS, decodeScheme, generatedTheme, gridSeeds, nearest, precomputed, renderTheme,
-  scheme, writeTheme,
+  ACHROMATIC_CHROMA, BASELINE_SEED, CONTRASTS, ROLES, VARIANTS, decodeScheme, generatedTheme, gridSeeds, harmonize, nearest,
+  precomputed, renderTheme, scheme, writeTheme,
 } from '../index.mjs';
-import { DynamicScheme, Hct, MaterialDynamicColors, Variant, argbFromHex, hexFromArgb } from '../mcu.mjs';
+import { DynamicScheme, Hct, MaterialDynamicColors, Variant, argbFromHex, customColor, hexFromArgb } from '../mcu.mjs';
+import { hsl, minChromaticRgbRange } from '../../../../../../tools/build/precompute-schemes.mjs';
 import { verify } from '../../verify/index.mjs';
 
 const INDEX = fileURLToPath(new URL('../index.mjs', import.meta.url));
@@ -240,7 +241,20 @@ test('--custom: harmonized toward the seed, emitted as four extra roles on every
   const values = [...t.matchAll(/--md-sys-color-brand: (#[0-9a-f]{6});/g)].map(m => m[1]);
   assert.equal(values.length, 9);
   for (const v of values) assert.ok(hueDist(hue(v), hue(seed)) < hueDist(hue(brand), hue(seed)) - 5, `${v} moved toward the seed`);
-  for (const role of ['on-brand', 'brand-container', 'on-brand-container']) assert.match(t, new RegExp(`--md-sys-color-${role}: #`));
+  // The values are MCU's own customColor (utils/theme_utils) output, light/dark; MCU has no contrast
+  // levels for custom colors, so every contrast block repeats them.
+  const cc = customColor(argbFromHex(seed), { value: argbFromHex(brand), name: 'brand', blend: true });
+  assert.equal(hexFromArgb(cc.value), harmonize(brand, seed));
+  const want = {
+    light: [cc.light.color, cc.light.onColor, cc.light.colorContainer, cc.light.onColorContainer].map(hexFromArgb),
+    dark: [cc.dark.color, cc.dark.onColor, cc.dark.colorContainer, cc.dark.onColorContainer].map(hexFromArgb),
+  };
+  const blocks = t.split('\n\n'); // per contrast level: light, dark (media query), dark (data-theme)
+  assert.equal(blocks.length, 9);
+  blocks.forEach((b, i) => {
+    const got = ['brand', 'on-brand', 'brand-container', 'on-brand-container'].map(r => new RegExp(`--md-sys-color-${r}: (#[0-9a-f]{6});`).exec(b)[1]);
+    assert.deepEqual(got, i % 3 === 0 ? want.light : want.dark, `block ${i}`);
+  });
   const d = renderTheme({ platform: 'flutter', seed, variant: 'tonalSpot', custom: { brand } });
   assert.match(d, /class M3CustomColors extends ThemeExtension<M3CustomColors>/);
   assert.match(d, /final Color onBrandContainer;/);
@@ -326,3 +340,73 @@ for (const [platform, { file, ui }] of Object.entries(PROJECTS)) {
     } finally { rmSync(dir, { recursive: true, force: true }); }
   });
 }
+
+// ---------------------------------------------------------------------------------------------
+// Achromatic seeds and the no-Node nearest rule.
+
+test('an achromatic seed (HCT chroma < 12) uses the baseline seed, on every path', () => {
+  assert.equal(ACHROMATIC_CHROMA, 12);
+  for (const gray of ['#808080', '#000000', '#FFFFFF', '#1C1B1F']) {
+    assert.ok(Hct.fromInt(argbFromHex(gray)).chroma < 12, gray);
+    const n = nearest(gray);
+    assert.deepEqual(n, { seed: BASELINE_SEED, hue: precomputed().seeds[0].hue, chroma: precomputed().seeds[0].chroma, note: 'achromatic seed, baseline used' });
+  }
+  const dir = tmp('achromatic');
+  try {
+    const out = join(dir, 'colors.css');
+    const r = writeTheme({ platform: 'web', seed: '#222222', variant: 'tonalSpot', out });
+    assert.deepEqual(r, { seedRequested: '#222222', seedUsed: BASELINE_SEED, exact: false, source: 'published baseline scheme (md.sys.color)', out, note: 'achromatic seed, baseline used' });
+    const text = readFileSync(out, 'utf8');
+    const lines = text.split('\n');
+    assert.equal(lines[0], '/* material3 skill generated: color #6750A4 tonalSpot */');
+    assert.equal(lines[1], '/* requested: #222222 (achromatic seed, baseline used; HCT chroma below 12) */');
+    assert.equal(text.slice(text.indexOf(':root {')), renderTheme({ platform: 'web', seed: BASELINE_SEED }).slice(renderTheme({ platform: 'web', seed: BASELINE_SEED }).indexOf(':root {')));
+    assert.equal(generatedTheme('colors.css', text), 'color #6750A4 tonalSpot');
+    assert.equal(generatedTheme('colors.css', text.replace('#222222', '#3366CC')), null, 'a colorful requested seed does not reproduce this file');
+    const k = renderTheme({ platform: 'compose', seed: '#222222', custom: { brand: '#B5651D' } });
+    assert.equal(generatedTheme('Color.kt', k), 'color #6750A4 tonalSpot');
+  } finally { rmSync(dir, { recursive: true, force: true }); }
+  const cli = spawnSync(process.execPath, [INDEX, '--nearest', '#777777'], { encoding: 'utf8' });
+  assert.equal(JSON.parse(cli.stdout).note, 'achromatic seed, baseline used');
+});
+
+// What a model without Node does with the file: the rule text and the per-seed HSL values.
+function noNodeNearest(p, hex) {
+  const [r, g, b] = [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16));
+  if (Math.max(r, g, b) - Math.min(r, g, b) < p.nearest.rgbRange) return p.seeds[0].seed;
+  const { hslHue, hslSat } = hsl(hex);
+  const d = (a, c) => { const x = Math.abs(a - c); return x > 180 ? 360 - x : x; };
+  return p.seeds.map((s, i) => ({ s, i, dh: d(hslHue, s.hslHue), ds: Math.abs(hslSat - s.hslSat) }))
+    .sort((a, c) => a.dh - c.dh || a.ds - c.ds || a.i - c.i)[0].s.seed;
+}
+
+test('the file states the no-Node nearest rule and carries HSL hue/saturation per seed', () => {
+  const p = precomputed();
+  for (const key of ['achromatic', 'withoutNode', 'withNode']) assert.equal(typeof p.nearest[key], 'string', key);
+  assert.match(p.nearest.achromatic, /HCT chroma is below 12/);
+  assert.match(p.nearest.achromatic, /achromatic seed, baseline used/);
+  assert.equal(p.nearest.rgbRange, minChromaticRgbRange());
+  assert.ok(p.nearest.achromatic.includes(`< ${p.nearest.rgbRange} `));
+  assert.match(p.nearest.withoutNode, /HSL hue .* then the smallest \|saturation - hslSat\|, then the earliest in the seeds list/);
+  for (const s of p.seeds) {
+    // Independent HSL computation (not the build tool's).
+    const [r, g, b] = [1, 3, 5].map(i => parseInt(s.seed.slice(i, i + 2), 16) / 255);
+    const mx = Math.max(r, g, b); const mn = Math.min(r, g, b); const l = (mx + mn) / 2;
+    const sat = mx === mn ? 0 : (mx - mn) / (1 - Math.abs(2 * l - 1));
+    assert.ok(Math.abs(s.hslSat - sat * 100) <= 0.05 + 1e-9, s.seed);
+    assert.deepEqual({ hslHue: s.hslHue, hslSat: s.hslSat }, hsl(s.seed));
+  }
+  // The rule gives a deterministic grid seed, and a gray gives the baseline.
+  assert.equal(noNodeNearest(p, '#B5651D'), noNodeNearest(p, '#B5651D'));
+  assert.ok(gridSeeds().includes(noNodeNearest(p, '#B5651D')));
+  assert.equal(noNodeNearest(p, '#808080'), BASELINE_SEED);
+  // Every grid seed is its own nearest seed under the rule, unless an earlier seed has the very same
+  // HSL hue and saturation (HSL cannot tell them apart; today one pair: #00A0C7 and #06CEFF).
+  for (const s of p.seeds.slice(1)) {
+    const got = noNodeNearest(p, s.seed);
+    if (got === s.seed) continue;
+    const other = p.seeds.find(x => x.seed === got);
+    assert.deepEqual([other.hslHue, other.hslSat], [s.hslHue, s.hslSat], `${s.seed} -> ${got}`);
+    assert.ok(p.seeds.indexOf(other) < p.seeds.indexOf(s));
+  }
+});

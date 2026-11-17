@@ -5,8 +5,11 @@
 //   scheme({ seed, variant = 'tonalSpot', contrast = 0, dark = false }) -> { role: '#rrggbb' }
 //   renderTheme({ platform, seed, variant, custom, packageName, flutterLibrary }) -> file text
 //   writeTheme({ platform, seed, variant, out, custom, packageName, flutterLibrary })
-//     -> { seedRequested, seedUsed, exact: true, source, out }
-//   nearest(seedHex) -> { seed, hue, chroma }   nearest precomputed seed: by hue, then chroma
+//     -> { seedRequested, seedUsed, exact, source, out, note? }
+//   nearest(seedHex) -> { seed, hue, chroma, note? }   nearest precomputed seed: by HCT hue, then chroma
+// An achromatic seed (HCT chroma below 12, half the lowest grid chroma) is replaced by the baseline
+// seed: writeTheme reports exact: false and note 'achromatic seed, baseline used', and the theme
+// header names the requested seed.
 //   generatedTheme(relPath, text) -> 'color <seed> <variant>' | null   (used by verify)
 //
 // CLI:
@@ -21,13 +24,22 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { Blend, DynamicScheme, Hct, MaterialDynamicColors, TonalPalette, Variant, argbFromHex, hexFromArgb } from './mcu.mjs';
+import { Blend, DynamicScheme, Hct, MaterialDynamicColors, Variant, argbFromHex, customColor, hexFromArgb } from './mcu.mjs';
 
 export const BASELINE_SEED = '#6750A4';
 export const MCU_VERSION = '0.4.0';
 export const SPEC_VERSION = '2025';
 export const CONTRASTS = [0, 0.5, 1];
 export const PLATFORMS = ['web', 'flutter', 'compose'];
+// Chroma levels of the precomputed grid. A seed whose HCT chroma is below half the lowest level is
+// achromatic (gray, near black, near white): the baseline seed is used instead.
+export const GRID_CHROMAS = [24, 48, 72];
+export const ACHROMATIC_CHROMA = Math.min(...GRID_CHROMAS) / 2;
+export const ACHROMATIC_NOTE = 'achromatic seed, baseline used';
+
+export function isAchromatic(seed) {
+  return Hct.fromInt(argbFromHex(normalizeSeed(seed))).chroma < ACHROMATIC_CHROMA;
+}
 
 // MCU variants, as named in the color reference (knowledge color-system variants).
 const VARIANT_IDS = {
@@ -124,9 +136,10 @@ export function scheme({ seed, variant = 'tonalSpot', contrast = 0, dark = false
 }
 
 // ---------------------------------------------------------------------------------------------
-// Custom colors: harmonized with the seed (MCU Blend.harmonize). Their four roles take the primary
-// roles of an MCU 2025 tonal-spot scheme whose primary palette is the harmonized color's own palette
-// (its hue and chroma are kept), at the same mode and contrast.
+// Custom colors: MCU's own customColor (utils/theme_utils): the color is harmonized with the seed
+// (Blend.harmonize) and its four roles are fixed tones of the harmonized color's palette (light
+// 40/100/90/10, dark 80/20/30/90). MCU defines no contrast levels for custom colors, so the medium and
+// high contrast schemes carry the same custom values as the standard one.
 
 const cap = s => s[0].toUpperCase() + s.slice(1);
 const customRoles = name => [name, `on${cap(name)}`, `${name}Container`, `on${cap(name)}Container`];
@@ -149,15 +162,15 @@ export function harmonize(hex, seed) {
   return hexFromArgb(Blend.harmonize(argbFromHex(hex), argbFromHex(seed)));
 }
 
-function customScheme(name, hex, seed, contrast, dark) {
-  const h = harmonize(hex, seed);
-  const s = dynamicScheme(h, 'tonalSpot', contrast, dark, { primaryPalette: TonalPalette.fromInt(argbFromHex(h)) });
+function customRolesFor(name, hex, seed, dark) {
+  const cc = customColor(argbFromHex(seed), { value: argbFromHex(hex), name, blend: true });
+  const g = dark ? cc.dark : cc.light;
   const [n, on, c, onC] = customRoles(name);
   return {
-    [n]: hexFromArgb(colors.primary().getArgb(s)),
-    [on]: hexFromArgb(colors.onPrimary().getArgb(s)),
-    [c]: hexFromArgb(colors.primaryContainer().getArgb(s)),
-    [onC]: hexFromArgb(colors.onPrimaryContainer().getArgb(s)),
+    [n]: hexFromArgb(g.color),
+    [on]: hexFromArgb(g.onColor),
+    [c]: hexFromArgb(g.colorContainer),
+    [onC]: hexFromArgb(g.onColorContainer),
   };
 }
 
@@ -183,8 +196,9 @@ const FLUTTER_IMPORTS = {
 };
 const DEFAULT_THEME_PACKAGE = 'm3.theme';
 
-function headerLines(seed, variant, custom) {
+function headerLines(seed, variant, custom, requested) {
   const out = [`material3 skill generated: color ${seed} ${variant}`];
+  if (requested !== seed) out.push(`requested: ${requested} (${ACHROMATIC_NOTE}; HCT chroma below ${ACHROMATIC_CHROMA})`);
   if (custom.length) out.push(`custom: ${custom.map(([n, h]) => `${n}=${h}`).join(', ')}`);
   out.push(`source: ${sourceOf(seed, variant)}`);
   out.push(NOTE);
@@ -194,13 +208,13 @@ function headerLines(seed, variant, custom) {
 function modeValues(seed, variant, custom) {
   return MODES.map(m => {
     const roles = scheme({ seed, variant, contrast: m.contrast, dark: m.dark });
-    const extra = Object.assign({}, ...custom.map(([n, h]) => customScheme(n, h, seed, m.contrast, m.dark)));
+    const extra = Object.assign({}, ...custom.map(([n, h]) => customRolesFor(n, h, seed, m.dark)));
     return { ...m, roles, extra };
   });
 }
 
-function renderWeb({ seed, variant, custom, modes }) {
-  const lines = headerLines(seed, variant, custom).map(l => `/* ${l} */`);
+function renderWeb({ seed, variant, custom, modes, requested }) {
+  const lines = headerLines(seed, variant, custom, requested).map(l => `/* ${l} */`);
   const decls = (m, indent) => [...Object.entries(m.roles), ...Object.entries(m.extra)]
     .map(([r, v]) => `${indent}--md-sys-color-${kebab(r)}: ${v};`);
   const block = (sel, m) => [`${sel} {`, ...decls(m, '  '), '}'];
@@ -228,8 +242,8 @@ function renderWeb({ seed, variant, custom, modes }) {
 const FLUTTER_ROLES = ROLES.filter(r => !['background', 'onBackground', 'surfaceVariant'].includes(r));
 const flutterParam = r => (r === 'inverseOnSurface' ? 'onInverseSurface' : r);
 
-function renderFlutter({ seed, variant, custom, modes, flutterLibrary }) {
-  const out = headerLines(seed, variant, custom).map(l => `// ${l}`);
+function renderFlutter({ seed, variant, custom, modes, flutterLibrary, requested }) {
+  const out = headerLines(seed, variant, custom, requested).map(l => `// ${l}`);
   out.push('// With the material_ui package the import is package:material_ui/material_ui.dart (--flutter-library material_ui).');
   out.push(FLUTTER_IMPORTS[flutterLibrary], '');
   out.push(`/// Color schemes for seed ${seed} (${variant}): light and dark at standard, medium and high contrast.`);
@@ -270,8 +284,8 @@ function renderFlutter({ seed, variant, custom, modes, flutterLibrary }) {
 // Compose lightColorScheme/darkColorScheme parameters: every role except shadow.
 const COMPOSE_ROLES = ROLES.filter(r => r !== 'shadow');
 
-function renderCompose({ seed, variant, custom, modes, themePackage }) {
-  const out = headerLines(seed, variant, custom).map(l => `// ${l}`);
+function renderCompose({ seed, variant, custom, modes, themePackage, requested }) {
+  const out = headerLines(seed, variant, custom, requested).map(l => `// ${l}`);
   out.push(`// package ${DEFAULT_THEME_PACKAGE} is a placeholder: --package com.example.app writes package com.example.app.theme.`);
   out.push(`package ${themePackage}`, '');
   out.push('import androidx.compose.material3.darkColorScheme', 'import androidx.compose.material3.lightColorScheme');
@@ -298,16 +312,23 @@ function renderCompose({ seed, variant, custom, modes, themePackage }) {
   return `${out.join('\n')}\n`;
 }
 
+// The seed a theme is built from: the requested one, or the baseline seed for an achromatic one.
+export function seedUsedFor(seed) {
+  const s = normalizeSeed(seed);
+  return isAchromatic(s) ? BASELINE_SEED : s;
+}
+
 export function renderTheme({ platform, seed, variant = 'tonalSpot', custom = {}, packageName, themePackage, flutterLibrary = 'material' } = {}) {
   if (!PLATFORMS.includes(platform)) throw new UsageError(`platform must be one of ${PLATFORMS.join(', ')}`);
-  const s = normalizeSeed(seed);
+  const requested = normalizeSeed(seed);
+  const s = seedUsedFor(requested);
   checkVariant(variant);
   const c = checkCustom(custom);
   if (!FLUTTER_IMPORTS[flutterLibrary]) throw new UsageError('flutter library must be material or material_ui');
   if (packageName != null && !/^[a-zA-Z_]\w*(?:\.[a-zA-Z_]\w*)*$/.test(packageName)) throw new UsageError(`bad package: ${packageName}`);
   const pkg = themePackage || (packageName ? `${packageName}.theme` : DEFAULT_THEME_PACKAGE);
   const modes = modeValues(s, variant, c);
-  const args = { seed: s, variant, custom: c, modes, flutterLibrary, themePackage: pkg };
+  const args = { seed: s, variant, custom: c, modes, flutterLibrary, themePackage: pkg, requested };
   return platform === 'web' ? renderWeb(args) : platform === 'flutter' ? renderFlutter(args) : renderCompose(args);
 }
 
@@ -316,8 +337,10 @@ export function writeTheme({ platform, seed, variant = 'tonalSpot', out, custom,
   const text = renderTheme({ platform, seed, variant, custom, packageName, flutterLibrary });
   mkdirSync(dirname(resolve(out)), { recursive: true });
   writeFileSync(out, text);
-  const seedUsed = normalizeSeed(seed);
-  return { seedRequested: seed, seedUsed, exact: true, source: sourceOf(seedUsed, variant), out };
+  const seedUsed = seedUsedFor(seed);
+  const r = { seedRequested: seed, seedUsed, exact: seedUsed === normalizeSeed(seed), source: sourceOf(seedUsed, variant), out };
+  if (!r.exact) r.note = ACHROMATIC_NOTE;
+  return r;
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -338,8 +361,13 @@ export function generatedTheme(rel, text) {
   const lines = src.split('\n');
   const m = HEADER[platform].exec(lines[0]);
   if (!m || !VARIANTS.includes(m[2])) return null;
+  // An achromatic request is rendered from the requested seed (the renderer swaps in the baseline).
+  let next = 1;
+  let seed = m[1];
+  const rq = /^(?:\/\*|\/\/) requested: (#[0-9A-F]{6}) \(/.exec(lines[next]);
+  if (rq) { seed = rq[1]; next++; }
   const custom = {};
-  const cm = /^(?:\/\*|\/\/) custom: (.*?)(?: \*\/)?$/.exec(lines[1]);
+  const cm = /^(?:\/\*|\/\/) custom: (.*?)(?: \*\/)?$/.exec(lines[next]);
   if (cm) {
     for (const pair of cm[1].split(', ')) {
       const [n, h] = pair.split('=');
@@ -347,7 +375,7 @@ export function generatedTheme(rel, text) {
       custom[n] = h;
     }
   }
-  const opts = { platform, seed: m[1], variant: m[2], custom };
+  const opts = { platform, seed, variant: m[2], custom };
   if (platform === 'compose') {
     const p = /^package (\S+)$/m.exec(src);
     if (!p) return null;
@@ -372,6 +400,10 @@ export function gridSeeds() {
 
 export function nearest(seedHex) {
   const hct = Hct.fromInt(argbFromHex(normalizeSeed(seedHex)));
+  if (hct.chroma < ACHROMATIC_CHROMA) {
+    const b = precomputed().seeds[0];
+    return { seed: b.seed, hue: b.hue, chroma: b.chroma, note: ACHROMATIC_NOTE };
+  }
   const ranked = precomputed().seeds
     .map((s, i) => ({ s, i, dh: hueDistance(hct.hue, s.hue), dc: Math.abs(hct.chroma - s.chroma) }))
     .sort((a, b) => a.dh - b.dh || a.dc - b.dc || a.i - b.i);

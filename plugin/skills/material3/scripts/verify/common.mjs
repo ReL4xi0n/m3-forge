@@ -5,7 +5,22 @@ import { readdir, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { readFileSync } from 'node:fs';
 
-import { generatedTheme } from '../color/index.mjs';
+// The color script recognizes its own theme files. It is loaded guarded: if it (or its vendored
+// library) fails to load, verify still runs and simply recognizes no generated color file.
+let generatedTheme = () => null;
+try {
+  ({ generatedTheme } = await import('../color/index.mjs'));
+} catch {
+  // verify works without the color script
+}
+const safeGeneratedTheme = (rel, text) => {
+  if (!text.startsWith('/* material3 skill generated:') && !text.startsWith('// material3 skill generated:')) return null;
+  try {
+    return generatedTheme(rel, text);
+  } catch {
+    return null;
+  }
+};
 
 export const CHECKS = [
   'hardcoded-color',
@@ -91,7 +106,7 @@ const baseName = p => p.slice(p.lastIndexOf('/') + 1);
 // `material3 skill generated: color <seed> <variant>`) counts only when its whole text is exactly what
 // the color script writes for that header; it is returned as 'generated: color <seed> <variant>'.
 export function themeAsset(rel, text) {
-  const gen = generatedTheme(rel, text);
+  const gen = safeGeneratedTheme(rel, text);
   if (gen) return `generated: ${gen}`;
   const m = text.split('\n', 3).join('\n').match(ASSET_MARKER);
   if (!m || !THEME_ASSETS.has(m[1]) || baseName(m[1]) !== baseName(rel)) return null;

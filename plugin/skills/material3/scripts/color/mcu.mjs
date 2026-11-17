@@ -7,3 +7,4 @@ export { Variant } from './vendor/mcu/dynamiccolor/variant.js';
 export { Hct } from './vendor/mcu/hct/hct.js';
 export { TonalPalette } from './vendor/mcu/palettes/tonal_palette.js';
 export { argbFromHex, hexFromArgb } from './vendor/mcu/utils/string_utils.js';
+export { customColor } from './vendor/mcu/utils/theme_utils.js';

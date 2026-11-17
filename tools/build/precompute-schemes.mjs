@@ -16,13 +16,15 @@
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { BASELINE_SEED, CONTRASTS, MCU_VERSION, ROLES, SPEC_VERSION, VARIANTS, mcuScheme } from '../../plugin/skills/material3/scripts/color/index.mjs';
+import {
+  ACHROMATIC_CHROMA, ACHROMATIC_NOTE, BASELINE_SEED, CONTRASTS, GRID_CHROMAS, MCU_VERSION, ROLES, SPEC_VERSION, VARIANTS, mcuScheme,
+} from '../../plugin/skills/material3/scripts/color/index.mjs';
 import { Hct, TonalPalette, argbFromHex, hexFromArgb } from '../../plugin/skills/material3/scripts/color/mcu.mjs';
 
 const REPO = fileURLToPath(new URL('../../', import.meta.url));
 export const OUT = join(REPO, 'plugin/skills/material3/tokens/precomputed-schemes.json');
 export const HUES = Array.from({ length: 24 }, (_, i) => i * 15);
-export const CHROMAS = [24, 48, 72];
+export const CHROMAS = GRID_CHROMAS;
 
 const kebab = s => s.replace(/[A-Z]/g, c => `-${c.toLowerCase()}`);
 const round = n => Math.round(n * 100) / 100;
@@ -52,14 +54,65 @@ export function publishedBaseline(merged = JSON.parse(readFileSync(join(REPO, 'k
 
 export function gridSeedList() {
   const b = Hct.fromInt(argbFromHex(BASELINE_SEED));
-  const seeds = [{ seed: BASELINE_SEED, hue: round(b.hue), chroma: round(b.chroma), source: 'baseline' }];
+  const seeds = [{ seed: BASELINE_SEED, hue: round(b.hue), chroma: round(b.chroma), ...hsl(BASELINE_SEED), source: 'baseline' }];
   for (const hue of HUES) {
     for (const chroma of CHROMAS) {
       const k = TonalPalette.fromHueAndChroma(hue, chroma).keyColor;
-      seeds.push({ seed: hexFromArgb(k.toInt()).toUpperCase(), hue, chroma, seedHue: round(k.hue), seedChroma: round(k.chroma), source: 'grid' });
+      const seed = hexFromArgb(k.toInt()).toUpperCase();
+      seeds.push({ seed, hue, chroma, seedHue: round(k.hue), seedChroma: round(k.chroma), ...hsl(seed), source: 'grid' });
     }
   }
   return seeds;
+}
+
+// HSL hue (0-360) and saturation (0-100) of a #rrggbb color, rounded to 0.1.
+export function hsl(hex) {
+  const [r, g, b] = [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16) / 255);
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const c = max - min;
+  const l = (max + min) / 2;
+  let h = 0;
+  if (c) {
+    if (max === r) h = ((g - b) / c) % 6;
+    else if (max === g) h = (b - r) / c + 2;
+    else h = (r - g) / c + 4;
+    h *= 60;
+    if (h < 0) h += 360;
+  }
+  const s = c === 0 ? 0 : c / (1 - Math.abs(2 * l - 1));
+  return { hslHue: Math.round(h * 10) / 10, hslSat: Math.round(s * 1000) / 10 };
+}
+
+// The smallest RGB range (max channel - min channel, 0-255) of any sRGB color whose HCT chroma is at
+// least ACHROMATIC_CHROMA: below it a color is surely achromatic. Colors are visited by range, so only
+// the few thousand near-gray colors are converted.
+export function minChromaticRgbRange() {
+  for (let range = 0; range < 256; range++) {
+    for (let lo = 0; lo + range < 256; lo++) {
+      const hi = lo + range;
+      for (let r = lo; r <= hi; r++) for (let g = lo; g <= hi; g++) for (let b = lo; b <= hi; b++) {
+        if (Math.min(r, g, b) !== lo || Math.max(r, g, b) !== hi) continue;
+        if (Hct.fromInt(((0xff << 24) | (r << 16) | (g << 8) | b) >>> 0).chroma >= ACHROMATIC_CHROMA) return range;
+      }
+    }
+  }
+  return 256;
+}
+
+export function nearestRule(rgbRange = minChromaticRgbRange()) {
+  return {
+    rgbRange,
+    achromatic: `A seed whose HCT chroma is below ${ACHROMATIC_CHROMA} (half the lowest grid chroma) is achromatic: use the baseline seed ${BASELINE_SEED} and say "${ACHROMATIC_NOTE}". `
+      + `Without Node, HCT chroma is not available: treat the seed as achromatic when max(R,G,B) - min(R,G,B) < ${rgbRange} (channels 0-255). `
+      + `${rgbRange} is the smallest such range of any sRGB color with HCT chroma ${ACHROMATIC_CHROMA} or more, so this test never sends a colorful seed to the baseline; `
+      + 'a near-gray seed with a larger range is matched by hue instead.',
+    withoutNode: 'Otherwise compute the HSL hue (0-360) and saturation (0-100). Pick the seed with the smallest circular hue distance to hslHue '
+      + '(d = |a - b|, use 360 - d when d > 180), then the smallest |saturation - hslSat|, then the earliest in the seeds list. '
+      + 'Say which seed was requested, which was used, and that installing Node gives an exact scheme.',
+    withNode: 'scripts/color index.mjs --nearest #hex applies the same order with HCT hue and chroma (the hue and chroma fields); '
+      + 'with Node, writeTheme computes the exact scheme for the requested seed instead.',
+  };
 }
 
 const pack = roles => ROLES.map(r => roles[r].slice(1)).join('');
@@ -89,6 +142,7 @@ export function buildPrecomputed(merged) {
     spec: SPEC_VERSION,
     published: { seed: BASELINE_SEED, variant: 'tonalSpot', source: 'md.sys.color (material-web, resolved through md.ref.palette)' },
     grid: 'baseline seed, then hue 0..345 step 15 x chroma 24, 48, 72; a grid seed is MCU TonalPalette.fromHueAndChroma(hue, chroma).keyColor',
+    nearest: nearestRule(),
     layout: 'schemes[seed][variant].light|dark = [contrast 0, 0.5, 1]; each string holds the roles in order, 6 hex digits each',
     roles: ROLES,
     variants: VARIANTS,

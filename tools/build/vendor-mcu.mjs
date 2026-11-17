@@ -31,6 +31,7 @@ export const ENTRIES = [
   'hct/hct.js',
   'palettes/tonal_palette.js',
   'utils/string_utils.js',
+  'utils/theme_utils.js',
 ];
 const EXTRA = ['LICENSE', 'package.json'];
 

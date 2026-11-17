@@ -74,7 +74,7 @@
         "sha256": "2f0b759749846357dd2d9ce0e1d5e8071e5b51bda24178b3d24ba75afa7f723d"
       },
       "tree": {
-        "sha256": "6bb944227cb1f9db1071077c2f1267c23989d1bd10102b7f5d8a724972225f49",
+        "sha256": "6a57f1c0d4c74bef8a10816b3242ff3a89954a58d88483cff450c61fe5439148",
         "method": "sha256 over the sorted lines \"<sha256 of file>  <path>\\n\" for the files listed",
         "files": [
           "LICENSE",
@@ -94,11 +94,21 @@
           "hct/hct_solver.js",
           "hct/viewing_conditions.js",
           "package.json",
+          "palettes/core_palette.js",
           "palettes/tonal_palette.js",
+          "quantize/lab_point_provider.js",
+          "quantize/quantizer_celebi.js",
+          "quantize/quantizer_map.js",
+          "quantize/quantizer_wsmeans.js",
+          "quantize/quantizer_wu.js",
+          "scheme/scheme.js",
+          "score/score.js",
           "temperature/temperature_cache.js",
           "utils/color_utils.js",
+          "utils/image_utils.js",
           "utils/math_utils.js",
-          "utils/string_utils.js"
+          "utils/string_utils.js",
+          "utils/theme_utils.js"
         ]
       },
       "modified": "import specifiers only: .js appended to extensionless relative imports (dynamiccolor/color_spec_2025.js)"
