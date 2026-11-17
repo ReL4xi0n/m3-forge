@@ -10,7 +10,7 @@ test('shotsOf: harness v2 screenshots win over the recorded ones', () => {
   for (const [dir, name] of [['c1', 'light-412x915.png'], ['c1/v2', 'light-412x915.png'], ['c2', 'dark-1440x900.png']]) {
     mkdirSync(join(priv, dir, 'shots'), { recursive: true });
     writeFileSync(join(priv, dir, 'shots', name), 'png');
-    writeFileSync(join(priv, dir, 'capture.json'), JSON.stringify({ shots: [{ file: String.raw`C:\m3-eval\shots\x\` + name, theme: 'light', viewport: '412x915' }] }));
+    writeFileSync(join(priv, dir, 'capture.json'), JSON.stringify({ shots: [{ file: `${String.raw`C:\m3-eval\shots\x`}\\${name}`, theme: 'light', viewport: '412x915' }] }));
   }
   assert.equal(shotsOf(priv, 'c1').harness, 'v2');
   assert.ok(shotsOf(priv, 'c1').shots[0].file.includes(join('c1', 'v2', 'shots')));
