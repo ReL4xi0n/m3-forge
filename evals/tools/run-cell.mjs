@@ -1,6 +1,7 @@
 // One isolated, headless eval run (Phase 2 plan, Task 4). Every outcome returns a record; nothing is
 // dropped silently. The token is read into the child's environment only and never printed.
 import { spawn, execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, isAbsolute, join, relative, resolve } from 'node:path';
 import { preflight, dropRepoPaths, checkInit, auditTranscript, classifyEnd, childEnv, findInit, ownerInstalledNames, effectiveForbidden, probeBuiltIns, DISALLOWED_TOOLS, SKILL_UNDER_TEST } from './isolation.mjs';
@@ -143,9 +144,19 @@ export function aclOwnerOnly(dir) {
   return { ok, aces: aces.map(a => `${a.who}${a.inherited ? ' (inherited)' : ''}`) };
 }
 
+const sha = buf => createHash('sha256').update(buf).digest('hex');
+function hashTree(dir) {
+  const set = new Set();
+  if (!existsSync(dir)) return set;
+  const walk = d => { for (const n of readdirSync(d)) { const p = join(d, n); statSync(p).isDirectory() ? walk(p) : set.add(sha(readFileSync(p))); } };
+  walk(dir);
+  return set;
+}
+
 // Copies a run folder into the private repo, scanning every text file for secrets first.
 // Files byte-identical to the fixture are skipped: they are public already and carry no run output.
-export function copyRunScanned(src, dst, { literals = [], skipSameAs = null } = {}) {
+export function copyRunScanned(src, dst, { literals = [], skipSameAs = null, skipAssetsOf = null } = {}) {
+  const assetHashes = skipAssetsOf ? hashTree(join(skipAssetsOf, 'assets')) : null;
   const redacted = [];
   let files = 0;
   let unchanged = 0;
@@ -162,6 +173,7 @@ export function copyRunScanned(src, dst, { literals = [], skipSameAs = null } = 
         const orig = join(skipSameAs, rel);
         if (existsSync(orig) && readFileSync(orig).equals(buf)) { unchanged++; continue; }
       }
+      if (assetHashes && assetHashes.has(sha(buf))) { unchanged++; continue; }
       const text = decodeText(buf);
       if (text != null && scanSecrets(text, { literals }).length) {
         const hits = scanSecrets(text, { literals });
@@ -273,7 +285,7 @@ export async function runCell(o) {
   const dest = join(privateDir, runId, cell.cell);
   rmSync(dest, { recursive: true, force: true });
   const logs = copyRunScanned(logDir, dest, { literals: [token] });
-  const project = copyRunScanned(workDir, join(dest, 'project'), { literals: [token], skipSameAs: join(root, 'evals', 'fixtures', cell.fixture) });
+  const project = copyRunScanned(workDir, join(dest, 'project'), { literals: [token], skipSameAs: join(root, 'evals', 'fixtures', cell.fixture), skipAssetsOf: skill ? skillDir : null });
   checks.secrets = { redacted: [...logs.redacted, ...project.redacted.map(r => ({ ...r, path: `project/${r.path}` }))] };
 
   let status = end;

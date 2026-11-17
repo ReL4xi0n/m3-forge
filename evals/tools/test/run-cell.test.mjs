@@ -161,6 +161,21 @@ test('copyRunScanned: files unchanged from the fixture are not copied (they are 
   assert.equal(r.unchanged, 1);
 });
 
+test('copyRunScanned: files identical to a skill asset are not copied, different ones are', () => {
+  const skill = mkdtempSync(join(tmpdir(), 'm3sk-'));
+  const src = mkdtempSync(join(tmpdir(), 'm3src-'));
+  const dst = mkdtempSync(join(tmpdir(), 'm3dst-'));
+  mkdirSync(join(skill, 'assets', 'web'), { recursive: true });
+  writeFileSync(join(skill, 'assets', 'web', 'tokens.css'), ':root{--a:1}\n');
+  mkdirSync(join(src, 'public'), { recursive: true });
+  writeFileSync(join(src, 'public', 'tokens.css'), ':root{--a:1}\n');
+  writeFileSync(join(src, 'public', 'other.css'), ':root{--a:2}\n');
+  const r = copyRunScanned(src, dst, { skipAssetsOf: skill });
+  assert.equal(existsSync(join(dst, 'public', 'tokens.css')), false);
+  assert.equal(readFileSync(join(dst, 'public', 'other.css'), 'utf8'), ':root{--a:2}\n');
+  assert.equal(r.unchanged, 1);
+});
+
 test('runCell: a session that ends in an error keeps the error text, so the pipeline can tell a quota stop', async () => {
   const { base, fixture, tokenFile } = setup();
   const limit = { type: 'result', is_error: true, result: 'Claude AI usage limit reached|1794600000', duration_ms: 10, total_cost_usd: 0, usage: {} };
