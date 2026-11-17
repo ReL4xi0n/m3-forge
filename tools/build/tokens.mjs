@@ -11,15 +11,15 @@
 // File shape (one token per line):
 //   { "format": 1, "about": ..., "provenance": ..., "tokens": {
 //     "<id>" or "<id>@<mode>": { "web": cell, "flutter": cell, "compose": cell } } }
-//   cell = [<merged.json value>, "own" | "cross-source:<repo>" | "derived:<sys-token>"]
+//   cell = [<merged.json value>, "own" | "cross-source:<repo>" | "derived:<token>"]
 //        | [null, "library-default"]   (Flutter/Compose keep the library default; the web omits it)
 //   (a two-item array rather than {value, provenance} keeps both files under 1.5 MB)
 // A token that has several contexts in the sources (color schemes light/dark/contrast, motion
 // standard/expressive) has one key per context: "md.sys.color.primary@dark".
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { PLATFORMS, keyOf, resolveEntry, idSet } from './ladder.mjs';
+import { PLATFORMS, keyOf, resolveEntry, targetSets } from './ladder.mjs';
 
 const REPO = fileURLToPath(new URL('../../', import.meta.url));
 export const MERGED = join(REPO, 'knowledge/tokens/merged.json');
@@ -39,12 +39,12 @@ const cellOf = r => [r.value, r.provenance];
 // { sys, comp }: key ("<id>" or "<id>@<mode>") -> { web, flutter, compose } cells ([value, provenance]),
 // in merged.json order; exactly the "tokens" object of each file.
 export function buildSkillTokens(merged = loadMerged()) {
-  const ids = idSet(merged);
+  const targets = targetSets(merged);
   const out = { sys: {}, comp: {} };
   for (const e of merged) {
     if (e.deprecated) continue;
     const cells = {};
-    for (const p of Object.keys(PLATFORMS)) cells[p] = cellOf(resolveEntry(e, p, { ids }));
+    for (const p of Object.keys(PLATFORMS)) cells[p] = cellOf(resolveEntry(e, p, { targets }));
     out[partOf(e.id)][keyOf(e)] = cells;
   }
   return out;
@@ -68,8 +68,8 @@ const ABOUT = {
   sys: 'Material 3 system and reference tokens (md.sys.*, md.ref.*) per platform. Generated; do not edit.',
   comp: 'Material 3 component tokens (md.comp.*) per platform. Generated; do not edit.',
 };
-const PROVENANCE = 'Each platform cell is [value, provenance]. own: the platform\'s own library; cross-source:<repo>: the same token from another official repository; ' +
-  'derived:<sys-token>: no repository gives a value, one maps the token to this sys token (use the platform\'s own value of it); ' +
+const PROVENANCE = 'Each platform cell is [value, provenance]. own: the platform\'s own library; cross-source:<repo>: a concrete value of the same token from another official repository; ' +
+  'derived:<token>: no repository gives a concrete value, one maps the token by reference to this token (use the platform\'s own value of it); ' +
   'library-default: no value (Flutter/Compose keep the library default, web omits the property). ' +
   'Keys with @<mode> are one context of a multi-context token (color scheme or motion scheme).';
 
@@ -89,6 +89,8 @@ export function staleFiles(files, dir) {
     const cur = existsSync(p) ? readFileSync(p, 'utf8').replace(/\r\n/g, '\n') : null;
     if (cur !== text) stale.push(name);
   }
+  // The folder holds only generated files: anything else is stale too.
+  if (existsSync(dir)) for (const name of readdirSync(dir).sort()) if (!files.has(name)) stale.push(`${name} (unexpected)`);
   return stale;
 }
 

@@ -59,10 +59,10 @@ test('rung 1 order follows precedence: own repo, then material-web (canonical), 
 
 test('a component color token missing everywhere resolves derived: to its mapped role (synthetic fixture)', () => {
   // No platform repo has the token; the only data is a reference to a sys color role (Android views).
-  const ids = new Set(['md.sys.color.primary-container']);
+  const targets = new Set(['md.sys.color.primary-container']);
   const e = entry('md.comp.x.container.color', { mdc: { ref: 'md.sys.color.primary-container' } });
   for (const p of ['web', 'flutter', 'compose']) {
-    assert.deepEqual(resolveEntry(e, p, { ids }), { value: { ref: 'md.sys.color.primary-container' }, provenance: 'derived:md.sys.color.primary-container' }, p);
+    assert.deepEqual(resolveEntry(e, p, { targets }), { value: { ref: 'md.sys.color.primary-container' }, provenance: 'derived:md.sys.color.primary-container' }, p);
   }
 });
 
@@ -78,9 +78,59 @@ test('a component color token without a value in any repo but mapped to a role i
 });
 
 test('a literal value from another repo wins over a role mapping (rung 1 before rung 2)', () => {
-  const ids = new Set(['md.sys.shape.corner.full']);
+  const targets = new Set(['md.sys.shape.corner.full']);
   const e = entry('md.comp.x.shape', { web: { ref: 'md.sys.shape.corner.full' }, compose: { dp: 9 } });
-  assert.deepEqual(resolveEntry(e, 'flutter', { ids }), { value: { dp: 9 }, provenance: 'cross-source:compose-material3' });
+  assert.deepEqual(resolveEntry(e, 'flutter', { targets }), { value: { dp: 9 }, provenance: 'cross-source:compose-material3' });
+});
+
+test('a reference from another repo is rung 2, also to a md.ref token (ruling R10)', () => {
+  const targets = new Set(['md.ref.palette.primary20']);
+  const e = entry('md.sys.color.primary', { mode: 'light-high-contrast', web: { ref: 'md.ref.palette.primary20' } });
+  assert.deepEqual(resolveEntry(e, 'compose', { targets }), { value: { ref: 'md.ref.palette.primary20' }, provenance: 'derived:md.ref.palette.primary20' });
+  // Real data: only Android views has the mode-less fixed roles, as references to palette tones.
+  assert.deepEqual(resolveToken('md.sys.color.on-primary-fixed', 'web'), { value: { ref: 'md.ref.palette.primary10' }, provenance: 'derived:md.ref.palette.primary10' });
+  // Real data: a concrete value (Flutter's hex) beats material-web's palette reference for Compose.
+  const r = resolveToken('md.sys.color.primary', 'compose', 'light-high-contrast');
+  assert.deepEqual(r, { value: { hex: '#381e72ff' }, provenance: 'cross-source:material_ui' });
+});
+
+test('a reference to a deprecated or missing token is skipped, also on the own platform', () => {
+  const merged2 = [
+    entry('md.sys.typescale.label-medium.weight.prominent', { web: { ref: 'md.ref.typeface.weight-bold' }, deprecated: true }),
+    entry('md.ref.typeface.weight-bold', { web: { number: 700 } }),
+    entry('md.comp.nav.active.label-text.weight', { web: { ref: 'md.sys.typescale.label-medium.weight.prominent' } }),
+    entry('md.comp.nav.label-text.weight', { web: { ref: 'md.sys.typescale.label-medium.weight.prominent' }, compose: { ref: 'md.sys.nowhere' }, mdc: { number: 500 } }),
+  ];
+  const built = buildSkillTokens(merged2);
+  for (const p of ['web', 'flutter', 'compose']) assert.deepEqual(built.comp['md.comp.nav.active.label-text.weight'][p], [null, 'library-default'], p);
+  assert.deepEqual(built.comp['md.comp.nav.label-text.weight'].web, [{ number: 500 }, 'cross-source:material-components-android']);
+  assert.deepEqual(built.comp['md.comp.nav.label-text.weight'].flutter, [{ number: 500 }, 'cross-source:material-components-android']);
+  // Real data: material-web maps these to the deprecated md.sys.typescale.label-*.weight.prominent.
+  for (const id of ['md.comp.navigation-bar.active.label-text.weight', 'md.comp.navigation-rail.active.label-text.weight', 'md.comp.navigation-drawer.active.label-text.weight']) {
+    for (const p of ['web', 'flutter', 'compose']) assert.deepEqual(resolveToken(id, p), { value: null, provenance: 'library-default' }, `${id} ${p}`);
+  }
+});
+
+test('no cell holds a dangling reference: every target resolves on the same platform', () => {
+  const built = buildSkillTokens();
+  const all = { ...built.sys, ...built.comp };
+  const live = { web: new Set(), flutter: new Set(), compose: new Set() };
+  for (const [key, plat] of Object.entries(all)) {
+    for (const [p, [v]] of Object.entries(plat)) {
+      if (v === null) continue;
+      const parts = key.split('@')[0].split('.');
+      for (let i = 1; i <= parts.length; i++) live[p].add(parts.slice(0, i).join('.'));
+    }
+  }
+  let refs = 0;
+  for (const [key, plat] of Object.entries(all)) {
+    for (const [p, [v]] of Object.entries(plat)) {
+      if (!v?.ref) continue;
+      refs++;
+      assert.ok(live[p].has(v.ref), `${key} ${p} -> ${v.ref}`);
+    }
+  }
+  assert.ok(refs > 5000);
 });
 
 test('nothing usable anywhere is left at the library default; deprecated tokens are not used', () => {
@@ -188,6 +238,11 @@ test('CLI writes and --check fails on a stale file (path with spaces)', () => {
     const r = run('--check');
     assert.equal(r.status, 1);
     assert.match(r.stderr, /comp\.json/);
+    assert.equal(run().status, 0);
+    writeFileSync(join(out, 'extra.json'), '{}');
+    const x = run('--check');
+    assert.equal(x.status, 1, 'an unexpected file in the tokens folder fails the check');
+    assert.match(x.stderr, /extra\.json/);
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
