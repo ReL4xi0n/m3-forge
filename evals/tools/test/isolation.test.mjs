@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, mkdtempSync, mkdirSync, writeFileSync } from 'node:fs';
+import { readFileSync, mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
@@ -144,4 +144,55 @@ test('preflight and dropRepoPaths: no environment value may point into the repos
   mkdirSync(work); mkdirSync(cfg); writeFileSync(join(cfg, 'settings.json'), '{}');
   const p = preflight({ workDir: work, cfgDir: cfg, env: { CLAUDE_CONFIG_DIR: cfg, INIT_CWD: repoRoot }, checkAncestors: false, repoRoot });
   assert.ok(p.problems.some(x => x.includes('INIT_CWD')));
+});
+
+// ---- With-skill run mode (Phase 3, Task 2) ----
+
+test('checkInit: a skill run accepts material3 on top of the built-ins, and nothing else', () => {
+  const i = clean();
+  const builtIns = [...new Set([...i.skills, ...i.slash_commands])];
+  i.skills.push('material3');
+  i.slash_commands.push('material3');
+  assert.deepEqual(checkInit(i, { ...opts, allowedSkills: [...builtIns, 'material3'] }), { ok: true, problems: [] });
+  assert.deepEqual(checkInit(structuredClone(i), { ...opts, allowedSkills: [...builtIns, 'material3'] }).ok, true);
+  const other = structuredClone(i);
+  other.skills.push('other');
+  const r = checkInit(other, { ...opts, allowedSkills: [...builtIns, 'material3'] });
+  assert.equal(r.ok, false);
+  assert.ok(r.problems.some(p => p.includes('other')));
+  // Without material3 in the allowed list, the name stays suspect.
+  const base = checkInit(structuredClone(i), { ...opts, allowedSkills: builtIns });
+  assert.ok(base.problems.some(p => p.includes('suspect skill or command: material3')), JSON.stringify(base.problems));
+  assert.equal(checkInit(structuredClone(i), opts).ok, false, 'no allowed list: material3 is suspect');
+  // The exemption is for material3 only, never for another suspect name.
+  const sp = structuredClone(i);
+  sp.skills.push('superpowers');
+  assert.ok(checkInit(sp, { ...opts, allowedSkills: [...builtIns, 'material3', 'superpowers'] }).problems.some(p => p.includes('suspect skill or command: superpowers')));
+});
+
+test('checkInit: an init with only material3 passes when the allowed list is just material3', () => {
+  const i = { ...clean(), skills: ['material3'], slash_commands: ['material3'] };
+  assert.equal(checkInit(i, { ...opts, allowedSkills: ['material3'] }).ok, true);
+  assert.equal(checkInit({ ...i, skills: ['material3', 'another'] }, { ...opts, allowedSkills: ['material3'] }).ok, false);
+});
+
+test('preflight: a skill run accepts settings.json and skills/material3/ only', () => {
+  const base = mkdtempSync(join(tmpdir(), 'm3sk-'));
+  const work = join(base, 'w'); const cfg = join(base, 'c');
+  mkdirSync(work); mkdirSync(join(cfg, 'skills', 'material3'), { recursive: true });
+  writeFileSync(join(cfg, 'settings.json'), '{}');
+  writeFileSync(join(cfg, 'skills', 'material3', 'SKILL.md'), 'x');
+  const env = { CLAUDE_CONFIG_DIR: cfg };
+  const run = o => preflight({ workDir: work, cfgDir: cfg, env, checkAncestors: false, ...o });
+  assert.deepEqual(run({ skills: ['material3'] }), { ok: true, problems: [] });
+  assert.equal(run({}).ok, false, 'a baseline run must not have a skills folder');
+  mkdirSync(join(cfg, 'skills', 'other'));
+  const extra = run({ skills: ['material3'] });
+  assert.equal(extra.ok, false);
+  assert.ok(extra.problems.some(p => p.includes('other')), JSON.stringify(extra.problems));
+  rmSync(join(cfg, 'skills', 'other'), { recursive: true });
+  rmSync(join(cfg, 'skills', 'material3'), { recursive: true });
+  assert.equal(run({ skills: ['material3'] }).ok, false, 'the skill folder must be there');
+  writeFileSync(join(cfg, 'skills', 'material3'), 'not a folder');
+  assert.equal(run({ skills: ['material3'] }).ok, false, 'the skill must be a folder');
 });

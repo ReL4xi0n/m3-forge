@@ -3,6 +3,7 @@
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { dirname, join, resolve, extname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+export { devCells } from '../../evals/tools/cells.mjs';
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const TEXT_EXT = new Set(['.md', '.mjs', '.js', '.css', '.dart', '.kt', '.json', '.tsv']);
@@ -10,10 +11,6 @@ const MAX_BYTES = 1024 * 1024;
 const SKIP_DIRS = new Set(['node_modules', '.git']);
 const MIN_LENGTH = 5;
 const STOP = new Set(['Material', 'Android', 'Flutter', 'Compose', 'Jetpack', 'Platform', 'Expressive', 'Design']);
-
-export function devCells() {
-  return JSON.parse(readFileSync(join(repoRoot, 'evals', 'dev', 'cells.json'), 'utf8'));
-}
 
 export function distinctTerms(markdown) {
   const terms = new Set();

@@ -47,3 +47,13 @@ test('every request and the variants file exist and never name Material componen
   assert.match(v, /^- classic: .*classic Material 3/m);
   assert.match(v, /#[0-9A-F]{6}/);
 });
+
+test('cells.mjs: the eval matrix and the dev set', async () => {
+  const { evalCells, devCells } = await import('../cells.mjs');
+  assert.equal(evalCells().length, 26);
+  assert.ok(evalCells().every(c => c.set === undefined));
+  const dev = devCells();
+  assert.equal(dev.length, 12);
+  assert.ok(dev.every(c => c.set === 'dev'));
+  assert.equal(new Set([...dev, ...evalCells()].map(c => c.cell)).size, 38, 'no dev cell shares an id with an eval cell');
+});

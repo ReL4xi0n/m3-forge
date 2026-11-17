@@ -9,6 +9,8 @@ import { execFileSync, spawnSync } from 'node:child_process';
 import { totalmem, freemem } from 'node:os';
 import { buildPrompt } from './run-cell.mjs';
 import { withToolchain } from './toolchain-env.mjs';
+import { devCells, evalCells } from './cells.mjs';
+import { latestCanary } from './canary.mjs';
 
 // Rubric v1 automated items (default) and v2 (evals/automated-v2.md), in evals/tools/automated.mjs.
 import { automatedScores } from './automated.mjs';
@@ -76,17 +78,40 @@ async function capture(cell, projectDir, outDir) {
   return (await import('../../harness/compose/capture.mjs')).captureCompose({ projectDir, outDir });
 }
 
+const USAGE = 'usage: pipeline.mjs --run-id <id> (--cells a,b | --all) [--pair 1|2] [--resume] [--judge-only [--recapture a,b]]\n' +
+  '       pipeline.mjs --set dev [--skill plugin/skills/material3] [--no-node] --run-id dev-<date>-<platform>-r<n> (--cells a,b | --all) [...]';
+export const DEV_RUN_ID = /^dev-\d{4}-\d{2}-\d{2}-[a-z]+-r\d+$/;
+
+// Command line → options. --set eval (default) is the eval matrix, --set dev the development set. The
+// skill runs only on dev cells: running it on an eval request would let it learn the eval's answers.
+export function pipelineOptions(argv, root) {
+  const arg = k => { const i = argv.indexOf(k); return i >= 0 ? argv[i + 1] ?? null : null; };
+  const runId = arg('--run-id');
+  const set = arg('--set') ?? 'eval';
+  if (!['eval', 'dev'].includes(set)) return { error: `unknown set ${set} (eval or dev)` };
+  const all = set === 'dev' ? devCells() : evalCells();
+  const cells = argv.includes('--all') ? all : all.filter(c => (arg('--cells') ?? '').split(',').includes(c.cell));
+  const pair = Number(arg('--pair') ?? 1);
+  const skillArg = arg('--skill');
+  if (!runId || !/^[A-Za-z0-9._-]+$/.test(runId) || !cells.length || !(pair === 1 || pair === 2)) return { error: USAGE };
+  if (skillArg && set !== 'dev') return { error: 'the skill runs only on the dev set (--set dev); never on eval requests' };
+  if (set === 'dev' && !DEV_RUN_ID.test(runId)) return { error: `a dev run id is dev-<date>-<platform>-r<n>, got ${runId}` };
+  const skillDir = skillArg ? (isAbsolute(skillArg) ? skillArg : join(root, skillArg)) : null;
+  if (skillDir && !existsSync(join(skillDir, 'SKILL.md'))) return { error: `no SKILL.md in ${skillDir}` };
+  return { runId, set, cells, pair, skillDir, noNode: argv.includes('--no-node') };
+}
+
+export { latestCanary };
+
 async function main() {
   const root = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
   const arg = k => { const i = process.argv.indexOf(k); return i > 0 ? process.argv[i + 1] : null; };
-  const runId = arg('--run-id');
-  const all = JSON.parse(readFileSync(join(root, 'evals', 'cells.json'), 'utf8'));
-  const cells = process.argv.includes('--all') ? all : all.filter(c => (arg('--cells') ?? '').split(',').includes(c.cell));
-  const pair = Number(arg('--pair') ?? 1);
-  if (!runId || !/^[A-Za-z0-9._-]+$/.test(runId) || !cells.length || !(pair === 1 || pair === 2)) {
-    console.error('usage: pipeline.mjs --run-id <id> (--cells a,b | --all) [--pair 1|2] [--resume] [--judge-only [--recapture a,b]]');
+  const opts = pipelineOptions(process.argv.slice(2), root);
+  if (opts.error) {
+    console.error(opts.error);
     process.exit(2);
   }
+  const { runId, cells, pair, skillDir, noNode } = opts;
   const { runCell } = await import('./run-cell.mjs');
   const { prepareFixture } = await import('./prepare-fixture.mjs');
   const { probeBuiltIns } = await import('./isolation.mjs');
@@ -99,16 +124,22 @@ async function main() {
   const log = (...a) => console.log(new Date().toISOString().slice(11, 19), ...a);
 
   // A canary (V4) before every batch of 6 cells; its built-in list is the allowlist for those runs.
+  // A skill run then also runs the skill canary, which takes its built-in list from that canary.
   let verdict = null;
   const canaries = [];
-  const runCanary = () => {
-    log('canary');
-    const c = spawnSync(process.execPath, [join(root, 'evals', 'tools', 'canary.mjs')], { cwd: root, encoding: 'utf8', windowsHide: true });
-    const latest = readdirSync(runsDir).filter(d => d.startsWith('canary-')).sort().pop();
+  const canary = skill => {
+    log(skill ? 'skill canary' : 'canary');
+    const c = spawnSync(process.execPath, [join(root, 'evals', 'tools', 'canary.mjs'), ...(skill ? ['--skill'] : [])], { cwd: root, encoding: 'utf8', windowsHide: true });
+    const latest = latestCanary(readdirSync(runsDir), { skill });
     const f = join(runsDir, latest ?? '', 'verdict.json');
-    verdict = latest && existsSync(f) ? JSON.parse(readFileSync(f, 'utf8')) : null;
-    canaries.push({ id: latest, exit: c.status, pass: Boolean(verdict?.pass) });
-    log('  canary', latest, verdict?.pass ? 'pass' : 'FAIL');
+    const v = latest && existsSync(f) ? JSON.parse(readFileSync(f, 'utf8')) : null;
+    canaries.push({ id: latest, exit: c.status, pass: Boolean(v?.pass) });
+    log('  canary', latest, v?.pass ? 'pass' : 'FAIL');
+    return v;
+  };
+  const runCanary = () => {
+    verdict = canary(false);
+    if (verdict?.pass && skillDir) verdict = canary(true);
     return Boolean(verdict?.pass);
   };
   const builtIns = probeBuiltIns();
@@ -120,7 +151,7 @@ async function main() {
       if (!['invalid-isolation', 'session-error'].includes(saved.rec.status)) { log('reuse', cell.cell, saved.rec.status); return saved; }
     }
     log('run', cell.cell);
-    const rec = await runCell({ cell, runId, root, builtIns, allowedSkills: verdict.allowedSkills,
+    const rec = await runCell({ cell, runId, root, builtIns, allowedSkills: verdict.allowedSkills, skillDir, noNode,
       prepare: async w => { const r = await prepareFixture(cell.fixture, w); if (!r.ok) throw new Error(`fixture ${cell.fixture} failed:\n${r.log.slice(-2000)}`); } });
     log('  status', cell.cell, rec.status, 'durationMs', rec.durationMs, 'cost', rec.costUsd);
     return captureAndVerify(cell, rec, dest);
@@ -210,7 +241,7 @@ async function main() {
 
   // Blind judging over every output of this run; skipped when the run stopped early.
   const outputs = stopped ? [] : records.filter(r => r.cap.shots.length).map(r => ({
-    cell: r.cell.cell, condition: 'baseline', repeat: 1, runId, request: judgeRequest(r.cell, root), shots: r.cap.shots }));
+    cell: r.cell.cell, condition: skillDir ? 'skill' : 'baseline', repeat: 1, runId, request: judgeRequest(r.cell, root), shots: r.cap.shots }));
   const scores = [];
   const judgeLog = [];
   if (outputs.length) {

@@ -77,3 +77,48 @@ test('automatedScores v2: icon source is its own item and no longer part of anti
   assert.deepEqual(automatedScores(v2({ 'icon-source': 25 }), true), automatedScores(v2({ 'icon-source': 25 }), true, 'v1'), 'v1 stays the default');
   assert.equal(automatedScores(v2({ 'icon-source': 25 }), true)['anti-patterns'], 0, 'v1 unchanged');
 });
+
+// ---- Dev runs with the skill (Phase 3, Task 2) ----
+
+test('pipelineOptions: a dev run with the skill, its cells, and --no-node', async () => {
+  const { pipelineOptions } = await import('../pipeline.mjs');
+  const { devCells } = await import('../cells.mjs');
+  const cells = devCells().filter(c => c.platform === 'web').slice(0, 2).map(c => c.cell);
+  const o = pipelineOptions(['--set', 'dev', '--skill', 'plugin/skills/material3', '--run-id', 'dev-2026-11-17-web-r1', '--cells', cells.join(',')], root);
+  assert.equal(o.error, undefined);
+  assert.equal(o.set, 'dev');
+  assert.deepEqual(o.cells.map(c => c.cell), cells);
+  assert.ok(o.cells.every(c => c.set === 'dev'));
+  assert.equal(o.skillDir, join(root, 'plugin', 'skills', 'material3'));
+  assert.equal(o.noNode, false);
+  assert.equal(pipelineOptions(['--set', 'dev', '--skill', 'plugin/skills/material3', '--run-id', 'dev-2026-11-17-web-r2', '--all', '--no-node'], root).noNode, true);
+  assert.equal(pipelineOptions(['--set', 'dev', '--run-id', 'dev-2026-11-17-mixed-r3', '--all'], root).cells.length, 12);
+});
+
+test('pipelineOptions: the skill never runs on eval requests, and dev run ids follow dev-<date>-<platform>-r<n>', async () => {
+  const { pipelineOptions } = await import('../pipeline.mjs');
+  const evalCell = 'settings.web.web-react.default';
+  assert.match(pipelineOptions(['--skill', 'plugin/skills/material3', '--run-id', 'x1', '--cells', evalCell], root).error, /only on the dev set/);
+  assert.match(pipelineOptions(['--set', 'eval', '--skill', 'plugin/skills/material3', '--run-id', 'x1', '--all'], root).error, /only on the dev set/);
+  assert.match(pipelineOptions(['--set', 'dev', '--skill', 'plugin/skills/material3', '--run-id', 'baseline-x', '--all'], root).error, /run id/);
+  assert.match(pipelineOptions(['--set', 'dev', '--skill', 'plugin/skills/missing', '--run-id', 'dev-2026-11-17-web-r1', '--all'], root).error, /SKILL\.md/);
+  assert.match(pipelineOptions(['--set', 'other', '--run-id', 'x1', '--all'], root).error, /set/);
+  // An eval cell id is not a dev cell.
+  assert.ok(pipelineOptions(['--set', 'dev', '--run-id', 'dev-2026-11-17-web-r1', '--cells', evalCell], root).error);
+  // The baseline call is unchanged.
+  const b = pipelineOptions(['--run-id', 'baseline-x', '--cells', evalCell, '--pair', '2'], root);
+  assert.equal(b.error, undefined);
+  assert.equal(b.set, 'eval');
+  assert.equal(b.skillDir, null);
+  assert.equal(b.pair, 2);
+  assert.deepEqual(b.cells.map(c => c.cell), [evalCell]);
+});
+
+test('canaryKind: skill canaries and baseline canaries are told apart by their folder name', async () => {
+  const { latestCanary } = await import('../pipeline.mjs');
+  assert.equal(latestCanary, (await import('../canary.mjs')).latestCanary);
+  const dirs = ['canary-2026-11-17-08-51-40', 'canary-2026-11-17-09-00-00-skill', 'canary-2026-11-16-19-57-45', 'baseline-x'];
+  assert.equal(latestCanary(dirs, { skill: false }), 'canary-2026-11-17-08-51-40');
+  assert.equal(latestCanary(dirs, { skill: true }), 'canary-2026-11-17-09-00-00-skill');
+  assert.equal(latestCanary(['canary-2026-11-17-08-51-40'], { skill: true }), undefined);
+});

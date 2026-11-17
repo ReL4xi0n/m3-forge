@@ -13,6 +13,7 @@ export const DISALLOWED_TOOLS = [
 const ANCESTOR_MARKERS = ['CLAUDE.md', 'CLAUDE.local.md', 'AGENTS.md', '.claude', '.mcp.json', '.git'];
 const FORBIDDEN_ENV = /^(CLAUDE|ANTHROPIC|MCP|npm_config)_|^CLAUDECODE$/i;
 const SUSPECT_NAME = /superpowers|claude-mem|graphify|m3-forge|material3/i;
+export const SKILL_UNDER_TEST = 'material3';
 
 // Drive and UNC paths resolve with Windows rules on every OS (CI runs on Linux).
 const WIN_ABS = /^(?:[A-Za-z]:[\\/]|\\\\)/;
@@ -41,7 +42,8 @@ export function dropRepoPaths(env, repoRoot) {
 }
 
 // V1: before a run.
-export function preflight({ workDir, cfgDir, env, allowedCfgFiles = ['settings.json'], checkAncestors = true, repoRoot = null }) {
+// A skill run (skills: ['material3']) also has <cfgDir>/skills/ holding exactly those skill folders.
+export function preflight({ workDir, cfgDir, env, allowedCfgFiles = ['settings.json'], checkAncestors = true, repoRoot = null, skills = [] }) {
   const problems = [];
   if (repoRoot) {
     for (const [k, v] of Object.entries(env)) if (String(v).replace(/[\\/]+/g, '/').toLowerCase().includes(norm(repoRoot))) problems.push(`env ${k} points into the repository`);
@@ -58,8 +60,17 @@ export function preflight({ workDir, cfgDir, env, allowedCfgFiles = ['settings.j
   } catch { /* expected: not a repository */ }
   if (!existsSync(cfgDir)) problems.push(`config folder missing: ${cfgDir}`);
   else {
-    const extra = readdirSync(cfgDir).filter(f => !allowedCfgFiles.includes(f));
+    const allowed = skills.length ? [...allowedCfgFiles, 'skills'] : allowedCfgFiles;
+    const extra = readdirSync(cfgDir).filter(f => !allowed.includes(f));
     if (extra.length) problems.push(`config folder holds unexpected entries: ${extra.join(', ')}`);
+    if (skills.length) {
+      const dir = join(cfgDir, 'skills');
+      const isDir = p => { try { return statSync(p).isDirectory(); } catch { return false; } };
+      const found = isDir(dir) ? readdirSync(dir) : [];
+      const odd = found.filter(f => !skills.includes(f));
+      if (odd.length) problems.push(`skills folder holds unexpected entries: ${odd.join(', ')}`);
+      for (const s of skills) if (!isDir(join(dir, s))) problems.push(`skill folder missing: skills/${s}`);
+    }
   }
   for (const k of Object.keys(env)) {
     if (FORBIDDEN_ENV.test(k) && !['CLAUDE_CONFIG_DIR', 'CLAUDE_CODE_OAUTH_TOKEN', 'npm_config_cache'].includes(k)) problems.push(`forbidden env key: ${k}`);
@@ -100,7 +111,10 @@ export function checkInit(init, { workDir, cfgDir, forbiddenNames = [], allowedS
   const forbidden = new Set(forbiddenNames.map(n => n.toLowerCase()));
   for (const n of new Set([...(init.skills ?? []), ...(init.slash_commands ?? [])])) {
     if (n.includes(':')) problems.push(`namespaced skill or command: ${n}`);
-    if (SUSPECT_NAME.test(n)) problems.push(`suspect skill or command: ${n}`);
+    // The skill under test (a skill run) is the one suspect name a run may have, and only when the
+    // allowed list names it.
+    const underTest = n === SKILL_UNDER_TEST && Boolean(allowedSkills?.includes(n));
+    if (SUSPECT_NAME.test(n) && !underTest) problems.push(`suspect skill or command: ${n}`);
     if (forbidden.has(n.toLowerCase())) problems.push(`owner-installed skill or command: ${n}`);
     if (allowedSkills && !allowedSkills.includes(n)) problems.push(`skill or command not in the canary's built-in list: ${n}`);
   }

@@ -172,3 +172,144 @@ test('runCell: a session that ends in an error keeps the error text, so the pipe
   assert.equal(r.status, 'session-error');
   assert.match(r.resultText, /usage limit reached/);
 });
+
+// ---- With-skill run mode (Phase 3, Task 2) ----
+
+const winOnly = { skip: process.platform !== 'win32' && 'Windows-only runner' };
+
+test('buildPrompt: a skill run starts with /material3 and is otherwise the same prompt', () => {
+  const cell = { request: 'podcast-player', platform: 'web', fixture: 'web-empty', variant: 'default', set: 'dev' };
+  const plain = buildPrompt(cell, root);
+  const skill = buildPrompt(cell, root, { skill: true });
+  assert.ok(skill.startsWith('/material3 '), skill.slice(0, 40));
+  assert.equal(skill, `/material3 ${plain}`);
+  assert.ok(!plain.startsWith('/'), 'a baseline prompt has no slash command');
+});
+
+// gitignore-style match of one pattern against a path and its parent folders (as Claude Code's
+// permission matcher does): ? = one character, * = any run within one folder, [..] = a class.
+const globRe = p => new RegExp(`^${p.replace(/[.+^${}()|\\]/g, c => `\\${c}`).replace(/\?/g, '[^/]').replace(/\*/g, '[^/]*')}$`, 'i');
+const denied = (patterns, path) => {
+  const parts = path.split('/');
+  return parts.some((_, i) => patterns.some(p => globRe(p).test(parts.slice(0, i + 1).join('/'))));
+};
+
+test('settingsFor: a skill run may read the installed skill folder and nothing else new', winOnly, () => {
+  const base = { repoRoot: 'C:/r/repo', realCfg: 'C:/u/.claude', secretsDir: 'C:/u/.m3-toolchain/secrets', cfgDir: 'C:/m3-eval/cfg/x' };
+  const plain = settingsFor(base);
+  const s = settingsFor({ ...base, skill: 'material3' });
+  const cfg = '//c/m3-eval/cfg/x';
+  assert.deepEqual(s.permissions.allow, [`Read(${cfg}/skills/material3/**)`]);
+  assert.deepEqual(s.enabledPlugins ?? {}, {});
+  // Every baseline rule stays, except the blanket read denial of the run config folder.
+  const kept = plain.permissions.deny.filter(r => r !== `Read(${cfg}/**)`);
+  for (const r of kept) assert.ok(s.permissions.deny.includes(r), r);
+  const added = s.permissions.deny.filter(r => !plain.permissions.deny.includes(r));
+  assert.ok(added.length > 0);
+  for (const r of added) assert.ok(r.startsWith(`Read(${cfg}/`), r);
+  // The new read denials cover every config entry except skills/material3.
+  const pats = added.map(r => r.slice(`Read(${cfg}/`.length, -1));
+  for (const p of ['settings.json', '.credentials.json', '.claude.json', 'projects/x/s.jsonl', 'agents/a.md', 'todos',
+    'skillz/x', 'skills2', 's', 'skills/other/SKILL.md', 'skills/material/SKILL.md', 'skills/material3x/SKILL.md', 'skills/SKILL.md']) {
+    assert.ok(denied(pats, p), `${p} must stay unreadable`);
+  }
+  for (const p of ['skills/material3/SKILL.md', 'skills/material3/scripts/verify/index.mjs', 'skills/MATERIAL3/SKILL.md']) {
+    assert.ok(!denied(pats, p), `${p} must be readable`);
+  }
+});
+
+test('withoutNode: drops every PATH folder holding node or node.exe, keeps the rest in order', winOnly, async () => {
+  const { withoutNode } = await import('../run-cell.mjs');
+  const base = mkdtempSync(join(tmpdir(), 'm3node-'));
+  const [a, b, c, d] = ['a', 'b c', 'c', 'd'].map(n => { const p = join(base, n); mkdirSync(p); return p; });
+  writeFileSync(join(b, 'node.exe'), '');
+  writeFileSync(join(d, 'node'), '');
+  writeFileSync(join(c, 'nodemon.cmd'), '');
+  const e = withoutNode({ Path: [a, b, '', c, d, join(base, 'missing')].join(';'), KEEP: '1' });
+  assert.deepEqual(e.Path.split(';').filter(Boolean), [a, c, join(base, 'missing')]);
+  assert.equal(e.KEEP, '1');
+});
+
+// A stand-in for `claude` that records what it was started with into its cwd, then prints events.
+function dumpingClaude(dir, events) {
+  const f = join(dir, 'dump-claude.mjs');
+  writeFileSync(f, [
+    "import { writeFileSync, existsSync } from 'node:fs';",
+    "import { join } from 'node:path';",
+    "const key = Object.keys(process.env).find(k => k.toLowerCase() === 'path');",
+    "writeFileSync('dump.json', JSON.stringify({ argv: process.argv.slice(2), path: process.env[key],",
+    "  skill: existsSync(join(process.env.CLAUDE_CONFIG_DIR, 'skills', 'material3', 'SKILL.md')) }));",
+    `for (const e of ${JSON.stringify(events)}.map(e => JSON.parse(JSON.stringify(e).replaceAll('$CFG', JSON.stringify(process.env.CLAUDE_CONFIG_DIR).slice(1, -1))))) {`,
+    "  if (e.type === 'system') { e.cwd = process.cwd(); e.memory_paths = { auto: process.env.CLAUDE_CONFIG_DIR + '/projects/m' }; }",
+    "  process.stdout.write(JSON.stringify(e) + '\\n');",
+    '}',
+  ].join('\n'));
+  return [process.execPath, f];
+}
+
+function stubSkill(base) {
+  const d = join(base, 'skill src', 'material3');
+  mkdirSync(join(d, 'scripts'), { recursive: true });
+  writeFileSync(join(d, 'SKILL.md'), '---\nname: material3\ndescription: stub\ndisable-model-invocation: true\n---\n\nReply OK.\n');
+  writeFileSync(join(d, 'scripts', 'x.mjs'), '// x\n');
+  return d;
+}
+
+const devCell = { cell: 'podcast-player.web.web-empty.default', request: 'podcast-player', platform: 'web', fixture: 'web-empty', variant: 'default', set: 'dev' };
+const skillInit = { ...init, skills: ['material3'], slash_commands: ['material3'] };
+const wrote = { type: 'assistant', message: { content: [{ type: 'tool_use', name: 'Write', input: { file_path: 'index.html' } }] } };
+const dumpOf = (base, runId) => JSON.parse(readFileSync(join(base, 'private', runId, devCell.cell, 'project', 'dump.json'), 'utf8'));
+
+test('runCell: a skill run installs the skill, sends /material3 and accepts an init that lists only material3', async () => {
+  const { base, fixture } = setup();
+  const skillDir = stubSkill(base);
+  // The token sits in a folder of its own: its folder is a forbidden root for the audit.
+  const tokenFile = join(base, 'secrets', 'token');
+  mkdirSync(dirname(tokenFile));
+  writeFileSync(tokenFile, fakeToken);
+  const common = { root, evalRoot: join(base, 'eval'), fixtureDir: fixture, privateDir: join(base, 'private'), tokenFile, repoRoot: root, realCfg: join(base, 'no'), requireFrozen: false, skipPreflightAncestors: true, requireSecretsAcl: false, skillDir };
+  const read = p => ({ type: 'assistant', message: { content: [{ type: 'tool_use', name: 'Read', input: { file_path: p } }] } });
+  const ok = await runCell({ ...common, cell: devCell, runId: 's1', claudeCmd: dumpingClaude(base, [skillInit, read('$CFG/skills/material3/SKILL.md'), read('$CFG/settings.json'), wrote, result]) });
+  assert.equal(ok.status, 'ok', JSON.stringify(ok.checks));
+  // The audit allows the installed skill folder, and only that part of the config folder.
+  assert.ok(!ok.checks.audit.hits.some(h => /skills[\\/]+material3/i.test(h.path ?? '')), JSON.stringify(ok.checks.audit.hits));
+  assert.ok(ok.checks.audit.hits.some(h => h.level === 'warn' && /settings\.json$/.test(h.path ?? '')), JSON.stringify(ok.checks.audit.hits));
+  const dump = dumpOf(base, 's1');
+  assert.equal(dump.skill, true, 'the skill is installed in the run config folder');
+  const prompt = dump.argv[dump.argv.indexOf('-p') + 1];
+  assert.ok(prompt.startsWith('/material3 '), prompt.slice(0, 30));
+  assert.ok(dump.argv.includes('Skill'), 'the Skill tool stays disallowed');
+  assert.ok(!existsSync(join(base, 'eval', 'cfg', 's1')), 'the run config folder is removed afterwards');
+
+  const extra = { ...skillInit, skills: ['material3', 'other'] };
+  const bad = await runCell({ ...common, cell: devCell, runId: 's2', claudeCmd: dumpingClaude(base, [extra, wrote, result]) });
+  assert.equal(bad.status, 'invalid-isolation');
+  assert.ok(bad.checks.init.problems.some(p => p.includes('other')), JSON.stringify(bad.checks.init));
+});
+
+test('runCell: a baseline run of the same cell neither installs a skill nor accepts material3', async () => {
+  const { base, fixture, tokenFile } = setup();
+  const common = { root, evalRoot: join(base, 'eval'), fixtureDir: fixture, privateDir: join(base, 'private'), tokenFile, repoRoot: root, realCfg: join(base, 'no'), requireFrozen: false, skipPreflightAncestors: true, requireSecretsAcl: false };
+  const r = await runCell({ ...common, cell: devCell, runId: 'b1', claudeCmd: dumpingClaude(base, [skillInit, wrote, result]) });
+  assert.equal(r.status, 'invalid-isolation');
+  const dump = dumpOf(base, 'b1');
+  assert.equal(dump.skill, false);
+  assert.ok(!dump.argv[dump.argv.indexOf('-p') + 1].startsWith('/'));
+});
+
+test('runCell: with noNode the child PATH has no folder holding node, and the toolchain Flutter and Java stay', winOnly, async () => {
+  const { toolchainRoot } = await import('../toolchain-env.mjs');
+  const { base, fixture, tokenFile } = setup();
+  const r = await runCell({
+    cell: devCell, runId: 'n1', root, evalRoot: join(base, 'eval'), fixtureDir: fixture, privateDir: join(base, 'private'),
+    tokenFile, claudeCmd: dumpingClaude(base, [init, wrote, result]), repoRoot: root, realCfg: join(base, 'no'), requireFrozen: false,
+    skipPreflightAncestors: true, requireSecretsAcl: false, noNode: true,
+  });
+  assert.equal(r.status, 'ok', JSON.stringify(r.checks));
+  const dirs = dumpOf(base, 'n1').path.split(';').filter(Boolean);
+  for (const d of dirs) assert.ok(!existsSync(join(d, 'node.exe')) && !existsSync(join(d, 'node')), `node found in ${d}`);
+  const tc = toolchainRoot();
+  assert.ok(dirs.includes(join(tc, 'flutter', 'bin')), 'Flutter stays');
+  assert.ok(dirs.includes(join(tc, 'jdk-21', 'bin')), 'Java stays');
+  assert.ok(process.env.PATH.split(';').some(d => d && existsSync(join(d, 'node.exe'))), 'the parent PATH has node, so the test means something');
+});
