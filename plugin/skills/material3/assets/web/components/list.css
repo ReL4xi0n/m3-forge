@@ -20,8 +20,8 @@
  * icon, after it the trailing icon. Controls (m3-checkbox, m3-radio, m3-switch) can sit at either end.
  * The item grows from one line (56) to two (72) when it has supporting text; m3-list-item--three-line
  * for supporting text of two lines (88). An a[href], button or label item, or one with a tabindex,
- * gets the hover, focus and pressed states; aria-selected="true" or aria-current marks the selected
- * item; aria-disabled="true" the disabled one.
+ * gets the hover, focus and pressed states; aria-current marks the selected item (or role="option" with
+ * aria-selected="true" in a listbox); aria-disabled="true" the disabled one.
  * Variant: m3-list--segmented (Expressive): items apart by the segmented gap, rounded.
  * Items are direct children of the list or the only child of its li, and fill its width.
  */
@@ -208,7 +208,7 @@
 }
 
 /* Selected (md.comp.list.list-item.selected.*) */
-.m3-list-item:is([aria-selected="true"], [aria-current]:not([aria-current="false"])) {
+.m3-list-item:is([role="option"][aria-selected="true"], [aria-current]:not([aria-current="false"])) {
   --_container-color: var(--md-sys-color-secondary-container);
   --_shape: var(--md-comp-list-list-item-selected-container-shape);
   --_label-color: var(--md-sys-color-on-secondary-container);
@@ -258,6 +258,6 @@
   border-radius: var(--md-comp-list-list-item-focused-container-expressive-shape);
 }
 
-.m3-list--segmented .m3-list-item:is([aria-selected="true"], [aria-current]:not([aria-current="false"])) {
+.m3-list--segmented .m3-list-item:is([role="option"][aria-selected="true"], [aria-current]:not([aria-current="false"])) {
   --_shape: var(--md-comp-list-list-item-selected-container-expressive-shape);
 }

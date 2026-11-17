@@ -16,8 +16,10 @@
  * Kinds: m3-text-field--filled (default) | --outlined. The label comes right after the input. With
  * placeholder=" " the label rests inside the empty field and floats when it is focused or filled;
  * without a placeholder it always floats. aria-invalid="true" on the input shows the error state;
- * disabled on the input the disabled state. The outlined field's floating label covers the outline
- * with --md-sys-color-surface: on another surface color set the field's background to that color.
+ * disabled on the input the disabled state. The outlined field's floating label cuts the outline gap with a fill
+ * (CSS cannot size a mask to the label's text): --md-sys-color-surface by default; on another surface
+ * color set --m3-text-field-notch-color on the field (or a parent) to that color, e.g.
+ * var(--md-sys-color-surface-container).
  * The input fills the container's height (56), so it is the touch target. The label's move is not
  * animated (no motion token for it).
  * Spacing from material-web code (16, 12, 8 and 4 as --md-sys-space-*):
@@ -207,7 +209,7 @@
   inset-block-start: calc(var(--md-sys-space-0) - var(--md-comp-outlined-text-field-label-text-populated-line-height) / 2);
   inset-inline-start: calc(var(--md-sys-space-200) - var(--md-sys-space-50));
   padding-inline: var(--md-sys-space-50);
-  background: var(--md-sys-color-surface);
+  background: var(--m3-text-field-notch-color, var(--md-sys-color-surface));
 }
 
 /* States: hover, focus (md.comp.<kind>-text-field.{hover,focus}.*) */

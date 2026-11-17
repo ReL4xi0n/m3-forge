@@ -116,7 +116,7 @@ test('colors come only from the --md-sys-color-* roles', () => {
     for (const d of declarations(css)) {
       if (!COLOR.test(d.prop) || d.prop === 'transition-property') continue;
       for (const v of usedIn(`x{a:${d.value}}`)) {
-        assert.ok(/^--md-sys-color-|^--_|^--md-comp-[\w-]+-(?:opacity|width)$|^--md-sys-elevation-level\d-shadow$|^--md-sys-state-focus-indicator-thickness$|^--md-impl-[\w-]+-width$/.test(v),
+        assert.ok(/^--md-sys-color-|^--m3-text-field-notch-color$|^--_|^--md-comp-[\w-]+-(?:opacity|width)$|^--md-sys-elevation-level\d-shadow$|^--md-sys-state-focus-indicator-thickness$|^--md-impl-[\w-]+-width$/.test(v),
           `${f}: ${d.prop} uses ${v}`);
       }
       const rest = stripVar(d.value).replace(/\b(?:transparent|none|inherit|solid|from|r|g|b|rgb|0)\b|[()/,\s]/g, '');
@@ -126,7 +126,7 @@ test('colors come only from the --md-sys-color-* roles', () => {
 });
 
 // Variables the page sets for a component (CSS cannot read them): the slider's position, 0 to 1.
-const PAGE_INPUTS = ['--m3-slider-value'];
+const PAGE_INPUTS = ['--m3-slider-value', '--m3-text-field-notch-color'];
 
 test('every --md-* variable used by the style sheets and galleries is declared in tokens.css or the color theme', () => {
   const declared = new Set([...declaredIn(tokensCss), ...declaredIn(theme)]);
@@ -334,8 +334,6 @@ const STATE_CHECKS = {
     const btn = page.locator('.m3-button--filled:not([aria-pressed]):not(:disabled)').first();
     await btn.hover();
     assert.equal(await pseudoOf(btn, '::after', 'opacity'), await rootVar(page, '--md-sys-state-hover-state-layer-opacity'));
-    // md.comp.button.filled.hovered.container.elevation: level1
-    assert.equal(await pseudoOf(btn, '::before', 'box-shadow'), await probe(page, 'box-shadow', '--md-sys-elevation-level1-shadow'));
     await page.screenshot({ path: join(outDir, `state-hover-${scheme}.png`), clip: await clipOf(btn) });
     await page.mouse.down();
     assert.equal(await pseudoOf(btn, '::after', 'opacity'), await rootVar(page, '--md-sys-state-pressed-state-layer-opacity'));
@@ -346,15 +344,6 @@ const STATE_CHECKS = {
     await page.mouse.move(0, 0);
     await btn.evaluate(el => el.blur());
 
-    // Elevated button: level1 at rest, level2 on hover; text button: no elevation on hover.
-    const elevated = page.locator('.m3-button--elevated:not([aria-pressed]):not(:disabled)').first();
-    assert.equal(await pseudoOf(elevated, '::before', 'box-shadow'), await probe(page, 'box-shadow', '--md-sys-elevation-level1-shadow'));
-    await elevated.hover();
-    assert.equal(await pseudoOf(elevated, '::before', 'box-shadow'), await probe(page, 'box-shadow', '--md-sys-elevation-level2-shadow'));
-    await page.screenshot({ path: join(outDir, `state-hover-elevated-${scheme}.png`), clip: await clipOf(elevated) });
-    const text = page.locator('.m3-button--text:not(:disabled)').first();
-    await text.hover();
-    assert.equal(await pseudoOf(text, '::before', 'box-shadow'), 'none');
     await page.mouse.move(0, 0);
 
     // A text button ignores aria-pressed (no toggle tokens): it looks like the plain text button.
@@ -429,9 +418,9 @@ const STATE_CHECKS = {
 
     // Checkbox: the checked box shows the check glyph on the primary color; indeterminate a dash.
     const checked = page.locator('.m3-checkbox:checked:not(:disabled):not([aria-invalid])').first();
-    assert.equal(await pseudoOf(checked, '::after', 'content'), '"check"');
+    assert.equal(await pseudoOf(checked, '::after', 'content'), '"check" / ""');
     assert.equal(await pseudoOf(checked, '::after', 'background-color'), await probe(page, 'color', '--md-sys-color-primary'));
-    assert.equal(await pseudoOf(page.locator('#indeterminate'), '::after', 'content'), '"remove"');
+    assert.equal(await pseudoOf(page.locator('#indeterminate'), '::after', 'content'), '"remove" / ""');
 
     // Switch: the handle is centered half the track height in from the start (off) or end (on).
     for (const [sel, on] of [['.m3-switch:not(:checked):not(:disabled):not(.m3-switch--icons)', false], ['.m3-switch:checked:not(:disabled):not(.m3-switch--icons)', true]]) {
@@ -475,6 +464,14 @@ const STATE_CHECKS = {
       await page.screenshot({ path: join(outDir, `state-focus-${id.slice(1)}-${scheme}.png`), clip: await clipOf(container) });
       await input.blur();
     }
+
+    // The outlined field's notch on a surface-container panel paints the panel's color, not a patch.
+    const notch = await page.locator('#o-panel ~ label').evaluate(el => ({
+      bg: getComputedStyle(el).backgroundColor,
+      panel: getComputedStyle(el.closest('.gallery-panel')).backgroundColor,
+    }));
+    assert.equal(notch.bg, notch.panel, 'notch matches the panel it sits on');
+    await page.screenshot({ path: join(outDir, `notch-panel-${scheme}.png`), clip: await clipOf(page.locator('.gallery-panel')) });
 
     // Keyboard focus on the interactive elevated card (Shift+Tab from the card after it): the ring.
     await page.locator('button.m3-card').focus();

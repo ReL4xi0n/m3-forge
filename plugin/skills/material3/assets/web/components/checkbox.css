@@ -80,11 +80,11 @@
 }
 
 .m3-checkbox:checked::after {
-  content: 'check';
+  content: 'check' / '';
 }
 
 .m3-checkbox:indeterminate::after {
-  content: 'remove';
+  content: 'remove' / '';
 }
 
 /* States (md.comp.checkbox.{unselected,selected}.{hover,focus,pressed}.*) */

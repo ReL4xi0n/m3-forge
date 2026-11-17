@@ -98,11 +98,11 @@
 }
 
 .m3-switch--icons::after {
-  content: 'close';
+  content: 'close' / '';
 }
 
 .m3-switch--icons:checked::after {
-  content: 'check';
+  content: 'check' / '';
   font-size: var(--md-comp-switch-selected-icon-size);
 }
 

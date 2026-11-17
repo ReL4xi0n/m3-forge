@@ -68,6 +68,12 @@
       display: grid;
       gap: var(--md-sys-space-200);
     }
+    .gallery-panel {
+      padding: var(--md-sys-space-200);
+      border-radius: var(--md-sys-shape-corner-medium);
+      background: var(--md-sys-color-surface-container);
+      --m3-text-field-notch-color: var(--md-sys-color-surface-container);
+    }
     .gallery-vertical {
       display: flex;
       align-items: center;
@@ -284,6 +290,14 @@
         <div>
           <input id="o-code" placeholder=" " value="NL-2041" disabled>
           <label for="o-code">Member code</label>
+        </div>
+      </div>
+      <div class="gallery-panel">
+        <div class="m3-text-field m3-text-field--outlined">
+          <div>
+            <input id="o-panel" placeholder=" " value="Ana Silva" autocomplete="off">
+            <label for="o-panel">On a container</label>
+          </div>
         </div>
       </div>
     </div>
