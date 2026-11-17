@@ -210,6 +210,9 @@ export async function runCell(o) {
   const skill = skillDir ? SKILL_UNDER_TEST : null;
   const startedAt = new Date().toISOString();
   const record = (status, extra = {}) => ({ cell: cell.cell, runId, kind, model, status, startedAt, endedAt: new Date().toISOString(), ...extra });
+  // The skill never sees an eval request (it would learn the eval's answers). A given prompt
+  // (canaries, wording micro-tests) sends no request, so it is allowed.
+  if (skill && cell.set !== 'dev' && o.promptOverride == null) return record('refused', { problems: ['eval cell with skill: only dev cells run with the skill'] });
 
   const frozen = requireFrozen ? checkFrozen(root) : { ok: true, skipped: true };
   if (!frozen.ok) return record('not-frozen', { problems: frozen.problems });

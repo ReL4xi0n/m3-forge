@@ -200,6 +200,9 @@ test('settingsFor: a skill run may read the installed skill folder and nothing e
   const s = settingsFor({ ...base, skill: 'material3' });
   const cfg = '//c/m3-eval/cfg/x';
   assert.deepEqual(s.permissions.allow, [`Read(${cfg}/skills/material3/**)`]);
+  assert.ok(plain.permissions.deny.includes(`Read(${cfg}/**)`), 'the baseline denies the whole config folder');
+  assert.ok(!s.permissions.deny.includes(`Read(${cfg}/**)`), 'the blanket denial would also deny the skill folder (deny wins)');
+  for (const t of ['Edit', 'Write']) assert.ok(s.permissions.deny.includes(`${t}(${cfg}/**)`), `${t} stays denied`);
   assert.deepEqual(s.enabledPlugins ?? {}, {});
   // Every baseline rule stays, except the blanket read denial of the run config folder.
   const kept = plain.permissions.deny.filter(r => r !== `Read(${cfg}/**)`);
@@ -312,4 +315,19 @@ test('runCell: with noNode the child PATH has no folder holding node, and the to
   assert.ok(dirs.includes(join(tc, 'flutter', 'bin')), 'Flutter stays');
   assert.ok(dirs.includes(join(tc, 'jdk-21', 'bin')), 'Java stays');
   assert.ok(process.env.PATH.split(';').some(d => d && existsSync(join(d, 'node.exe'))), 'the parent PATH has node, so the test means something');
+});
+
+test('runCell: a skill run refuses an eval cell unless the prompt is given explicitly', async () => {
+  const { base, fixture, tokenFile } = setup();
+  const skillDir = stubSkill(base);
+  const evalCell = { cell: 'settings.web.web-react.default', request: 'settings', platform: 'web', fixture: 'web-empty', variant: 'default' };
+  const common = { root, evalRoot: join(base, 'eval'), fixtureDir: fixture, privateDir: join(base, 'private'), tokenFile, repoRoot: root, realCfg: join(base, 'no'), requireFrozen: false, skipPreflightAncestors: true, requireSecretsAcl: false, skillDir };
+  const r = await runCell({ ...common, cell: evalCell, runId: 'e1', claudeCmd: dumpingClaude(base, [skillInit, wrote, result]) });
+  assert.equal(r.status, 'refused');
+  assert.ok(r.problems.some(p => p.includes('eval cell with skill')));
+  assert.ok(!existsSync(join(base, 'eval', 'work', 'e1')), 'nothing was prepared');
+  assert.ok(!existsSync(join(base, 'private', 'e1', evalCell.cell, 'project', 'dump.json')), 'claude never started');
+  // A micro-test passes its own prompt; no eval request is sent then.
+  const m = await runCell({ ...common, cell: evalCell, runId: 'e2', promptOverride: '/material3 x', claudeCmd: dumpingClaude(base, [skillInit, wrote, result]) });
+  assert.notEqual(m.status, 'refused');
 });

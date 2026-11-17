@@ -122,3 +122,21 @@ test('canaryKind: skill canaries and baseline canaries are told apart by their f
   assert.equal(latestCanary(dirs, { skill: true }), 'canary-2026-11-17-09-00-00-skill');
   assert.equal(latestCanary(['canary-2026-11-17-08-51-40'], { skill: true }), undefined);
 });
+
+test('pipelineOptions: --skill without a value is a usage error, never a silent run without the skill', async () => {
+  const { pipelineOptions } = await import('../pipeline.mjs');
+  assert.match(pipelineOptions(['--set', 'dev', '--run-id', 'dev-2026-11-17-web-r1', '--all', '--skill'], root).error, /--skill needs/);
+  assert.match(pipelineOptions(['--set', 'dev', '--skill', '--no-node', '--run-id', 'dev-2026-11-17-web-r1', '--all'], root).error, /--skill needs/);
+});
+
+test('canaryPassed: only a canary that exited 0 and wrote a new passing verdict counts', async () => {
+  const { canaryPassed } = await import('../pipeline.mjs');
+  const pass = { pass: true };
+  assert.equal(canaryPassed({ exit: 0, before: 'canary-1', after: 'canary-2', verdict: pass }), true);
+  assert.equal(canaryPassed({ exit: 0, before: undefined, after: 'canary-2', verdict: pass }), true);
+  assert.equal(canaryPassed({ exit: 1, before: 'canary-1', after: 'canary-2', verdict: pass }), false, 'non-zero exit');
+  assert.equal(canaryPassed({ exit: null, before: 'canary-1', after: 'canary-2', verdict: pass }), false, 'killed');
+  assert.equal(canaryPassed({ exit: 0, before: 'canary-1', after: 'canary-1', verdict: pass }), false, 'an older verdict is not reused');
+  assert.equal(canaryPassed({ exit: 0, before: 'canary-1', after: undefined, verdict: null }), false);
+  assert.equal(canaryPassed({ exit: 0, before: 'canary-1', after: 'canary-2', verdict: { pass: false } }), false);
+});

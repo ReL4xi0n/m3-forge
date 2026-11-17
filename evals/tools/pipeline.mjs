@@ -93,6 +93,7 @@ export function pipelineOptions(argv, root) {
   const cells = argv.includes('--all') ? all : all.filter(c => (arg('--cells') ?? '').split(',').includes(c.cell));
   const pair = Number(arg('--pair') ?? 1);
   const skillArg = arg('--skill');
+  if (argv.includes('--skill') && (!skillArg || skillArg.startsWith('--'))) return { error: `--skill needs a skill folder\n${USAGE}` };
   if (!runId || !/^[A-Za-z0-9._-]+$/.test(runId) || !cells.length || !(pair === 1 || pair === 2)) return { error: USAGE };
   if (skillArg && set !== 'dev') return { error: 'the skill runs only on the dev set (--set dev); never on eval requests' };
   if (set === 'dev' && !DEV_RUN_ID.test(runId)) return { error: `a dev run id is dev-<date>-<platform>-r<n>, got ${runId}` };
@@ -102,6 +103,11 @@ export function pipelineOptions(argv, root) {
 }
 
 export { latestCanary };
+
+// A canary passed only when its process exited 0 and it wrote a new folder whose verdict passes: a
+// canary that crashed before writing its folder must not reuse an older passing verdict.
+export const canaryPassed = ({ exit, before, after, verdict }) =>
+  exit === 0 && Boolean(after) && after !== before && verdict?.pass === true;
 
 async function main() {
   const root = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -129,13 +135,16 @@ async function main() {
   const canaries = [];
   const canary = skill => {
     log(skill ? 'skill canary' : 'canary');
+    const before = latestCanary(readdirSync(runsDir), { skill });
     const c = spawnSync(process.execPath, [join(root, 'evals', 'tools', 'canary.mjs'), ...(skill ? ['--skill'] : [])], { cwd: root, encoding: 'utf8', windowsHide: true });
     const latest = latestCanary(readdirSync(runsDir), { skill });
     const f = join(runsDir, latest ?? '', 'verdict.json');
-    const v = latest && existsSync(f) ? JSON.parse(readFileSync(f, 'utf8')) : null;
-    canaries.push({ id: latest, exit: c.status, pass: Boolean(v?.pass) });
-    log('  canary', latest, v?.pass ? 'pass' : 'FAIL');
-    return v;
+    let v = null;
+    try { v = latest && existsSync(f) ? JSON.parse(readFileSync(f, 'utf8')) : null; } catch { /* unreadable: not passed */ }
+    const pass = canaryPassed({ exit: c.status, before, after: latest, verdict: v });
+    canaries.push({ id: latest === before ? null : latest, exit: c.status, pass });
+    log('  canary', latest === before ? '(no new canary folder)' : latest, pass ? 'pass' : 'FAIL');
+    return pass ? v : { ...v, pass: false };
   };
   const runCanary = () => {
     verdict = canary(false);
