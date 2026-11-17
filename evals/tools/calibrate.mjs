@@ -78,7 +78,10 @@ export function evaluateCalibration({ scores, mapping, expected }) {
 // ---- Orchestration: node evals/tools/calibrate.mjs --round <n> ----
 const DEFECT_REQUEST = 'A settings screen for a budgeting app called Pocketbook. Platform: web.';
 
-export async function runCalibrationRound({ root, round, evalRoot = 'C:\m3-eval', judgeOpts = {} }) {
+// String.raw: in a plain string '\m' is just 'm', and 'C:m3-eval' is a folder under the current directory.
+export const DEFAULT_EVAL_ROOT = String.raw`C:\m3-eval`;
+
+export async function runCalibrationRound({ root, round, evalRoot = DEFAULT_EVAL_ROOT, judgeOpts = {} }) {
   const { readdirSync, readFileSync, writeFileSync, mkdirSync, rmSync } = await import('node:fs');
   const { join, isAbsolute } = await import('node:path');
   const { anonymize, stripPng, newIds } = await import('./anonymize.mjs');

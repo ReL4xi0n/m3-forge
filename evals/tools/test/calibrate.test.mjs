@@ -99,3 +99,8 @@ test("splitReferences: the owner's 17 files (android/web/webmobile, free style l
   assert.ok(s.checks.some(n => n.includes('-dark-')) && s.anchors.some(n => n.includes('-dark-')));
   assert.equal(referenceRequest(parseRefName('webmobile-google-signup-light-1.png')), 'A sign-up form. Platform: web (mobile width).');
 });
+
+test('runCalibrationRound: the default eval root is the absolute C:\m3-eval, never a folder in the repository', async () => {
+  const { DEFAULT_EVAL_ROOT } = await import('../calibrate.mjs');
+  assert.equal(DEFAULT_EVAL_ROOT, String.raw`C:\m3-eval`);
+});
