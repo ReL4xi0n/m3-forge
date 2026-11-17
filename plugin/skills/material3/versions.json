@@ -57,6 +57,12 @@
       "source": "google/fonts@b78877b777ed3a18a1b431b0df7d8ee3f84c2e5f ofl/roboto (OFL-1.1)"
     },
     {
+      "file": "RobotoFlex.woff2",
+      "sha256": "e4bf32d0ad5a8c7bc7a6019696452d78cdc5ef2f7571d4c614cdf111f811931c",
+      "bytes": 791824,
+      "source": "RobotoFlex.ttf converted by tools/build/make-woff2.mjs (wawoff2 2.0.1, see tools) (OFL-1.1)"
+    },
+    {
       "file": "RobotoFlex.ttf",
       "sha256": "9b523f7d82593df0107173849ebb8c817471a1df4b4fb2c3cbf40cfd810c8281",
       "bytes": 1787292,
@@ -112,6 +118,16 @@
         ]
       },
       "modified": "import specifiers only: .js appended to extensionless relative imports (dynamiccolor/color_spec_2025.js)"
+    },
+    {
+      "name": "wawoff2",
+      "version": "2.0.1",
+      "license": "MIT",
+      "path": "tools/build/make-woff2.mjs (maintainer only, not shipped)",
+      "archive": {
+        "url": "https://registry.npmjs.org/wawoff2/-/wawoff2-2.0.1.tgz",
+        "sha256": "c356059ab809228e0c93b7da8862bc8b52b7b84d69f16255eaec304fc9d99a56"
+      }
     }
   ]
 }

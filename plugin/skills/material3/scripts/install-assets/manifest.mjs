@@ -28,8 +28,10 @@ const COMPOSE_FONTS = TTF_FONTS.filter((f) => !/MaterialSymbols/.test(f.src));
 export const MANIFEST = {
   web: {
     tokens: [{ src: 'web/tokens.css', group: 'main' }],
+    // The Roboto Flex woff2 replaces the TTF here; fonts.css (main group) declares the @font-face rules.
     fonts: [
-      { src: 'fonts/RobotoFlex.ttf', group: 'fonts' },
+      { src: 'web/fonts.css', group: 'main' },
+      { src: 'fonts/RobotoFlex.woff2', group: 'fonts' },
       { src: 'fonts/Roboto.ttf', group: 'fonts' },
       { src: 'fonts/MaterialSymbolsOutlined.woff2', group: 'fonts' },
       ...LICENSES,

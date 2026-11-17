@@ -4,6 +4,7 @@
 // The Expressive-only values (shape steps, emphasized type, expressive springs) live in
 // `:root:not([data-m3-style="classic"])`; `:root` holds the standard set, and the Expressive-only names
 // there point at their standard counterpart, so data-m3-style="classic" on the root falls back to it.
+import { springToLinear } from '../spring-linear.mjs';
 import {
   EXPRESSIVE_SHAPES, MOTION_MODES, ROLES, SHAPE_STEPS, SPRING_KINDS, SPRING_SPEEDS, TYPE_ATTRS, cell,
   durationIds, easingIds, elevationIds, headerLines, idsUnder, sideShapeIds, spaceSteps, stateIds,
@@ -76,6 +77,20 @@ export function emitWeb(sys) {
   const springs = (out, mode) => {
     for (const speed of SPRING_SPEEDS) for (const kind of SPRING_KINDS) for (const part of ['stiffness', 'damping']) {
       decl(out, `md.sys.motion.spring.${speed}.${kind}.${part}`, 'plain', { mode });
+    }
+    // Derived easing (linear()) and duration of each spring, from its own stiffness and damping.
+    for (const speed of SPRING_SPEEDS) for (const kind of SPRING_KINDS) {
+      const id = `md.sys.motion.spring.${speed}.${kind}`;
+      const k = cell(sys, `${id}.stiffness`, P, mode)?.value?.number;
+      const d = cell(sys, `${id}.damping`, P, mode)?.value?.number;
+      if (typeof k !== 'number' || typeof d !== 'number') {
+        skipped.push({ key: id, platform: P, reason: 'spring easing: stiffness or damping missing' });
+        continue;
+      }
+      const { easing, durationMs } = springToLinear({ damping: d, stiffness: k });
+      const name = cssName(id);
+      out.push(`  ${name}-easing: ${easing}; /* derived from ${id}.stiffness, ${id}.damping */`);
+      out.push(`  ${name}-duration: ${durationMs}ms; /* derived from ${id}.stiffness, ${id}.damping */`);
     }
   };
   springs(base, MOTION_MODES[0]);

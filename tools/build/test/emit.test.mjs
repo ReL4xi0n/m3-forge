@@ -45,6 +45,8 @@ function traced(text) {
   const noBlock = text.replace(/\/\*(?!\s*md\.)[\s\S]*?\*\//g, m => m.replace(/[^\n]/g, ' '));
   return noBlock.split('\n').map((line, i) => {
     const m = line.match(/(?:\/\*|\/\/)\s*(md\.[^\s,*]+(?:,\s*md\.[^\s,*]+)*)\s*(?:\*\/)?\s*$/);
+    // Derived lines (spring easing and duration) carry no token numbers; web-motion-fonts.test.mjs checks them.
+    if (/\/\*\s*derived from md\./.test(text.split('\n')[i])) return { n: i + 1, code: '', keys: [] };
     const keys = m ? m[1].split(/,\s*/) : [];
     let code = m ? line.slice(0, m.index) : line;
     code = code.replace(/\/\/.*$/, '');
