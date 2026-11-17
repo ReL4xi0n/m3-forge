@@ -14,6 +14,7 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version: 22 }
       - run: npm test
+      - run: node tools/ci/overfit.mjs
       - run: node tools/ci/validate-plugin.mjs
       - name: token reports are up to date
         run: node tools/extract/tokens/report.mjs --check

@@ -22,7 +22,7 @@ const SKIP_DIRS = new Set(['node_modules', 'build', 'dist', '.dart_tool', '.grad
 const PLATFORM = { web: 'web', flutter: 'Flutter', compose: 'Android (Jetpack Compose)' };
 
 export function buildPrompt(cell, root) {
-  const request = readFileSync(join(root, 'evals', 'prompts', `${cell.request}.md`), 'utf8').trim();
+  const request = readFileSync(join(root, 'evals', cell.set === 'dev' ? 'dev' : 'prompts', `${cell.request}.md`), 'utf8').trim();
   const variants = readFileSync(join(root, 'evals', 'prompts', 'variants.md'), 'utf8');
   const kind = cell.variant.startsWith('seed:') ? 'seed' : cell.variant;
   const m = variants.match(new RegExp(`^- ${kind}: (.+)$`, 'm'));

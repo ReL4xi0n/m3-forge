@@ -1,0 +1,98 @@
+[
+  {
+    "cell": "podcast-player.web.web-empty.default",
+    "request": "podcast-player",
+    "platform": "web",
+    "fixture": "web-empty",
+    "variant": "default",
+    "set": "dev"
+  },
+  {
+    "cell": "podcast-player.flutter.flutter-material_ui.default",
+    "request": "podcast-player",
+    "platform": "flutter",
+    "fixture": "flutter-material_ui",
+    "variant": "default",
+    "set": "dev"
+  },
+  {
+    "cell": "podcast-player.compose.compose-1.5.default",
+    "request": "podcast-player",
+    "platform": "compose",
+    "fixture": "compose-1.5",
+    "variant": "default",
+    "set": "dev"
+  },
+  {
+    "cell": "expense-report.web.web-react.seed-2F6F5E",
+    "request": "expense-report",
+    "platform": "web",
+    "fixture": "web-react",
+    "variant": "seed:#2F6F5E",
+    "set": "dev"
+  },
+  {
+    "cell": "expense-report.flutter.flutter-legacy.classic",
+    "request": "expense-report",
+    "platform": "flutter",
+    "fixture": "flutter-legacy",
+    "variant": "classic",
+    "set": "dev"
+  },
+  {
+    "cell": "expense-report.compose.compose-1.5.seed-2F6F5E",
+    "request": "expense-report",
+    "platform": "compose",
+    "fixture": "compose-1.5",
+    "variant": "seed:#2F6F5E",
+    "set": "dev"
+  },
+  {
+    "cell": "plant-shop.web.web-vue.classic",
+    "request": "plant-shop",
+    "platform": "web",
+    "fixture": "web-vue",
+    "variant": "classic",
+    "set": "dev"
+  },
+  {
+    "cell": "plant-shop.flutter.flutter-material_ui.seed-2F6F5E",
+    "request": "plant-shop",
+    "platform": "flutter",
+    "fixture": "flutter-material_ui",
+    "variant": "seed:#2F6F5E",
+    "set": "dev"
+  },
+  {
+    "cell": "plant-shop.compose.compose-1.5.classic",
+    "request": "plant-shop",
+    "platform": "compose",
+    "fixture": "compose-1.5",
+    "variant": "classic",
+    "set": "dev"
+  },
+  {
+    "cell": "clinic-schedule.web.web-empty.default",
+    "request": "clinic-schedule",
+    "platform": "web",
+    "fixture": "web-empty",
+    "variant": "default",
+    "set": "dev"
+  },
+  {
+    "cell": "clinic-schedule.flutter.flutter-material_ui.default",
+    "request": "clinic-schedule",
+    "platform": "flutter",
+    "fixture": "flutter-material_ui",
+    "variant": "default",
+    "set": "dev"
+  },
+  {
+    "cell": "clinic-schedule.compose.compose-1.5.default",
+    "request": "clinic-schedule",
+    "platform": "compose",
+    "fixture": "compose-1.5",
+    "variant": "default",
+    "set": "dev"
+  }
+]
