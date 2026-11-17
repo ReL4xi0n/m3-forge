@@ -85,7 +85,7 @@ async function main() {
   const cells = process.argv.includes('--all') ? all : all.filter(c => (arg('--cells') ?? '').split(',').includes(c.cell));
   const pair = Number(arg('--pair') ?? 1);
   if (!runId || !/^[A-Za-z0-9._-]+$/.test(runId) || !cells.length || !(pair === 1 || pair === 2)) {
-    console.error('usage: pipeline.mjs --run-id <id> (--cells a,b | --all) [--pair 1|2] [--resume]');
+    console.error('usage: pipeline.mjs --run-id <id> (--cells a,b | --all) [--pair 1|2] [--resume] [--judge-only [--recapture a,b]]');
     process.exit(2);
   }
   const { runCell } = await import('./run-cell.mjs');
@@ -124,7 +124,12 @@ async function main() {
     const rec = await runCell({ cell, runId, root, builtIns, allowedSkills: verdict.allowedSkills,
       prepare: async w => { const r = await prepareFixture(cell.fixture, w); if (!r.ok) throw new Error(`fixture ${cell.fixture} failed:\n${r.log.slice(-2000)}`); } });
     log('  status', cell.cell, rec.status, 'durationMs', rec.durationMs, 'cost', rec.costUsd);
-    let cap = { buildOk: false, reason: `run status ${rec.status}`, shots: [], runtime: { contrast: [], targets: [] } };
+    return captureAndVerify(cell, rec, dest);
+  };
+
+  // Capture and verify a finished run. Also used by --recapture after a harness fix.
+  const captureAndVerify = async (cell, rec, dest) => {
+    let cap ={ buildOk: false, reason: `run status ${rec.status}`, shots: [], runtime: { contrast: [], targets: [] } };
     if (['ok', 'secret-redacted', 'asked-question', 'timeout', 'session-error'].includes(rec.status) && !isQuotaStop(rec) && existsSync(rec.workDir ?? '')) {
       const shotDir = join('C:\\m3-eval', 'shots', runId, cell.cell);
       const t0 = Date.now();
@@ -151,7 +156,35 @@ async function main() {
   const groups = [];
   let sinceCanary = null;
   let stopped = null;
-  for (const group of schedule(cells, { pair })) {
+  // --judge-only: no new runs; every cell's record.json is reused, and the cells named by --recapture
+  // are captured and verified again first (a harness fix after the runs). An earlier judging of this
+  // run is moved to superseded-<n>/ unread.
+  const judgeOnly = process.argv.includes('--judge-only');
+  if (judgeOnly) {
+    const again = (arg('--recapture') ?? '').split(',').filter(Boolean);
+    for (const cell of cells) {
+      const dest = join(priv, cell.cell);
+      if (!existsSync(join(dest, 'record.json'))) { console.error(`no record for ${cell.cell}`); process.exit(2); }
+      let saved = JSON.parse(readFileSync(join(dest, 'record.json'), 'utf8'));
+      if (again.includes(cell.cell)) {
+        log('recapture', cell.cell);
+        const previous = saved.cap.reason ?? null;
+        saved = await captureAndVerify(cell, saved.rec, dest);
+        saved.recaptured = { at: new Date().toISOString(), previousReason: previous?.slice(-500) ?? null };
+        writeFileSync(join(dest, 'record.json'), JSON.stringify(saved, null, 2));
+      }
+      records.push(saved);
+    }
+    if (existsSync(join(priv, 'summary.json'))) {
+      const { renameSync } = await import('node:fs');
+      let n = 1;
+      while (existsSync(join(priv, `superseded-${n}`))) n++;
+      mkdirSync(join(priv, `superseded-${n}`));
+      for (const f of ['summary.json', 'mapping.json']) if (existsSync(join(priv, f))) renameSync(join(priv, f), join(priv, `superseded-${n}`, f));
+      log('earlier judging moved to', `superseded-${n}`);
+    }
+  }
+  for (const group of judgeOnly ? [] : schedule(cells, { pair })) {
     if (canaryDue({ sinceCanary, next: group.length })) {
       if (!runCanary()) { stopped = { reason: 'canary failed', before: group.map(c => c.cell) }; break; }
       sinceCanary = 0;
@@ -176,7 +209,7 @@ async function main() {
   const scores = [];
   const judgeLog = [];
   if (outputs.length) {
-    const judgeDir = join('C:\\m3-eval', 'judge-in', runId);
+    const judgeDir = join('C:\\m3-eval', 'judge-in', judgeOnly ? `${runId}-rejudge-${Date.now()}` : runId);
     const mappingPath = join(priv, 'mapping.json');
     const { ids } = anonymize({ outputs, judgeDir, mappingPath });
     const { stripPng } = await import('./anonymize.mjs');
@@ -196,7 +229,7 @@ async function main() {
     writeFileSync(join(judgeDir, 'anchors', 'anchors.json'), JSON.stringify(list, null, 2));
     for (let i = 0; i < ids.length; i += 12) {
       const batch = ids.slice(i, i + 12);
-      const r = await runJudgeBatch({ judgeDir, ids: batch, root, batchId: `${runId}-${i / 12 + 1}`, builtIns });
+      const r = await runJudgeBatch({ judgeDir, ids: batch, root, batchId: `${runId}${judgeOnly ? '-rj' + Date.now() : ''}-${i / 12 + 1}`, builtIns });
       judgeLog.push({ batch: i / 12 + 1, ok: r.ok, attempts: r.attempts, log: r.log });
       log('judge batch', i / 12 + 1, r.ok ? 'ok' : 'FAILED', 'attempts', r.attempts);
       if (r.ok) scores.push(...r.scores);

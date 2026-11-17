@@ -95,3 +95,41 @@ test('captureFlutter: a syntax error gives buildOk false with the output tail', 
   assert.match(r.reason, /main\.dart/);
   assert.ok(existsSync(join(outDir, 'capture.json')));
 });
+
+// Found in the baseline (landing.flutter): an endless animation started in didChangeDependencies
+// made the second theme's test fail with 'elapsedInSeconds >= 0.0' when both themes shared one
+// `flutter test` process.
+test('captureFlutter: an app with an endless animation still gives both themes', { skip, timeout: 900_000 }, async () => {
+  const projectDir = copySample('spin_app');
+  const main = join(projectDir, 'lib', 'main.dart');
+  const spin = `
+void main() => runApp(const _Spin());
+
+class _Spin extends StatefulWidget {
+  const _Spin();
+  @override
+  State<_Spin> createState() => _SpinState();
+}
+
+class _SpinState extends State<_Spin> with TickerProviderStateMixin {
+  late final AnimationController _c = AnimationController(vsync: this, duration: const Duration(seconds: 40));
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_c.isAnimating) _c.repeat();
+  }
+  @override
+  void dispose() { _c.dispose(); super.dispose(); }
+  @override
+  Widget build(BuildContext context) => RotationTransition(turns: _c, child: const SampleApp());
+}
+`;
+  writeFileSync(main, readFileSync(main, 'utf8').replace('void main() => runApp(const SampleApp());', spin));
+  const outDir = join(work, 'shots-spin');
+  rmSync(outDir, { recursive: true, force: true });
+
+  const r = await captureFlutter({ projectDir, outDir });
+
+  assert.equal(r.buildOk, true, r.reason);
+  assert.deepEqual(r.shots.map(s => s.theme).sort(), ['dark', 'light']);
+});

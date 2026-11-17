@@ -141,7 +141,12 @@ export async function captureFlutter({ projectDir, outDir, timeoutMs = 15 * 60_0
       M3_FONTS_MANIFEST: FONTS_MANIFEST,
       M3_CAPTURE_OUT: outDir,
     };
-    result = await run('flutter', ['test', `test/${TEST_FILE}`, '--reporter', 'expanded'], { cwd: projectDir, env, timeoutMs });
+    // One `flutter test` process per theme: an endless animation from the first theme's test broke the
+    // second theme's test when both shared a process (found in the baseline, landing.flutter).
+    for (const theme of THEMES) {
+      result = await run('flutter', ['test', `test/${TEST_FILE}`, '--name', `m3.capture.${theme}.` /* a regex without spaces: the shell would split them */, '--reporter', 'expanded'], { cwd: projectDir, env, timeoutMs });
+      if (result.timedOut || result.code !== 0) break;
+    }
   } finally {
     rmSync(testPath, { force: true });
     rmSync(configPath, { force: true });
