@@ -9,9 +9,10 @@
 //     violations: [{ check, file, line, detail, severity }], counts, unscored, uiLines, exitCode, ... }
 //
 // CLI: node index.mjs <projectDir> <web|flutter|compose> [capture.json] [--out <dir>]
-//   Prints a short summary and writes verify.json to the project folder (or to --out).
+//   Prints a short summary and writes verify.json to a new folder under the OS temp directory (or to --out) and prints its path.
 //   Exit code: 1 if any error-severity violation, 0 otherwise, 2 on bad usage.
-import { mkdir, readFile, stat, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, stat, writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -119,10 +120,13 @@ async function main(argv) {
     runtime = capture && capture.runtime ? capture.runtime : undefined;
   }
   const result = await verify({ projectDir, platform, runtime });
-  const outDir = resolve(out || projectDir);
+  // Never into the project by default: a new folder under the OS temp directory, unless --out names one.
+  const outDir = out ? resolve(out) : await mkdtemp(join(tmpdir(), 'm3-verify-'));
   await mkdir(outDir, { recursive: true });
-  await writeFile(join(outDir, 'verify.json'), JSON.stringify({ tool: 'material3 verify v2', ...result }, null, 2) + '\n');
+  const outFile = join(outDir, 'verify.json');
+  await writeFile(outFile, JSON.stringify({ tool: 'material3 verify v2', ...result }, null, 2) + '\n');
   console.log(summarize(result));
+  console.log(`verify.json: ${outFile}`);
   return result.exitCode;
 }
 

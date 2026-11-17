@@ -41,7 +41,8 @@ the request asks for classic Material 3. Everything below is the order of work. 
 ## 4. Theme, fonts and icons
 
 - Color: run `color` with `--seed`, `--platform` and `--out` (the platform reference names the
-  file). A brand color in the request is the seed. With no color in the request, pick a seed that
+  file; it never overwrites a user file, exit 3). A brand color in the request is the seed. With no
+  color in the request, pick a seed that
   fits the subject and say which; use the baseline seed `#6750A4` only for neutral requests.
   Variant stays tonal spot unless the request names another variant. Status and chart colors use
   roles, or `--custom name=#hex` for harmonized extra roles. (F2, F8)
@@ -54,7 +55,8 @@ the request asks for classic Material 3. Everything below is the order of work. 
 
 ## 5. Build the UI
 
-Hard rules. `verify` checks every one of them.
+Hard rules. `verify` checks these (contrast and touch targets only with the step 7 capture;
+judgment calls are not machine-checked).
 
 - Colors only through color roles of the generated scheme; no hex, rgb, hsl or named colors in UI
   code. (F2)
@@ -80,7 +82,8 @@ Hard rules. `verify` checks every one of them.
 ## 6. Verify
 
 - Run `verify` with the project folder and platform (add `capture.json` from step 7 when it
-  exists). Fix every error, and also every `off-grid-spacing` and `asset-unused` warning. Repeat
+  exists). It writes `verify.json` to a temporary folder (path printed), never into the project;
+  `--out <dir>` picks another folder. Fix every error, and also every `off-grid-spacing` and `asset-unused` warning. Repeat
   until it reports none. (F1, F2, F3, F4, F5, F6, F7, F8, F11, F12)
 
 ## 7. Look

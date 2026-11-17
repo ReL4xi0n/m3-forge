@@ -19,6 +19,12 @@ const TTF_FONTS = [
   { src: 'fonts/MaterialSymbolsOutlined.ttf', group: 'fonts', androidName: 'material_symbols_outlined.ttf' },
 ];
 
+// Compose icons are vector drawables, so Compose copies no Symbols font (and no icons license).
+// Roboto and Roboto Flex stay for now: Type.kt uses FontFamily.SansSerif and references no R.font.*;
+// Task 23 decides whether they become R.font families or leave this part.
+const COMPOSE_LICENSES = LICENSES.filter((l) => !/material-design-icons/.test(l.src));
+const COMPOSE_FONTS = TTF_FONTS.filter((f) => !/MaterialSymbols/.test(f.src));
+
 export const MANIFEST = {
   web: {
     tokens: [{ src: 'web/tokens.css', group: 'main' }],
@@ -35,6 +41,6 @@ export const MANIFEST = {
   },
   compose: {
     theme: ['Motion', 'Shape', 'Space', 'Tokens', 'Type'].map((n) => ({ src: `compose/theme/${n}.kt`, group: 'main' })),
-    fonts: [...TTF_FONTS, ...LICENSES],
+    fonts: [...COMPOSE_FONTS, ...COMPOSE_LICENSES],
   },
 };

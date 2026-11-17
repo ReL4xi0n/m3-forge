@@ -82,6 +82,7 @@ test('compose: package rewrite, theme dir, android font names', async () => {
     assert.ok(a.copied.includes('app/src/main/java/com/example/shop/theme/Type.kt'));
     assert.ok(a.copied.includes('app/src/main/res/font/roboto_flex.ttf'));
     assert.ok(a.copied.includes('app/src/main/res/raw/ofl_roboto.txt'));
+    assert.ok(!a.copied.some(f => /material_symbols|license_material_design_icons/.test(f)), 'no Symbols font on Compose');
     const kt = await readFile(join(dir, 'app/src/main/java/com/example/shop/theme/Type.kt'), 'utf8');
     assert.match(kt, /^package com\.example\.shop\.theme$/m);
     assert.doesNotMatch(kt, /m3\.theme/);

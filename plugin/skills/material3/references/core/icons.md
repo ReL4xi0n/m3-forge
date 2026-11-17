@@ -6,7 +6,7 @@ Material Symbols (Outlined) is the only icon source. Every icon comes from `scri
 
 1. List the icons the UI needs by their Material Symbols names (`search`, `shopping_cart`,
    `calendar_month`, `person`, ...).
-2. Run `node scripts/icons/index.mjs <projectDir> --platform web|flutter|compose --names a,b,c`.
+2. Run `node "S/scripts/icons/index.mjs" <projectDir> --platform web|flutter|compose --names a,b,c`.
    - Names are checked against the bundled `assets/fonts/MaterialSymbolsOutlined.codepoints`.
      Exit 4 lists unknown names: pick a real name and run again. Never guess a codepoint.
    - Exit 5 means the platform has no icon back end in this version; follow the platform

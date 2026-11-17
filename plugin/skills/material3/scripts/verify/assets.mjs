@@ -74,6 +74,8 @@ export async function unusedAssets(projectDir, platform, files) {
     } catch {
       continue;
     }
+    // A saved verify result is output, not source: its warnings name asset paths.
+    if (/\.json$/i.test(rel) && /"tool":\s*"material3 verify v\d+"/.test(text.slice(0, 200))) continue;
     const head = text.split('\n', ASSET_MARKER_LINES).join('\n');
     const m = head.match(/material3 skill asset: (\S+)/);
     const d = platform === 'compose' ? rel.match(DRAWABLE) : null;

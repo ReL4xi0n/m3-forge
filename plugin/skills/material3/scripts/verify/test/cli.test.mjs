@@ -1,13 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { cp, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { cp, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { sample } from './helpers.mjs';
+import { installAssets } from '../../install-assets/index.mjs';
 
 const INDEX = fileURLToPath(new URL('../index.mjs', import.meta.url));
 
@@ -40,18 +41,37 @@ test('cli: --out receives verify.json, capture.json runtime is used, exit code f
   }
 });
 
-test('cli: without --out, verify.json goes to the project folder; warnings alone exit 0', async () => {
-  const dir = await mkdtemp(join(tmpdir(), 'm3-verify-cli-'));
+test('cli: without --out, verify.json goes to the OS temp folder (path printed), never the project; warnings alone exit 0', async () => {
+  const dir = await mkdtemp(join(tmpdir(), 'm3 verify cli '));
+  let outDir;
   try {
     await cp(sample('web', 'off-grid-spacing-hit'), dir, { recursive: true });
     const r = spawnSync(process.execPath, [INDEX, dir, 'web'], { encoding: 'utf8' });
     assert.equal(r.status, 0, r.stderr);
-    const json = JSON.parse(await readFile(join(dir, 'verify.json'), 'utf8'));
+    const m = /verify\.json: (.+)$/m.exec(r.stdout);
+    assert.ok(m, r.stdout);
+    outDir = dirname(m[1].trim());
+    assert.ok(resolve(outDir).startsWith(resolve(tmpdir())));
+    assert.ok(!existsSync(join(dir, 'verify.json')));
+    const json = JSON.parse(await readFile(join(outDir, 'verify.json'), 'utf8'));
     assert.equal(json.counts['off-grid-spacing'], 3);
     assert.equal(json.runtimeChecked, false);
-    // A second run does not scan its own verify.json.
-    const again = spawnSync(process.execPath, [INDEX, dir, 'web'], { encoding: 'utf8' });
-    assert.equal(again.status, 0);
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+    if (outDir) await rm(outDir, { recursive: true, force: true });
+  }
+});
+
+test('cli: a verify.json inside the project (an older run or --out) does not hide asset-unused', async () => {
+  const dir = await mkdtemp(join(tmpdir(), 'm3 verify cli '));
+  try {
+    await mkdir(join(dir, 'src'), { recursive: true });
+    await writeFile(join(dir, 'index.html'), '<!doctype html><title>x</title><p>hi</p>');
+    await installAssets({ projectDir: dir, platform: 'web', parts: ['tokens'] });
+    const first = spawnSync(process.execPath, [INDEX, dir, 'web', '--out', dir], { encoding: 'utf8' });
+    assert.match(first.stdout, /asset-unused/);
+    const second = spawnSync(process.execPath, [INDEX, dir, 'web', '--out', dir], { encoding: 'utf8' });
+    assert.match(second.stdout, /asset-unused/);
   } finally {
     await rm(dir, { recursive: true, force: true });
   }

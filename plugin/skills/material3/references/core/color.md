@@ -12,9 +12,11 @@ Every color in the UI is a color role. A scheme maps roles to values; the code o
      `--variant expressive` only when the request names that variant. Other variants (`vibrant`,
      `fidelity`, `content`, `neutral`, `monochrome`, `rainbow`, `fruitSalad`) also only on request.
 3. Run `scripts/color/index.mjs` (its header comment is the interface):
-   `node index.mjs --seed <hex> --platform web|flutter|compose --out <theme file>`
+   `node "S/scripts/color/index.mjs" --seed <hex> --platform web|flutter|compose --out <theme file>`
    plus `--package` (Compose) or `--flutter-library` (Flutter) when needed.
    - It writes light, dark, medium-contrast and high-contrast schemes.
+   - It never overwrites a file that is not its own output: exit 3 with the path. Pick another
+     file name; re-running over its own output is fine.
    - An achromatic seed (gray, near black, near white) is replaced by the baseline; the JSON says
      `exact: false` with a note. Tell the user.
 4. Extra semantic colors (success, warning, chart series, categories): either use existing roles

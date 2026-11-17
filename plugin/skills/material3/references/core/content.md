@@ -60,6 +60,6 @@ Never in UI, data, code or comments of the generated project:
   `Subtitle`, `Description here`, `Lorem`, `Sample text`;
 - image URLs of any kind, including stock and placeholder hosts (Unsplash, Picsum, Pexels,
   placehold.co, placeholder.com, via.placeholder, dummyimage) and avatar generators;
-- real brands from the brand list in scripts/verify, and any other real company or product name;
+- real brands from the brand list in `scripts/verify/brands.json`, and any other real company or product name;
 - emoji used as icons or decoration (icons.md);
 - destinations that only say coming soon, under construction or TODO.

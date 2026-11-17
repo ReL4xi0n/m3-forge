@@ -291,6 +291,25 @@ test('writeTheme and the CLI write the file (path with spaces) and report the se
   } finally { rmSync(dir, { recursive: true, force: true }); }
 });
 
+test('writeTheme and the CLI refuse to overwrite a user file; a re-run over the own output works', () => {
+  const dir = tmp('overwrite');
+  try {
+    const out = join(dir, 'ui theme', 'Color.kt');
+    mkdirSync(join(dir, 'ui theme'), { recursive: true });
+    const mine = ['package x', 'val Purple80 = Color(0xFFD0BCFF)', ''].join('\n');
+    writeFileSync(out, mine);
+    assert.throws(() => writeTheme({ platform: 'compose', seed: '#6750A4', out, packageName: 'com.x' }), e => e.code === 'EEXIST_USER_FILE');
+    const p = spawnSync(process.execPath, [INDEX, '--seed', '#6750A4', '--platform', 'compose', '--out', out], { encoding: 'utf8' });
+    assert.equal(p.status, 3);
+    assert.match(p.stderr, /Color\.kt/);
+    assert.equal(readFileSync(out, 'utf8'), mine);
+    const free = join(dir, 'ui theme', 'M3Color.kt');
+    assert.equal(spawnSync(process.execPath, [INDEX, '--seed', '#6750A4', '--platform', 'compose', '--out', free], { encoding: 'utf8' }).status, 0);
+    const again = spawnSync(process.execPath, [INDEX, '--seed', '#2F6F5E', '--platform', 'compose', '--out', free], { encoding: 'utf8' });
+    assert.equal(again.status, 0, again.stderr);
+  } finally { rmSync(dir, { recursive: true, force: true }); }
+});
+
 // ---------------------------------------------------------------------------------------------
 // Verify treats a generated file as a theme file only when it is exactly what the script writes.
 
