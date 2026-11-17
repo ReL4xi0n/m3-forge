@@ -3,33 +3,21 @@
 //   report.mjs           extract every pinned source (toolchain folder), merge, write knowledge/
 //   report.mjs --check   re-merge the committed knowledge/tokens/<source>.json files and fail if any
 //                        generated file is stale (no sources needed; used in CI)
+//   report.mjs --rerender  re-merge the committed knowledge/tokens/<source>.json files and rewrite the
+//                        generated files (no sources needed): after a change to this generator or to
+//                        tools/build/ladder.mjs, whose ladder uses are appended to not-found.md
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { merge, PLATFORMS, CROSS_CHECK, NOT_FOUND } from './merge.mjs';
+import { merge, fmt, PLATFORMS, CROSS_CHECK } from './merge.mjs';
+import { ladderSection } from '../../build/ladder.mjs';
 
 const SOURCES = ['material-web', 'compose-material3', 'material_ui', 'material-components-android'];
 
 const sortRecords = recs => recs.slice().sort((a, b) =>
   (a.id ?? '').localeCompare(b.id ?? '') || (a.mode ?? '').localeCompare(b.mode ?? '') || a.native.localeCompare(b.native) || a.line - b.line);
 const jsonLines = items => `[\n${items.map(i => JSON.stringify(i)).join(',\n')}\n]\n`;
-
-export function fmt(v) {
-  if (v === NOT_FOUND) return NOT_FOUND;
-  const k = Object.keys(v)[0];
-  const x = v[k];
-  switch (k) {
-    case 'dp': case 'sp': case 'ms': return `${x}${k}`;
-    case 'number': return String(x);
-    case 'hex': return x;
-    case 'ref': return `→ ${x}`;
-    case 'easing': return `cubic-bezier(${x.join(', ')})`;
-    case 'string': return `"${x}"`;
-    case 'shape': return `shape(${x.family}; ${x.corners.join(', ')})`;
-    default: return `unparsed: ${String(x).replace(/\|/g, '\\|')}`;
-  }
-}
 
 function summaryOf(bySource, r) {
   const perSource = {};
@@ -117,7 +105,8 @@ function notFoundMd(r, notesNotFound = []) {
     'Statements the knowledge notes mark `[NOT FOUND]` (values or facts no source gives, e.g. the default color variant for M3 Expressive). Collected by `tools/extract/knowledge/lint.mjs`.', '',
     '| note:line | statement |', '|---|---|');
   for (const n of notesNotFound) out.push(`| ${n.note}:${n.line} | ${n.text.replace(/\|/g, '\\|')} |`);
-  return out.join('\n') + '\n';
+  out.push('', ladderSection(r.merged));
+  return out.join('\n');
 }
 
 export function renderAll(bySource, mcu, siteValues = [], notesNotFound = []) {
@@ -144,7 +133,8 @@ export async function checkAll(dir, files) {
   const stale = [];
   for (const [rel, text] of files) {
     const cur = existsSync(join(dir, rel)) ? await readFile(join(dir, rel), 'utf8') : null;
-    if (cur !== text) stale.push(rel);
+    // A Windows checkout (core.autocrlf) may hold CRLF; line endings are not staleness.
+    if (cur?.replace(/\r\n/g, '\n') !== text) stale.push(rel);
   }
   return stale;
 }
@@ -180,11 +170,17 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   const nfFile = join(kdir, 'notes-not-found.json');
   const notesNotFound = existsSync(nfFile) ? JSON.parse(await readFile(nfFile, 'utf8')) : [];
   try {
-    if (process.argv.includes('--check')) {
+    const committed = async () => {
       const bySource = {};
       for (const s of SOURCES) bySource[s] = JSON.parse(await readFile(join(kdir, 'tokens', `${s}.json`), 'utf8'));
       const mcu = JSON.parse(await readFile(join(kdir, 'tokens', 'color-system.json'), 'utf8'));
-      const stale = await checkAll(kdir, renderAll(bySource, mcu, siteValues, notesNotFound));
+      return renderAll(bySource, mcu, siteValues, notesNotFound);
+    };
+    if (process.argv.includes('--rerender')) {
+      await writeAll(kdir, await committed());
+      console.log('token reports: re-rendered from the committed per-source files');
+    } else if (process.argv.includes('--check')) {
+      const stale = await checkAll(kdir, await committed());
       if (stale.length) {
         console.error(`token reports are stale: ${stale.join(', ')}; run \`npm run extract:tokens\``);
         process.exitCode = 1;
@@ -201,4 +197,4 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   }
 }
 
-export { CROSS_CHECK };
+export { CROSS_CHECK, fmt };

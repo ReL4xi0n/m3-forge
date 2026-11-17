@@ -10,6 +10,23 @@ const NUMERIC = new Set(['dp', 'sp', 'ms', 'number']);
 const kindOf = v => Object.keys(v)[0];
 const keyOf = r => (r.mode ? `${r.id}@${r.mode}` : r.id);
 
+// One value as text for the generated Markdown reports.
+export function fmt(v) {
+  if (v === NOT_FOUND) return NOT_FOUND;
+  const k = Object.keys(v)[0];
+  const x = v[k];
+  switch (k) {
+    case 'dp': case 'sp': case 'ms': return `${x}${k}`;
+    case 'number': return String(x);
+    case 'hex': return x;
+    case 'ref': return `→ ${x}`;
+    case 'easing': return `cubic-bezier(${x.join(', ')})`;
+    case 'string': return `"${x}"`;
+    case 'shape': return `shape(${x.family}; ${x.corners.join(', ')})`;
+    default: return `unparsed: ${String(x).replace(/\|/g, '\\|')}`;
+  }
+}
+
 function resolve(value, index) {
   let v = value;
   for (let hops = 0; v.ref && index && hops < 10; hops++) {

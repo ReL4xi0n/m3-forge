@@ -20,6 +20,8 @@ jobs:
       - run: node tools/ci/skill-size.mjs
       - name: token reports are up to date
         run: node tools/extract/tokens/report.mjs --check
+      - name: skill token files are up to date
+        run: node tools/build/tokens.mjs --check
       - name: knowledge notes lint
         run: node tools/extract/knowledge/lint.mjs --check
       - name: guard (all tracked files)
