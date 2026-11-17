@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs';
-import { join, dirname } from 'node:path';
+import { join, dirname, win32 } from 'node:path';
 import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { preflight, checkInit, auditTranscript, classifyEnd, childEnv, DISALLOWED_TOOLS } from '../isolation.mjs';
@@ -195,4 +195,16 @@ test('preflight: a skill run accepts settings.json and skills/material3/ only', 
   assert.equal(run({ skills: ['material3'] }).ok, false, 'the skill folder must be there');
   writeFileSync(join(cfg, 'skills', 'material3'), 'not a folder');
   assert.equal(run({ skills: ['material3'] }).ok, false, 'the skill must be a folder');
+});
+
+test('auditTranscript: a skill run may use its installed skill folder, not the rest of the config folder', () => {
+  const cfg = win32.join('C:\\', 'm3-eval', 'cfg', 's1', 'podcast-player.web.web-empty.default');
+  const at = (...p) => win32.join(cfg, ...p);
+  const o = { workDir: WORK, repoRoot: win32.join('C:\\', 'Users', 'someone', 'Desktop', 'repo'), allowRoots: [at('skills', 'material3')] };
+  assert.deepEqual(auditTranscript([toolUse({ file_path: at('skills', 'material3', 'SKILL.md') })], o).hits, []);
+  for (const p of [at('settings.json'), at('skills', 'material3x', 'SKILL.md'), at('skills', 'other', 'SKILL.md')]) {
+    const r = auditTranscript([toolUse({ file_path: p })], o);
+    assert.equal(r.hits.length, 1, p);
+    assert.equal(r.hits[0].level, 'warn', p);
+  }
 });

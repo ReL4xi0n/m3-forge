@@ -289,9 +289,13 @@ test('runCell: a skill run installs the skill, sends /material3 and accepts an i
   const read = p => ({ type: 'assistant', message: { content: [{ type: 'tool_use', name: 'Read', input: { file_path: p } }] } });
   const ok = await runCell({ ...common, cell: devCell, runId: 's1', claudeCmd: dumpingClaude(base, [skillInit, read('$CFG/skills/material3/SKILL.md'), read('$CFG/settings.json'), wrote, result]) });
   assert.equal(ok.status, 'ok', JSON.stringify(ok.checks));
-  // The audit allows the installed skill folder, and only that part of the config folder.
-  assert.ok(!ok.checks.audit.hits.some(h => /skills[\\/]+material3/i.test(h.path ?? '')), JSON.stringify(ok.checks.audit.hits));
-  assert.ok(ok.checks.audit.hits.some(h => h.level === 'warn' && /settings\.json$/.test(h.path ?? '')), JSON.stringify(ok.checks.audit.hits));
+  // The audit allows the installed skill folder, and only that part of the config folder. The audit
+  // recognises Windows paths only (the runner is Windows-only), so on Linux the run folder's POSIX paths
+  // produce no hits; isolation.test.mjs checks the same rule with Windows paths on every OS.
+  if (process.platform === 'win32') {
+    assert.ok(!ok.checks.audit.hits.some(h => /skills[\\/]+material3/i.test(h.path ?? '')), JSON.stringify(ok.checks.audit.hits));
+    assert.ok(ok.checks.audit.hits.some(h => h.level === 'warn' && /settings\.json$/.test(h.path ?? '')), JSON.stringify(ok.checks.audit.hits));
+  }
   const dump = dumpOf(base, 's1');
   assert.equal(dump.skill, true, 'the skill is installed in the run config folder');
   const prompt = dump.argv[dump.argv.indexOf('-p') + 1];
