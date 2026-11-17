@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pocketbook settings</title>
+<!-- Calibration middle band (hand-written, not model output): a tidy, error-free settings page in an
+     "admin template" layout with Material 3 baseline color roles. Expected 1-2, not 3. -->
+<style>
+:root {
+  color-scheme: light;
+  --primary: #6750a4; --on-primary: #ffffff;
+  --primary-container: #eaddff; --on-primary-container: #21005d;
+  --secondary-container: #e8def8; --on-secondary-container: #1d192b;
+  --surface: #fef7ff; --on-surface: #1d1b20; --on-surface-variant: #49454f;
+  --surface-container: #f3edf7; --surface-container-high: #ece6f0; --surface-container-lowest: #ffffff;
+  --outline: #79747e; --outline-variant: #cac4d0;
+  --error: #b3261e;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --primary: #d0bcff; --on-primary: #381e72;
+    --primary-container: #4f378b; --on-primary-container: #eaddff;
+    --secondary-container: #4a4458; --on-secondary-container: #e8def8;
+    --surface: #141218; --on-surface: #e6e0e9; --on-surface-variant: #cac4d0;
+    --surface-container: #211f26; --surface-container-high: #2b2930; --surface-container-lowest: #0f0d13;
+    --outline: #938f99; --outline-variant: #49454f;
+    --error: #f2b8b5;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: Roboto, "Segoe UI", Arial, sans-serif; font-size: 14px; line-height: 20px; background: var(--surface); color: var(--on-surface); }
+h1, h2, p { margin: 0; }
+.layout { display: flex; min-height: 100vh; }
+.sidebar { width: 240px; flex: none; background: var(--surface-container); padding: 16px 12px; }
+.brand { display: flex; align-items: center; gap: 8px; font-size: 18px; font-weight: 500; padding: 8px 12px 24px; }
+.brand-mark { width: 28px; height: 28px; border-radius: 8px; background: var(--primary); }
+.nav a { display: block; padding: 10px 12px; margin-bottom: 4px; border-radius: 8px; color: var(--on-surface-variant); text-decoration: none; }
+.nav a.active { background: var(--secondary-container); color: var(--on-secondary-container); font-weight: 500; }
+.main { flex: 1; min-width: 0; }
+.topbar { display: flex; align-items: center; gap: 16px; height: 64px; padding: 0 24px; border-bottom: 1px solid var(--outline-variant); }
+.search { flex: 1; max-width: 360px; height: 40px; border-radius: 8px; border: 1px solid var(--outline-variant); background: var(--surface-container-lowest); padding: 0 12px; color: var(--on-surface-variant); display: flex; align-items: center; }
+.topbar .spacer { flex: 1; }
+.avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--primary-container); color: var(--on-primary-container); display: grid; place-items: center; font-weight: 500; }
+.menu-btn { display: none; width: 40px; height: 40px; border: 1px solid var(--outline-variant); border-radius: 8px; background: none; color: inherit; }
+.content { padding: 24px; }
+.crumbs { color: var(--on-surface-variant); font-size: 12px; margin-bottom: 4px; }
+h1 { font-size: 24px; line-height: 32px; font-weight: 500; margin-bottom: 24px; }
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.card { background: var(--surface-container-lowest); border: 1px solid var(--outline-variant); border-radius: 8px; }
+.card-head { padding: 12px 16px; border-bottom: 1px solid var(--outline-variant); font-weight: 500; font-size: 16px; }
+.card-body { padding: 8px 16px 16px; }
+.row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--outline-variant); }
+.row:last-child { border-bottom: none; }
+.row small { display: block; color: var(--on-surface-variant); font-size: 12px; }
+.switch { position: relative; width: 52px; height: 32px; flex: none; border-radius: 16px; border: 2px solid var(--outline); background: var(--surface-container-high); }
+.switch::after { content: ""; position: absolute; top: 6px; left: 6px; width: 16px; height: 16px; border-radius: 50%; background: var(--outline); }
+.switch.on { background: var(--primary); border-color: var(--primary); }
+.switch.on::after { left: 22px; top: 2px; width: 24px; height: 24px; background: var(--on-primary); }
+label.field { display: block; margin: 12px 0 4px; color: var(--on-surface-variant); font-size: 12px; }
+select, input { width: 100%; height: 40px; border-radius: 8px; border: 1px solid var(--outline); background: transparent; color: inherit; padding: 0 12px; font: inherit; }
+.btn { display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border-radius: 8px; border: 1px solid var(--outline-variant); background: none; color: var(--primary); font: 500 14px Roboto, Arial, sans-serif; }
+.btn.primary { background: var(--primary); color: var(--on-primary); border-color: var(--primary); }
+.btn.danger { color: var(--error); }
+.actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px; }
+@media (max-width: 800px) {
+  .sidebar { display: none; }
+  .menu-btn { display: inline-block; }
+  .grid { grid-template-columns: 1fr; }
+  .content { padding: 16px; }
+  .search { display: none; }
+}
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand"><span class="brand-mark"></span>Pocketbook</div>
+    <nav class="nav">
+      <a href="#">Dashboard</a><a href="#">Transactions</a><a href="#">Budgets</a><a href="#">Reports</a><a href="#" class="active">Settings</a>
+    </nav>
+  </aside>
+  <div class="main">
+    <header class="topbar">
+      <button class="menu-btn" aria-label="Menu">≡</button>
+      <div class="search">Search…</div>
+      <span class="spacer"></span>
+      <div class="avatar">AM</div>
+    </header>
+    <main class="content">
+      <p class="crumbs">Home / Settings</p>
+      <h1>Settings</h1>
+      <div class="grid">
+        <section class="card">
+          <h2 class="card-head">Profile</h2>
+          <div class="card-body">
+            <label class="field" for="name">Full name</label><input id="name" value="Alex Morgan">
+            <label class="field" for="mail">Email</label><input id="mail" value="alex.morgan@example.com">
+            <div class="actions"><button class="btn primary">Save</button></div>
+          </div>
+        </section>
+        <section class="card">
+          <h2 class="card-head">Notifications</h2>
+          <div class="card-body">
+            <div class="row"><span>Allow notifications</span><span class="switch on" role="switch" aria-checked="true"></span></div>
+            <div class="row"><span>Weekly summary<small>Your spending recap every week</small></span><span class="switch on" role="switch" aria-checked="true"></span></div>
+            <div class="row"><span>Bill reminders<small>Before upcoming bills are due</small></span><span class="switch on" role="switch" aria-checked="true"></span></div>
+            <div class="row"><span>Unusual spending alerts</span><span class="switch" role="switch" aria-checked="false"></span></div>
+          </div>
+        </section>
+        <section class="card">
+          <h2 class="card-head">Preferences</h2>
+          <div class="card-body">
+            <label class="field" for="cur">Currency</label><select id="cur"><option>USD — US dollar</option></select>
+            <label class="field" for="day">First day of the week</label><select id="day"><option>Monday</option></select>
+            <label class="field" for="theme">Theme</label><select id="theme"><option>System default</option></select>
+          </div>
+        </section>
+        <section class="card">
+          <h2 class="card-head">Security</h2>
+          <div class="card-body">
+            <div class="row"><span>Password<small>Last changed 3 months ago</small></span><button class="btn">Change</button></div>
+            <div class="row"><span>Linked bank accounts<small>3 linked</small></span><button class="btn">Manage</button></div>
+            <div class="row"><span>Export transactions</span><button class="btn">Export</button></div>
+            <div class="row"><span>Sign out of Pocketbook</span><button class="btn danger">Sign out</button></div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,5 @@
+{
+  "template-m3": { "items": ["overall-polish", "shape-expressive"], "min": 1, "max": 2, "look": "An admin-template layout (sidebar, breadcrumb, two columns of identical bordered cards, 8px corners on everything) with Material 3 baseline color roles: tidy and correct, generic." },
+  "m2-era": { "items": ["overall-polish", "shape-expressive", "color-roles"], "min": 1, "max": 2, "look": "A careful Material Design 2 era screen: elevated purple app bar, 4px corners, drop shadows, all-caps buttons, teal switches and a secondary FAB." },
+  "bootstrap-m3": { "items": ["overall-polish", "component-choice"], "min": 1, "max": 2, "look": "The structure and controls of a common CSS framework (navbar, tabs, small switches, form controls, alert) recolored with Material 3 baseline color roles." }
+}

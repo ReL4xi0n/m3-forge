@@ -12,15 +12,19 @@ export const ITEMS = ['component-choice', 'hierarchy-typography', 'color-roles',
   'spacing-layout', 'interaction-states', 'dark-mode', 'overall-polish'];
 const JUDGE_DISALLOWED = ['Bash', 'PowerShell', 'Edit', 'Write', 'NotebookEdit', 'WebFetch', 'WebSearch', 'Agent', 'Task', ...DISALLOWED_TOOLS];
 
-export function judgePrompt({ ids, root }) {
-  const md = readFileSync(join(root, 'evals', 'judge.md'), 'utf8');
+export const JUDGE_FILES = { v1: { judge: 'judge.md', rubric: 'rubric.md' }, v2: { judge: 'judge-v2.md', rubric: 'rubric-v2.md' } };
+
+export function judgePrompt({ ids, root, version = 'v1' }) {
+  const files = JUDGE_FILES[version];
+  const md = readFileSync(join(root, 'evals', files.judge), 'utf8');
   const m = md.match(/````text\r?\n([\s\S]*?)\r?\n````/);
-  if (!m) throw new Error('judge.md has no prompt block');
-  const rubric = readFileSync(join(root, 'evals', 'rubric.md'), 'utf8').trim();
+  if (!m) throw new Error(`${files.judge} has no prompt block`);
+  const rubric = readFileSync(join(root, 'evals', files.rubric), 'utf8').trim();
   return m[1].replace('{{IDS}}', ids.join(', ')).replace('{{RUBRIC}}', rubric);
 }
 
-export function validateScores(text, ids) {
+// v2 entries also carry "gap" (the most visible design difference from the paired references).
+export function validateScores(text, ids, { version = 'v1' } = {}) {
   const problems = [];
   let arr;
   try {
@@ -35,6 +39,7 @@ export function validateScores(text, ids) {
     if (!ITEMS.includes(e?.item)) problems.push(`unknown item: ${e?.item}`);
     if (!Number.isInteger(e?.score) || e.score < 0 || e.score > 3) problems.push(`bad score for ${key}`);
     if (typeof e?.reason !== 'string' || !e.reason.trim()) problems.push(`no reason for ${key}`);
+    if (version === 'v2' && (typeof e?.gap !== 'string' || !e.gap.trim())) problems.push(`no gap for ${key}`);
     if (seen.has(key)) problems.push(`duplicate ${key}`);
     seen.add(key);
   }
@@ -62,6 +67,7 @@ function batchFolder(judgeDir, ids, dest) {
   if (requests) writeFileSync(join(dest, 'requests.json'), JSON.stringify(pick(requests), null, 2));
   for (const id of ids) for (const v of views[id] ?? []) cpSync(join(judgeDir, v.file), join(dest, v.file));
   if (existsSync(join(judgeDir, 'anchors'))) cpSync(join(judgeDir, 'anchors'), join(dest, 'anchors'), { recursive: true });
+  if (existsSync(join(judgeDir, 'pairs.json'))) writeFileSync(join(dest, 'pairs.json'), JSON.stringify(pick(JSON.parse(readFileSync(join(judgeDir, 'pairs.json'), 'utf8'))), null, 2));
 }
 
 export async function runJudgeBatch(o) {
@@ -69,17 +75,17 @@ export async function runJudgeBatch(o) {
     judgeDir, ids, root, batchId, model = DEFAULT_MODEL, evalRoot = 'C:\\m3-eval',
     tokenFile = join(toolchainRoot(), 'secrets', 'claude-oauth-token'), claudeCmd = ['claude'],
     realCfg = join(process.env.USERPROFILE ?? process.env.HOME ?? '', '.claude'),
-    requireFrozen = true, requireSecretsAcl = true, skipPreflightAncestors = false, retries = 2,
+    requireFrozen = true, requireSecretsAcl = true, skipPreflightAncestors = false, retries = 2, version = 'v1',
   } = o;
   if (requireFrozen) {
-    const f = checkFrozen(root);
+    const f = checkFrozen(root, version);
     if (!f.ok) return { ok: false, attempts: 0, scores: null, problems: f.problems };
   }
   if (requireSecretsAcl && !aclOwnerOnly(dirname(tokenFile)).ok) return { ok: false, attempts: 0, scores: null, problems: ['secrets folder ACL is not owner-only'] };
   const token = readFileSync(tokenFile, 'utf8').trim();
   // prompt and validate default to judge v1; the discrimination test (PC-1) passes its own.
-  const prompt = o.prompt ?? judgePrompt({ ids, root });
-  const validate = o.validate ?? (text => validateScores(text, ids));
+  const prompt = o.prompt ?? judgePrompt({ ids, root, version });
+  const validate = o.validate ?? (text => validateScores(text, ids, { version }));
   const attemptsLog = [];
   for (let attempt = 1; attempt <= retries + 1; attempt++) {
     const work = join(evalRoot, 'judge', `${batchId}-${attempt}`);

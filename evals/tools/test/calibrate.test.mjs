@@ -104,3 +104,16 @@ test('runCalibrationRound: the default eval root is the absolute C:\m3-eval, nev
   const { DEFAULT_EVAL_ROOT } = await import('../calibrate.mjs');
   assert.equal(DEFAULT_EVAL_ROOT, String.raw`C:\m3-eval`);
 });
+
+test('evaluateCalibration v2: middle-band pages must score 1-2 on their listed items', async () => {
+  const { evaluateCalibration } = await import('../calibrate.mjs');
+  const middle = { tmpl: { items: ['overall-polish', 'shape-expressive'], min: 1, max: 2 } };
+  const mapping = { m1: { kind: 'middle', name: 'tmpl' } };
+  const ok = evaluateCalibration({ scores: [{ id: 'm1', item: 'overall-polish', score: 2 }, { id: 'm1', item: 'shape-expressive', score: 1 }], mapping, expected: {}, middle });
+  assert.equal(ok.pass, true, ok.failures.join('; '));
+  const high = evaluateCalibration({ scores: [{ id: 'm1', item: 'overall-polish', score: 3 }, { id: 'm1', item: 'shape-expressive', score: 2 }], mapping, expected: {}, middle });
+  assert.equal(high.pass, false);
+  assert.match(high.failures[0], /middle tmpl: overall-polish scored 3/);
+  const low = evaluateCalibration({ scores: [{ id: 'm1', item: 'overall-polish', score: 0 }, { id: 'm1', item: 'shape-expressive', score: 2 }], mapping, expected: {}, middle });
+  assert.equal(low.pass, false, 'a middle page scored 0 also fails');
+});

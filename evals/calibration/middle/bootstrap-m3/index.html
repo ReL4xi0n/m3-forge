@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pocketbook settings</title>
+<!-- Calibration middle band (hand-written, not model output): a tidy settings page with the
+     structure and controls of a common CSS framework (navbar, tabs, small switches, form controls,
+     alert), recolored with Material 3 baseline color roles. Expected 1-2, not 3. -->
+<style>
+:root {
+  color-scheme: light;
+  --primary: #6750a4; --on-primary: #ffffff; --primary-container: #eaddff; --on-primary-container: #21005d;
+  --surface: #fef7ff; --surface-container: #f3edf7; --on-surface: #1d1b20; --on-surface-variant: #49454f;
+  --outline: #79747e; --outline-variant: #cac4d0; --body: #ffffff;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --primary: #d0bcff; --on-primary: #381e72; --primary-container: #4f378b; --on-primary-container: #eaddff;
+    --surface: #141218; --surface-container: #211f26; --on-surface: #e6e0e9; --on-surface-variant: #cac4d0;
+    --outline: #938f99; --outline-variant: #49454f; --body: #1d1b20;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; font-size: 16px; line-height: 1.5; color: var(--on-surface); background: var(--surface); }
+h2, h5, p { margin-top: 0; }
+.navbar { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px; background: var(--surface-container); border-bottom: 1px solid var(--outline-variant); }
+.navbar-brand { font-size: 20px; font-weight: 500; color: var(--on-surface); text-decoration: none; }
+.navbar-nav { display: flex; gap: 8px; list-style: none; margin: 0; padding: 0; }
+.nav-link { display: block; padding: 8px; color: var(--on-surface-variant); text-decoration: none; }
+.nav-link.active { color: var(--on-surface); font-weight: 500; }
+.container { max-width: 960px; margin: 0 auto; padding: 24px 12px; }
+h2 { font-size: 32px; font-weight: 500; line-height: 1.2; margin-bottom: 16px; }
+.nav-tabs { display: flex; list-style: none; padding: 0; margin: 0 0 24px; border-bottom: 1px solid var(--outline-variant); flex-wrap: wrap; }
+.nav-tabs a { display: block; padding: 8px 16px; margin-bottom: -1px; border: 1px solid transparent; border-radius: 6px 6px 0 0; color: var(--primary); text-decoration: none; }
+.nav-tabs a.active { color: var(--on-surface); background: var(--body); border-color: var(--outline-variant) var(--outline-variant) var(--body); }
+.alert { padding: 16px; margin-bottom: 24px; border: 1px solid var(--outline-variant); border-radius: 6px; background: var(--primary-container); color: var(--on-primary-container); }
+.row { display: flex; flex-wrap: wrap; gap: 24px; }
+.col { flex: 1 1 280px; }
+.card { border: 1px solid var(--outline-variant); border-radius: 6px; background: var(--body); }
+.card-header { padding: 8px 16px; background: var(--surface-container); border-bottom: 1px solid var(--outline-variant); border-radius: 6px 6px 0 0; }
+.card-body { padding: 16px; }
+h5 { font-size: 20px; font-weight: 500; margin: 0; }
+.form-label { display: inline-block; margin-bottom: 8px; }
+.form-control, .form-select { display: block; width: 100%; padding: 6px 12px; margin-bottom: 16px; font: inherit; color: var(--on-surface); background: var(--body); border: 1px solid var(--outline); border-radius: 6px; }
+.form-check { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; min-height: 24px; }
+.form-switch .form-check-input { position: relative; width: 32px; height: 16px; flex: none; border: 1px solid var(--outline); border-radius: 16px; background: var(--body); }
+.form-switch .form-check-input::after { content: ""; position: absolute; top: 2px; left: 2px; width: 10px; height: 10px; border-radius: 50%; background: var(--outline); }
+.form-switch .form-check-input.checked { background: var(--primary); border-color: var(--primary); }
+.form-switch .form-check-input.checked::after { left: 18px; background: var(--on-primary); }
+.form-text { display: block; margin: -4px 0 12px 40px; font-size: 14px; color: var(--on-surface-variant); }
+.btn { display: inline-block; padding: 6px 12px; font: inherit; border: 1px solid transparent; border-radius: 6px; cursor: pointer; }
+.btn-primary { background: var(--primary); color: var(--on-primary); }
+.btn-outline-secondary { border-color: var(--outline); color: var(--on-surface-variant); background: transparent; }
+.btn-link { background: none; color: var(--primary); text-decoration: underline; padding-left: 0; }
+hr { border: 0; border-top: 1px solid var(--outline-variant); margin: 16px 0; }
+</style>
+</head>
+<body>
+<nav class="navbar">
+  <a class="navbar-brand" href="#">Pocketbook</a>
+  <ul class="navbar-nav">
+    <li><a class="nav-link" href="#">Overview</a></li>
+    <li><a class="nav-link" href="#">Transactions</a></li>
+    <li><a class="nav-link active" href="#">Settings</a></li>
+  </ul>
+</nav>
+<div class="container">
+  <h2>Settings</h2>
+  <ul class="nav-tabs">
+    <li><a class="active" href="#">General</a></li>
+    <li><a href="#">Notifications</a></li>
+    <li><a href="#">Security</a></li>
+  </ul>
+  <div class="alert">Your changes are saved to all devices signed in to this account.</div>
+  <div class="row">
+    <div class="col">
+      <div class="card">
+        <div class="card-header"><h5>Profile</h5></div>
+        <div class="card-body">
+          <label class="form-label" for="n">Full name</label><input class="form-control" id="n" value="Alex Morgan">
+          <label class="form-label" for="e">Email address</label><input class="form-control" id="e" value="alex.morgan@example.com">
+          <label class="form-label" for="c">Currency</label><select class="form-select" id="c"><option>USD — US dollar</option></select>
+          <label class="form-label" for="d">First day of the week</label><select class="form-select" id="d"><option>Monday</option></select>
+          <button class="btn btn-primary">Save changes</button> <button class="btn btn-outline-secondary">Cancel</button>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <div class="card-header"><h5>Notifications</h5></div>
+        <div class="card-body">
+          <div class="form-check form-switch"><span class="form-check-input checked" role="switch" aria-checked="true"></span><label>Allow notifications</label></div>
+          <div class="form-check form-switch"><span class="form-check-input checked" role="switch" aria-checked="true"></span><label>Weekly summary</label></div>
+          <small class="form-text">Your spending recap every week.</small>
+          <div class="form-check form-switch"><span class="form-check-input checked" role="switch" aria-checked="true"></span><label>Bill reminders</label></div>
+          <small class="form-text">Before upcoming bills are due.</small>
+          <div class="form-check form-switch"><span class="form-check-input" role="switch" aria-checked="false"></span><label>Unusual spending alerts</label></div>
+          <hr>
+          <p>Linked bank accounts: 3</p>
+          <button class="btn btn-link">Export transactions</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

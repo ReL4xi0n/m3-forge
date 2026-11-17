@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pocketbook settings</title>
+<!-- Calibration middle band (hand-written, not model output): a careful Material Design 2 era
+     settings screen (2018-2020 style). Correct and consistent for its time, but not Material 3.
+     Expected 1-2, not 3. -->
+<style>
+:root {
+  color-scheme: light;
+  --primary: #6200ee; --primary-variant: #3700b3; --on-primary: #ffffff;
+  --secondary: #018786; --on-secondary: #ffffff;
+  --background: #f5f5f5; --surface: #ffffff; --on-surface: rgba(0, 0, 0, 0.87); --on-surface-medium: rgba(0, 0, 0, 0.6);
+  --divider: rgba(0, 0, 0, 0.12); --track-off: rgba(0, 0, 0, 0.38); --thumb-off: #fafafa;
+  --app-bar: #6200ee; --on-app-bar: #ffffff;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --primary: #bb86fc; --primary-variant: #3700b3; --on-primary: #000000;
+    --secondary: #03dac6; --on-secondary: #000000;
+    --background: #121212; --surface: #1e1e1e; --on-surface: rgba(255, 255, 255, 0.87); --on-surface-medium: rgba(255, 255, 255, 0.6);
+    --divider: rgba(255, 255, 255, 0.12); --track-off: rgba(255, 255, 255, 0.38); --thumb-off: #bdbdbd;
+    --app-bar: #272727; --on-app-bar: rgba(255, 255, 255, 0.87);
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--background); color: var(--on-surface); font-family: Roboto, "Segoe UI", Arial, sans-serif; font-size: 16px; line-height: 24px; letter-spacing: 0.5px; }
+h1, h2, p { margin: 0; }
+.app-bar { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; gap: 24px; height: 64px; padding: 0 16px; background: var(--app-bar); color: var(--on-app-bar); box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12); }
+.app-bar h1 { font-size: 20px; font-weight: 500; letter-spacing: 0.15px; }
+.app-bar svg { width: 24px; height: 24px; fill: currentColor; }
+.content { max-width: 680px; margin: 0 auto; padding: 16px 16px 88px; }
+.overline { padding: 24px 16px 8px; font-size: 12px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; color: var(--primary); }
+.card { background: var(--surface); border-radius: 4px; box-shadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12); }
+.item { display: flex; align-items: center; gap: 32px; min-height: 72px; padding: 8px 16px; border-bottom: 1px solid var(--divider); }
+.item:last-child { border-bottom: none; }
+.item .text { flex: 1; }
+.item .secondary { display: block; font-size: 14px; line-height: 20px; letter-spacing: 0.25px; color: var(--on-surface-medium); }
+.avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--primary); color: var(--on-primary); display: grid; place-items: center; font-weight: 500; flex: none; }
+.switch { position: relative; width: 36px; height: 14px; flex: none; border-radius: 7px; background: var(--track-off); }
+.switch::after { content: ""; position: absolute; top: -3px; left: -2px; width: 20px; height: 20px; border-radius: 50%; background: var(--thumb-off); box-shadow: 0 1px 3px rgba(0,0,0,.4); }
+.switch.on { background: color-mix(in srgb, var(--secondary) 50%, transparent); }
+.switch.on::after { left: 18px; background: var(--secondary); }
+.value { color: var(--on-surface-medium); font-size: 14px; }
+.btn { height: 36px; padding: 0 16px; white-space: nowrap; border: none; border-radius: 4px; font: 500 14px Roboto, Arial, sans-serif; letter-spacing: 1.25px; text-transform: uppercase; background: none; color: var(--primary); }
+.btn.contained { background: var(--primary); color: var(--on-primary); box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12); }
+.actions { display: flex; justify-content: flex-end; gap: 8px; padding: 8px; }
+.fab { position: fixed; right: 16px; bottom: 16px; width: 56px; height: 56px; border-radius: 50%; border: none; background: var(--secondary); color: var(--on-secondary); box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12); display: grid; place-items: center; }
+.fab svg { width: 24px; height: 24px; fill: currentColor; }
+</style>
+</head>
+<body>
+<header class="app-bar">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+  <h1>Settings</h1>
+</header>
+<main class="content">
+  <p class="overline">Account</p>
+  <section class="card">
+    <div class="item"><span class="avatar">AM</span><span class="text">Alex Morgan<span class="secondary">alex.morgan@example.com</span></span></div>
+    <div class="item"><span class="text">Change password<span class="secondary">Last changed 3 months ago</span></span></div>
+    <div class="item"><span class="text">Linked bank accounts</span><span class="value">3 linked</span></div>
+  </section>
+  <p class="overline">Notifications</p>
+  <section class="card">
+    <div class="item"><span class="text">Allow notifications</span><span class="switch on" role="switch" aria-checked="true"></span></div>
+    <div class="item"><span class="text">Weekly summary<span class="secondary">Your spending recap every week</span></span><span class="switch on" role="switch" aria-checked="true"></span></div>
+    <div class="item"><span class="text">Bill reminders<span class="secondary">Before upcoming bills are due</span></span><span class="switch on" role="switch" aria-checked="true"></span></div>
+    <div class="item"><span class="text">Unusual spending alerts<span class="secondary">When a charge looks out of the ordinary</span></span><span class="switch" role="switch" aria-checked="false"></span></div>
+  </section>
+  <p class="overline">Preferences</p>
+  <section class="card">
+    <div class="item"><span class="text">Currency</span><span class="value">USD</span></div>
+    <div class="item"><span class="text">First day of the week</span><span class="value">Monday</span></div>
+    <div class="item"><span class="text">Theme</span><span class="value">System default</span></div>
+    <div class="actions"><button class="btn">Export transactions</button><button class="btn contained">Save changes</button></div>
+  </section>
+</main>
+<button class="fab" aria-label="Add account"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg></button>
+</body>
+</html>
