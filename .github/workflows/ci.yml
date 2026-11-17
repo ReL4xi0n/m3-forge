@@ -15,6 +15,7 @@ jobs:
         with: { node-version: 22 }
       - run: npm test
       - run: node tools/ci/overfit.mjs
+      - run: node tools/ci/skill-trace.mjs
       - run: node tools/ci/validate-plugin.mjs
       - run: node tools/build/sync-versions.mjs --check
       - run: node tools/ci/skill-size.mjs

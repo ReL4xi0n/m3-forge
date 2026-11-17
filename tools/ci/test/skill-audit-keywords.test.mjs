@@ -11,9 +11,6 @@ import { auditTranscript } from '../../../evals/tools/isolation.mjs';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 const skill = join(root, 'plugin', 'skills', 'material3');
 
-// TODO(Task 10): SKILL.md is rewritten in Task 10; remove this exception there.
-const ALLOWED_UNTIL_TASK_10 = new Set(['SKILL.md']);
-
 function* files(dir) {
   for (const e of readdirSync(dir, { withFileTypes: true })) {
     const p = join(dir, e.name);
@@ -38,7 +35,6 @@ test('no file of the shipped skill folder contains an audit keyword in its path 
   const found = [];
   for (const file of files(skill)) {
     const rel = relative(skill, file).split('\\').join('/');
-    if (ALLOWED_UNTIL_TASK_10.has(rel)) continue;
     const hits = new Set([...keywordHits(rel), ...keywordHits(readFileSync(file).toString('latin1'))]);
     for (const k of hits) found.push(`${rel}: ${k}`);
   }
