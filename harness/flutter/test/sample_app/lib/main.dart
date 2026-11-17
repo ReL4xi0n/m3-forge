@@ -1,5 +1,7 @@
 // Hand-written sample for harness/flutter/test/capture.test.mjs. It plants:
 // - one 32x32 tappable InkWell (a tap-target hit; the minimum is 48x48);
+// - one 32x32 focusable-only box (a touch-target hit in harness v2, which also checks focusable nodes);
+// - one legacy Material Icons glyph (Icons.settings), drawn only when the harness loads the app's fonts;
 // - one low-contrast Text on white (a contrast hit, in both themes);
 // - one disabled 24x24 InkWell and one disabled TextButton, which the guidelines must skip.
 import 'package:flutter/material.dart';
@@ -46,6 +48,10 @@ class SampleScreen extends StatelessWidget {
                     child: Center(child: Text('Go', style: TextStyle(fontSize: 12, color: Color(0xFF1B1B1F)))),
                   ),
                 ),
+                const SizedBox(height: 16),
+                const Focus(child: SizedBox(width: 32, height: 32, child: Center(child: Text('F', style: TextStyle(fontSize: 12, color: Color(0xFF1B1B1F)))))),
+                const SizedBox(height: 16),
+                const Icon(Icons.settings, size: 24, color: Color(0xFF1B1B1F)),
                 const SizedBox(height: 16),
                 const InkWell(onTap: null, child: SizedBox(width: 24, height: 24)),
                 const SizedBox(height: 16),

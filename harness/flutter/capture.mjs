@@ -120,6 +120,7 @@ export async function captureFlutter({ projectDir, outDir, timeoutMs = 15 * 60_0
     rmSync(join(outDir, `${t}-${VIEWPORT}.png`), { force: true });
     rmSync(join(outDir, `runtime-${t}.json`), { force: true });
   }
+  rmSync(join(outDir, 'app-fonts.json'), { force: true });
 
   const testDir = join(projectDir, 'test');
   const hadTestDir = existsSync(testDir);
@@ -168,9 +169,11 @@ export async function captureFlutter({ projectDir, outDir, timeoutMs = 15 * 60_0
     capture.raw[theme] = raw;
     capture.shots.push({ file: png, theme, viewport: VIEWPORT });
     capture.runtime.contrast.push(...parseGuidelineFailures(raw.textContrastGuideline?.reason, theme));
-    capture.runtime.targets.push(...parseGuidelineFailures(raw.androidTapTargetGuideline?.reason, theme));
+    capture.runtime.targets.push(...parseGuidelineFailures((raw.touchTargetGuideline ?? raw.androidTapTargetGuideline)?.reason, theme));
   }
-  capture.raw.excluded = 'Flutter guidelines skip nodes without a tap/long-press action (null callbacks) and nodes with enabled: false.';
+  const fontsFile = join(outDir, 'app-fonts.json');
+  if (existsSync(fontsFile)) capture.raw.appFonts = JSON.parse(readFileSync(fontsFile, 'utf8'));
+  capture.raw.excluded = 'Touch targets: enabled nodes that can be tapped, long-pressed or focused; disabled nodes (enabled: false, null callbacks) and inline links are left out. Contrast: textContrastGuideline.';
   return finish(outDir, capture);
 }
 

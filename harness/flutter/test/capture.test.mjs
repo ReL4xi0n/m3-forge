@@ -60,10 +60,16 @@ test('captureFlutter: sample app gives 2 shots, a tap-target hit and a contrast 
   assert.ok(existsSync(join(outDir, 'light-412x915.png')));
   assert.ok(existsSync(join(outDir, 'dark-412x915.png')));
 
-  // One 32x32 target per theme; the disabled 24x24 InkWell is excluded.
-  assert.ok(r.runtime.targets.length >= 1, JSON.stringify(r.runtime));
-  assert.equal(r.runtime.targets.filter(t => t.where.startsWith('light:')).length, 1, JSON.stringify(r.runtime.targets));
+  // Two 32x32 targets per theme (the tappable InkWell and the focusable-only box, harness v2 scope);
+  // the disabled 24x24 InkWell and the disabled TextButton are excluded.
+  for (const theme of ['light', 'dark']) {
+    assert.equal(r.runtime.targets.filter(t => t.where.startsWith(`${theme}:`)).length, 2, JSON.stringify(r.runtime.targets));
+  }
   assert.ok(r.runtime.targets.every(t => /Size\(32\.0, 32\.0\)/.test(t.detail)), JSON.stringify(r.runtime.targets));
+  assert.ok(r.runtime.targets.some(t => /actions: \[[^\]]*tap/.test(t.where)), 'the tappable InkWell');
+  assert.ok(r.runtime.targets.some(t => /actions: \[focus\]/.test(t.where)), 'the focusable-only box');
+  // The app's fonts are loaded (harness v2): MaterialIcons comes from uses-material-design.
+  assert.ok(r.raw.appFonts?.families.some(f => f.family === 'MaterialIcons'), JSON.stringify(r.raw.appFonts));
   // The faint caption fails; the disabled TextButton's label is excluded.
   assert.ok(r.runtime.contrast.length >= 1, JSON.stringify(r.runtime));
   assert.ok(r.runtime.contrast.some(c => /Faint caption/.test(c.where)), JSON.stringify(r.runtime.contrast));

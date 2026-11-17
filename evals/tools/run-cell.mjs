@@ -3,7 +3,6 @@
 import { spawn, execFileSync } from 'node:child_process';
 import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative, resolve } from 'node:path';
-import { tmpdir } from 'node:os';
 import { preflight, dropRepoPaths, checkInit, auditTranscript, classifyEnd, childEnv, findInit, ownerInstalledNames, effectiveForbidden, probeBuiltIns, DISALLOWED_TOOLS } from './isolation.mjs';
 
 let builtInCache = null;
@@ -44,12 +43,17 @@ const permPath = p => {
 
 // Tools a run starts (the Dart analysis server, npm, Next.js telemetry) write to APPDATA/LOCALAPPDATA;
 // point both into the run folder so nothing lands in the user profile (found in the pilot: Dart caches).
+// TEMP/TMP get their own folder per run as well (owner, 2026-11-17: a baseline Flutter session wrote
+// screenshots to the user temp folder, shared by every run).
 export function sandboxEnv(env, dir) {
   const roaming = join(dir, 'Roaming');
   const local = join(dir, 'Local');
-  mkdirSync(roaming, { recursive: true });
-  mkdirSync(local, { recursive: true });
-  return { ...env, APPDATA: roaming, LOCALAPPDATA: local };
+  const temp = join(dir, 'Temp');
+  for (const d of [roaming, local, temp]) mkdirSync(d, { recursive: true });
+  const out = { ...env };
+  // Windows env keys are case-insensitive; drop any spelling of TEMP/TMP before setting them.
+  for (const k of Object.keys(out)) if (/^(temp|tmp)$/i.test(k)) delete out[k];
+  return { ...out, APPDATA: roaming, LOCALAPPDATA: local, TEMP: temp, TMP: temp };
 }
 
 export function settingsFor({ repoRoot, realCfg, secretsDir, cfgDir }) {
@@ -165,7 +169,8 @@ export async function runCell(o) {
   }
   if (!existsSync(tokenFile)) return record('no-token', { problems: [`token file missing: ${tokenFile}`] });
   const token = readFileSync(tokenFile, 'utf8').trim();
-  const env = sandboxEnv(dropRepoPaths(withToolchain(childEnv(process.env, { CLAUDE_CONFIG_DIR: cfgDir, CLAUDE_CODE_OAUTH_TOKEN: token })), repoRoot), join(evalRoot, 'appdata', runId, cell.cell));
+  const sandboxDir = join(evalRoot, 'appdata', runId, cell.cell);
+  const env = sandboxEnv(dropRepoPaths(withToolchain(childEnv(process.env, { CLAUDE_CONFIG_DIR: cfgDir, CLAUDE_CODE_OAUTH_TOKEN: token })), repoRoot), sandboxDir);
 
   checks.preflight = preflight({ workDir, cfgDir, env, checkAncestors: !skipPreflightAncestors, repoRoot });
   if (!checks.preflight.ok) { rmSync(cfgDir, { recursive: true, force: true }); return record('invalid-isolation', { checks }); }
@@ -182,7 +187,9 @@ export async function runCell(o) {
   checks.init = checkInit(init, { workDir, cfgDir, forbiddenNames: forbiddenFor(realCfg, evalRoot, o.builtIns), allowedSkills, preInit });
   checks.audit = auditTranscript(p.lines, {
     workDir, repoRoot, forbiddenRoots: [realCfg, secretsDir],
-    allowRoots: [toolchainRoot(), tmpdir(), join(evalRoot, 'work', runId)],
+    // The run's own TEMP is allowed; the user temp folder (tmpdir()) no longer is, so a path there
+    // shows up as a warning.
+    allowRoots: [toolchainRoot(), env.TEMP, join(evalRoot, 'work', runId)],
   });
   const end = p.timedOut ? 'timeout' : classifyEnd(p.lines);
   const res = p.lines.map(l => { try { return JSON.parse(l); } catch { return null; } }).filter(e => e?.type === 'result').pop() ?? null;

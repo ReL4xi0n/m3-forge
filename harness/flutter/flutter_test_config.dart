@@ -9,6 +9,13 @@
 //
 // Text drawn without a loaded family falls back to the test font (boxes), so Roboto is registered
 // under every family name the framework's default typographies ask for.
+//
+// The app's own fonts come first (harness v2): every family in the FontManifest.json that
+// `flutter test` builds (fonts the app declares, MaterialIcons when the app sets
+// uses-material-design, package fonts such as CupertinoIcons). Harness v1 did not load them, so
+// Icons.* and app fonts rendered as boxes in the screenshots, unlike on a device. A family the app
+// declares is not registered again from the toolchain fonts. With M3_CAPTURE_OUT set, the loaded
+// app families are written to app-fonts.json there.
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -86,12 +93,53 @@ Future<void> m3LoadFonts() async {
   final Uint8List roboto = read('Roboto.ttf');
   final Uint8List symbols = read('MaterialSymbolsOutlined.ttf');
   read('MaterialSymbolsOutlined.codepoints'); // verified here; m3SymbolCodepoint reads it later
-  await register(m3RobotoFlex, flex);
-  for (final String alias in m3RobotoAliases) {
-    await register(alias, roboto);
+  final Set<String> app = await m3LoadAppFonts();
+  Future<void> ours(String family, Uint8List bytes) async {
+    if (!app.contains(family)) await register(family, bytes);
   }
-  await register(m3Symbols, symbols);
+  await ours(m3RobotoFlex, flex);
+  for (final String alias in m3RobotoAliases) {
+    await ours(alias, roboto);
+  }
+  await ours(m3Symbols, symbols);
   _loaded = true;
+}
+
+/// Registers every family in the test asset bundle's FontManifest.json and returns their names.
+/// A project without the manifest (no fonts, no uses-material-design) loads none.
+Future<Set<String>> m3LoadAppFonts() async {
+  final Set<String> families = <String>{};
+  final List<Map<String, Object?>> report = <Map<String, Object?>>[];
+  String? manifest;
+  try {
+    manifest = await rootBundle.loadString('FontManifest.json');
+  } catch (_) {
+    manifest = null;
+  }
+  if (manifest != null) {
+    for (final dynamic entry in jsonDecode(manifest) as List<dynamic>) {
+      final Map<String, dynamic> e = entry as Map<String, dynamic>;
+      final String family = e['family'] as String;
+      final FontLoader loader = FontLoader(family);
+      final List<String> assets = <String>[];
+      for (final dynamic f in (e['fonts'] as List<dynamic>? ?? <dynamic>[])) {
+        final String asset = (f as Map<String, dynamic>)['asset'] as String;
+        assets.add(asset);
+        loader.addFont(rootBundle.load(asset));
+      }
+      await loader.load();
+      families.add(family);
+      report.add(<String, Object?>{'family': family, 'assets': assets});
+    }
+  }
+  final String? out = Platform.environment['M3_CAPTURE_OUT'];
+  if (out != null && out.isNotEmpty) {
+    Directory(out).createSync(recursive: true);
+    File('$out${Platform.pathSeparator}app-fonts.json').writeAsStringSync(
+      const JsonEncoder.withIndent('  ').convert(<String, Object?>{'manifest': manifest != null, 'families': report}),
+    );
+  }
+  return families;
 }
 
 /// Reads `name codepoint` lines from MaterialSymbolsOutlined.codepoints (checked against fonts.json

@@ -53,3 +53,5 @@ Standing rules for all phases:
   `node tools/guard/check-public-diff.mjs --commits origin/main..HEAD`. The pre-push hook and CI
   (`--commits`) enforce noreply emails on every new commit.
 - `backup/*` branches are local only; the pre-push hook refuses to push them.
+- Working style (owner, 2026-11-17): work quietly. No running commentary between tool calls; report
+  only at stop points and when the work is done. The final report may be long.

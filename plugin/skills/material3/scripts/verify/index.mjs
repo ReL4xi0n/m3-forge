@@ -1,5 +1,7 @@
 #!/usr/bin/env node
-// m3-forge verify v1: static checks on UI source plus the harness runtime results.
+// m3-forge verify v2: static checks on UI source plus the harness runtime results. The static checks
+// are unchanged from v1; v2 changes the harness runtime scope (Flutter touch targets) and the scoring
+// (evals/automated-v2.md).
 //
 //   verify({ projectDir, platform, runtime }) -> {
 //     violations: [{ check, file, line, detail, severity }], counts, uiLines, exitCode, ... }
@@ -109,7 +111,7 @@ async function main(argv) {
   const result = await verify({ projectDir, platform, runtime });
   const outDir = resolve(out || projectDir);
   await mkdir(outDir, { recursive: true });
-  await writeFile(join(outDir, 'verify.json'), JSON.stringify({ tool: 'm3-forge verify v1', ...result }, null, 2) + '\n');
+  await writeFile(join(outDir, 'verify.json'), JSON.stringify({ tool: 'm3-forge verify v2', ...result }, null, 2) + '\n');
   console.log(summarize(result));
   return result.exitCode;
 }

@@ -146,6 +146,8 @@ async function main() {
   const judgeDir = join('C:\\m3-eval', 'judge-in', outId);
   rmSync(judgeDir, { recursive: true, force: true });
   mkdirSync(judgeDir, { recursive: true });
+  // Playwright reads PLAYWRIGHT_BROWSERS_PATH on first import: the toolchain's Chromium, as in harness/web.
+  process.env.PLAYWRIGHT_BROWSERS_PATH = (await import('./toolchain-env.mjs')).withToolchain(process.env).PLAYWRIGHT_BROWSERS_PATH;
   const { chromium } = await import('playwright');
   const browser = await chromium.launch();
   for (const it of mix.items) await normalize(browser, it.source === 'real' ? join(refDir, it.file) : it.file, join(judgeDir, `${it.id}.png`), WIDTH[it.formFactor]);

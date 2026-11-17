@@ -63,3 +63,17 @@ test('isQuotaStop: a session that ends on a usage or rate limit stops the batch;
   assert.equal(isQuotaStop({ status: 'session-error', resultText: 'API Error: 500 overloaded' }), false);
   assert.equal(isQuotaStop({ status: 'ok', resultText: null }), false);
 });
+
+test('automatedScores v2: icon source is its own item and no longer part of anti-patterns', () => {
+  const v2 = (counts, uiLines = 100) => ({ counts, uiLines });
+  assert.deepEqual(automatedScores(v2({}), true, 'v2'), { 'token-fidelity': 3, 'contrast-targets': 3, 'anti-patterns': 3, 'icon-source': 3 });
+  const legacyIcons = automatedScores(v2({ 'icon-source': 25 }), true, 'v2');
+  assert.equal(legacyIcons['anti-patterns'], 3, 'Icons.* alone does not zero anti-patterns');
+  assert.equal(legacyIcons['icon-source'], 0);
+  assert.equal(automatedScores(v2({ 'icon-source': 1 }), true, 'v2')['icon-source'], 2);
+  assert.equal(automatedScores(v2({ 'icon-source': 4 }), true, 'v2')['icon-source'], 1);
+  assert.equal(automatedScores(v2({ 'shadow-gradient': 2, 'foreign-styling': 2 }), true, 'v2')['anti-patterns'], 1);
+  assert.deepEqual(automatedScores(null, true, 'v2'), { 'token-fidelity': 0, 'contrast-targets': 0, 'anti-patterns': 0, 'icon-source': 0 });
+  assert.deepEqual(automatedScores(v2({ 'icon-source': 25 }), true), automatedScores(v2({ 'icon-source': 25 }), true, 'v1'), 'v1 stays the default');
+  assert.equal(automatedScores(v2({ 'icon-source': 25 }), true)['anti-patterns'], 0, 'v1 unchanged');
+});

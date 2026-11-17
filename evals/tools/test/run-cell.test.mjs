@@ -135,6 +135,18 @@ test('sandboxEnv: APPDATA and LOCALAPPDATA point into the run folder, so tools a
   assert.equal(e.PATH, 'p');
 });
 
+test('sandboxEnv: TEMP and TMP get a folder of their own per run, whatever their spelling was', async () => {
+  const { sandboxEnv } = await import('../run-cell.mjs');
+  const base = mkdtempSync(join(tmpdir(), 'm3sbx-'));
+  const e = sandboxEnv({ Temp: 'C:/Users/x/AppData/Local/Temp', tmp: 'C:/Users/x/AppData/Local/Temp', PATH: 'p' }, join(base, 'appdata'));
+  assert.equal(e.TEMP, join(base, 'appdata', 'Temp'));
+  assert.equal(e.TMP, e.TEMP);
+  assert.ok(existsSync(e.TEMP));
+  assert.deepEqual(Object.keys(e).filter(k => /^(temp|tmp)$/i.test(k)).sort(), ['TEMP', 'TMP']);
+  const other = sandboxEnv({}, join(base, 'appdata2'));
+  assert.notEqual(other.TEMP, e.TEMP);
+});
+
 test('copyRunScanned: files unchanged from the fixture are not copied (they are public already)', () => {
   const fixture = mkdtempSync(join(tmpdir(), 'm3fx-'));
   const src = mkdtempSync(join(tmpdir(), 'm3src-'));

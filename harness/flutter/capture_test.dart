@@ -5,8 +5,12 @@
 // For each theme it calls the app's main(), settles, then writes to M3_CAPTURE_OUT:
 //   <theme>-412x915.png      the root render view at device pixel ratio 2.625
 //   runtime-<theme>.json     textContrastGuideline and androidTapTargetGuideline results
-// Guideline failures are recorded, not thrown. Both guidelines skip what Flutter skips: nodes with
-// no tap/long-press action (null callbacks) and nodes marked enabled: false.
+// Guideline failures are recorded, not thrown.
+// - Contrast: flutter_test's textContrastGuideline.
+// - Touch targets (harness v2): m3TouchTargetGuideline, the same scope as the web and Compose
+//   harnesses: every enabled node that can be tapped, long-pressed or focused, below 48x48 logical
+//   px. Disabled nodes (enabled: false, null callbacks) and inline links are left out. Flutter's own
+//   androidTapTargetGuideline (harness v1) looked only at tap/long-press nodes.
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -30,6 +34,31 @@ Future<void> _runMain() async {
   final Object? result = entry is Function() ? entry() : Function.apply(entry, <Object>[<String>[]]);
   if (result is Future) await result;
 }
+
+/// Flutter's minimum tap target check (its geometry, including the skip for nodes cut by a
+/// scrollable or the screen edge, whose clipped rect would read too small), with the harness scope.
+class M3TouchTargetGuideline extends MinimumTapTargetGuideline {
+  const M3TouchTargetGuideline()
+      : super(size: const Size(48, 48), link: 'https://support.google.com/accessibility/android/answer/7101858');
+
+  @override
+  bool shouldSkipNode(SemanticsNode node) {
+    final SemanticsData data = node.getSemanticsData();
+    final ui.SemanticsFlags flags = data.flagsCollection;
+    if (flags.isHidden) return true;
+    if (flags.isEnabled == ui.Tristate.isFalse) return true; // disabled, like :disabled and Disabled
+    final bool clickable = data.hasAction(ui.SemanticsAction.tap) || data.hasAction(ui.SemanticsAction.longPress);
+    final bool focusable = flags.isFocused != ui.Tristate.none;
+    if (!clickable && !focusable) return true;
+    if (flags.isLink) return true; // a link in running text, as the web harness exempts
+    return false;
+  }
+
+  @override
+  String get description => 'Clickable or focusable nodes should be at least $size';
+}
+
+const M3TouchTargetGuideline m3TouchTargetGuideline = M3TouchTargetGuideline();
 
 Future<Map<String, Object?>> _guideline(WidgetTester tester, AccessibilityGuideline guideline) async {
   try {
@@ -67,7 +96,7 @@ void main() {
       }
 
       final Map<String, Object?> contrast = await _guideline(tester, textContrastGuideline);
-      final Map<String, Object?> targets = await _guideline(tester, androidTapTargetGuideline);
+      final Map<String, Object?> targets = await _guideline(tester, m3TouchTargetGuideline);
 
       final RenderView view = tester.binding.renderViews.first;
       final OffsetLayer layer = view.debugLayer! as OffsetLayer;
@@ -89,7 +118,8 @@ void main() {
           'physicalSize': <double>[view.paintBounds.width, view.paintBounds.height],
           'settle': settle,
           'textContrastGuideline': contrast,
-          'androidTapTargetGuideline': targets,
+          'touchTargetGuideline': targets,
+          'harness': 'v2',
         }),
       );
       semantics.dispose();

@@ -39,6 +39,12 @@ export function withToolchain(env) {
     const dst = join(shims, f);
     if (!existsSync(dst) || !readFileSync(dst).equals(src)) writeFileSync(dst, src);
   }
+  // Memory limits for every Gradle build (tools/toolchain/gradle.properties).
+  const gradleHome = out.GRADLE_USER_HOME;
+  mkdirSync(gradleHome, { recursive: true });
+  const props = readFileSync(join(repo, 'tools', 'toolchain', 'gradle.properties'));
+  const propsDst = join(gradleHome, 'gradle.properties');
+  if (!existsSync(propsDst) || !readFileSync(propsDst).equals(props)) writeFileSync(propsDst, props);
   const prepend = [shims, join(java, 'bin'), join(root, 'flutter', 'bin'), join(android, 'cmdline-tools', 'latest', 'bin')];
   const key = pathKey(out);
   const rest = String(out[key] ?? '').split(';').filter(p => p && !prepend.includes(p));

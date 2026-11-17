@@ -75,6 +75,8 @@ gradle.allprojects {
             jvmArgs("-Djava.io.tmpdir=${tmp.absolutePath}")
             // Robolectric's SDK 36 FileDescriptor interceptor reaches into JDK internals on JDK 21.
             jvmArgs("--add-opens=java.base/jdk.internal.access=ALL-UNNAMED", "--add-opens=java.base/java.io=ALL-UNNAMED")
+            // Bounded test JVM (owner, 2026-11-17: memory). Gradle's default is the JVM's, a quarter of RAM.
+            maxHeapSize = "1536m"
             outputs.upToDateWhen { false }
             doFirst {
                 tmp.mkdirs()

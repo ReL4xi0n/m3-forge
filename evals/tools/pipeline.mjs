@@ -8,24 +8,11 @@ import { fileURLToPath } from 'node:url';
 import { execFileSync, spawnSync } from 'node:child_process';
 import { totalmem, freemem } from 'node:os';
 import { buildPrompt } from './run-cell.mjs';
+import { withToolchain } from './toolchain-env.mjs';
 
-const BANDS = {
-  'token-fidelity': { checks: ['hardcoded-color', 'off-token-type', 'off-token-radius'], perLines: true, cut: [0, 1, 5] },
-  'contrast-targets': { checks: ['contrast', 'touch-target'], cut: [0, 2, 6] },
-  'anti-patterns': { checks: ['shadow-gradient', 'icon-source', 'foreign-styling'], cut: [0, 1, 4] },
-};
-
-// Rubric v1 automated items: 3 at the first cut, 2 up to the second, 1 up to the third, else 0.
-export function automatedScores(verifyResult, buildOk) {
-  const out = {};
-  for (const [item, b] of Object.entries(BANDS)) {
-    if (!buildOk || !verifyResult) { out[item] = 0; continue; }
-    const n = b.checks.reduce((a, c) => a + (verifyResult.counts?.[c] ?? 0), 0);
-    const x = b.perLines ? (n * 100) / Math.max(1, verifyResult.uiLines ?? 0) : n;
-    out[item] = x <= b.cut[0] ? 3 : x <= b.cut[1] ? 2 : x <= b.cut[2] ? 1 : 0;
-  }
-  return out;
-}
+// Rubric v1 automated items (default) and v2 (evals/automated-v2.md), in evals/tools/automated.mjs.
+import { automatedScores } from './automated.mjs';
+export { automatedScores };
 
 export function judgeRequest(cell, root) {
   return buildPrompt(cell, root).trim()
@@ -67,6 +54,18 @@ function memSampler() {
   const t = setInterval(tick, 5000);
   const gb = b => +(b / 2 ** 30).toFixed(2);
   return { stop: () => { clearInterval(t); tick(); return { totalGb: gb(totalmem()), usedBeforeGb: gb(before), usedPeakGb: gb(peak), javaPeakGb: gb(javaPeak) }; } };
+}
+
+// `gradlew --stop` with the toolchain environment: stops every daemon of that Gradle version that uses
+// the toolchain's GRADLE_USER_HOME. Failures are ignored (no wrapper, already stopped).
+export function stopGradle(projectDir) {
+  const win = process.platform === 'win32';
+  const wrapper = join(projectDir, win ? 'gradlew.bat' : 'gradlew');
+  if (!existsSync(wrapper)) return { ok: false, reason: 'no wrapper' };
+  const r = win
+    ? spawnSync(process.env.ComSpec || 'cmd.exe', ['/d', '/s', '/c', `"${wrapper}" --stop`], { cwd: projectDir, env: withToolchain(process.env), windowsHide: true, windowsVerbatimArguments: true, encoding: 'utf8', timeout: 120_000 })
+    : spawnSync('sh', [wrapper, '--stop'], { cwd: projectDir, env: withToolchain(process.env), encoding: 'utf8', timeout: 120_000 });
+  return { ok: r.status === 0, output: `${r.stdout ?? ''}${r.stderr ?? ''}`.slice(-500) };
 }
 
 const absShots = (shots, dir) => (shots ?? []).map(s => ({ ...s, file: isAbsolute(s.file) ? s.file : join(dir, s.file) }));
@@ -147,7 +146,11 @@ async function main() {
     writeFileSync(join(dest, 'capture.json'), JSON.stringify({ ...cap, raw: undefined }, null, 2));
     log('  capture', cell.cell, 'buildOk', cap.buildOk, 'shots', cap.shots.length, 'violations', ver?.violations?.length ?? 'n/a');
     const out = { cell, rec, cap: { ...cap, raw: undefined }, ver: ver && { counts: ver.counts, uiLines: ver.uiLines, error: ver.error },
-      auto: automatedScores(ver?.error ? null : ver, cap.buildOk && cap.shots.length > 0) };
+      auto: automatedScores(ver?.error ? null : ver, cap.buildOk && cap.shots.length > 0),
+      autoV2: automatedScores(ver?.error ? null : ver, cap.buildOk && cap.shots.length > 0, 'v2') };
+    // A Compose cell leaves Gradle daemons behind (the session's builds); stop them so they do not hold
+    // memory while the next cell runs (owner, 2026-11-17).
+    if (cell.platform === 'compose' && existsSync(rec.workDir ?? '')) stopGradle(rec.workDir);
     writeFileSync(join(dest, 'record.json'), JSON.stringify(out, null, 2));
     return out;
   };
@@ -243,7 +246,7 @@ async function main() {
     cell: r.cell.cell, status: r.rec.status, durationMs: r.rec.durationMs, costUsd: r.rec.costUsd, usage: r.rec.usage,
     buildOk: r.cap.buildOk, reason: r.cap.reason ?? null, captureMs: r.cap.captureMs ?? null, shots: r.cap.shots.length,
     violations: r.ver?.counts ?? null, uiLines: r.ver?.uiLines ?? null,
-    automated: r.auto,
+    automated: r.auto, automatedV2: r.autoV2 ?? null,
     judged: Object.fromEntries(ITEMS.map(it => [it, byCell[r.cell.cell]?.[it]?.score ?? (r.cap.shots.length ? null : 0)])),
     reasons: byCell[r.cell.cell] ?? null,
     isolation: { init: r.rec.checks?.init?.ok ?? null, audit: r.rec.checks?.audit?.ok ?? null, preflight: r.rec.checks?.preflight?.ok ?? null, warnings: r.rec.checks?.audit?.hits?.length ?? 0 },
