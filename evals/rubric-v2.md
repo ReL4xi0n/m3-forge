@@ -35,9 +35,11 @@ with one or two of them; compare the output with its paired references first.
   real products with real content; the outputs use made-up products. That difference is not a gap.
 - **Clean is not enough.** A screen that is tidy and free of errors but looks like a generic template,
   a framework default or an older Material version (Material 2: elevated colored app bars, small
-  uniform corners, all-caps buttons, drop shadows) is not first-party quality: overall polish at most
-  2, and the items where it shows (shape and Expressive character, color-role use, component choice)
-  at most 2.
+  uniform corners, all-caps buttons, drop shadows) is not first-party quality, but it is not broken
+  either. Overall polish, and the items where the look shows (shape and Expressive character,
+  color-role use, component choice), score 1 or 2: 2 when the look shows in a few places, 1 when it
+  runs through the whole screen. A coherent older Material scheme or a uniform radius is not 0; 0 is
+  for screens that are broken, chaotic, or unrelated to any design system.
 
 - **Nothing to judge.** If an output has no screenshot (the build failed, the app did not start, or
   the request was not attempted), every judged item scores 0. The reason given is "no output".
@@ -82,7 +84,8 @@ lines of UI source.
 - **2**: Right components overall; one or two questionable choices that a reviewer would mention.
 - **1**: Several wrong or improvised components. Examples: generic boxes as buttons, checkboxes for
   instant settings, tabs for top-level navigation, several FABs.
-- **0**: Components are mostly not Material, or the screen is a generic web or framework default.
+- **0**: Controls mostly do not do their jobs or do not read as controls: improvised boxes, unstyled
+  browser defaults, or a pile of mismatched widgets.
 
 ### 2. Hierarchy and typography
 - **3**: One clear focal point per screen. Type comes from the Material type scale (display,
@@ -105,7 +108,7 @@ lines of UI source.
   primary action, or a surface level that blends into the background.
 - **1**: Colors look picked by hand. Roles are used inconsistently, or accent color is spread across
   unrelated elements.
-- **0**: No scheme: arbitrary colors, gradients or framework defaults.
+- **0**: No scheme at all: arbitrary, unrelated colors or gradients.
 
 ### 4. Shape and Expressive character
 - **3**: Corner shapes follow the Material shape scale, consistently per component family. For M3
@@ -115,7 +118,7 @@ lines of UI source.
   3 with little Expressive character.
 - **1**: Shapes are inconsistent or off the scale. Examples: sharp corners next to pills for no
   reason, uniform radius on everything, or decoration in place of Expressive character.
-- **0**: Shapes unrelated to Material.
+- **0**: Shapes unrelated to any design system, or chaotic.
 
 ### 5. Spacing and layout
 - **3**: Spacing follows a consistent 4/8dp rhythm. Margins and gutters suit the window size. Content
