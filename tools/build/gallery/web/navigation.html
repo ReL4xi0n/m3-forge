@@ -439,12 +439,16 @@
         <button class="m3-menu-item" role="menuitem" type="button"><span class="m3-menu-item-text">Oldest first</span></button>
       </div>
       <button class="m3-button m3-button--outlined" type="button" id="live-dialog-button">Leave the group</button>
+      <button class="m3-button m3-button--outlined" type="button" id="live-snackbar-button">Archive</button>
+      <div class="m3-snackbar" id="live-snackbar"><span class="m3-snackbar-text">Photo archived</span></div>
     </div>
   </section>
 </main>
 <script src="assets/m3/behaviors.js"></script>
 <script>
   M3.ripple(document.body);
+  const toast = M3.snackbar(document.getElementById('live-snackbar'));
+  document.getElementById('live-snackbar-button').addEventListener('click', () => toast.show());
   M3.menu(document.getElementById('live-menu-button'), document.getElementById('live-menu'));
   const leave = M3.dialog(document.getElementById('modal-dialog'));
   document.getElementById('live-dialog-button').addEventListener('click', leave.open);

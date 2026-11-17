@@ -1,23 +1,17 @@
 /* material3 skill asset: assets/web/behaviors.js
  * Material 3 web behaviors, dependency free, one global: M3. Needs tokens.css (motion tokens).
- *
- *   M3.motion(el, keyframes, 'spatial-fast', opts?)  WAAPI with the motion tokens: '<kind>-<speed>',
- *                                  kind spatial|effects, speed fast|default|slow, in either order
- *                                  (--md-sys-motion-spring-<speed>-<kind>-easing/-duration); or a duration
- *                                  step such as 'short4' with the standard easing. Returns the Animation;
- *                                  under prefers-reduced-motion nothing animates and the result is
- *                                  { finished: Promise } that is already resolved.
- *   M3.ripple(root)                a pressed ripple on pointerdown in buttons, icon buttons, FABs, chips,
- *                                  list items, menu items and anything with [data-m3-ripple]. No ripple
- *                                  under reduced motion. Returns a function that removes the listener.
- *   M3.dialog(el)                  { open(), close() } for a <dialog>: showModal(), focus moves into it
- *                                  (autofocus, else the first control), Tab stays inside, focus returns to
- *                                  the opener on close; enter and exit motion. Cancel (Escape) closes it
- *                                  with the exit motion.
- *   M3.menu(button, menu)          { open(), close(), toggle() }: sets data-open and aria-expanded,
- *                                  places the menu under the button (flipped to fit the viewport), arrow
- *                                  keys, Home, End, Escape (focus back to the button), Tab and an outside
- *                                  press close it.
+ *   M3.motion(el, keyframes, 'spatial-fast', opts?)  WAAPI; kind '<speed>-<kind>' or '<kind>-<speed>'
+ *       (spatial|effects, fast|default|slow: --md-sys-motion-spring-*-easing/-duration) or a duration
+ *       step like 'short4' with the standard easing. Under prefers-reduced-motion nothing animates and
+ *       the result is an already resolved { finished }.
+ *   M3.ripple(root)     pressed ripple on buttons, chips, list/menu items, [data-m3-ripple]; none under
+ *       reduced motion; returns an unsubscribe function.
+ *   M3.dialog(el)       { open(), close() } for a <dialog>: showModal(), focus in, Tab trap, focus back
+ *       to the opener on any close (also form method=dialog or el.close()), enter/exit motion.
+ *   M3.menu(button, menu)  { open(), close(), toggle() }: data-open, aria-expanded, placement under the
+ *       button, arrows/Home/End, Escape, Tab and outside press close.
+ *   M3.snackbar(el)     { show(text?, ms?), hide() }: data-open with motion; the text is announced
+ *       through a hidden live region added next to el (el needs no role=status).
  * Overlays are shown only by [open] (showModal()) or [data-open]; positioning and motion are here.
  */
 (function (global) {
@@ -134,12 +128,18 @@
       closing = true;
       return leave(el, from).then(function () {
         el.getAnimations().forEach(function (a) { a.cancel(); });
-        el.removeEventListener('keydown', trap);
-        if (el.close) el.close(); else el.removeAttribute('open');
-        closing = false;
-        if (opener && opener.focus) opener.focus();
+        if (el.close) el.close(); else { el.removeAttribute('open'); cleanup(); }
       });
     }
+    // Any close (close(), <form method=dialog>, an external el.close()) ends here.
+    function cleanup() {
+      el.removeEventListener('keydown', trap);
+      closing = false;
+      var back = opener;
+      opener = null;
+      if (back && back.focus) back.focus();
+    }
+    el.addEventListener('close', cleanup);
     // Escape: the browser cancels a modal dialog; run the exit motion first.
     el.addEventListener('cancel', function (e) { e.preventDefault(); close(); });
     return { open: open, close: close };
@@ -147,7 +147,9 @@
 
   function menu(button, el) {
     function items() { return Array.prototype.slice.call(el.querySelectorAll(ITEMS)); }
-    function isOpen() { return el.hasAttribute('data-open'); }
+    var opened = false;
+    var turn = 0;
+    function isOpen() { return opened; }
     function place() {
       var b = button.getBoundingClientRect();
       var w = doc.documentElement.clientWidth;
@@ -173,7 +175,10 @@
       if (!el.contains(e.target) && !button.contains(e.target)) close();
     }
     function open() {
-      if (isOpen()) return;
+      if (opened) return;
+      opened = true;
+      turn++;
+      el.getAnimations().forEach(function (a) { a.cancel(); });
       el.setAttribute('data-open', '');
       button.setAttribute('aria-expanded', 'true');
       place();
@@ -184,11 +189,14 @@
       if (first) first.focus();
     }
     function close() {
-      if (!isOpen()) return Promise.resolve();
+      if (!opened) return Promise.resolve();
+      opened = false;
+      var mine = ++turn;
       doc.removeEventListener('keydown', onKey);
       doc.removeEventListener('pointerdown', onOutside, true);
       button.setAttribute('aria-expanded', 'false');
       return leave(el, 'translateY(calc(-1 * var(--md-sys-space-100)))').then(function () {
+        if (mine !== turn) return; // reopened during the exit motion
         el.getAnimations().forEach(function (a) { a.cancel(); });
         el.removeAttribute('data-open');
       });
@@ -201,5 +209,38 @@
     return { open: open, close: close, toggle: toggle };
   }
 
-  global.M3 = { motion: motion, ripple: ripple, dialog: dialog, menu: menu };
+  // The announcement goes through a visually hidden live region that is always in the DOM (a region
+  // inside a display:none snackbar is not announced). The snackbar itself carries no role.
+  function snackbar(el) {
+    var live = doc.createElement('span');
+    var timer = 0;
+    live.setAttribute('role', 'status');
+    live.setAttribute('aria-live', 'polite');
+    live.style.cssText = 'position:absolute;inline-size:1px;block-size:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap';
+    el.removeAttribute('role');
+    el.parentNode.insertBefore(live, el);
+    function hide() {
+      global.clearTimeout(timer);
+      if (!el.hasAttribute('data-open')) return Promise.resolve();
+      return leave(el, 'translateY(var(--md-sys-space-200))').then(function () {
+        el.getAnimations().forEach(function (a) { a.cancel(); });
+        el.removeAttribute('data-open');
+      });
+    }
+    // show(text?, ms?): ms hides it again after that long (never, when omitted).
+    function show(text, ms) {
+      var t = el.querySelector('.m3-snackbar-text');
+      if (text != null && t) t.textContent = text;
+      live.textContent = '';
+      global.setTimeout(function () { live.textContent = t ? t.textContent : el.textContent; }, 0);
+      el.getAnimations().forEach(function (a) { a.cancel(); });
+      el.setAttribute('data-open', '');
+      enter(el, 'translateY(var(--md-sys-space-200))');
+      global.clearTimeout(timer);
+      if (ms) timer = global.setTimeout(hide, ms);
+    }
+    return { show: show, hide: hide, liveRegion: live };
+  }
+
+  global.M3 = { motion: motion, ripple: ripple, dialog: dialog, menu: menu, snackbar: snackbar };
 }(typeof window !== 'undefined' ? window : this));

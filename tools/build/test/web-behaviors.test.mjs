@@ -108,6 +108,37 @@ test('in Chromium: dialog focus, menu Escape, ripple under reduced motion, one g
       assert.equal(await button.getAttribute('aria-expanded'), 'false');
       assert.equal(await page.evaluate(() => document.activeElement.id), 'live-menu-button');
 
+      // Native close (not through M3): the trap and focus restore still run.
+      await opener.focus();
+      await opener.click();
+      await page.evaluate(() => document.getElementById('modal-dialog').close());
+      await page.waitForFunction(() => document.activeElement.id === 'live-dialog-button');
+
+      // Rapid toggle: reopen during the exit motion ends open and consistent.
+      await button.click();
+      await page.evaluate(async () => {
+        const b = document.getElementById('live-menu-button');
+        b.click(); // close, exit motion starts
+        b.click(); // open again before it ends
+        await new Promise(r => setTimeout(r, 800));
+      });
+      assert.equal(await page.evaluate(() => document.getElementById('live-menu').hasAttribute('data-open')), true, 'menu open after rapid toggle');
+      assert.equal(await button.getAttribute('aria-expanded'), 'true');
+      await page.keyboard.press('Escape');
+      await page.waitForFunction(() => !document.getElementById('live-menu').hasAttribute('data-open'));
+      assert.equal(await button.getAttribute('aria-expanded'), 'false');
+
+      // Snackbar: the live region exists (and is rendered) before it is shown, then carries the text.
+      const live = await page.evaluate(() => {
+        const sb = document.getElementById('live-snackbar');
+        const r = sb.previousElementSibling;
+        return { role: r.getAttribute('role'), shown: getComputedStyle(r).display !== 'none', text: r.textContent, open: sb.hasAttribute('data-open') };
+      });
+      assert.deepEqual(live, { role: 'status', shown: true, text: '', open: false });
+      await page.locator('#live-snackbar-button').click();
+      await page.waitForFunction(() => document.getElementById('live-snackbar').previousElementSibling.textContent === 'Photo archived');
+      assert.equal(await page.evaluate(() => document.getElementById('live-snackbar').hasAttribute('data-open')), true);
+
       // Ripple: one is drawn on press normally, none under reduced motion.
       const target = page.locator('#live-dialog-button');
       const box = await target.boundingBox();
