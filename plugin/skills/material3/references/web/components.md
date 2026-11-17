@@ -77,7 +77,7 @@ Part `fab`. `<button class="m3-extended-fab m3-extended-fab--medium">` + icon + 
 No sheet [NOT FOUND] (web asset). Build it from part `fab`: the FAB toggles `aria-expanded` and the
 list; open, it shows a close button `m3-fab m3-fab--primary` with `close`
 [token:md.comp.fab-menu.primary.close-button.container.color] and, above it, items
-`m3-extended-fab m3-extended-fab--small m3-extended-fab--primary-container` (same color set as the
+`m3-extended-fab m3-extended-fab--primary-container` (small is the default size) (same color set as the
 FAB) with `box-shadow: none` [token:md.comp.fab-menu.menu-item.container.elevation], in a column
 aligned to the FAB's end, gap `--md-sys-space-50` (4dp [token:md.comp.fab-menu.menu-item.between-space]),
 `--md-sys-space-100` above the close button (8dp [token:md.comp.fab-menu.close-button.between-space]).
