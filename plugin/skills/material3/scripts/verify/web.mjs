@@ -1,10 +1,11 @@
 // Web checks: HTML, CSS/SCSS, JS/TS (JSX/TSX) and Vue single-file components.
 import {
-  claimsSkillFile, countNonBlank, findEmoji, lineAt, lineStarts, looksGenerated, onGrid, radiusOnScale,
+  countNonBlank, findEmoji, isGeneratedPath, lineAt, lineStarts, onGrid, radiusOnScale,
   readText, SHAPE_SCALE, stripComments, themeAsset, themeAssetReason, walk,
 } from './common.mjs';
 import { checkStrings, knownIcon, placeholderHosts, stringLiterals } from './content.mjs';
 import { projectChecks } from './assets.mjs';
+import { webIconButtons } from './labels.mjs';
 import { describeProblems, pathLiterals, svgRanges, webSvgIcons } from './symbols.mjs';
 
 const EXT = /\.(html?|css|scss|js|jsx|ts|tsx|vue)$/i;
@@ -304,7 +305,7 @@ function classAttrs(text, start, end, cb) {
 
 // ---------------------------------------------------------------------------------------------
 // Unscored content checks: UI strings (markup text, UI attributes, script strings and JSX text),
-// placeholder hosts anywhere, and Material Symbols ligature names.
+// placeholder hosts anywhere, Material Symbols ligature names, and icon buttons without a label.
 
 const UI_ATTR = /\s(?:alt|title|placeholder|aria-label|aria-description|aria-placeholder|aria-roledescription|label|value|content|headline|supporting-text)\s*=\s*(["'])([^"']*)\1/gi;
 const ICON_CLASS_ATTR = /\bclass(?:Name)?\s*=\s*\{?\s*["'`][^"'`]*(?<![\w-])(?:m3-icon|material-symbols(?:-outlined|-rounded|-sharp)?)(?![\w-])/;
@@ -334,6 +335,7 @@ function scanWebContent(src, parts, hit) {
         if (!name || /[{}$]/.test(name) || knownIcon(name)) continue;
         hit('unknown-icon', p.start + m.index + m[0].indexOf('>') + 1, `icon ligature "${name}" is not a Material Symbols name in the codepoints file`);
       }
+      webIconButtons(src, p.start, p.end, hit);
     }
   }
   placeholderHosts(src, hit);
@@ -505,12 +507,11 @@ async function projectContext(projectDir, all, texts) {
 
 export async function scanWeb(projectDir, collector) {
   const all = await walk(projectDir);
-  const files = all.filter(f => EXT.test(f) && !NOT_UI.test(f));
+  const files = all.filter(f => EXT.test(f) && !NOT_UI.test(f) && !isGeneratedPath(f));
   const texts = [];
   for (const rel of files) {
     const text = await readText(projectDir, rel);
     const asset = themeAsset(rel, text);
-    if (!asset && looksGenerated(text) && !claimsSkillFile(text)) continue;
     texts.push([rel, text, asset]);
   }
   const ctx = await projectContext(projectDir, all, texts);

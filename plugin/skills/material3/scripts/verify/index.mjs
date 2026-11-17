@@ -2,8 +2,9 @@
 // material3 skill verify v2: static checks on UI source plus the harness runtime results. The static
 // checks are unchanged from v1; v2 changes the harness runtime scope (Flutter touch targets) and the
 // scoring (evals/automated-v2.md).
-// Unscored checks (UNSCORED_CHECKS: placeholder-content, brand, unknown-icon, asset-unused) are listed
-// in `violations` and counted in `unscored`; `counts` holds the scored checks only.
+// Unscored checks (UNSCORED_CHECKS: placeholder-content, brand, unknown-icon, asset-unused,
+// icon-button-label) are listed in `violations` and counted in `unscored`; `counts` holds the scored
+// checks only. Generated files are skipped by path pattern only (common.mjs isGeneratedPath).
 //
 //   verify({ projectDir, platform, runtime }) -> {
 //     violations: [{ check, file, line, detail, severity }], counts, unscored, uiLines, exitCode, ... }

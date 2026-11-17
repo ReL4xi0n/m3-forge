@@ -65,5 +65,5 @@ test('the unscored verify checks are in no automated band, and verify keeps them
     assert.ok(!banded.has(c), `${c} is scored`);
     assert.ok(!CHECKS.includes(c), `${c} is in counts`);
   }
-  assert.deepEqual(UNSCORED_CHECKS, ['placeholder-content', 'brand', 'unknown-icon', 'asset-unused']);
+  assert.deepEqual(UNSCORED_CHECKS, ['placeholder-content', 'brand', 'unknown-icon', 'asset-unused', 'icon-button-label']);
 });

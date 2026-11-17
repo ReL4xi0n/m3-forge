@@ -1,5 +1,5 @@
-// Unscored checks (placeholder-content, brand, unknown-icon, asset-unused) and the exact-copy rule for
-// theme assets.
+// Unscored checks (placeholder-content, brand, unknown-icon, asset-unused, icon-button-label) and the
+// exact-copy rule for theme assets.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
@@ -11,9 +11,9 @@ import { brandInFileName } from '../content.mjs';
 import { installAssets } from '../../install-assets/index.mjs';
 import { nonZero, unscoredSuite } from './helpers.mjs';
 
-unscoredSuite('web', ['placeholder-content', 'brand', 'unknown-icon', 'asset-unused']);
-unscoredSuite('flutter', ['placeholder-content', 'brand', 'unknown-icon', 'asset-unused']);
-unscoredSuite('compose', ['placeholder-content', 'brand', 'asset-unused']);
+unscoredSuite('web', ['placeholder-content', 'brand', 'unknown-icon', 'asset-unused', 'icon-button-label']);
+unscoredSuite('flutter', ['placeholder-content', 'brand', 'unknown-icon', 'asset-unused', 'icon-button-label']);
+unscoredSuite('compose', ['placeholder-content', 'brand', 'asset-unused', 'icon-button-label']);
 
 function project(files = {}) {
   const dir = mkdtempSync(join(tmpdir(), 'm3 verify unscored '));

@@ -1,10 +1,11 @@
 // Jetpack Compose checks: src/main/**/*.kt of any module.
 import {
-  callArgs, claimsSkillFile, countNonBlank, findEmoji, looksGenerated, onGrid, radiusOnScale, readText,
+  callArgs, countNonBlank, findEmoji, isGeneratedPath, onGrid, radiusOnScale, readText,
   SHAPE_SCALE, stripComments, themeAsset, themeAssetReason, walk,
 } from './common.mjs';
 import { checkStrings, placeholderHosts, stringLiterals } from './content.mjs';
 import { projectChecks } from './assets.mjs';
+import { composeIconButtons } from './labels.mjs';
 import { composeVectors, describeProblems, pathLiterals, xmlVectorIcon } from './symbols.mjs';
 
 const THEME_FILES = new Set(['Color.kt', 'Theme.kt', 'Type.kt', 'Shape.kt']);
@@ -107,14 +108,13 @@ async function scanStringResources(projectDir, files, collector) {
 
 export async function scanCompose(projectDir, collector) {
   const all = await walk(projectDir);
-  const files = all.filter(f => f.endsWith('.kt') && /(?:^|\/)src\/main\//.test(f));
+  const files = all.filter(f => f.endsWith('.kt') && /(?:^|\/)src\/main\//.test(f) && !isGeneratedPath(f));
   let uiLines = 0;
   let themeLines = 0;
   let scanned = 0;
   for (const rel of files) {
     const text = await readText(projectDir, rel);
     const asset = themeAsset(rel, text);
-    if (!asset && looksGenerated(text) && !claimsSkillFile(text)) continue;
     scanned++;
     const reason = asset ? themeAssetReason(asset) : themeReason(rel);
     let exempt = () => null;
@@ -130,6 +130,7 @@ export async function scanCompose(projectDir, collector) {
     scanKotlin(src, hit);
     checkStrings(stringLiterals(src, { triple: true, quotes: ['"'] }), hit);
     placeholderHosts(src, hit);
+    composeIconButtons(src, hit);
   }
   scanned += await scanDrawables(projectDir, all, collector);
   await scanStringResources(projectDir, all, collector);

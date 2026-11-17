@@ -1,13 +1,13 @@
 // Flutter checks: lib/**/*.dart.
 import { join } from 'node:path';
 import {
-  callArgs, claimsSkillFile, countNonBlank, findEmoji, looksGenerated, matchClose, onGrid, radiusOnScale,
+  callArgs, countNonBlank, findEmoji, isGeneratedPath, matchClose, onGrid, radiusOnScale,
   readText, SHAPE_SCALE, stripComments, themeAsset, themeAssetReason, walk,
 } from './common.mjs';
 import { checkStrings, knownIcon, placeholderHosts, stringLiterals } from './content.mjs';
 import { projectChecks } from './assets.mjs';
+import { flutterIconButtons } from './labels.mjs';
 
-const GENERATED_NAME = /(?:\.(?:g|freezed|gr|mocks|config|pb|pbenum|pbjson|pbserver)\.dart|(?:^|\/)generated_plugin_registrant\.dart)$/;
 const THEME_NAME = /theme|color_scheme|colors/i;
 const THEME_TYPES = '(?:ColorScheme|ThemeData|TextTheme)';
 const NUM = /(?<![\w.])(\d+(?:\.\d+)?)(?![\w.])/g;
@@ -108,8 +108,8 @@ function scanDart(src, hit) {
   findEmoji(src, (i, e) => hit('icon-source', i, `emoji ${e} in UI text (use Material Symbols)`));
 }
 
-// Unscored content checks: UI strings (string literals outside directives), placeholder hosts and
-// M3Symbols names.
+// Unscored content checks: UI strings (string literals outside directives), placeholder hosts,
+// M3Symbols names and icon buttons without a label.
 const DIRECTIVE = /^[ \t]*(?:import|export|part|library)\b[^;]*;/gm;
 
 function scanDartContent(src, hit) {
@@ -120,10 +120,11 @@ function scanDartContent(src, hit) {
   each(/\bM3Symbols\.([A-Za-z_$][\w$]*)/g, src, m => {
     if (!knownIcon(m[1], { constant: true })) hit('unknown-icon', m.index, `${m[0]}: "${m[1]}" is not a Material Symbols name in the codepoints file`);
   });
+  flutterIconButtons(src, hit);
 }
 
 export async function scanFlutter(projectDir, collector) {
-  const files = (await walk(join(projectDir, 'lib'))).filter(f => f.endsWith('.dart') && !GENERATED_NAME.test(f) && !/^generated\//.test(f));
+  const files = (await walk(join(projectDir, 'lib'))).filter(f => f.endsWith('.dart') && !isGeneratedPath(`lib/${f}`));
   let uiLines = 0;
   let themeLines = 0;
   let scanned = 0;
@@ -131,7 +132,6 @@ export async function scanFlutter(projectDir, collector) {
     const rel = `lib/${f}`;
     const text = await readText(projectDir, rel);
     const asset = themeAsset(rel, text);
-    if (!asset && looksGenerated(text) && !claimsSkillFile(text)) continue;
     scanned++;
     const src = stripComments(text, { triple: true });
     const reason = asset ? themeAssetReason(asset) : themeReason(rel, src);

@@ -45,9 +45,9 @@ export const LITERAL_CHECKS = new Set([
 ]);
 
 // Checks that verify reports but the evaluation does not score (they never enter `counts`).
-// placeholder-content, brand and unknown-icon are errors; asset-unused is a warning (the skill's loop
-// still fixes it like an error).
-export const UNSCORED_CHECKS = ['placeholder-content', 'brand', 'unknown-icon', 'asset-unused'];
+// placeholder-content, brand, unknown-icon and icon-button-label are errors; asset-unused is a warning
+// (the skill's loop still fixes it like an error).
+export const UNSCORED_CHECKS = ['placeholder-content', 'brand', 'unknown-icon', 'asset-unused', 'icon-button-label'];
 
 export function severityOf(check) {
   return check === 'off-grid-spacing' || check === 'asset-unused' ? 'warning' : 'error';
@@ -81,19 +81,35 @@ export const SKIP_DIRS = new Set([
   '.next', '.nuxt', '.svelte-kit', '.output', '.cache', '.parcel-cache', 'coverage', '.kotlin',
 ]);
 
-const GENERATED_HEADER =
-  /GENERATED CODE|@generated|DO NOT EDIT|Code generated|auto-?generated|This file (?:was|is) generated/i;
+// Generated files are skipped by path only; a header comment ("DO NOT EDIT", "@generated", ...) alone
+// never exempts a file. The patterns are the ones real tool chains write:
+//   *.g.dart                         build_runner (json_serializable, riverpod_generator, ...)
+//   *.freezed.dart                   freezed
+//   *.gr.dart                        auto_route
+//   *.mocks.dart                     mockito
+//   *.config.dart                    injectable
+//   *.pb.dart, *.pbenum.dart, *.pbjson.dart, *.pbserver.dart   protoc Dart plugin
+//   generated_plugin_registrant.dart flutter tool
+//   *.generated.ts / .tsx / .js      GraphQL Code Generator (near-operation-file preset)
+//   __generated__/                   Relay compiler, Apollo codegen
+//   generated/                       flutter_intl / intl_utils (lib/generated/), other code generators
+//   build/, dist/, .dart_tool/, .gradle/, node_modules/   build outputs and installed packages
+//                                    (walk() skips these folders as well, see SKIP_DIRS)
+const GENERATED_DIR = /(?:^|\/)(?:build|dist|\.dart_tool|\.gradle|node_modules|generated|__generated__)\//;
+const GENERATED_FILE =
+  /(?:\.(?:g|freezed|gr|mocks|config|pb|pbenum|pbjson|pbserver)\.dart|(?:^|\/)generated_plugin_registrant\.dart|\.generated\.[cm]?[jt]sx?)$/;
 
-export function looksGenerated(text) {
-  return GENERATED_HEADER.test(text.split('\n', 6).join('\n'));
+// rel: posix path relative to the project folder.
+export function isGeneratedPath(rel) {
+  return GENERATED_DIR.test(rel) || GENERATED_FILE.test(rel);
 }
 
 // Theme assets of the material3 skill: token files copied into the project. Each starts with the
 // marker `material3 skill asset: <asset path>`. A file is a theme file (its literals are the tokens
 // themselves) only when its first lines name one of these paths, its own file name matches it, and
 // its text equals the shipped asset after the rewrites install-assets applies (the Compose package
-// line, the Flutter material_ui import). It is scanned as such even though its header says it is
-// generated. Any other file that carries the marker is scanned as UI code.
+// line, the Flutter material_ui import). Any other file that carries the marker is scanned as UI
+// code.
 export const THEME_ASSETS = new Set([
   'assets/web/tokens.css',
   'assets/flutter/lib/m3/tokens.dart',
@@ -113,13 +129,6 @@ const ASSET_MARKER = /material3 skill asset: (\S+)/;
 const SKILL_ROOT = new URL('../../', import.meta.url);
 const baseName = p => p.slice(p.lastIndexOf('/') + 1);
 const head = text => text.split('\n', ASSET_MARKER_LINES).join('\n');
-
-// A file that says it comes from the skill (asset marker or generated-theme header). Such a file is
-// never skipped as generated: it is either the exact skill file or scanned as UI code.
-export function claimsSkillFile(text) {
-  const h = head(text);
-  return ASSET_MARKER.test(h) || h.includes('material3 skill generated:');
-}
 
 const shipped = new Map();
 function shippedAsset(assetPath) {
