@@ -1,5 +1,5 @@
-// Web back end of the screenshot step: renders the page with Playwright at 412x915 and 1440x900, in
-// light and dark (prefers-color-scheme), and measures in the page what only a browser can:
+// Web back end of the screenshot step: renders the page at 412x915 and 1440x900, in light and dark
+// (prefers-color-scheme), and measures in the page what only a browser can:
 //   - contrast: every visible text against the background actually drawn under it (the element's and
 //     its ancestors' backgrounds, and the ::before / ::after containers the shipped component CSS
 //     draws), composited; 4.5:1, or 3:1 for large text and Material Symbols glyphs;
@@ -7,9 +7,11 @@
 //     (inline links inside a paragraph excepted, as WCAG 2.5.8 does).
 // Results are { where, detail } entries, the shape verify reads from capture.json `runtime`.
 //
-// Playwright is never installed here: the project's own (its node_modules or a folder above it) or a
-// global one is used when it resolves; otherwise the step is skipped with the reason. A browser is
-// started from Playwright's own Chromium, else the installed Chrome or Edge.
+// Engines (`engine` in the result): 'playwright' when the project's own Playwright (its node_modules
+// or a folder above it) or a global one resolves; its browser is Playwright's Chromium, else the
+// installed Chrome or Edge. Otherwise 'cdp': an installed Chrome, Edge or Chromium driven over the
+// DevTools protocol (cdp.mjs). Both run the same capture loop and the same in-page measurement.
+// Nothing is ever installed; with neither, the step is skipped with the reason.
 //
 // What is served: --url when given (a running dev server); a Vite project is built into the output
 // folder (vite build --outDir <out>/site); otherwise the first index.html in the project root, dist/,
@@ -20,6 +22,9 @@ import { createReadStream, existsSync, readFileSync, statSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { delimiter, dirname, extname, join, relative, resolve, sep } from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { browserCandidates, findBrowser, launchCdp, withTimeout } from './cdp.mjs';
+
+export { browserCandidates, findBrowser };
 
 export const VIEWPORTS = [
   { name: '412x915', width: 412, height: 915 },
@@ -35,6 +40,8 @@ const NEEDS_URL = ['next', 'nuxt', '@sveltejs/kit', 'astro', '@angular/core', '@
 const BUILD_TIMEOUT_MS = 10 * 60_000;
 const NAV_TIMEOUT_MS = 60_000;
 const IDLE_TIMEOUT_MS = 15_000;
+// The whole capture (4 pages); the browser is closed when it runs out.
+const CAPTURE_TIMEOUT_MS = 8 * 60_000;
 
 const NO_MOTION_CSS = `*, *::before, *::after {
   animation-play-state: paused !important;
@@ -347,7 +354,46 @@ function collector() {
   };
 }
 
-async function captureAll(browser, url, outDir) {
+// The no-motion style, added before any page script runs.
+function addStyleOnLoad(css) {
+  const add = () => { const s = document.createElement('style'); s.textContent = css; (document.head ?? document.documentElement).appendChild(s); };
+  if (document.documentElement) add(); else document.addEventListener('DOMContentLoaded', add, { once: true });
+}
+function addStyle(css) {
+  const s = document.createElement('style');
+  s.textContent = css;
+  (document.head ?? document.documentElement).appendChild(s);
+}
+
+// Page adapter over Playwright: { errors, goto(url, ms), idle(ms) -> bool, evaluate(fn, arg),
+// screenshot(file), close() }. cdp.mjs has the same shape.
+async function playwrightPage(browser, { width, height, theme }) {
+  const context = await browser.newContext({ viewport: { width, height }, colorScheme: theme, reducedMotion: 'reduce', deviceScaleFactor: 1 });
+  try {
+    await context.addInitScript(addStyleOnLoad, NO_MOTION_CSS);
+    const page = await context.newPage();
+    const errors = [];
+    page.on('pageerror', (e) => errors.push(String(e.message ?? e)));
+    page.on('console', (m) => { if (m.type() === 'error') errors.push(`console: ${m.text()}`); });
+    return {
+      errors,
+      async goto(url, timeout) {
+        const resp = await page.goto(url, { waitUntil: 'load', timeout });
+        if (resp && !resp.ok()) throw new Error(`HTTP ${resp.status()} for ${url}`);
+      },
+      idle: (timeout) => page.waitForLoadState('networkidle', { timeout }).then(() => true, () => false),
+      evaluate: (fn, arg) => page.evaluate(fn, arg),
+      screenshot: (path) => page.screenshot({ path, fullPage: true, animations: 'disabled', caret: 'hide' }),
+      close: () => context.close(),
+    };
+  } catch (e) {
+    await context.close();
+    throw e;
+  }
+}
+
+// The capture loop both engines run. open({ width, height, theme }) -> page adapter.
+async function captureAll(open, url, outDir) {
   const shots = [];
   const contrast = collector();
   const targets = collector();
@@ -357,25 +403,16 @@ async function captureAll(browser, url, outDir) {
   for (const vp of VIEWPORTS) {
     for (const theme of THEMES) {
       const key = `${theme}-${vp.name}`;
-      const context = await browser.newContext({ viewport: { width: vp.width, height: vp.height }, colorScheme: theme, reducedMotion: 'reduce', deviceScaleFactor: 1 });
+      const page = await open({ width: vp.width, height: vp.height, theme });
       try {
-        await context.addInitScript((css) => {
-          const add = () => { const s = document.createElement('style'); s.textContent = css; (document.head ?? document.documentElement).appendChild(s); };
-          if (document.documentElement) add(); else document.addEventListener('DOMContentLoaded', add, { once: true });
-        }, NO_MOTION_CSS);
-        const page = await context.newPage();
-        const errors = [];
-        page.on('pageerror', (e) => errors.push(String(e.message ?? e)));
-        page.on('console', (m) => { if (m.type() === 'error') errors.push(`console: ${m.text()}`); });
-        const resp = await page.goto(url, { waitUntil: 'load', timeout: NAV_TIMEOUT_MS });
-        if (resp && !resp.ok()) throw new Error(`HTTP ${resp.status()} for ${url}`);
-        await page.waitForLoadState('networkidle', { timeout: IDLE_TIMEOUT_MS }).catch(() => warnings.push(`${key}: network not idle after ${IDLE_TIMEOUT_MS} ms`));
+        await page.goto(url, NAV_TIMEOUT_MS);
+        if (!(await page.idle(IDLE_TIMEOUT_MS))) warnings.push(`${key}: network not idle after ${IDLE_TIMEOUT_MS} ms`);
         await page.evaluate(() => document.fonts.ready.then(() => undefined));
-        await page.addStyleTag({ content: NO_MOTION_CSS });
+        await page.evaluate(addStyle, NO_MOTION_CSS);
         await page.evaluate(() => { for (const a of document.getAnimations()) { try { a.finish(); } catch { a.cancel(); } } });
 
         const file = join(outDir, `${key}.png`);
-        await page.screenshot({ path: file, fullPage: true, animations: 'disabled', caret: 'hide' });
+        await page.screenshot(file);
         shots.push(file);
 
         const m = await page.evaluate(measureInPage, { min: MIN_TARGET, targets: vp.width === 412 });
@@ -383,44 +420,66 @@ async function captureAll(browser, url, outDir) {
         for (const c of m.contrast) contrast.add(c.selector, key, c.detail);
         for (const c of m.targets) targets.add(c.selector, key, c.detail);
         if (m.scrollWidth > vp.width) warnings.push(`${key}: the page scrolls sideways (${m.scrollWidth} px wide)`);
-        if (errors.length) pageErrors[key] = errors.slice(0, 20);
+        if (page.errors.length) pageErrors[key] = page.errors.slice(0, 20);
       } finally {
-        await context.close();
+        await page.close();
       }
     }
   }
   return { shots, runtime: { contrast: contrast.list(), targets: targets.list() }, pageErrors, warnings, measured };
 }
 
-// screenshotWeb({ projectDir, outDir, url?, roots? }) -> result (see index.mjs)
-export async function screenshotWeb({ projectDir, outDir, url, roots }) {
-  const empty = { shots: [], runtime: { contrast: [], targets: [] } };
-  const pw = findPlaywright(projectDir, { roots });
-  if (!pw) {
-    return { ran: false, skippedReason: 'Playwright not found in the project or globally (this step never installs it): screenshots skipped', ...empty };
-  }
-  const target = url ? { url } : site(projectDir, outDir);
-  if (target.skip) return { ran: false, skippedReason: target.skip, ...empty, playwright: { from: pw.from, version: pw.version } };
+const EMPTY = () => ({ shots: [], runtime: { contrast: [], targets: [] } });
+const NO_INSTALL = 'this step never installs';
+const NOTHING = `Playwright not found in the project or globally, and no Chrome, Edge or Chromium found (${NO_INSTALL}): screenshots skipped`;
 
-  let browser;
-  try {
-    browser = await launch(pw);
-  } catch (e) {
-    return {
-      ran: false,
-      skippedReason: `Playwright ${pw.version ?? ''} found (${pw.from}) but no browser could start; install one with \`npx playwright install chromium\` yourself (this step never installs): ${firstLine(e)}`,
-      ...empty,
-      playwright: { from: pw.from, version: pw.version },
-    };
+// Starts the engine: { engine, info, open, close } or { skip, engine?, info? }.
+async function startEngine(pw, exe) {
+  let pwError = null;
+  if (pw) {
+    try {
+      const browser = await launch(pw);
+      return { engine: 'playwright', info: { playwright: { from: pw.from, version: pw.version } }, open: (o) => playwrightPage(browser, o), close: () => browser.close() };
+    } catch (e) { pwError = e; }
   }
-  const server = target.url ? null : await serve(target.root, { spa: target.spa });
+  if (!exe) {
+    return pw
+      ? { skip: `Playwright ${pw.version ?? ''} found (${pw.from}) but no browser could start; install one with \`npx playwright install chromium\` yourself (${NO_INSTALL}): ${firstLine(pwError)}`, info: { playwright: { from: pw.from, version: pw.version } } }
+      : { skip: NOTHING };
+  }
+  const info = { browser: { path: exe }, ...(pw ? { playwright: { from: pw.from, version: pw.version } } : {}) };
   try {
-    const cap = await captureAll(browser, target.url ?? server.origin + target.path, outDir);
-    return { ran: true, ...cap, playwright: { from: pw.from, version: pw.version } };
+    const b = await launchCdp(exe);
+    info.browser = { path: exe, version: b.version, profile: b.profile };
+    return { engine: 'cdp', info, open: (o) => b.openPage({ ...o, initScript: `(${addStyleOnLoad})(${JSON.stringify(NO_MOTION_CSS)})` }), close: () => b.close() };
   } catch (e) {
-    return { ran: false, skippedReason: `capture failed: ${firstLine(e)}`, ...empty, playwright: { from: pw.from, version: pw.version } };
+    info.browser.profile = e.profile;
+    return { engine: 'cdp', info, skip: `${exe} could not start headless (${NO_INSTALL}): ${firstLine(e)}` };
+  }
+}
+
+// screenshotWeb({ projectDir, outDir, url?, roots?, browsers? }) -> result (see index.mjs).
+// `browsers` replaces the browser executables tried for the CDP engine (tests).
+export async function screenshotWeb({ projectDir, outDir, url, roots, browsers }) {
+  const pw = findPlaywright(projectDir, { roots });
+  const exe = findBrowser(browsers ?? browserCandidates());
+  if (!pw && !exe) return { ran: false, skippedReason: NOTHING, ...EMPTY() };
+  const target = url ? { url } : site(projectDir, outDir);
+  if (target.skip) return { ran: false, skippedReason: target.skip, ...EMPTY(), ...(pw ? { playwright: { from: pw.from, version: pw.version } } : {}) };
+
+  const eng = await startEngine(pw, exe);
+  const tag = { ...(eng.engine ? { engine: eng.engine } : {}), ...eng.info };
+  if (eng.skip) return { ran: false, skippedReason: eng.skip, ...EMPTY(), ...tag };
+
+  let server = null;
+  try {
+    server = target.url ? null : await serve(target.root, { spa: target.spa });
+    const cap = await withTimeout(captureAll(eng.open, target.url ?? server.origin + target.path, outDir), CAPTURE_TIMEOUT_MS, 'capture');
+    return { ran: true, ...tag, ...cap };
+  } catch (e) {
+    return { ran: false, skippedReason: `capture failed: ${firstLine(e)}`, ...EMPTY(), ...tag };
   } finally {
-    await browser.close();
+    await withTimeout(Promise.resolve(eng.close()), 30_000, 'closing the browser').catch(() => {});
     if (server) await server.close();
   }
 }

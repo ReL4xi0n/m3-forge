@@ -172,3 +172,28 @@ test('asset-unused: the theme files are one set, used when any project file uses
     assert.deepEqual(unused(r), []);
   } finally { rmSync(web, { recursive: true, force: true }); }
 });
+
+test('unknown-icon (web): string concatenation in scripts is not a ligature; literal names in markup, scripts and JSX are', async () => {
+  const dir = project({
+    'index.html': '<!doctype html>\n<html lang="en"><head><title>Clinic</title></head><body>\n<span class="m3-icon" aria-hidden="true">chek_circle</span>\n<span class="m3-icon" aria-hidden="true">event</span>\n<script src="app.js"></script></body></html>\n',
+    // Built with + concatenation, single and double quotes, across lines: the expression is not a name.
+    'app.js': [
+      "const row = (s) => '<li><span class=\"m3-icon\" aria-hidden=\"true\">' +",
+      "  s.icon + '</span>' + s.name + '</li>';",
+      "const act = (a) => '<button class=\"m3-icon-button\"><span class=\"m3-icon\">' + a.icon + '</span></button>';",
+      'const room = (r) => "<span class=\'m3-icon\'>" + r[0] + "</span>";',
+      "const tpl = (i) => `<span class=\"m3-icon\">${i}</span>`;",
+      // A literal name inside one string still counts.
+      "const done = '<span class=\"m3-icon\" aria-hidden=\"true\">chek</span>Done';",
+      "const ok = '<span class=\"m3-icon\" aria-hidden=\"true\">check</span>Done';",
+      'export { row, act, room, tpl, done, ok };',
+      '',
+    ].join('\n'),
+    'src/Badge.jsx': 'export const Badge = ({ icon }) => (\n  <p>\n    <span className="m3-icon">{icon}</span>\n    <span className="m3-icon">recipt_long</span>\n  </p>\n);\n',
+  });
+  try {
+    const r = await verify({ projectDir: dir, platform: 'web' });
+    const icons = r.violations.filter(v => v.check === 'unknown-icon').map(v => `${v.file}:${v.line}`).sort();
+    assert.deepEqual(icons, ['app.js:6', 'index.html:3', 'src/Badge.jsx:4']);
+  } finally { rmSync(dir, { recursive: true, force: true }); }
+});

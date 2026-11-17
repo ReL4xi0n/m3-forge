@@ -96,6 +96,8 @@ judgment calls are not machine-checked).
   paths, the `contrast` and `targets` findings and `capture` (the `capture.json` for step 6).
   `ran: false` comes with `skippedReason` (no Playwright, browser or SDK): report it. Read every
   image, critique it against `CHECKLIST.md`, fix, then run `screenshot` and `verify` again.
+  Web uses Playwright or, without it, an installed Chrome or Edge; open and look at every PNG
+  yourself, since overlaps and icons shown as words appear only in the images.
   (F6, F8, F9, F10)
 
 ## 8. Report

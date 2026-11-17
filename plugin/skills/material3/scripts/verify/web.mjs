@@ -332,7 +332,9 @@ function scanWebContent(src, parts, hit) {
       for (const m of body.matchAll(ICON_ELEMENT)) {
         if (m[1].toLowerCase() !== 'md-icon' && !ICON_CLASS_ATTR.test(m[2])) continue;
         const name = m[3].trim();
-        if (!name || /[{}$]/.test(name) || knownIcon(name)) continue;
+        // Only literal ligature text counts: not an interpolation ({}, ${}), and in scripts not a
+        // string built with + (a quote inside the text means it spans string literals).
+        if (!name || /[{}$]/.test(name) || (p.kind !== 'markup' && /["'`+]/.test(name)) || knownIcon(name)) continue;
         hit('unknown-icon', p.start + m.index + m[0].indexOf('>') + 1, `icon ligature "${name}" is not a Material Symbols name in the codepoints file`);
       }
       webIconButtons(src, p.start, p.end, hit);

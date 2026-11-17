@@ -92,9 +92,11 @@ node "S/scripts/verify/index.mjs" <project> web "<capture.json>"
 ```
 
 - It renders the page at 412x915 and 1440x900, light and dark (4 PNGs), in a new temporary folder
-  (path in `capture`), never in the project. It uses the project's or a global Playwright and never
-  installs one; a missing Playwright or browser gives `ran: false` with `skippedReason`: name it in
-  the report.
+  (path in `capture`), never in the project. It uses the project's or a global Playwright, else an
+  installed Chrome or Edge (`engine: "cdp"`); it never installs either. With neither it gives
+  `ran: false` with `skippedReason`: name it in the report.
+- Open every PNG and look at it: overlapping parts, clipped text and icons shown as their names
+  appear only in the images, not in the findings.
 - What it opens: the `--url` address if given; a Vite project is built into the temporary folder;
   otherwise the first `index.html` in the root, `dist/`, `public/` or `src/`. Next, Nuxt,
   SvelteKit, Astro and Angular need `--url` (start the dev server first).
