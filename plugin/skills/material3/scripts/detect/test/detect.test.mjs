@@ -198,3 +198,47 @@ test('cli: JSON on stdout, path with spaces, exit 2 on bad usage', async () => {
     await rm(root, { recursive: true, force: true });
   }
 });
+
+const APP = (deps) => async (dest) => {
+  await rm(join(dest, 'gradle', 'libs.versions.toml'));
+  const f = join(dest, 'app', 'build.gradle.kts');
+  const t = await readFile(f, 'utf8');
+  await writeFile(f, t.replace(/dependencies \{[\s\S]*$/, `dependencies {\n${deps}\n}\n`));
+};
+
+test('BOM-managed material3: version unknown, bom reported', async () => {
+  const r = await run('compose-1.5', undefined, APP('    implementation(platform("androidx.compose:compose-bom:2025.05.00"))\n    implementation("androidx.compose.material3:material3")'));
+  assert.equal(r.platform, 'compose');
+  assert.equal(r.composeMaterial3, null);
+  assert.equal(r.belowExpressive, null);
+  assert.equal(r.composeBom, '2025.05.00');
+});
+
+test('interpolated material3 version: unknown', async () => {
+  const r = await run('compose-1.5', undefined, APP('    val m3 = "1.3.0"\n    implementation("androidx.compose.material3:material3:$m3")\n    implementation("androidx.compose.material3:material3:${m3}")'));
+  assert.equal(r.composeMaterial3, null);
+  assert.equal(r.belowExpressive, null);
+  assert.equal(r.composeBom, null);
+});
+
+test('catalog alias missing the material3 entry: unknown', async () => {
+  const r = await run('compose-1.5', undefined, async (dest) => {
+    const f = join(dest, 'gradle', 'libs.versions.toml');
+    const t = await readFile(f, 'utf8');
+    await writeFile(f, t.split('\n').filter((l) => !l.startsWith('androidx-compose-material3')).join('\n'));
+  });
+  assert.equal(r.platform, 'compose');
+  assert.equal(r.composeMaterial3, null);
+  assert.equal(r.belowExpressive, null);
+});
+
+test('catalog BOM entry is reported', async () => {
+  const r = await run('compose-1.5', undefined, async (dest) => {
+    const f = join(dest, 'gradle', 'libs.versions.toml');
+    const t = await readFile(f, 'utf8');
+    await writeFile(f, t.split('\n').filter((l) => !l.startsWith('androidx-compose-material3')).join('\n')
+      .replace('[libraries]', '[libraries]\nandroidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version = "2025.05.00" }'));
+  });
+  assert.equal(r.composeBom, '2025.05.00');
+  assert.equal(r.belowExpressive, null);
+});

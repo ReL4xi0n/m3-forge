@@ -172,14 +172,21 @@ function composeInfo(dir) {
   const files = gradleFiles(dir);
   let isCompose = false;
   let material3 = null;
+  let bom = null;
   for (const f of files) {
     const t = readText(f);
     if (t === null) continue;
     if (/androidx\.compose|org\.jetbrains\.compose|kotlin\.compose|buildFeatures[\s\S]{0,80}compose\s*=\s*true|compose\s*=\s*true/.test(t)) isCompose = true;
-    if (material3) continue;
     if (f.endsWith('.toml')) {
       const versions = tomlVersions(t);
       for (const line of t.split(/\r?\n/)) {
+        if (!bom && /compose-bom/.test(line)) {
+          const r = line.match(/version\.ref\s*=\s*"([^"]+)"/);
+          const l = line.match(/version\s*=\s*"([^"]+)"/);
+          const mod = line.match(/compose-bom:([^"\s]+)/);
+          bom = r ? versions[r[1]] ?? null : l ? l[1] : mod ? mod[1] : null;
+        }
+        if (material3) continue;
         if (!/androidx\.compose\.material3/.test(line) || !/name\s*=\s*"material3"|module\s*=\s*"androidx\.compose\.material3:material3"/.test(line)) continue;
         const ref = line.match(/version\.ref\s*=\s*"([^"]+)"/);
         const lit = line.match(/version\s*=\s*"([^"]+)"/);
@@ -188,10 +195,12 @@ function composeInfo(dir) {
       }
     } else {
       const m = t.match(/androidx\.compose\.material3:material3:([^"'\s)]+)/);
-      if (m) material3 = m[1];
+      if (m && !material3 && !m[1].includes('$')) material3 = m[1];
+      const b = t.match(/androidx\.compose:compose-bom:([^"'\s)]+)/);
+      if (b && !bom && !b[1].includes('$')) bom = b[1];
     }
   }
-  return { isCompose, material3 };
+  return { isCompose, material3, bom };
 }
 
 function isBelowExpressive(version) {
@@ -233,7 +242,7 @@ export async function detect(dir, opts = {}) {
   const root = resolve(dir);
   const env = normalizeEnv(opts.env ?? process.env);
   const platform = opts.platform ?? detectPlatform(root);
-  const compose = platform === 'compose' ? composeInfo(root) : { material3: null };
+  const compose = platform === 'compose' ? composeInfo(root) : { material3: null, bom: null };
 
   let themeFiles = [];
   try {
@@ -250,7 +259,9 @@ export async function detect(dir, opts = {}) {
     flutterLibrary: platform === 'flutter' ? flutterLibrary(root) : null,
     flutterVersion: platform === 'flutter' ? flutter.version : null,
     composeMaterial3: compose.material3,
-    belowExpressive: platform === 'compose' ? isBelowExpressive(compose.material3) : false,
+    // Unresolved Compose version (BOM-managed, interpolated, missing alias): unknown, not false.
+    composeBom: platform === 'compose' ? compose.bom : null,
+    belowExpressive: platform !== 'compose' ? false : compose.material3 ? isBelowExpressive(compose.material3) : null,
     themeFiles,
     empty: isEmpty(root),
     tools: {
