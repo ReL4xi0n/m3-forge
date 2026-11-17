@@ -131,6 +131,53 @@ test('compose: hand-drawn and other-set ImageVector icons are violations; a larg
   assert.deepEqual(hits.map(h => h.file).sort(), ['app/src/main/kotlin/app/Drawn.kt', 'app/src/main/kotlin/app/Legacy.kt']);
 });
 
+test('compose: path strings passed to an icon helper are checked one by one; the helper is not an icon', async () => {
+  const helper = `package app
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.addPathNodes
+import androidx.compose.ui.unit.dp
+object AppIcons {
+    private fun icon(name: String, path: String): ImageVector =
+        ImageVector.Builder(name = name, defaultWidth = 24.dp, defaultHeight = 24.dp, viewportWidth = 960f, viewportHeight = 960f)
+            .addPath(pathData = addPathNodes(path), fill = SolidColor(Color.Black)).build()
+    val Home = icon("Home", "${HOME_WEB}")
+    val HomeRounded = icon("HomeRounded", "${HOME_ANDROID}")
+    val Legacy = icon("Legacy", "${LEGACY_HOME}")
+    val Drawn = icon("Drawn", "M480,80L880,880L80,880Z")
+}
+`;
+  const dir = project({ 'app/src/main/kotlin/app/AppIcons.kt': helper });
+  const hits = await iconHits(dir, 'compose');
+  const lines = helper.split('\n');
+  assert.deepEqual(hits.map(h => lines[h.line - 1].trim().split(' =')[0]), ['val Legacy', 'val Drawn']);
+});
+
+test('web: an icon map rendered through <path d={…}> is checked string by string', async () => {
+  const dir = project({
+    'src/Icon.jsx': `const PATHS = {\n  home: '${HOME_WEB}',\n  legacy: '${LEGACY_HOME}',\n};\nexport const Icon = ({ name }) => (\n  <svg viewBox="0 -960 960 960" width="24" height="24"><path d={PATHS[name]} /></svg>\n);\n`,
+  });
+  const hits = await iconHits(dir, 'web');
+  assert.deepEqual(hits.map(h => h.line), [3]);
+});
+
+test('web: sprite symbols are icons of their own, <use> is not counted again, favicons are not icons', async () => {
+  const dir = project({
+    'index.html': [
+      `<link rel="icon" href="data:image/svg+xml,%3Csvg viewBox='0 0 32 32'%3E%3Cpath d='M22 6H10a2 2 0 0 0-2 2v16'/%3E%3C/svg%3E">`,
+      '<svg width="0" height="0" style="position:absolute">',
+      `  <symbol id="home" viewBox="0 -960 960 960"><path d="${HOME_WEB}"/></symbol>`,
+      `  <symbol id="legacy" viewBox="0 0 24 24"><path d="${LEGACY_HOME}"/></symbol>`,
+      '</svg>',
+      '<p><svg class="icon" aria-hidden="true"><use href="#legacy"/></svg> <svg class="icon"><use href="#home"/></svg></p>',
+      '',
+    ].join('\n'),
+  });
+  const hits = await iconHits(dir, 'web');
+  assert.deepEqual(hits.map(h => h.line), [4]);
+});
+
 test('android: vector drawables are checked the same way', async () => {
   const vector = d => `<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="24dp" android:height="24dp" android:viewportWidth="960" android:viewportHeight="960">\n  <path android:fillColor="#FF000000" android:pathData="${d}"/>\n</vector>\n`;
   const dir = project({

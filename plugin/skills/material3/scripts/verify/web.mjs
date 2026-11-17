@@ -3,7 +3,7 @@ import {
   countNonBlank, findEmoji, lineAt, lineStarts, looksGenerated, onGrid, radiusOnScale,
   readText, SHAPE_SCALE, stripComments, walk,
 } from './common.mjs';
-import { describeProblems, webSvgIcons } from './symbols.mjs';
+import { describeProblems, pathLiterals, svgRanges, webSvgIcons } from './symbols.mjs';
 
 const EXT = /\.(html?|css|scss|js|jsx|ts|tsx|vue)$/i;
 const NOT_UI = /(?:\.min\.(?:js|css)|\.d\.ts|\.(?:test|spec|stories)\.[cm]?[jt]sx?|(?:^|\/)[^/]*\.config\.[cm]?[jt]s)$/i;
@@ -418,6 +418,12 @@ function scanFile(rel, text, ctx, collector) {
   if (!/\.s?css$/i.test(rel)) {
     for (const icon of webSvgIcons(src)) {
       if (!icon.official) hit('icon-source', icon.index, `inline <svg> icon is not official Material Symbols geometry (${describeProblems(icon)})`);
+    }
+    // Path data kept in strings (an icon map rendered as <path d={…}>, or SVG built in script).
+    if (/<svg\b|<path\b|createElementNS\s*\(/i.test(src)) {
+      for (const lit of pathLiterals(src, svgRanges(src))) {
+        if (!lit.official) hit('icon-source', lit.index, `vector icon path data is not official Material Symbols geometry (${describeProblems(lit)})`);
+      }
     }
   }
   return { themeLines: themeLines.size, nonBlank: countNonBlank(text) };

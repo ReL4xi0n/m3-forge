@@ -3,7 +3,7 @@ import {
   callArgs, countNonBlank, findEmoji, looksGenerated, onGrid, radiusOnScale, readText, SHAPE_SCALE,
   stripComments, walk,
 } from './common.mjs';
-import { composeVectorIcons, describeProblems, xmlVectorIcon } from './symbols.mjs';
+import { composeVectors, describeProblems, pathLiterals, xmlVectorIcon } from './symbols.mjs';
 
 const THEME_FILES = new Set(['Color.kt', 'Theme.kt', 'Type.kt', 'Shape.kt']);
 const DP = /(?<![\w.])(\d+(?:\.\d+)?)f?\.dp\b/g;
@@ -62,8 +62,14 @@ function scanKotlin(src, hit) {
     hit('icon-source', m.index, `${m[0]} comes from material-icons; use Material Symbols`));
   findEmoji(src, (i, e) => hit('icon-source', i, `emoji ${e} in UI text (use Material Symbols)`));
   // ImageVector icons: official Material Symbols path data only (symbols.mjs).
-  for (const icon of composeVectorIcons(src)) {
+  const { icons, ranges } = composeVectors(src);
+  for (const icon of icons) {
     if (!icon.official) hit('icon-source', icon.index, `ImageVector icon is not official Material Symbols geometry (${describeProblems(icon)})`);
+  }
+  if (/\b(?:ImageVector|addPathNodes|PathParser|PathData)\b/.test(src)) {
+    for (const lit of pathLiterals(src, ranges)) {
+      if (!lit.official) hit('icon-source', lit.index, `vector icon path data is not official Material Symbols geometry (${describeProblems(lit)})`);
+    }
   }
 }
 

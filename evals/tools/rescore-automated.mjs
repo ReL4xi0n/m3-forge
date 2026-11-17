@@ -9,7 +9,8 @@ import { join, dirname, isAbsolute } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { automatedScores } from './automated.mjs';
 
-const STATIC = ['hardcoded-color', 'off-token-type', 'off-token-radius', 'off-grid-spacing', 'shadow-gradient', 'icon-source', 'foreign-styling'];
+// Static checks whose rules did not change from v1 (icon-source gained the vector-icon rule in v2).
+const STATIC = ['hardcoded-color', 'off-token-type', 'off-token-radius', 'off-grid-spacing', 'shadow-gradient', 'foreign-styling'];
 const round = x => (x === null ? null : Math.round(x * 100) / 100);
 const mean = xs => { const v = xs.filter(x => typeof x === 'number'); return v.length ? v.reduce((a, b) => a + b, 0) / v.length : null; };
 
@@ -74,7 +75,9 @@ async function main() {
     const saved = JSON.parse(readFileSync(recPath, 'utf8'));
     const workDir = saved.rec.workDir;
     if (!existsSync(workDir ?? '')) { console.error(`work folder gone for ${cell.cell}: ${workDir}`); process.exit(2); }
-    let cap = saved.cap;
+    // A harness v2 capture recorded earlier (<cell>/v2/capture.json) is used without capturing again.
+    const v2cap = join(priv, cell.cell, 'v2', 'capture.json');
+    let cap = existsSync(v2cap) ? JSON.parse(readFileSync(v2cap, 'utf8')) : saved.cap;
     let captureMs = null;
     if (recapture.includes(cell.platform)) {
       const shotDir = join('C:\\m3-eval', 'shots', `${runId}-v2`, cell.cell);

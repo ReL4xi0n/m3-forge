@@ -22,7 +22,7 @@
         "token-fidelity": 0.78,
         "contrast-targets": 0.78,
         "anti-patterns": 1,
-        "icon-source": 2.89
+        "icon-source": 0.22
       }
     },
     "flutter": {
@@ -48,7 +48,7 @@
         "token-fidelity": 2,
         "contrast-targets": 0.88,
         "anti-patterns": 2.38,
-        "icon-source": 3
+        "icon-source": 0
       }
     }
   },
@@ -62,7 +62,7 @@
       "token-fidelity": 1.62,
       "contrast-targets": 1.5,
       "anti-patterns": 1.92,
-      "icon-source": 1.92
+      "icon-source": 0.08
     }
   },
   "cells": [
@@ -78,7 +78,7 @@
         "token-fidelity": 0,
         "contrast-targets": 1,
         "anti-patterns": 0,
-        "icon-source": 3
+        "icon-source": 1
       },
       "targetsV1": 3,
       "targetsV2": 3,
@@ -88,7 +88,7 @@
         "off-token-radius": 2,
         "off-grid-spacing": 12,
         "shadow-gradient": 5,
-        "icon-source": 0,
+        "icon-source": 2,
         "foreign-styling": 0,
         "contrast": 0,
         "touch-target": 3
@@ -136,7 +136,7 @@
         "token-fidelity": 2,
         "contrast-targets": 2,
         "anti-patterns": 1,
-        "icon-source": 3
+        "icon-source": 0
       },
       "targetsV1": 2,
       "targetsV2": 2,
@@ -146,7 +146,7 @@
         "off-token-radius": 3,
         "off-grid-spacing": 12,
         "shadow-gradient": 2,
-        "icon-source": 0,
+        "icon-source": 11,
         "foreign-styling": 0,
         "contrast": 0,
         "touch-target": 2
@@ -165,7 +165,7 @@
         "token-fidelity": 1,
         "contrast-targets": 1,
         "anti-patterns": 1,
-        "icon-source": 3
+        "icon-source": 0
       },
       "targetsV1": 5,
       "targetsV2": 5,
@@ -175,7 +175,7 @@
         "off-token-radius": 1,
         "off-grid-spacing": 3,
         "shadow-gradient": 3,
-        "icon-source": 0,
+        "icon-source": 22,
         "foreign-styling": 0,
         "contrast": 0,
         "touch-target": 5
@@ -223,7 +223,7 @@
         "token-fidelity": 2,
         "contrast-targets": 0,
         "anti-patterns": 3,
-        "icon-source": 3
+        "icon-source": 0
       },
       "targetsV1": 10,
       "targetsV2": 10,
@@ -233,7 +233,7 @@
         "off-token-radius": 0,
         "off-grid-spacing": 0,
         "shadow-gradient": 0,
-        "icon-source": 0,
+        "icon-source": 19,
         "foreign-styling": 0,
         "contrast": 0,
         "touch-target": 10
@@ -252,7 +252,7 @@
         "token-fidelity": 1,
         "contrast-targets": 0,
         "anti-patterns": 2,
-        "icon-source": 3
+        "icon-source": 0
       },
       "targetsV1": 18,
       "targetsV2": 18,
@@ -262,7 +262,7 @@
         "off-token-radius": 3,
         "off-grid-spacing": 11,
         "shadow-gradient": 1,
-        "icon-source": 0,
+        "icon-source": 20,
         "foreign-styling": 0,
         "contrast": 0,
         "touch-target": 18
@@ -310,7 +310,7 @@
         "token-fidelity": 2,
         "contrast-targets": 0,
         "anti-patterns": 2,
-        "icon-source": 3
+        "icon-source": 0
       },
       "targetsV1": 12,
       "targetsV2": 12,
@@ -320,7 +320,7 @@
         "off-token-radius": 1,
         "off-grid-spacing": 4,
         "shadow-gradient": 1,
-        "icon-source": 0,
+        "icon-source": 12,
         "foreign-styling": 0,
         "contrast": 0,
         "touch-target": 12
@@ -339,7 +339,7 @@
         "token-fidelity": 0,
         "contrast-targets": 0,
         "anti-patterns": 0,
-        "icon-source": 3
+        "icon-source": 0
       },
       "targetsV1": 21,
       "targetsV2": 21,
@@ -349,7 +349,7 @@
         "off-token-radius": 2,
         "off-grid-spacing": 11,
         "shadow-gradient": 11,
-        "icon-source": 0,
+        "icon-source": 29,
         "foreign-styling": 0,
         "contrast": 0,
         "touch-target": 21
@@ -397,7 +397,7 @@
         "token-fidelity": 2,
         "contrast-targets": 0,
         "anti-patterns": 3,
-        "icon-source": 3
+        "icon-source": 0
       },
       "targetsV1": 24,
       "targetsV2": 24,
@@ -407,7 +407,7 @@
         "off-token-radius": 0,
         "off-grid-spacing": 8,
         "shadow-gradient": 0,
-        "icon-source": 0,
+        "icon-source": 13,
         "foreign-styling": 0,
         "contrast": 0,
         "touch-target": 24
@@ -426,7 +426,7 @@
         "token-fidelity": 1,
         "contrast-targets": 1,
         "anti-patterns": 0,
-        "icon-source": 3
+        "icon-source": 0
       },
       "targetsV1": 4,
       "targetsV2": 4,
@@ -436,7 +436,7 @@
         "off-token-radius": 5,
         "off-grid-spacing": 12,
         "shadow-gradient": 8,
-        "icon-source": 0,
+        "icon-source": 14,
         "foreign-styling": 0,
         "contrast": 0,
         "touch-target": 4
@@ -484,7 +484,7 @@
         "token-fidelity": 2,
         "contrast-targets": 1,
         "anti-patterns": 3,
-        "icon-source": 3
+        "icon-source": 0
       },
       "targetsV1": 4,
       "targetsV2": 4,
@@ -494,7 +494,7 @@
         "off-token-radius": 0,
         "off-grid-spacing": 4,
         "shadow-gradient": 0,
-        "icon-source": 0,
+        "icon-source": 14,
         "foreign-styling": 0,
         "contrast": 0,
         "touch-target": 4
@@ -513,7 +513,7 @@
         "token-fidelity": 1,
         "contrast-targets": 0,
         "anti-patterns": 1,
-        "icon-source": 2
+        "icon-source": 0
       },
       "targetsV1": 9,
       "targetsV2": 9,
@@ -523,7 +523,7 @@
         "off-token-radius": 2,
         "off-grid-spacing": 14,
         "shadow-gradient": 3,
-        "icon-source": 1,
+        "icon-source": 17,
         "foreign-styling": 0,
         "contrast": 0,
         "touch-target": 9
@@ -571,7 +571,7 @@
         "token-fidelity": 2,
         "contrast-targets": 0,
         "anti-patterns": 2,
-        "icon-source": 3
+        "icon-source": 0
       },
       "targetsV1": 12,
       "targetsV2": 12,
@@ -581,7 +581,7 @@
         "off-token-radius": 1,
         "off-grid-spacing": 2,
         "shadow-gradient": 1,
-        "icon-source": 0,
+        "icon-source": 11,
         "foreign-styling": 0,
         "contrast": 0,
         "touch-target": 12
@@ -600,7 +600,7 @@
         "token-fidelity": 1,
         "contrast-targets": 1,
         "anti-patterns": 1,
-        "icon-source": 3
+        "icon-source": 1
       },
       "targetsV1": 3,
       "targetsV2": 3,
@@ -610,7 +610,7 @@
         "off-token-radius": 2,
         "off-grid-spacing": 9,
         "shadow-gradient": 4,
-        "icon-source": 0,
+        "icon-source": 2,
         "foreign-styling": 0,
         "contrast": 0,
         "touch-target": 3
@@ -658,7 +658,7 @@
         "token-fidelity": 1,
         "contrast-targets": 3,
         "anti-patterns": 3,
-        "icon-source": 3
+        "icon-source": 0
       },
       "targetsV1": 0,
       "targetsV2": 0,
@@ -668,7 +668,7 @@
         "off-token-radius": 0,
         "off-grid-spacing": 2,
         "shadow-gradient": 0,
-        "icon-source": 0,
+        "icon-source": 19,
         "foreign-styling": 0,
         "contrast": 0,
         "touch-target": 0
@@ -716,7 +716,7 @@
         "token-fidelity": 2,
         "contrast-targets": 2,
         "anti-patterns": 3,
-        "icon-source": 3
+        "icon-source": 0
       },
       "targetsV1": 2,
       "targetsV2": 2,
@@ -726,7 +726,7 @@
         "off-token-radius": 0,
         "off-grid-spacing": 0,
         "shadow-gradient": 0,
-        "icon-source": 0,
+        "icon-source": 19,
         "foreign-styling": 0,
         "contrast": 0,
         "touch-target": 2
@@ -745,7 +745,7 @@
         "token-fidelity": 1,
         "contrast-targets": 0,
         "anti-patterns": 1,
-        "icon-source": 3
+        "icon-source": 0
       },
       "targetsV1": 8,
       "targetsV2": 8,
@@ -755,7 +755,7 @@
         "off-token-radius": 3,
         "off-grid-spacing": 10,
         "shadow-gradient": 3,
-        "icon-source": 0,
+        "icon-source": 25,
         "foreign-styling": 0,
         "contrast": 1,
         "touch-target": 8
@@ -803,7 +803,7 @@
         "token-fidelity": 2,
         "contrast-targets": 2,
         "anti-patterns": 2,
-        "icon-source": 3
+        "icon-source": 0
       },
       "targetsV1": 2,
       "targetsV2": 2,
@@ -813,7 +813,7 @@
         "off-token-radius": 1,
         "off-grid-spacing": 7,
         "shadow-gradient": 1,
-        "icon-source": 0,
+        "icon-source": 13,
         "foreign-styling": 0,
         "contrast": 0,
         "touch-target": 2

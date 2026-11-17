@@ -177,26 +177,56 @@ export function svgIsIcon(attrs) {
 // [{ index, official, paths, problems }] for every icon-like inline <svg> in a source file.
 export function webSvgIcons(text) {
   const out = [];
-  const re = /<svg\b((?:[^>"'{]|"[^"]*"|'[^']*'|\{[^}]*\})*)>([\s\S]*?)<\/svg\s*>/gi;
+  // A sprite's <symbol> elements are icons of their own; an <svg> that only <use>s one is not
+  // (the symbol is checked where it is defined).
+  const re = /<(svg|symbol)\b((?:[^>"'{]|"[^"]*"|'[^']*'|\{[^}]*\})*)>([\s\S]*?)<\/\1\s*>/gi;
   let m;
   while ((m = re.exec(text))) {
-    if (!svgIsIcon(m[1])) continue;
-    const body = m[2];
+    const body = m[3];
+    if (m[1].toLowerCase() === 'svg' && /<symbol\b/i.test(body)) { re.lastIndex = m.index + m[0].indexOf('>') + 1; continue; }
+    if (!svgIsIcon(m[2])) continue;
     const problems = [];
+    if (/<use\b/i.test(body) && !/<(path|circle|rect|line|polyline|polygon|ellipse|image|text)\b/i.test(body)) continue;
     const other = body.match(/<(circle|rect|line|polyline|polygon|ellipse|use|image|text|foreignObject)\b/i);
     if (other) problems.push(`<${other[1]}> element (official Symbols are paths only)`);
     const paths = [];
+    let dynamic = 0;
     const pre = /<path\b((?:[^>"'{]|"[^"]*"|'[^']*'|\{[^}]*\})*)\/?>/gi;
     let p;
     while ((p = pre.exec(body))) {
       const d = attr(p[1], 'd');
       const abs = d == null ? null : normalizePath(d);
+      if (!abs) { dynamic++; continue; } // d={expr}: the data is a string elsewhere (pathLiterals)
       paths.push(abs);
-      if (!abs) problems.push('a path whose data is not a literal string');
-      else if (!isOfficial(abs)) problems.push('a path that is not official Material Symbols geometry');
+      if (!isOfficial(abs)) problems.push('a path that is not official Material Symbols geometry');
     }
-    if (!paths.length && !other) problems.push('no path');
-    out.push({ index: m.index, official: problems.length === 0, paths: paths.length, problems });
+    if (!paths.length && !other) continue; // nothing drawn here: dynamic paths or an empty frame
+    out.push({ index: m.index, end: m.index + m[0].length, official: problems.length === 0, paths: paths.length, dynamic, problems });
+  }
+  return out;
+}
+
+// Ranges of every inline <svg> element (icon or not), so pathLiterals can skip strings already
+// judged with their element (or belonging to a chart or illustration).
+export function svgRanges(text) {
+  return [
+    ...[...text.matchAll(/<svg\b(?:[^>"'{]|"[^"]*"|'[^']*'|\{[^}]*\})*>[\s\S]*?<\/svg\s*>/gi)].map(m => [m.index, m.index + m[0].length]),
+    // SVG inside a data: URL (a favicon or a CSS background) is not a UI icon.
+    ...[...text.matchAll(/data:image\/svg\+xml[^"\n]*/gi)].map(m => [m.index, m.index + m[0].length]),
+  ];
+}
+
+// String literals that are SVG path data (at least three commands), e.g. an icon map
+// { home: 'M10 20v-6…' } or a helper call icon("Check", "M9,16.17L4.83,12…"). Each is one icon.
+export function pathLiterals(text, skip = []) {
+  const out = [];
+  const re = /(["'`])([Mm]\s*[-+.\d][^"'`$\n]*)\1/g;
+  let m;
+  while ((m = re.exec(text))) {
+    if (skip.some(([a, b]) => m.index >= a && m.index < b)) continue;
+    const abs = normalizePath(m[2]);
+    if (!abs || abs.length < 3) continue;
+    out.push({ index: m.index, official: isOfficial(abs), problems: isOfficial(abs) ? [] : ['a path string that is not official Material Symbols geometry'] });
   }
   return out;
 }
@@ -256,9 +286,13 @@ function vectorPaths(region) {
   return paths;
 }
 
-// [{ index, official, paths, problems }] for every Compose ImageVector that is icon-sized.
-export function composeVectorIcons(src) {
-  const out = [];
+// [{ index, official, paths, problems }] for every Compose ImageVector that is icon-sized; `ranges`
+// holds every builder region (icon or not) for pathLiterals to skip. A builder whose path data comes
+// in as a parameter (a helper such as icon(name, path) = ImageVector.Builder(…).addPath(addPathNodes(path)))
+// is not itself an icon: the strings passed to it are, and pathLiterals checks them.
+export function composeVectors(src) {
+  const icons = [];
+  const ranges = [];
   const re = /\bImageVector\.Builder\s*\(|\bmaterialIcon\s*\(/g;
   let m;
   while ((m = re.exec(src))) {
@@ -269,20 +303,25 @@ export function composeVectorIcons(src) {
       const dps = [...call.args.matchAll(/([\d.]+)f?\s*\.dp/g)].map(x => parseFloat(x[1]));
       width = named ? parseFloat(named[1]) : dps.length ? dps[0] : null;
     }
-    if (width != null && width > ICON_MAX) continue;
     const end = src.indexOf('.build()', m.index);
     const stop = /^materialIcon/.test(m[0]) && call ? matchClose(src, src.indexOf('{', call.close)) : end === -1 ? src.length : end;
-    const paths = vectorPaths(src.slice(m.index, stop));
+    ranges.push([m.index, stop]);
+    if (width != null && width > ICON_MAX) continue;
+    const region = src.slice(m.index, stop);
+    const paths = vectorPaths(region);
+    if (!paths.length && /\b(?:addPathNodes|parsePathString)\s*\(\s*[A-Za-z_]/.test(region)) continue;
     const problems = [];
     if (!paths.length) problems.push('no path');
     paths.forEach(p => {
       if (!p) problems.push('a path that could not be read');
       else if (!isOfficial(p)) problems.push('a path that is not official Material Symbols geometry');
     });
-    out.push({ index: m.index, official: problems.length === 0, paths: paths.length, problems });
+    icons.push({ index: m.index, official: problems.length === 0, paths: paths.length, problems });
   }
-  return out;
+  return { icons, ranges };
 }
+
+export const composeVectorIcons = src => composeVectors(src).icons;
 
 // Android vector drawable (res/drawable*/x.xml) -> { index, official, ... } or null if not an icon.
 export function xmlVectorIcon(text) {
