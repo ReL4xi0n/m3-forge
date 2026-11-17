@@ -1,0 +1,1378 @@
+{
+  "runId": "baseline-2026-11-17",
+  "note": "costUsd is the Claude Code client estimate at API list price for a subscription OAuth session, not a bill.",
+  "totals": {
+    "cells": 26,
+    "minutes": 199.4,
+    "captureMinutes": 53.8,
+    "costUsd": 41.05
+  },
+  "overall": {
+    "token-fidelity": 1.62,
+    "contrast-targets": 1.5,
+    "anti-patterns": 1.08,
+    "component-choice": 2.46,
+    "hierarchy-typography": 2.73,
+    "color-roles": 2.69,
+    "shape-expressive": 2.69,
+    "spacing-layout": 2.35,
+    "interaction-states": 2.46,
+    "dark-mode": 2.69,
+    "overall-polish": 1.88
+  },
+  "byPlatform": {
+    "web": {
+      "token-fidelity": 0.78,
+      "contrast-targets": 0.78,
+      "anti-patterns": 1,
+      "component-choice": 2.78,
+      "hierarchy-typography": 2.78,
+      "color-roles": 3,
+      "shape-expressive": 3,
+      "spacing-layout": 2.44,
+      "interaction-states": 2.56,
+      "dark-mode": 3,
+      "overall-polish": 2.33
+    },
+    "flutter": {
+      "token-fidelity": 2.11,
+      "contrast-targets": 2.78,
+      "anti-patterns": 0,
+      "component-choice": 2,
+      "hierarchy-typography": 2.44,
+      "color-roles": 2.56,
+      "shape-expressive": 2.56,
+      "spacing-layout": 2.22,
+      "interaction-states": 2.11,
+      "dark-mode": 2.22,
+      "overall-polish": 1
+    },
+    "compose": {
+      "token-fidelity": 2,
+      "contrast-targets": 0.88,
+      "anti-patterns": 2.38,
+      "component-choice": 2.63,
+      "hierarchy-typography": 3,
+      "color-roles": 2.5,
+      "shape-expressive": 2.5,
+      "spacing-layout": 2.38,
+      "interaction-states": 2.75,
+      "dark-mode": 2.88,
+      "overall-polish": 2.38
+    }
+  },
+  "cells": [
+    {
+      "cell": "landing.web.web-empty.default",
+      "request": "landing",
+      "platform": "web",
+      "fixture": "web-empty",
+      "variant": "default",
+      "status": "ok",
+      "buildOk": true,
+      "shots": 4,
+      "recaptured": false,
+      "durationMin": 4.8,
+      "costUsd": 1.1182188,
+      "uiLines": 1347,
+      "violations": {
+        "hardcoded-color": 5,
+        "off-token-type": 63,
+        "off-token-radius": 2,
+        "off-grid-spacing": 12,
+        "shadow-gradient": 5,
+        "icon-source": 0,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 3
+      },
+      "automated": {
+        "token-fidelity": 0,
+        "contrast-targets": 1,
+        "anti-patterns": 0
+      },
+      "judged": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 3,
+        "interaction-states": 2,
+        "dark-mode": 3,
+        "overall-polish": 3
+      },
+      "isolation": {
+        "init": true,
+        "audit": true,
+        "preflight": true,
+        "warnings": 24
+      }
+    },
+    {
+      "cell": "landing.flutter.flutter-material_ui.default",
+      "request": "landing",
+      "platform": "flutter",
+      "fixture": "flutter-material_ui",
+      "variant": "default",
+      "status": "ok",
+      "buildOk": true,
+      "shots": 2,
+      "recaptured": true,
+      "durationMin": 9.6,
+      "costUsd": 2.1570898000000005,
+      "uiLines": 1786,
+      "violations": {
+        "hardcoded-color": 0,
+        "off-token-type": 0,
+        "off-token-radius": 2,
+        "off-grid-spacing": 9,
+        "shadow-gradient": 2,
+        "icon-source": 17,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 0
+      },
+      "automated": {
+        "token-fidelity": 2,
+        "contrast-targets": 3,
+        "anti-patterns": 0
+      },
+      "judged": {
+        "component-choice": 2,
+        "hierarchy-typography": 3,
+        "color-roles": 2,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 2,
+        "dark-mode": 2,
+        "overall-polish": 1
+      },
+      "isolation": {
+        "init": true,
+        "audit": true,
+        "preflight": true,
+        "warnings": 43
+      }
+    },
+    {
+      "cell": "landing.compose.compose-1.5.default",
+      "request": "landing",
+      "platform": "compose",
+      "fixture": "compose-1.5",
+      "variant": "default",
+      "status": "ok",
+      "buildOk": true,
+      "shots": 2,
+      "recaptured": false,
+      "durationMin": 10.7,
+      "costUsd": 2.1796168,
+      "uiLines": 1649,
+      "violations": {
+        "hardcoded-color": 2,
+        "off-token-type": 5,
+        "off-token-radius": 3,
+        "off-grid-spacing": 12,
+        "shadow-gradient": 2,
+        "icon-source": 0,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 2
+      },
+      "automated": {
+        "token-fidelity": 2,
+        "contrast-targets": 2,
+        "anti-patterns": 1
+      },
+      "judged": {
+        "component-choice": 2,
+        "hierarchy-typography": 3,
+        "color-roles": 2,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 2,
+        "dark-mode": 2,
+        "overall-polish": 2
+      },
+      "isolation": {
+        "init": true,
+        "audit": true,
+        "preflight": true,
+        "warnings": 30
+      }
+    },
+    {
+      "cell": "settings.web.web-react.default",
+      "request": "settings",
+      "platform": "web",
+      "fixture": "web-react",
+      "variant": "default",
+      "status": "ok",
+      "buildOk": true,
+      "shots": 4,
+      "recaptured": false,
+      "durationMin": 7.7,
+      "costUsd": 1.4595211999999997,
+      "uiLines": 1226,
+      "violations": {
+        "hardcoded-color": 2,
+        "off-token-type": 25,
+        "off-token-radius": 1,
+        "off-grid-spacing": 3,
+        "shadow-gradient": 3,
+        "icon-source": 0,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 5
+      },
+      "automated": {
+        "token-fidelity": 1,
+        "contrast-targets": 1,
+        "anti-patterns": 1
+      },
+      "judged": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 3,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 3
+      },
+      "isolation": {
+        "init": true,
+        "audit": true,
+        "preflight": true,
+        "warnings": 38
+      }
+    },
+    {
+      "cell": "settings.flutter.flutter-material_ui.default",
+      "request": "settings",
+      "platform": "flutter",
+      "fixture": "flutter-material_ui",
+      "variant": "default",
+      "status": "ok",
+      "buildOk": true,
+      "shots": 2,
+      "recaptured": false,
+      "durationMin": 3.9,
+      "costUsd": 0.7949250000000001,
+      "uiLines": 691,
+      "violations": {
+        "hardcoded-color": 1,
+        "off-token-type": 0,
+        "off-token-radius": 2,
+        "off-grid-spacing": 3,
+        "shadow-gradient": 0,
+        "icon-source": 26,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 0
+      },
+      "automated": {
+        "token-fidelity": 2,
+        "contrast-targets": 3,
+        "anti-patterns": 0
+      },
+      "judged": {
+        "component-choice": 2,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 3,
+        "interaction-states": 2,
+        "dark-mode": 3,
+        "overall-polish": 1
+      },
+      "isolation": {
+        "init": true,
+        "audit": true,
+        "preflight": true,
+        "warnings": 26
+      }
+    },
+    {
+      "cell": "settings.compose.compose-1.5.default",
+      "request": "settings",
+      "platform": "compose",
+      "fixture": "compose-1.5",
+      "variant": "default",
+      "status": "ok",
+      "buildOk": true,
+      "shots": 2,
+      "recaptured": false,
+      "durationMin": 5.4,
+      "costUsd": 1.1532546000000001,
+      "uiLines": 772,
+      "violations": {
+        "hardcoded-color": 1,
+        "off-token-type": 0,
+        "off-token-radius": 0,
+        "off-grid-spacing": 0,
+        "shadow-gradient": 0,
+        "icon-source": 0,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 10
+      },
+      "automated": {
+        "token-fidelity": 2,
+        "contrast-targets": 0,
+        "anti-patterns": 3
+      },
+      "judged": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 2,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      },
+      "isolation": {
+        "init": true,
+        "audit": true,
+        "preflight": true,
+        "warnings": 11
+      }
+    },
+    {
+      "cell": "dashboard.web.web-react.default",
+      "request": "dashboard",
+      "platform": "web",
+      "fixture": "web-react",
+      "variant": "default",
+      "status": "ok",
+      "buildOk": true,
+      "shots": 4,
+      "recaptured": false,
+      "durationMin": 9.4,
+      "costUsd": 1.9014266000000002,
+      "uiLines": 2037,
+      "violations": {
+        "hardcoded-color": 0,
+        "off-token-type": 60,
+        "off-token-radius": 3,
+        "off-grid-spacing": 11,
+        "shadow-gradient": 1,
+        "icon-source": 0,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 18
+      },
+      "automated": {
+        "token-fidelity": 1,
+        "contrast-targets": 0,
+        "anti-patterns": 2
+      },
+      "judged": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      },
+      "isolation": {
+        "init": true,
+        "audit": true,
+        "preflight": true,
+        "warnings": 48
+      }
+    },
+    {
+      "cell": "dashboard.flutter.flutter-material_ui.default",
+      "request": "dashboard",
+      "platform": "flutter",
+      "fixture": "flutter-material_ui",
+      "variant": "default",
+      "status": "ok",
+      "buildOk": true,
+      "shots": 2,
+      "recaptured": true,
+      "durationMin": 11,
+      "costUsd": 1.8042470000000004,
+      "uiLines": 1464,
+      "violations": {
+        "hardcoded-color": 4,
+        "off-token-type": 0,
+        "off-token-radius": 2,
+        "off-grid-spacing": 6,
+        "shadow-gradient": 1,
+        "icon-source": 24,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 0
+      },
+      "automated": {
+        "token-fidelity": 2,
+        "contrast-targets": 3,
+        "anti-patterns": 0
+      },
+      "judged": {
+        "component-choice": 1,
+        "hierarchy-typography": 2,
+        "color-roles": 2,
+        "shape-expressive": 3,
+        "spacing-layout": 1,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 1
+      },
+      "isolation": {
+        "init": true,
+        "audit": true,
+        "preflight": true,
+        "warnings": 40
+      }
+    },
+    {
+      "cell": "dashboard.compose.compose-1.5.default",
+      "request": "dashboard",
+      "platform": "compose",
+      "fixture": "compose-1.5",
+      "variant": "default",
+      "status": "ok",
+      "buildOk": true,
+      "shots": 2,
+      "recaptured": false,
+      "durationMin": 7.6,
+      "costUsd": 1.491606,
+      "uiLines": 1214,
+      "violations": {
+        "hardcoded-color": 2,
+        "off-token-type": 0,
+        "off-token-radius": 1,
+        "off-grid-spacing": 4,
+        "shadow-gradient": 1,
+        "icon-source": 0,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 12
+      },
+      "automated": {
+        "token-fidelity": 2,
+        "contrast-targets": 0,
+        "anti-patterns": 2
+      },
+      "judged": {
+        "component-choice": 2,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      },
+      "isolation": {
+        "init": true,
+        "audit": true,
+        "preflight": true,
+        "warnings": 4
+      }
+    },
+    {
+      "cell": "product-detail.web.web-empty.default",
+      "request": "product-detail",
+      "platform": "web",
+      "fixture": "web-empty",
+      "variant": "default",
+      "status": "ok",
+      "buildOk": true,
+      "shots": 4,
+      "recaptured": false,
+      "durationMin": 8.1,
+      "costUsd": 1.6508626,
+      "uiLines": 1708,
+      "violations": {
+        "hardcoded-color": 13,
+        "off-token-type": 72,
+        "off-token-radius": 2,
+        "off-grid-spacing": 11,
+        "shadow-gradient": 11,
+        "icon-source": 0,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 21
+      },
+      "automated": {
+        "token-fidelity": 0,
+        "contrast-targets": 0,
+        "anti-patterns": 0
+      },
+      "judged": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 3
+      },
+      "isolation": {
+        "init": true,
+        "audit": true,
+        "preflight": true,
+        "warnings": 26
+      }
+    },
+    {
+      "cell": "product-detail.flutter.flutter-material_ui.default",
+      "request": "product-detail",
+      "platform": "flutter",
+      "fixture": "flutter-material_ui",
+      "variant": "default",
+      "status": "ok",
+      "buildOk": true,
+      "shots": 2,
+      "recaptured": false,
+      "durationMin": 8.4,
+      "costUsd": 1.6395553999999997,
+      "uiLines": 2093,
+      "violations": {
+        "hardcoded-color": 9,
+        "off-token-type": 1,
+        "off-token-radius": 5,
+        "off-grid-spacing": 19,
+        "shadow-gradient": 1,
+        "icon-source": 36,
+        "foreign-styling": 0,
+        "contrast": 1,
+        "touch-target": 0
+      },
+      "automated": {
+        "token-fidelity": 2,
+        "contrast-targets": 2,
+        "anti-patterns": 0
+      },
+      "judged": {
+        "component-choice": 2,
+        "hierarchy-typography": 1,
+        "color-roles": 2,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 2,
+        "dark-mode": 2,
+        "overall-polish": 1
+      },
+      "isolation": {
+        "init": true,
+        "audit": true,
+        "preflight": true,
+        "warnings": 32
+      }
+    },
+    {
+      "cell": "product-detail.compose.compose-1.5.default",
+      "request": "product-detail",
+      "platform": "compose",
+      "fixture": "compose-1.5",
+      "variant": "default",
+      "status": "ok",
+      "buildOk": true,
+      "shots": 2,
+      "recaptured": false,
+      "durationMin": 5.9,
+      "costUsd": 1.2240226,
+      "uiLines": 1123,
+      "violations": {
+        "hardcoded-color": 10,
+        "off-token-type": 0,
+        "off-token-radius": 0,
+        "off-grid-spacing": 8,
+        "shadow-gradient": 0,
+        "icon-source": 0,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 24
+      },
+      "automated": {
+        "token-fidelity": 2,
+        "contrast-targets": 0,
+        "anti-patterns": 3
+      },
+      "judged": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 2,
+        "shape-expressive": 3,
+        "spacing-layout": 3,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 3
+      },
+      "isolation": {
+        "init": true,
+        "audit": true,
+        "preflight": true,
+        "warnings": 6
+      }
+    },
+    {
+      "cell": "onboarding.web.web-react.default",
+      "request": "onboarding",
+      "platform": "web",
+      "fixture": "web-react",
+      "variant": "default",
+      "status": "ok",
+      "buildOk": true,
+      "shots": 4,
+      "recaptured": false,
+      "durationMin": 11.6,
+      "costUsd": 2.5731332000000005,
+      "uiLines": 2619,
+      "violations": {
+        "hardcoded-color": 1,
+        "off-token-type": 46,
+        "off-token-radius": 5,
+        "off-grid-spacing": 12,
+        "shadow-gradient": 8,
+        "icon-source": 0,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 4
+      },
+      "automated": {
+        "token-fidelity": 1,
+        "contrast-targets": 1,
+        "anti-patterns": 0
+      },
+      "judged": {
+        "component-choice": 2,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 3,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 3
+      },
+      "isolation": {
+        "init": true,
+        "audit": true,
+        "preflight": true,
+        "warnings": 90
+      }
+    },
+    {
+      "cell": "onboarding.flutter.flutter-material_ui.default",
+      "request": "onboarding",
+      "platform": "flutter",
+      "fixture": "flutter-material_ui",
+      "variant": "default",
+      "status": "ok",
+      "buildOk": true,
+      "shots": 2,
+      "recaptured": false,
+      "durationMin": 8.5,
+      "costUsd": 1.8020795999999994,
+      "uiLines": 1205,
+      "violations": {
+        "hardcoded-color": 0,
+        "off-token-type": 0,
+        "off-token-radius": 0,
+        "off-grid-spacing": 6,
+        "shadow-gradient": 0,
+        "icon-source": 26,
+        "foreign-styling": 0,
+        "contrast": 1,
+        "touch-target": 0
+      },
+      "automated": {
+        "token-fidelity": 3,
+        "contrast-targets": 2,
+        "anti-patterns": 0
+      },
+      "judged": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 3,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 2,
+        "dark-mode": 2,
+        "overall-polish": 1
+      },
+      "isolation": {
+        "init": true,
+        "audit": true,
+        "preflight": true,
+        "warnings": 53
+      }
+    },
+    {
+      "cell": "onboarding.compose.compose-1.5.default",
+      "request": "onboarding",
+      "platform": "compose",
+      "fixture": "compose-1.5",
+      "variant": "default",
+      "status": "ok",
+      "buildOk": true,
+      "shots": 2,
+      "recaptured": false,
+      "durationMin": 9.2,
+      "costUsd": 2.1261787999999995,
+      "uiLines": 1510,
+      "violations": {
+        "hardcoded-color": 1,
+        "off-token-type": 0,
+        "off-token-radius": 0,
+        "off-grid-spacing": 4,
+        "shadow-gradient": 0,
+        "icon-source": 0,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 4
+      },
+      "automated": {
+        "token-fidelity": 2,
+        "contrast-targets": 1,
+        "anti-patterns": 3
+      },
+      "judged": {
+        "component-choice": 2,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      },
+      "isolation": {
+        "init": true,
+        "audit": true,
+        "preflight": true,
+        "warnings": 11
+      }
+    },
+    {
+      "cell": "empty-error.web.web-empty.default",
+      "request": "empty-error",
+      "platform": "web",
+      "fixture": "web-empty",
+      "variant": "default",
+      "status": "ok",
+      "buildOk": true,
+      "shots": 4,
+      "recaptured": false,
+      "durationMin": 7.2,
+      "costUsd": 1.4831885999999999,
+      "uiLines": 889,
+      "violations": {
+        "hardcoded-color": 1,
+        "off-token-type": 24,
+        "off-token-radius": 2,
+        "off-grid-spacing": 14,
+        "shadow-gradient": 3,
+        "icon-source": 1,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 9
+      },
+      "automated": {
+        "token-fidelity": 1,
+        "contrast-targets": 0,
+        "anti-patterns": 1
+      },
+      "judged": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 2,
+        "dark-mode": 3,
+        "overall-polish": 2
+      },
+      "isolation": {
+        "init": true,
+        "audit": true,
+        "preflight": true,
+        "warnings": 26
+      }
+    },
+    {
+      "cell": "empty-error.flutter.flutter-material_ui.default",
+      "request": "empty-error",
+      "platform": "flutter",
+      "fixture": "flutter-material_ui",
+      "variant": "default",
+      "status": "ok",
+      "buildOk": true,
+      "shots": 2,
+      "recaptured": false,
+      "durationMin": 6.3,
+      "costUsd": 1.3862612000000003,
+      "uiLines": 1232,
+      "violations": {
+        "hardcoded-color": 1,
+        "off-token-type": 1,
+        "off-token-radius": 0,
+        "off-grid-spacing": 9,
+        "shadow-gradient": 0,
+        "icon-source": 25,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 0
+      },
+      "automated": {
+        "token-fidelity": 2,
+        "contrast-targets": 3,
+        "anti-patterns": 0
+      },
+      "judged": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 2,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 2,
+        "dark-mode": 2,
+        "overall-polish": 1
+      },
+      "isolation": {
+        "init": true,
+        "audit": true,
+        "preflight": true,
+        "warnings": 37
+      }
+    },
+    {
+      "cell": "empty-error.compose.compose-1.5.default",
+      "request": "empty-error",
+      "platform": "compose",
+      "fixture": "compose-1.5",
+      "variant": "default",
+      "status": "ok",
+      "buildOk": true,
+      "shots": 2,
+      "recaptured": false,
+      "durationMin": 5.1,
+      "costUsd": 1.008377,
+      "uiLines": 830,
+      "violations": {
+        "hardcoded-color": 1,
+        "off-token-type": 0,
+        "off-token-radius": 1,
+        "off-grid-spacing": 2,
+        "shadow-gradient": 1,
+        "icon-source": 0,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 12
+      },
+      "automated": {
+        "token-fidelity": 2,
+        "contrast-targets": 0,
+        "anti-patterns": 2
+      },
+      "judged": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 2,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 2,
+        "dark-mode": 3,
+        "overall-polish": 2
+      },
+      "isolation": {
+        "init": true,
+        "audit": true,
+        "preflight": true,
+        "warnings": 8
+      }
+    },
+    {
+      "cell": "onboarding.web.web-vue.default",
+      "request": "onboarding",
+      "platform": "web",
+      "fixture": "web-vue",
+      "variant": "default",
+      "status": "ok",
+      "buildOk": true,
+      "shots": 4,
+      "recaptured": false,
+      "durationMin": 13.4,
+      "costUsd": 3.1125239999999996,
+      "uiLines": 2714,
+      "violations": {
+        "hardcoded-color": 0,
+        "off-token-type": 36,
+        "off-token-radius": 2,
+        "off-grid-spacing": 9,
+        "shadow-gradient": 4,
+        "icon-source": 0,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 3
+      },
+      "automated": {
+        "token-fidelity": 1,
+        "contrast-targets": 1,
+        "anti-patterns": 1
+      },
+      "judged": {
+        "component-choice": 2,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 3,
+        "interaction-states": 2,
+        "dark-mode": 3,
+        "overall-polish": 2
+      },
+      "isolation": {
+        "init": true,
+        "audit": true,
+        "preflight": true,
+        "warnings": 58
+      }
+    },
+    {
+      "cell": "settings.flutter.flutter-legacy.default",
+      "request": "settings",
+      "platform": "flutter",
+      "fixture": "flutter-legacy",
+      "variant": "default",
+      "status": "ok",
+      "buildOk": true,
+      "shots": 2,
+      "recaptured": false,
+      "durationMin": 3.5,
+      "costUsd": 0.6405768,
+      "uiLines": 718,
+      "violations": {
+        "hardcoded-color": 0,
+        "off-token-type": 1,
+        "off-token-radius": 1,
+        "off-grid-spacing": 6,
+        "shadow-gradient": 0,
+        "icon-source": 28,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 0
+      },
+      "automated": {
+        "token-fidelity": 2,
+        "contrast-targets": 3,
+        "anti-patterns": 0
+      },
+      "judged": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 3,
+        "interaction-states": 2,
+        "dark-mode": 2,
+        "overall-polish": 1
+      },
+      "isolation": {
+        "init": true,
+        "audit": true,
+        "preflight": true,
+        "warnings": 41
+      }
+    },
+    {
+      "cell": "settings.web.web-react.classic",
+      "request": "settings",
+      "platform": "web",
+      "fixture": "web-react",
+      "variant": "classic",
+      "status": "ok",
+      "buildOk": true,
+      "shots": 4,
+      "recaptured": false,
+      "durationMin": 5.7,
+      "costUsd": 1.1354704,
+      "uiLines": 1358,
+      "violations": {
+        "hardcoded-color": 1,
+        "off-token-type": 22,
+        "off-token-radius": 0,
+        "off-grid-spacing": 2,
+        "shadow-gradient": 0,
+        "icon-source": 0,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 0
+      },
+      "automated": {
+        "token-fidelity": 1,
+        "contrast-targets": 3,
+        "anti-patterns": 3
+      },
+      "judged": {
+        "component-choice": 3,
+        "hierarchy-typography": 2,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      },
+      "isolation": {
+        "init": true,
+        "audit": true,
+        "preflight": true,
+        "warnings": 37
+      }
+    },
+    {
+      "cell": "settings.flutter.flutter-material_ui.classic",
+      "request": "settings",
+      "platform": "flutter",
+      "fixture": "flutter-material_ui",
+      "variant": "classic",
+      "status": "ok",
+      "buildOk": true,
+      "shots": 2,
+      "recaptured": false,
+      "durationMin": 3.6,
+      "costUsd": 0.6215143999999999,
+      "uiLines": 420,
+      "violations": {
+        "hardcoded-color": 1,
+        "off-token-type": 0,
+        "off-token-radius": 0,
+        "off-grid-spacing": 0,
+        "shadow-gradient": 0,
+        "icon-source": 24,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 0
+      },
+      "automated": {
+        "token-fidelity": 2,
+        "contrast-targets": 3,
+        "anti-patterns": 0
+      },
+      "judged": {
+        "component-choice": 2,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 2,
+        "dark-mode": 2,
+        "overall-polish": 1
+      },
+      "isolation": {
+        "init": true,
+        "audit": true,
+        "preflight": true,
+        "warnings": 25
+      }
+    },
+    {
+      "cell": "settings.compose.compose-1.5.classic",
+      "request": "settings",
+      "platform": "compose",
+      "fixture": "compose-1.5",
+      "variant": "classic",
+      "status": "ok",
+      "buildOk": true,
+      "shots": 2,
+      "recaptured": false,
+      "durationMin": 3.2,
+      "costUsd": 0.6504344000000001,
+      "uiLines": 600,
+      "violations": {
+        "hardcoded-color": 1,
+        "off-token-type": 0,
+        "off-token-radius": 0,
+        "off-grid-spacing": 0,
+        "shadow-gradient": 0,
+        "icon-source": 0,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 2
+      },
+      "automated": {
+        "token-fidelity": 2,
+        "contrast-targets": 2,
+        "anti-patterns": 3
+      },
+      "judged": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 3,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 3
+      },
+      "isolation": {
+        "init": true,
+        "audit": true,
+        "preflight": true,
+        "warnings": 5
+      }
+    },
+    {
+      "cell": "dashboard.web.web-empty.seed-B5651D",
+      "request": "dashboard",
+      "platform": "web",
+      "fixture": "web-empty",
+      "variant": "seed:#B5651D",
+      "status": "ok",
+      "buildOk": true,
+      "shots": 4,
+      "recaptured": false,
+      "durationMin": 10.2,
+      "costUsd": 2.2742742,
+      "uiLines": 1536,
+      "violations": {
+        "hardcoded-color": 0,
+        "off-token-type": 14,
+        "off-token-radius": 3,
+        "off-grid-spacing": 10,
+        "shadow-gradient": 3,
+        "icon-source": 0,
+        "foreign-styling": 0,
+        "contrast": 1,
+        "touch-target": 8
+      },
+      "automated": {
+        "token-fidelity": 1,
+        "contrast-targets": 0,
+        "anti-patterns": 1
+      },
+      "judged": {
+        "component-choice": 3,
+        "hierarchy-typography": 2,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 2,
+        "dark-mode": 3,
+        "overall-polish": 1
+      },
+      "isolation": {
+        "init": true,
+        "audit": true,
+        "preflight": true,
+        "warnings": 20
+      }
+    },
+    {
+      "cell": "dashboard.flutter.flutter-material_ui.seed-B5651D",
+      "request": "dashboard",
+      "platform": "flutter",
+      "fixture": "flutter-material_ui",
+      "variant": "seed:#B5651D",
+      "status": "ok",
+      "buildOk": true,
+      "shots": 2,
+      "recaptured": false,
+      "durationMin": 11.4,
+      "costUsd": 1.931233,
+      "uiLines": 1485,
+      "violations": {
+        "hardcoded-color": 1,
+        "off-token-type": 0,
+        "off-token-radius": 2,
+        "off-grid-spacing": 8,
+        "shadow-gradient": 1,
+        "icon-source": 25,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 0
+      },
+      "automated": {
+        "token-fidelity": 2,
+        "contrast-targets": 3,
+        "anti-patterns": 0
+      },
+      "judged": {
+        "component-choice": 2,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 3,
+        "interaction-states": 2,
+        "dark-mode": 2,
+        "overall-polish": 1
+      },
+      "isolation": {
+        "init": true,
+        "audit": true,
+        "preflight": true,
+        "warnings": 38
+      }
+    },
+    {
+      "cell": "dashboard.compose.compose-1.5.seed-B5651D",
+      "request": "dashboard",
+      "platform": "compose",
+      "fixture": "compose-1.5",
+      "variant": "seed:#B5651D",
+      "status": "ok",
+      "buildOk": true,
+      "shots": 2,
+      "recaptured": false,
+      "durationMin": 8.1,
+      "costUsd": 1.7293424,
+      "uiLines": 1062,
+      "violations": {
+        "hardcoded-color": 2,
+        "off-token-type": 0,
+        "off-token-radius": 1,
+        "off-grid-spacing": 7,
+        "shadow-gradient": 1,
+        "icon-source": 0,
+        "foreign-styling": 0,
+        "contrast": 0,
+        "touch-target": 2
+      },
+      "automated": {
+        "token-fidelity": 2,
+        "contrast-targets": 2,
+        "anti-patterns": 2
+      },
+      "judged": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 2,
+        "spacing-layout": 3,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 3
+      },
+      "isolation": {
+        "init": true,
+        "audit": true,
+        "preflight": true,
+        "warnings": 11
+      }
+    }
+  ],
+  "failureCatalogue": [
+    {
+      "type": "verify: off-grid-spacing",
+      "cells": 23,
+      "instances": 187,
+      "examples": [
+        "landing.web.web-empty.default",
+        "landing.flutter.flutter-material_ui.default",
+        "landing.compose.compose-1.5.default"
+      ]
+    },
+    {
+      "type": "verify: hardcoded-color",
+      "cells": 20,
+      "instances": 60,
+      "examples": [
+        "landing.web.web-empty.default",
+        "landing.compose.compose-1.5.default",
+        "settings.web.web-react.default"
+      ]
+    },
+    {
+      "type": "verify: off-token-radius",
+      "cells": 18,
+      "instances": 40,
+      "examples": [
+        "landing.web.web-empty.default",
+        "landing.flutter.flutter-material_ui.default",
+        "landing.compose.compose-1.5.default"
+      ]
+    },
+    {
+      "type": "verify: shadow-gradient",
+      "cells": 16,
+      "instances": 48,
+      "examples": [
+        "landing.web.web-empty.default",
+        "landing.flutter.flutter-material_ui.default",
+        "landing.compose.compose-1.5.default"
+      ]
+    },
+    {
+      "type": "verify: touch-target",
+      "cells": 16,
+      "instances": 139,
+      "examples": [
+        "landing.web.web-empty.default",
+        "landing.compose.compose-1.5.default",
+        "settings.web.web-react.default"
+      ]
+    },
+    {
+      "type": "verify: off-token-type",
+      "cells": 13,
+      "instances": 370,
+      "examples": [
+        "landing.web.web-empty.default",
+        "landing.compose.compose-1.5.default",
+        "settings.web.web-react.default"
+      ]
+    },
+    {
+      "type": "judged ≤1: overall-polish",
+      "cells": 10,
+      "instances": 10,
+      "examples": [
+        "landing.flutter.flutter-material_ui.default",
+        "settings.flutter.flutter-material_ui.default",
+        "dashboard.flutter.flutter-material_ui.default"
+      ]
+    },
+    {
+      "type": "verify: icon-source",
+      "cells": 10,
+      "instances": 232,
+      "examples": [
+        "landing.flutter.flutter-material_ui.default",
+        "settings.flutter.flutter-material_ui.default",
+        "dashboard.flutter.flutter-material_ui.default"
+      ]
+    },
+    {
+      "type": "verify: contrast",
+      "cells": 3,
+      "instances": 3,
+      "examples": [
+        "product-detail.flutter.flutter-material_ui.default",
+        "onboarding.flutter.flutter-material_ui.default",
+        "dashboard.web.web-empty.seed-B5651D"
+      ]
+    },
+    {
+      "type": "judged ≤1: component-choice",
+      "cells": 1,
+      "instances": 1,
+      "examples": [
+        "dashboard.flutter.flutter-material_ui.default"
+      ]
+    },
+    {
+      "type": "judged ≤1: hierarchy-typography",
+      "cells": 1,
+      "instances": 1,
+      "examples": [
+        "product-detail.flutter.flutter-material_ui.default"
+      ]
+    },
+    {
+      "type": "judged ≤1: spacing-layout",
+      "cells": 1,
+      "instances": 1,
+      "examples": [
+        "dashboard.flutter.flutter-material_ui.default"
+      ]
+    }
+  ]
+}
