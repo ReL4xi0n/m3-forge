@@ -1,10 +1,12 @@
 #!/usr/bin/env node
-// m3-forge verify v2: static checks on UI source plus the harness runtime results. The static checks
-// are unchanged from v1; v2 changes the harness runtime scope (Flutter touch targets) and the scoring
-// (evals/automated-v2.md).
+// material3 skill verify v2: static checks on UI source plus the harness runtime results. The static
+// checks are unchanged from v1; v2 changes the harness runtime scope (Flutter touch targets) and the
+// scoring (evals/automated-v2.md).
+// Unscored checks (UNSCORED_CHECKS: placeholder-content, brand, unknown-icon, asset-unused) are listed
+// in `violations` and counted in `unscored`; `counts` holds the scored checks only.
 //
 //   verify({ projectDir, platform, runtime }) -> {
-//     violations: [{ check, file, line, detail, severity }], counts, uiLines, exitCode, ... }
+//     violations: [{ check, file, line, detail, severity }], counts, unscored, uiLines, exitCode, ... }
 //
 // CLI: node index.mjs <projectDir> <web|flutter|compose> [capture.json] [--out <dir>]
 //   Prints a short summary and writes verify.json to the project folder (or to --out).
@@ -13,12 +15,12 @@ import { mkdir, readFile, stat, writeFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { CHECKS, Collector } from './common.mjs';
+import { CHECKS, Collector, UNSCORED_CHECKS } from './common.mjs';
 import { scanWeb } from './web.mjs';
 import { scanFlutter } from './flutter.mjs';
 import { scanCompose } from './compose.mjs';
 
-export { CHECKS };
+export { CHECKS, UNSCORED_CHECKS };
 export const PLATFORMS = ['web', 'flutter', 'compose'];
 
 const SCANNERS = { web: scanWeb, flutter: scanFlutter, compose: scanCompose };
@@ -54,7 +56,11 @@ export async function verify({ projectDir, platform, runtime } = {}) {
     ...(runtimeChecked ? runtimeViolations(runtime) : []),
   ];
   const counts = Object.fromEntries(CHECKS.map(c => [c, 0]));
-  for (const v of violations) counts[v.check]++;
+  const unscored = Object.fromEntries(UNSCORED_CHECKS.map(c => [c, 0]));
+  for (const v of violations) {
+    if (v.check in counts) counts[v.check]++;
+    else unscored[v.check]++;
+  }
   const allowlisted = collector.allowlisted.sort((a, b) =>
     a.file < b.file ? -1 : a.file > b.file ? 1 : (a.line ?? 0) - (b.line ?? 0));
 
@@ -62,6 +68,7 @@ export async function verify({ projectDir, platform, runtime } = {}) {
     platform,
     violations,
     counts,
+    unscored,
     uiLines: scan.uiLines,
     themeLines: scan.themeLines,
     filesScanned: scan.files,
@@ -79,6 +86,9 @@ export function summarize(r) {
   lines.push(`verify (${r.platform}): ${errors} error(s), ${warnings} warning(s) in ${r.uiLines} UI line(s), ${r.filesScanned} file(s)`);
   for (const c of Object.keys(r.counts)) {
     if (r.counts[c]) lines.push(`  ${c.padEnd(18)} ${String(r.counts[c]).padStart(4)}   (${per100(r.counts[c])} per 100 UI lines)`);
+  }
+  for (const c of Object.keys(r.unscored ?? {})) {
+    if (r.unscored[c]) lines.push(`  ${c.padEnd(18)} ${String(r.unscored[c]).padStart(4)}   (not scored)`);
   }
   if (!r.runtimeChecked) lines.push('  contrast / touch-target: not checked (no runtime results)');
   if (r.allowlisted.length) lines.push(`  allowlisted theme literals: ${r.allowlisted.length} exemption(s), see verify.json`);
@@ -111,7 +121,7 @@ async function main(argv) {
   const result = await verify({ projectDir, platform, runtime });
   const outDir = resolve(out || projectDir);
   await mkdir(outDir, { recursive: true });
-  await writeFile(join(outDir, 'verify.json'), JSON.stringify({ tool: 'm3-forge verify v2', ...result }, null, 2) + '\n');
+  await writeFile(join(outDir, 'verify.json'), JSON.stringify({ tool: 'material3 verify v2', ...result }, null, 2) + '\n');
   console.log(summarize(result));
   return result.exitCode;
 }

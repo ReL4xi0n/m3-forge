@@ -1,0 +1,4 @@
+.page {
+  padding: var(--md-sys-space-200);
+  gap: var(--md-sys-space-100);
+}

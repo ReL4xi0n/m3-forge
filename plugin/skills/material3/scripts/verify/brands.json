@@ -1,0 +1,18 @@
+{
+  "about": "Brand names that must not appear in a generated UI: in UI strings (matched as whole words, with this capitalization or in capitals) and in image or drawable file names (matched case-insensitively as whole name parts). Android alone is a platform name, not a brand. Names in commonWords are ordinary words too, so file names are not checked for them.",
+  "names": [
+    "Google",
+    "Google Pay",
+    "Gmail",
+    "YouTube",
+    "Google Maps",
+    "Chrome",
+    "Pixel",
+    "Android Auto",
+    "Google Drive",
+    "Google Photos",
+    "Gemini",
+    "Wear OS by Google"
+  ],
+  "commonWords": ["Chrome", "Pixel", "Gemini"]
+}

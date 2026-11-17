@@ -1,8 +1,10 @@
 // Web checks: HTML, CSS/SCSS, JS/TS (JSX/TSX) and Vue single-file components.
 import {
-  countNonBlank, findEmoji, lineAt, lineStarts, looksGenerated, onGrid, radiusOnScale,
+  claimsSkillFile, countNonBlank, findEmoji, lineAt, lineStarts, looksGenerated, onGrid, radiusOnScale,
   readText, SHAPE_SCALE, stripComments, themeAsset, themeAssetReason, walk,
 } from './common.mjs';
+import { checkStrings, knownIcon, placeholderHosts, stringLiterals } from './content.mjs';
+import { projectChecks } from './assets.mjs';
 import { describeProblems, pathLiterals, svgRanges, webSvgIcons } from './symbols.mjs';
 
 const EXT = /\.(html?|css|scss|js|jsx|ts|tsx|vue)$/i;
@@ -300,7 +302,44 @@ function classAttrs(text, start, end, cb) {
   }
 }
 
-const NAV_CONTEXT = /(?:href|to|querySelector(?:All)?|getElementById|closest|matches|hash|scrollIntoView|navigate|router|anchor)\W*$/i;
+// ---------------------------------------------------------------------------------------------
+// Unscored content checks: UI strings (markup text, UI attributes, script strings and JSX text),
+// placeholder hosts anywhere, and Material Symbols ligature names.
+
+const UI_ATTR = /\s(?:alt|title|placeholder|aria-label|aria-description|aria-placeholder|aria-roledescription|label|value|content|headline|supporting-text)\s*=\s*(["'])([^"']*)\1/gi;
+const ICON_CLASS_ATTR = /\bclass(?:Name)?\s*=\s*\{?\s*["'`][^"'`]*(?<![\w-])(?:m3-icon|material-symbols(?:-outlined|-rounded|-sharp)?)(?![\w-])/;
+const ICON_ELEMENT = /<([a-zA-Z][\w-]*)\b([^<>]*)>([^<]*)<\/\1\s*>/g;
+
+function scanWebContent(src, parts, hit) {
+  for (const p of parts) {
+    const body = src.slice(p.start, p.end);
+    const strings = [];
+    if (p.kind === 'markup' || p.kind === 'js') {
+      for (const m of body.matchAll(/>([^<>]+)</g)) {
+        if (p.kind === 'js' && /[{}]/.test(m[1])) continue;
+        strings.push({ index: p.start + m.index + 1, text: m[1] });
+      }
+    }
+    if (p.kind === 'markup') {
+      for (const m of body.matchAll(UI_ATTR)) strings.push({ index: p.start + m.index + m[0].indexOf(m[1]) + 1, text: m[2] });
+    }
+    if (p.kind === 'js') {
+      for (const s of stringLiterals(body, { backtick: true })) strings.push({ index: p.start + s.index, text: s.text });
+    }
+    checkStrings(strings, hit);
+    if (p.kind !== 'css') {
+      for (const m of body.matchAll(ICON_ELEMENT)) {
+        if (m[1].toLowerCase() !== 'md-icon' && !ICON_CLASS_ATTR.test(m[2])) continue;
+        const name = m[3].trim();
+        if (!name || /[{}$]/.test(name) || knownIcon(name)) continue;
+        hit('unknown-icon', p.start + m.index + m[0].indexOf('>') + 1, `icon ligature "${name}" is not a Material Symbols name in the codepoints file`);
+      }
+    }
+  }
+  placeholderHosts(src, hit);
+}
+
+const NAV_CONTEXT =/(?:href|to|querySelector(?:All)?|getElementById|closest|matches|hash|scrollIntoView|navigate|router|anchor)\W*$/i;
 
 function scanFile(rel, text, ctx, collector, asset = null) {
   const { clean: src, parts } = regions(rel, text);
@@ -431,6 +470,7 @@ function scanFile(rel, text, ctx, collector, asset = null) {
       }
     }
   }
+  scanWebContent(src, parts, hit);
   return { themeLines: asset ? countNonBlank(text) : themeLines.size, nonBlank: countNonBlank(text) };
 }
 
@@ -470,7 +510,7 @@ export async function scanWeb(projectDir, collector) {
   for (const rel of files) {
     const text = await readText(projectDir, rel);
     const asset = themeAsset(rel, text);
-    if (!asset && looksGenerated(text)) continue;
+    if (!asset && looksGenerated(text) && !claimsSkillFile(text)) continue;
     texts.push([rel, text, asset]);
   }
   const ctx = await projectContext(projectDir, all, texts);
@@ -481,5 +521,6 @@ export async function scanWeb(projectDir, collector) {
     uiLines += r.nonBlank - r.themeLines;
     themeLines += r.themeLines;
   }
+  await projectChecks(projectDir, 'web', all, collector);
   return { uiLines, themeLines, files: texts.length };
 }

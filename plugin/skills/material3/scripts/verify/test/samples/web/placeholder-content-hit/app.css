@@ -1,0 +1,5 @@
+.page {
+  padding: var(--md-sys-space-200);
+  gap: var(--md-sys-space-100);
+}
+.cover { background-image: url(https://picsum.photos/400/300); } /* HIT */

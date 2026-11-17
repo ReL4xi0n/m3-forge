@@ -28,6 +28,24 @@ export function compareAutomated(rows) {
   };
 }
 
+// One cell scored with v2 from its verify result: the row and the detail this tool records.
+export function scoreCell(cell, saved, cap, ver, captureMs = null) {
+  const staticDiff = STATIC.filter(k => (ver.counts[k] ?? 0) !== (saved.ver?.counts?.[k] ?? 0) || ver.uiLines !== saved.ver?.uiLines);
+  const usable = Boolean(cap.buildOk && cap.shots?.length);
+  const row = {
+    cell: cell.cell, platform: cell.platform,
+    v1: saved.auto, v2: automatedScores(ver, usable, 'v2'),
+    targetsV1: saved.ver?.counts?.['touch-target'] ?? null, targetsV2: ver.counts['touch-target'],
+  };
+  const detail = { cell: cell.cell, buildOk: cap.buildOk, shots: cap.shots?.length ?? 0, captureMs, countsV1: saved.ver?.counts, countsV2: ver.counts, uiLines: ver.uiLines, staticSameAsV1: staticDiff.length === 0, staticDiff };
+  return { row, detail };
+}
+
+// The text of the public automated-v2.json.
+export function publicJson(runId, rows, detail) {
+  return `${JSON.stringify({ runId, ...compareAutomated(rows), cells: rows.map((r, i) => ({ ...r, counts: detail[i].countsV2, uiLines: detail[i].uiLines })) }, null, 2)}\n`;
+}
+
 const table = (head, rows) => [`| ${head.join(' | ')} |`, `|${head.map(() => '---').join('|')}|`, ...rows.map(r => `| ${r.join(' | ')} |`)].join('\n');
 const fmt = x => (x === null || x === undefined ? '—' : typeof x === 'number' ? x.toFixed(2) : String(x));
 
@@ -96,20 +114,16 @@ async function main() {
       console.log(cell.cell, 'recaptured', cap.buildOk, 'shots', cap.shots.length, 'targets', cap.runtime.targets.length, `${Math.round(captureMs / 1000)}s`);
     }
     const ver = await verify({ projectDir: workDir, platform: cell.platform, runtime: cap.runtime });
-    const staticDiff = STATIC.filter(k => (ver.counts[k] ?? 0) !== (saved.ver?.counts?.[k] ?? 0) || ver.uiLines !== saved.ver?.uiLines);
-    const usable = Boolean(cap.buildOk && cap.shots?.length);
-    rows.push({
-      cell: cell.cell, platform: cell.platform,
-      v1: saved.auto, v2: automatedScores(ver, usable, 'v2'),
-      targetsV1: saved.ver?.counts?.['touch-target'] ?? null, targetsV2: ver.counts['touch-target'],
-    });
-    detail.push({ cell: cell.cell, buildOk: cap.buildOk, shots: cap.shots?.length ?? 0, captureMs, countsV1: saved.ver?.counts, countsV2: ver.counts, uiLines: ver.uiLines, staticSameAsV1: staticDiff.length === 0, staticDiff });
+    const scored = scoreCell(cell, saved, cap, ver, captureMs);
+    const { staticDiff } = scored.detail;
+    rows.push(scored.row);
+    detail.push(scored.detail);
     if (staticDiff.length) console.warn(`static counts differ from v1 for ${cell.cell}: ${staticDiff.join(', ')}`);
   }
   writeFileSync(join(priv, 'automated-v2.json'), JSON.stringify({ runId, at: new Date().toISOString(), recapture, rows, detail }, null, 2));
   const notes = process.argv.flatMap((a, i) => (a === '--note' ? [process.argv[i + 1]] : []));
   mkdirSync(join(root, out), { recursive: true });
-  writeFileSync(join(root, out, 'automated-v2.json'), `${JSON.stringify({ runId, ...compareAutomated(rows), cells: rows.map((r, i) => ({ ...r, counts: detail[i].countsV2, uiLines: detail[i].uiLines })) }, null, 2)}\n`);
+  writeFileSync(join(root, out, 'automated-v2.json'), publicJson(runId, rows, detail));
   writeFileSync(join(root, out, 'automated-v2.md'), renderComparison(runId, rows, notes));
   console.log(`wrote ${out}/automated-v2.json and automated-v2.md; static counts identical to v1 in ${detail.filter(d => d.staticSameAsV1).length}/${detail.length} cells`);
 }

@@ -1,0 +1,5 @@
+/* material3 skill asset: assets/web/components/chip.css HIT */
+.m3-chip {
+  border-radius: var(--md-sys-shape-corner-small);
+  padding: var(--md-sys-space-100);
+}

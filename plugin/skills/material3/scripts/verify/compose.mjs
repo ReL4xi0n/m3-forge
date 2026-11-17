@@ -1,8 +1,10 @@
 // Jetpack Compose checks: src/main/**/*.kt of any module.
 import {
-  callArgs, countNonBlank, findEmoji, looksGenerated, onGrid, radiusOnScale, readText, SHAPE_SCALE,
-  stripComments, themeAsset, themeAssetReason, walk,
+  callArgs, claimsSkillFile, countNonBlank, findEmoji, looksGenerated, onGrid, radiusOnScale, readText,
+  SHAPE_SCALE, stripComments, themeAsset, themeAssetReason, walk,
 } from './common.mjs';
+import { checkStrings, placeholderHosts, stringLiterals } from './content.mjs';
+import { projectChecks } from './assets.mjs';
 import { composeVectors, describeProblems, pathLiterals, xmlVectorIcon } from './symbols.mjs';
 
 const THEME_FILES = new Set(['Color.kt', 'Theme.kt', 'Type.kt', 'Shape.kt']);
@@ -89,6 +91,20 @@ async function scanDrawables(projectDir, files, collector) {
   return scanned;
 }
 
+// Unscored content checks on string resources: <string> and <item> texts of res/values*/*.xml.
+async function scanStringResources(projectDir, files, collector) {
+  for (const rel of files.filter(f => /(?:^|\/)src\/main\/res\/values[^/]*\/[^/]+\.xml$/.test(f))) {
+    const text = await readText(projectDir, rel);
+    const src = stripComments(text, { html: true, line: false, block: false, quotes: [] });
+    const strings = [...src.matchAll(/<(string|item)\b[^>]*>([\s\S]*?)<\/\1\s*>/g)]
+      .map(m => ({ index: m.index + m[0].indexOf('>') + 1, text: m[2] }));
+    if (!strings.length) continue;
+    const hit = collector.forFile(rel, text);
+    checkStrings(strings, hit);
+    placeholderHosts(src, hit);
+  }
+}
+
 export async function scanCompose(projectDir, collector) {
   const all = await walk(projectDir);
   const files = all.filter(f => f.endsWith('.kt') && /(?:^|\/)src\/main\//.test(f));
@@ -98,7 +114,7 @@ export async function scanCompose(projectDir, collector) {
   for (const rel of files) {
     const text = await readText(projectDir, rel);
     const asset = themeAsset(rel, text);
-    if (!asset && looksGenerated(text)) continue;
+    if (!asset && looksGenerated(text) && !claimsSkillFile(text)) continue;
     scanned++;
     const reason = asset ? themeAssetReason(asset) : themeReason(rel);
     let exempt = () => null;
@@ -109,8 +125,14 @@ export async function scanCompose(projectDir, collector) {
     } else {
       uiLines += countNonBlank(text);
     }
-    scanKotlin(stripComments(text, { triple: true, quotes: ['"', "'"] }), collector.forFile(rel, text, exempt));
+    const src = stripComments(text, { triple: true, quotes: ['"', "'"] });
+    const hit = collector.forFile(rel, text, exempt);
+    scanKotlin(src, hit);
+    checkStrings(stringLiterals(src, { triple: true, quotes: ['"'] }), hit);
+    placeholderHosts(src, hit);
   }
   scanned += await scanDrawables(projectDir, all, collector);
+  await scanStringResources(projectDir, all, collector);
+  await projectChecks(projectDir, 'compose', all, collector);
   return { uiLines, themeLines, files: scanned };
 }

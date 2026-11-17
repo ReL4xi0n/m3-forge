@@ -4,6 +4,7 @@
 import { readdir, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 
 // The color script recognizes its own theme files. It is loaded guarded: if it (or its vendored
 // library) fails to load, verify still runs and simply recognizes no generated color file.
@@ -43,12 +44,18 @@ export const LITERAL_CHECKS = new Set([
   'shadow-gradient',
 ]);
 
+// Checks that verify reports but the evaluation does not score (they never enter `counts`).
+// placeholder-content, brand and unknown-icon are errors; asset-unused is a warning (the skill's loop
+// still fixes it like an error).
+export const UNSCORED_CHECKS = ['placeholder-content', 'brand', 'unknown-icon', 'asset-unused'];
+
 export function severityOf(check) {
-  return check === 'off-grid-spacing' ? 'warning' : 'error';
+  return check === 'off-grid-spacing' || check === 'asset-unused' ? 'warning' : 'error';
 }
 
 // ---------------------------------------------------------------------------------------------
-// Corner scale (numbers embedded at build time; see tools/build/shape-scale.mjs in the m3-forge repository).
+// Corner scale (numbers embedded at build time by tools/build/shape-scale.mjs in the skill's source
+// repository).
 
 const SHAPE = JSON.parse(readFileSync(new URL('./shape-scale.json', import.meta.url), 'utf8'));
 export const SHAPE_SCALE = SHAPE.scale;
@@ -82,9 +89,11 @@ export function looksGenerated(text) {
 }
 
 // Theme assets of the material3 skill: token files copied into the project. Each starts with the
-// marker `material3 skill asset: <asset path>`. A file whose first lines name one of these paths, and
-// whose own file name matches it, is a theme file (its literals are the tokens themselves); it is
-// scanned as such even though its header says it is generated.
+// marker `material3 skill asset: <asset path>`. A file is a theme file (its literals are the tokens
+// themselves) only when its first lines name one of these paths, its own file name matches it, and
+// its text equals the shipped asset after the rewrites install-assets applies (the Compose package
+// line, the Flutter material_ui import). It is scanned as such even though its header says it is
+// generated. Any other file that carries the marker is scanned as UI code.
 export const THEME_ASSETS = new Set([
   'assets/web/tokens.css',
   'assets/flutter/lib/m3/tokens.dart',
@@ -99,8 +108,41 @@ export const THEME_ASSETS = new Set([
   'assets/compose/theme/Tokens.kt',
 ]);
 
+export const ASSET_MARKER_LINES = 3;
 const ASSET_MARKER = /material3 skill asset: (\S+)/;
+const SKILL_ROOT = new URL('../../', import.meta.url);
 const baseName = p => p.slice(p.lastIndexOf('/') + 1);
+const head = text => text.split('\n', ASSET_MARKER_LINES).join('\n');
+
+// A file that says it comes from the skill (asset marker or generated-theme header). Such a file is
+// never skipped as generated: it is either the exact skill file or scanned as UI code.
+export function claimsSkillFile(text) {
+  const h = head(text);
+  return ASSET_MARKER.test(h) || h.includes('material3 skill generated:');
+}
+
+const shipped = new Map();
+function shippedAsset(assetPath) {
+  if (!shipped.has(assetPath)) {
+    let text = null;
+    try {
+      text = readFileSync(fileURLToPath(new URL(assetPath, SKILL_ROOT)), 'utf8').replace(/^﻿/, '').replace(/\r\n?/g, '\n');
+    } catch {
+      // the asset is missing from this copy of the skill: nothing is exempt
+    }
+    shipped.set(assetPath, text);
+  }
+  return shipped.get(assetPath);
+}
+
+// Undo the install-assets rewrites so a copied file compares with the shipped one. Trailing white
+// space at the end of the file is ignored.
+function asShipped(assetPath, text) {
+  let t = text;
+  if (assetPath.endsWith('.kt')) t = t.replace(/^package (?:[A-Za-z_]\w*\.)*theme[ \t]*$/m, 'package m3.theme');
+  if (assetPath.endsWith('.dart')) t = t.replace(/package:material_ui\/material_ui\.dart/g, 'package:flutter/material.dart');
+  return t.trimEnd();
+}
 
 // The theme asset path a file declares, or null. A color theme file written by scripts/color (header
 // `material3 skill generated: color <seed> <variant>`) counts only when its whole text is exactly what
@@ -108,8 +150,10 @@ const baseName = p => p.slice(p.lastIndexOf('/') + 1);
 export function themeAsset(rel, text) {
   const gen = safeGeneratedTheme(rel, text);
   if (gen) return `generated: ${gen}`;
-  const m = text.split('\n', 3).join('\n').match(ASSET_MARKER);
+  const m = head(text).match(ASSET_MARKER);
   if (!m || !THEME_ASSETS.has(m[1]) || baseName(m[1]) !== baseName(rel)) return null;
+  const ship = shippedAsset(m[1]);
+  if (ship === null || asShipped(m[1], text) !== ship.trimEnd()) return null;
   return m[1];
 }
 

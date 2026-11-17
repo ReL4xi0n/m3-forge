@@ -85,6 +85,39 @@ export function checkSuite(platform, checks) {
   }
 }
 
+// One hit sample and one clean sample per unscored check: hits go to `violations` and `unscored`,
+// never to the scored `counts`.
+export function unscoredSuite(platform, checks) {
+  for (const check of checks) {
+    const severity = check === 'asset-unused' ? 'warning' : 'error';
+    test(`${platform} ${check}: hit sample reports every planted line, unscored only`, async () => {
+      const dir = sample(platform, `${check}-hit`);
+      const r = await run(platform, `${check}-hit`);
+      const expected = await markerLines(dir);
+      assert.ok(expected.size > 0, 'sample has planted markers');
+      assert.deepEqual(nonZero(r.counts), {}, 'scored counts stay zero');
+      assert.deepEqual(nonZero(r.unscored), { [check]: expected.size });
+      const got = new Set(r.violations.map(v => `${v.file}:${v.line}`));
+      assert.deepEqual([...got].sort(), [...expected].sort());
+      for (const v of r.violations) {
+        assert.equal(v.check, check);
+        assert.equal(v.severity, severity);
+        assert.ok(v.detail.length > 0);
+      }
+      assert.equal(r.exitCode, severity === 'error' ? 1 : 0);
+      assert.ok(r.uiLines > 0);
+    });
+
+    test(`${platform} ${check}: clean sample has no violations`, async () => {
+      const r = await run(platform, `${check}-clean`);
+      assert.deepEqual(r.violations, []);
+      assert.deepEqual(nonZero(r.unscored), {});
+      assert.equal(r.exitCode, 0);
+      assert.ok(r.uiLines > 0);
+    });
+  }
+}
+
 export function countNonBlank(text) {
   return text.split(/\r?\n/).filter(l => l.trim() !== '').length;
 }

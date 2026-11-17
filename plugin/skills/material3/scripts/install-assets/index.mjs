@@ -79,7 +79,8 @@ function render(entry, { platform, themePackage, flutterLibrary }) {
   if (!TEXT_EXT.test(entry.src)) return readFileSync(file);
   let text = readFileSync(file, 'utf8');
   if (platform === 'compose' && entry.group === 'main') {
-    text = text.replace(/^package m3\.theme\s*$/m, `package ${themePackage}`);
+    // [ \t]* (not \s*): the line break and the blank line after the package line stay.
+    text = text.replace(/^package m3\.theme[ \t]*$/m, `package ${themePackage}`);
   }
   if (platform === 'flutter' && flutterLibrary === 'material_ui') {
     text = text.replace(/package:flutter\/material\.dart/g, 'package:material_ui/material_ui.dart');
