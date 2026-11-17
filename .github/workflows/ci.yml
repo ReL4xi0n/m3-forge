@@ -16,6 +16,8 @@ jobs:
       - run: npm test
       - run: node tools/ci/overfit.mjs
       - run: node tools/ci/validate-plugin.mjs
+      - run: node tools/build/sync-versions.mjs --check
+      - run: node tools/ci/skill-size.mjs
       - name: token reports are up to date
         run: node tools/extract/tokens/report.mjs --check
       - name: knowledge notes lint

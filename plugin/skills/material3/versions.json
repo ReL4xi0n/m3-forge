@@ -1,0 +1,67 @@
+{
+  "compose": {
+    "material3": "1.5.0-rc01",
+    "agp": "9.5.1",
+    "kotlin": "2.4.21",
+    "gradle": "9.6.0",
+    "compileSdk": 37
+  },
+  "flutter": {
+    "materialUi": "1.11.0"
+  },
+  "mcu": "0.4.0",
+  "symbols": {
+    "commit": "10ecc14790612ca8fd164e3f4ffe9c16fc50d5b7"
+  },
+  "fonts": [
+    {
+      "file": "LICENSE-material-design-icons.txt",
+      "sha256": "58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd",
+      "bytes": 11357,
+      "source": "google/material-design-icons@10ecc14790612ca8fd164e3f4ffe9c16fc50d5b7 LICENSE"
+    },
+    {
+      "file": "MaterialSymbolsOutlined.codepoints",
+      "sha256": "a7404d9e5a1b63f496cf05ace45d386075886b5a7f123fba9f29527cb6006fde",
+      "bytes": 79421,
+      "source": "google/material-design-icons@10ecc14790612ca8fd164e3f4ffe9c16fc50d5b7 variablefont/MaterialSymbolsOutlined[FILL,GRAD,opsz,wght].codepoints (Apache-2.0)"
+    },
+    {
+      "file": "MaterialSymbolsOutlined.ttf",
+      "sha256": "f7837ba8573d9a7a74931618ced8307bc81f96d49af296bf6c8052c772ed5282",
+      "bytes": 10744832,
+      "source": "google/material-design-icons@10ecc14790612ca8fd164e3f4ffe9c16fc50d5b7 variablefont/MaterialSymbolsOutlined[FILL,GRAD,opsz,wght].ttf (Apache-2.0)"
+    },
+    {
+      "file": "MaterialSymbolsOutlined.woff2",
+      "sha256": "3ae08513a06396b0258cf1d1a1091c2d336977518fb755ea5b4a13aacdbdc6ef",
+      "bytes": 4001808,
+      "source": "google/material-design-icons@10ecc14790612ca8fd164e3f4ffe9c16fc50d5b7 variablefont/MaterialSymbolsOutlined[FILL,GRAD,opsz,wght].woff2 (Apache-2.0)"
+    },
+    {
+      "file": "OFL-Roboto.txt",
+      "sha256": "061402327a96aadb0bfb694a960ed289ecd38d383e396243831ab81feb109c41",
+      "bytes": 4394,
+      "source": "google/fonts@b78877b777ed3a18a1b431b0df7d8ee3f84c2e5f ofl/roboto/OFL.txt"
+    },
+    {
+      "file": "OFL-RobotoFlex.txt",
+      "sha256": "9cbaed04b20c853f99840efe5dc96956f6f6120ed83a0ade35f9281a2b63e5d0",
+      "bytes": 4488,
+      "source": "google/fonts@b78877b777ed3a18a1b431b0df7d8ee3f84c2e5f ofl/robotoflex/OFL.txt"
+    },
+    {
+      "file": "Roboto.ttf",
+      "sha256": "d7598e12c5dbef095ff8272cfc55da0250bd07fbdecbac8a530b9b277872a134",
+      "bytes": 488584,
+      "source": "google/fonts@b78877b777ed3a18a1b431b0df7d8ee3f84c2e5f ofl/roboto (OFL-1.1)"
+    },
+    {
+      "file": "RobotoFlex.ttf",
+      "sha256": "9b523f7d82593df0107173849ebb8c817471a1df4b4fb2c3cbf40cfd810c8281",
+      "bytes": 1787292,
+      "source": "google/fonts@b78877b777ed3a18a1b431b0df7d8ee3f84c2e5f ofl/robotoflex (OFL-1.1)"
+    }
+  ],
+  "tools": []
+}

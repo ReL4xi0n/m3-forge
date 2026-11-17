@@ -38,8 +38,19 @@ Apache License 2.0, at commit 10ecc14790612ca8fd164e3f4ffe9c16fc50d5b7.
 - plugin/skills/material3/assets/icons/symbols-outlined-24.tsv holds the official Android vector
   path data of the Outlined style at the same instance, copied unchanged and repacked one icon per
   line. The skill writes it back into the official vector drawable form for the icons a project uses.
-- The Material Symbols variable font and its codepoints file are listed under Fonts when they are
-  added.
+- The Material Symbols variable font and its codepoints file are listed under Fonts.
 
-Fonts (Roboto Flex, Roboto, Material Symbols) are attributed here when they are added to the
-repository, together with their own license files.
+------------------------------------------------------------------------
+Fonts
+------------------------------------------------------------------------
+Bundled in plugin/skills/material3/assets/fonts/ (sizes and SHA-256 hashes: plugin/skills/material3/versions.json).
+- RobotoFlex.ttf: Roboto Flex, https://github.com/google/fonts at commit
+  b78877b777ed3a18a1b431b0df7d8ee3f84c2e5f (ofl/robotoflex), SIL Open Font License 1.1.
+  License text: plugin/skills/material3/assets/fonts/OFL-RobotoFlex.txt
+- Roboto.ttf: Roboto, https://github.com/google/fonts at commit
+  b78877b777ed3a18a1b431b0df7d8ee3f84c2e5f (ofl/roboto), SIL Open Font License 1.1.
+  License text: plugin/skills/material3/assets/fonts/OFL-Roboto.txt
+- MaterialSymbolsOutlined.ttf, MaterialSymbolsOutlined.woff2 and MaterialSymbolsOutlined.codepoints:
+  Material Symbols variable font (Outlined) and its codepoints, https://github.com/google/material-design-icons
+  at commit 10ecc14790612ca8fd164e3f4ffe9c16fc50d5b7 (variablefont/), Copyright Google LLC, Apache License 2.0.
+  License text: plugin/skills/material3/assets/fonts/LICENSE-material-design-icons.txt
