@@ -8,7 +8,8 @@ class Home extends StatelessWidget {
     return ListView(
       children: [
         FilledButton(onPressed: () {}, child: const Text('Pay with Google Pay')), // HIT
-        const Text('Gemini suggestions'), // HIT
+        const Text('Google Gemini suggestions'), // HIT
+        const Text('Cases for the Google Pixel 8'), // HIT
         const Text('Back up to Google Drive'), // HIT
       ],
     );

@@ -35,6 +35,34 @@ test('brand in file names: multi-word brands match as parts or joined; common wo
   assert.equal(brandInFileName('pixel_grid.png'), null);
   assert.equal(brandInFileName('chrome_frame.png'), null);
   assert.equal(brandInFileName('googly_eyes.png'), null);
+  assert.equal(brandInFileName('gemini_sign.png'), null);
+  assert.equal(brandInFileName('maps_pin.png'), null);
+  assert.equal(brandInFileName('google_pixel_case.png'), 'Google Pixel');
+});
+
+test('asset-unused (web): links and imports in every usual form count; a reference from an unused asset does not', async () => {
+  const css = name => `/* material3 skill asset: assets/web/components/${name}.css */\n.m3-${name} { padding: var(--md-sys-space-100); }\n`;
+  const js = name => `// material3 skill asset: assets/web/${name}.js\nexport const ${name} = 1;\n`;
+  const dir = project({
+    'src/index.html': '<!doctype html>\n<html lang="en"><head><title>Shelf</title><link rel=stylesheet href=styles/chip.css></head><body><p>Shelf</p></body></html>\n',
+    'src/main.js': "import { behaviors } from './m3/behaviors';\nexport const x = behaviors;\n",
+    'src/app.scss': "@use 'styles/card';\n@use \"styles/list\" as list;\n",
+    'src/styles/chip.css': css('chip'),
+    'src/styles/card.css': css('card'),
+    'src/styles/list.scss': css('list'),
+    'src/m3/behaviors.js': js('behaviors'),
+    // Linked only from an asset that nothing uses: both unused.
+    'src/styles/menu.css': `${css('menu')}@import 'tooltip.css';\n`,
+    'src/styles/tooltip.css': css('tooltip'),
+  });
+  try {
+    const r = await verify({ projectDir: dir, platform: 'web' });
+    assert.deepEqual(unused(r), ['src/styles/menu.css', 'src/styles/tooltip.css']);
+    // Once menu.css is linked, tooltip.css is used through it.
+    put(dir, 'src/main.js', "import './styles/menu.css';\nimport { behaviors } from './m3/behaviors';\nexport const x = behaviors;\n");
+    const s = await verify({ projectDir: dir, platform: 'web' });
+    assert.deepEqual(unused(s), []);
+  } finally { rmSync(dir, { recursive: true, force: true }); }
 });
 
 // Image files are written at test time (the repository keeps no image files outside its asset folders).

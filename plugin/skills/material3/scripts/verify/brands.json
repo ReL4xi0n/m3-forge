@@ -1,18 +1,15 @@
 {
-  "about": "Brand names that must not appear in a generated UI: in UI strings (matched as whole words, with this capitalization or in capitals) and in image or drawable file names (matched case-insensitively as whole name parts). Android alone is a platform name, not a brand. Names in commonWords are ordinary words too, so file names are not checked for them.",
+  "about": "Brand names that must not appear in a generated UI, in UI strings (whole words, with this capitalization or in capitals) and in image or drawable file names (name parts, any case). names always count. withGoogleOnly are ordinary words too (Pixel art, a chrome finish, the Gemini sign, Photos, Drive, Maps, Pay), so they count only right after Google (Google Pixel). Android alone is a platform name, not a brand.",
   "names": [
     "Google",
     "Google Pay",
     "Gmail",
     "YouTube",
     "Google Maps",
-    "Chrome",
-    "Pixel",
     "Android Auto",
     "Google Drive",
     "Google Photos",
-    "Gemini",
     "Wear OS by Google"
   ],
-  "commonWords": ["Chrome", "Pixel", "Gemini"]
+  "withGoogleOnly": ["Pixel", "Chrome", "Gemini", "Photos", "Drive", "Maps", "Pay"]
 }

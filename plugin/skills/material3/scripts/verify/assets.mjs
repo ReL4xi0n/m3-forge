@@ -2,14 +2,16 @@
 // Copied text assets carry the marker `material3 skill asset: <asset path>` in their first lines;
 // Compose icon drawables are res/drawable*/m3s_*.xml. A file copied by hand without the marker is
 // not checked.
-//   web      a CSS or script asset is used when another file links or imports it by file name
-//            (<link href>, <script src>, @import, import, url()).
-//   flutter  a Dart asset is used when another Dart file under lib/ imports or exports it.
-//   compose  a Kotlin asset is used when another Kotlin file names one of its top-level
-//            declarations; an m3s_ drawable when code references R.drawable.<name> (or a resource
-//            file @drawable/<name>).
-// The theme token assets (THEME_ASSETS) are one set: they count as used when any file of the
-// project outside the skill's assets uses any of them, since a screen rarely needs every token file.
+// An asset is used when a used file references it. Project files outside the skill's assets are
+// used; an asset becomes used when one of them (or an asset already used) references it:
+//   web      a CSS or script asset is linked or imported by file name (<link href>, <script src>,
+//            @import, import, url()), or by name without extension in an import, require, Sass
+//            @use/@forward/@import (a partial's underscore allowed).
+//   flutter  a Dart file under lib/ imports, exports or part-s it.
+//   compose  a Kotlin file names one of its top-level declarations; an m3s_ drawable is referenced as
+//            R.drawable.<name> (or @drawable/<name> in a resource file).
+// The theme token assets (THEME_ASSETS) are one set: all of them count as used when a used file
+// references any of them, since a screen rarely needs every token file.
 import { ASSET_MARKER_LINES, readText, stripComments, THEME_ASSETS } from './common.mjs';
 import { brandAssetNames } from './content.mjs';
 
@@ -45,7 +47,11 @@ function usedBy(platform, asset, other) {
   }
   const name = esc(base(asset.rel));
   if (platform === 'web') {
-    return new RegExp(`(?:^|[\\s"'(/=,])${name}(?=$|[\\s"')?#,;])`, 'm').test(other.src);
+    // By full file name (quoted or not, in links, url() and imports), or without the extension (and with
+    // a Sass partial underscore) in an import, require, @use, @forward or @import.
+    const stem = esc(base(asset.rel).replace(/\.[^.]+$/, ''));
+    return new RegExp(`(?:^|[\\s"'(/=,])${name}(?=$|[\\s"')?#,;>])`, 'm').test(other.src) ||
+      new RegExp(`(?:\\b(?:import|from|require)\\b|@use|@forward|@import)\\s*\\(?\\s*["'](?:[^"'\\n]*/)?_?${stem}["']`).test(other.src);
   }
   if (platform === 'flutter') {
     return new RegExp(`\\b(?:import|export|part)\\s+(["'])[^"'\\n]*\\b${name}\\1`).test(other.src);
@@ -84,18 +90,34 @@ export async function unusedAssets(projectDir, platform, files) {
       } : null,
     });
   }
+  // An asset is used when a used file references it. Project files outside the skill's assets are the
+  // starting set; an asset referenced only by unused assets stays unused. The theme files join as a set.
   const assets = sources.filter(s => s.asset);
-  const used = (a, fromSkill) => sources.some(o => o.rel !== a.rel && (fromSkill || !o.asset) && usedBy(platform, a, o));
-  const themeUsed = assets.some(s => s.asset.theme && used(s.asset, false));
+  const usedFiles = sources.filter(s => !s.asset);
+  const isUsed = new Set();
+  const refBy = a => usedFiles.some(o => o.rel !== a.rel && usedBy(platform, a, o));
+  for (let changed = true; changed;) {
+    changed = false;
+    const theme = assets.filter(s => s.asset.theme && !isUsed.has(s.rel));
+    if (theme.length && theme.length === assets.filter(s => s.asset.theme).length && theme.some(s => refBy(s.asset))) {
+      for (const s of theme) { isUsed.add(s.rel); usedFiles.push(s); }
+      changed = true;
+    }
+    for (const s of assets) {
+      if (s.asset.theme || isUsed.has(s.rel) || !refBy(s.asset)) continue;
+      isUsed.add(s.rel);
+      usedFiles.push(s);
+      changed = true;
+    }
+  }
   const out = [];
   for (const s of assets) {
     const a = s.asset;
-    const ok = a.theme ? themeUsed : used(a, true);
-    if (ok) continue;
+    if (isUsed.has(s.rel)) continue;
     const how = a.drawable
       ? `no code references R.drawable.${a.drawable}`
       : a.theme
-        ? 'no project file uses any of the skill theme files'
+        ? 'no used project file uses any of the skill theme files'
         : platform === 'web'
           ? 'no file links or imports it'
           : platform === 'flutter'

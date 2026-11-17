@@ -10,5 +10,12 @@ fun Screen() {
     Column {
         Button(onClick = {}) { Text("Pay") }
         Text("Works on Android")
+        Text("Pixel art")
+        Text("Pixel 8 case")
+        Text("Chrome finish")
+        Text("Gemini")
+        Text("Photos")
+        Text("Drive")
+        Text("Maps")
     }
 }

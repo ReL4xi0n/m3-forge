@@ -35,8 +35,8 @@ const PLACEHOLDER_TEXT = [
   ['lorem ipsum', /\blorem\b|\bipsum\b/i],
   ['"Acme"', /\bAcme\b|\bACME\b/],
   ['John Doe / Jane Doe', /\b(?:John|Jane) Doe\b/i],
+  // foo, baz and qux are never words; bar is ("Bar", "App bar"), so it counts only next to foo.
   ['foo/bar filler', /\b(?:foo|foobar|baz|qux)\b/i],
-  ['foo/bar filler', /^\s*bar\s*$/i],
   ['numbered "Item N" label', /\bItem (?:\d+|\$)/],
 ];
 
@@ -51,14 +51,13 @@ export function placeholderHosts(src, hit) {
 // ---------------------------------------------------------------------------------------------
 // Brands.
 
-const BRAND_NAMES = [...BRANDS.names].sort((a, b) => b.length - a.length);
+// names always count; withGoogleOnly words count only as "Google <word>".
+const BRAND_NAMES = [...new Set([...BRANDS.names, ...BRANDS.withGoogleOnly.map(w => `Google ${w}`)])]
+  .sort((a, b) => b.length - a.length);
 const BRAND_TEXT = new RegExp(
   `(?<![\\w-])(?:${BRAND_NAMES.flatMap(n => [esc(n), esc(n.toUpperCase())]).join('|')})(?![\\w-])`,
 );
-const COMMON = new Set(BRANDS.commonWords.map(n => n.toLowerCase()));
-const BRAND_PARTS = BRAND_NAMES
-  .filter(n => !COMMON.has(n.toLowerCase()))
-  .map(n => ({ name: n, parts: n.toLowerCase().split(/\s+/) }));
+const BRAND_PARTS = BRAND_NAMES.map(n => ({ name: n, parts: n.toLowerCase().split(/\s+/) }));
 
 // Name parts of a file name: camelCase and any separator split, lower case.
 function nameParts(base) {

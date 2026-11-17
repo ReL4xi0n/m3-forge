@@ -9,6 +9,13 @@ class Home extends StatelessWidget {
       children: [
         FilledButton(onPressed: () {}, child: const Text('Pay')),
         const Text('Made for Android'),
+        const Text('Pixel art'),
+        const Text('Pixel 8 case'),
+        const Text('Chrome finish'),
+        const Text('Gemini'),
+        const Text('Photos'),
+        const Text('Drive'),
+        const Text('Maps'),
       ],
     );
   }

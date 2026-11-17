@@ -12,6 +12,7 @@ class Home extends StatelessWidget {
         FilledButton(onPressed: () {}, child: const Text('Pay')),
         const Text('Items'),
         const Text('Search bar'),
+        const Text('Bar'),
       ],
     );
   }
