@@ -46,6 +46,13 @@
   display: none;
 }
 
+/* A modal dialog keeps the window margin of the dialog guidelines (56, the space-700 step,
+ * [site:/components/dialogs/guidelines]) at its sides, so a long dialog does not run edge to edge on
+ * a compact window; it stays centered and at most the maximum width. */
+.m3-dialog:modal {
+  inset-inline: var(--md-sys-space-700);
+}
+
 .m3-dialog::backdrop {
   /* md.comp.scrim.container.{color,opacity} */
   background: rgb(from var(--md-sys-color-scrim) r g b / var(--md-comp-scrim-container-opacity));

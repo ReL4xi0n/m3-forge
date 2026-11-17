@@ -15,9 +15,10 @@
  *
  * Kinds: m3-menu (standard) | m3-menu--vibrant. A menu is hidden until it has data-open (the page
  * or behaviors.js sets it, places the menu next to its button and moves focus into it). A selected
- * item has aria-checked="true" or aria-selected="true"; a disabled one is :disabled or
- * aria-disabled="true". Item text in .m3-menu-item-text (with an optional
- * .m3-menu-item-supporting-text inside it), trailing text in .m3-menu-item-trailing-text.
+ * item is a menuitemradio or menuitemcheckbox with aria-checked="true" (menu items take no
+ * aria-selected); a disabled one is :disabled or aria-disabled="true". Item text in
+ * .m3-menu-item-text (with an optional .m3-menu-item-supporting-text inside it), trailing text in
+ * .m3-menu-item-trailing-text.
  * Each item is a full touch target; the drawn item (::before, 44 tall) is centered in it and the
  * targets overlap so the drawn items touch. Width limits from Compose's menus (in tokens.css).
  * Menu groups (segmented menus), section labels, submenus and the horizontal menu are not part of

@@ -90,10 +90,13 @@ judgment calls are not machine-checked).
 
 ## 7. Look
 
-- If the platform's toolchain is available, run the screenshot step of the platform reference
-  (web: mobile and desktop, light and dark; Flutter and Compose: phone, light and dark). Read the
-  images, critique them against `CHECKLIST.md`, fix and re-render. Screenshots go to a temporary
-  folder, never into the project. (F6, F8, F9, F10)
+- Run `screenshot` with the project folder and `--platform` (`--url <address>` for a running dev
+  server where the platform reference says so). It renders mobile and desktop (web) or phone
+  (Flutter, Compose), light and dark, into a temporary folder, never the project, and prints the PNG
+  paths, the `contrast` and `targets` findings and `capture` (the `capture.json` for step 6).
+  `ran: false` comes with `skippedReason` (no Playwright, browser or SDK): report it. Read every
+  image, critique it against `CHECKLIST.md`, fix, then run `screenshot` and `verify` again.
+  (F6, F8, F9, F10)
 
 ## 8. Report
 

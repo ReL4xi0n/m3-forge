@@ -15,7 +15,7 @@
  * round ends, the track starts the track-active space after the active end, the linear stop
  * indicator sits at the end of the track, and the circular gap is the space plus the thickness
  * measured on the circumference:
- *   [impl:compose-material3/commonMain/androidx/compose/material3/ProgressIndicator.kt:170] gapSize
+ *   [impl:compose-material3/commonMain/androidx/compose/material3/ProgressIndicator.kt:171] gapSize + strokeWidth
  *   [impl:compose-material3/commonMain/androidx/compose/material3/ProgressIndicator.kt:546] PI
  *   Indeterminate circular has no track:
  *   [impl:compose-material3/commonMain/androidx/compose/material3/ProgressIndicator.kt:835] Transparent

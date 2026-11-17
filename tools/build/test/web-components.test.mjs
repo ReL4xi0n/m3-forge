@@ -3,11 +3,11 @@
 //   Static: install parts and markers, every value a token variable, colors only from the color roles,
 //   every variable declared, class names, the [impl:] values in tokens.css, the token ladder, and
 //   verify on a gallery site (no scored finding).
-//   Toolchain (M3_TOOLCHAIN_TESTS=1): the harness capture of each gallery (no touch-target or
-//   contrast finding in either theme or viewport) and computed checks in Chromium (label contrast over
-//   the drawn container, which axe cannot measure on a pseudo-element; state layers, elevation and
-//   focus rings per gallery (STATE_CHECKS); container geometry and button group gaps; text field labels;
-//   no sideways scroll).
+//   Toolchain (M3_TOOLCHAIN_TESTS=1): the harness capture and the skill's screenshot step on each
+//   gallery (no touch-target or contrast finding in either theme or viewport) and computed checks in
+//   Chromium (label contrast over the drawn container, which axe cannot measure on a pseudo-element;
+//   state layers, elevation and focus rings per gallery (STATE_CHECKS); container geometry and button
+//   group gaps; text field labels; no sideways scroll).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
@@ -23,6 +23,7 @@ import { buildGallerySite, GALLERY_DIR } from '../gallery/web/site.mjs';
 import { MANIFEST, WEB_COMPONENTS } from '../../../plugin/skills/material3/scripts/install-assets/manifest.mjs';
 import { BASELINE_SEED, renderTheme } from '../../../plugin/skills/material3/scripts/color/index.mjs';
 import { verify } from '../../../plugin/skills/material3/scripts/verify/index.mjs';
+import { screenshot } from '../../../plugin/skills/material3/scripts/screenshot/index.mjs';
 import { withToolchain } from '../../../evals/tools/toolchain-env.mjs';
 
 const root = fileURLToPath(new URL('../../../', import.meta.url));
@@ -348,6 +349,20 @@ for (const g of galleries) {
     assert.deepEqual(cap.raw.pageErrors, {});
   });
 
+  // The skill's own screenshot step measures the gallery the same way a model's page is measured.
+  test(`screenshot step: the ${name} gallery has no contrast or touch-target finding`, { skip: toolchain, timeout: 600_000 }, async () => {
+    if (!existsSync(join(siteDir, 'index.html'))) buildGallerySite(name, siteDir);
+    process.env.PLAYWRIGHT_BROWSERS_PATH = withToolchain(process.env).PLAYWRIGHT_BROWSERS_PATH;
+    const r = await screenshot({ projectDir: siteDir, platform: 'web', out: join(outDir, 'screenshot'), roots: [join(root, 'node_modules')] });
+    assert.equal(r.ran, true, r.skippedReason);
+    assert.equal(r.shots.length, 4);
+    assert.deepEqual(r.runtime.contrast, []);
+    assert.deepEqual(r.runtime.targets, []);
+    assert.deepEqual(r.pageErrors, {});
+    assert.deepEqual(r.warnings, []);
+    for (const m of Object.values(r.measured)) assert.ok(m.checked > MIN_CHECKED[name], `${m.checked} texts measured`);
+  });
+
   test(`computed: the ${name} gallery's labels, state layers, focus ring and geometry`, { skip: toolchain, timeout: 600_000 }, async () => {
     if (!existsSync(join(siteDir, 'index.html'))) buildGallerySite(name, siteDir);
     process.env.PLAYWRIGHT_BROWSERS_PATH = withToolchain(process.env).PLAYWRIGHT_BROWSERS_PATH;
@@ -560,6 +575,22 @@ const STATE_CHECKS = {
     await page.screenshot({ path: join(outDir, `modal-dialog-${scheme}.png`) });
     await page.keyboard.press('Escape');
     assert.equal(await dlg.evaluate(el => getComputedStyle(el).display), 'none');
+
+    // A long dialog keeps the window margin at its sides (space-700) and stays inside the window.
+    const long = await dlg.evaluate(el => {
+      const c = el.querySelector('.m3-dialog-content');
+      const text = c.textContent;
+      c.textContent = `${text} `.repeat(60);
+      el.showModal();
+      const r = el.getBoundingClientRect();
+      const out = { left: r.left, right: innerWidth - r.right, top: r.top, bottom: innerHeight - r.bottom };
+      el.close();
+      c.textContent = text;
+      return out;
+    });
+    const margin = await len('--md-sys-space-700');
+    assert.ok(long.left >= margin - 0.5 && long.right >= margin - 0.5, `long dialog side margins ${long.left} / ${long.right}`);
+    assert.ok(long.top > 0 && long.bottom > 0, `long dialog inside the window (${long.top} / ${long.bottom})`);
 
     // Modal bottom sheet: on the bottom edge, centered, at most the maximum width.
     const sheet = page.locator('#modal-sheet');
