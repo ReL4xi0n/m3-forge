@@ -162,20 +162,22 @@ test('fonts.css declares Roboto Flex and Material Symbols with relative URLs and
   const text = readFileSync(join(skill, 'assets/web/fonts.css'), 'utf8');
   assert.ok(text.startsWith('/* material3 skill asset: assets/web/fonts.css'));
   const faces = [...text.matchAll(/@font-face\s*\{([^}]*)\}/g)].map(m => m[1]);
-  assert.equal(faces.length, 2);
+  assert.equal(faces.length, 3);
   for (const f of faces) {
     const url = f.match(/url\('([^']+)'\)/)[1];
     assert.ok(!/^([a-z]+:)?\/\//i.test(url) && !url.startsWith('/'), `relative: ${url}`);
     assert.match(f, /format\('woff2'\)/);
   }
+  const flex = faces.find(f => f.includes("'Roboto Flex'"));
+  const symbols = faces.find(f => f.includes("'Material Symbols Outlined'"));
   const ax = Object.fromEntries(fvarAxes(ttf).map(([t, lo, hi]) => [t, [lo, hi]]));
-  assert.ok(faces[0].includes("'Roboto Flex'") && faces[0].includes('fonts/RobotoFlex.woff2'));
-  assert.ok(faces[0].includes(`font-weight: ${ax.wght[0]} ${ax.wght[1]};`));
-  assert.ok(faces[0].includes(`font-stretch: ${ax.wdth[0]}% ${ax.wdth[1]}%;`));
-  assert.ok(faces[0].includes(`oblique ${ax.slnt[0]}deg ${ax.slnt[1]}deg`));
+  assert.ok(flex.includes("'Roboto Flex'") && flex.includes('fonts/RobotoFlex.woff2'));
+  assert.ok(flex.includes(`font-weight: ${ax.wght[0]} ${ax.wght[1]};`));
+  assert.ok(flex.includes(`font-stretch: ${ax.wdth[0]}% ${ax.wdth[1]}%;`));
+  assert.ok(flex.includes(`oblique ${ax.slnt[0]}deg ${ax.slnt[1]}deg`));
   const sym = fvarAxes(readFileSync(join(skill, 'assets/fonts/MaterialSymbolsOutlined.ttf'))).find(a => a[0] === 'wght');
-  assert.ok(faces[1].includes("'Material Symbols Outlined'") && faces[1].includes('fonts/MaterialSymbolsOutlined.woff2'));
-  assert.ok(faces[1].includes(`font-weight: ${sym[1]} ${sym[2]};`));
+  assert.ok(symbols.includes("'Material Symbols Outlined'") && symbols.includes('fonts/MaterialSymbolsOutlined.woff2'));
+  assert.ok(symbols.includes(`font-weight: ${sym[1]} ${sym[2]};`));
 });
 
 test('the web install manifest ships fonts.css and the woff2, and no longer the Roboto Flex TTF', () => {
@@ -184,4 +186,22 @@ test('the web install manifest ships fonts.css and the woff2, and no longer the 
   assert.ok(web.includes('fonts/RobotoFlex.woff2'));
   assert.ok(!web.includes('fonts/RobotoFlex.ttf'));
   assert.ok(MANIFEST.flutter.fonts.some(e => e.src === 'fonts/RobotoFlex.ttf'));
+});
+
+test('every font family named in tokens.css has an @font-face in fonts.css whose file is in the web fonts part', () => {
+  const GENERIC = new Set(['serif', 'sans-serif', 'monospace', 'cursive', 'fantasy', 'system-ui', 'ui-sans-serif', 'ui-serif', 'ui-monospace']);
+  const names = [...css.matchAll(/^\s*--md-ref-typeface-(?!weight)[\w-]+:\s*([^;]+);/gm)]
+    .flatMap(m => m[1].split(',').map(x => x.trim().replace(/^['"]|['"]$/g, '')))
+    .filter(n => n && !GENERIC.has(n.toLowerCase()));
+  assert.ok(names.includes('Roboto') && names.includes('Roboto Flex'));
+  const fontsCss = readFileSync(join(skill, 'assets/web/fonts.css'), 'utf8');
+  const faces = [...fontsCss.matchAll(/@font-face\s*\{([^}]*)\}/g)].map(m => m[1]);
+  const part = MANIFEST.web.fonts.map(e => e.src);
+  for (const n of new Set(names)) {
+    const face = faces.find(f => f.includes(`font-family: '${n}'`));
+    assert.ok(face, `no @font-face for ${n}`);
+    const file = face.match(/url\('fonts\/([^']+)'\)/)[1];
+    assert.ok(part.includes(`fonts/${file}`), `${file} is not in the web fonts part`);
+    assert.ok(readFileSync(join(skill, 'assets/fonts', file)).length > 0);
+  }
 });

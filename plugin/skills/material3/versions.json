@@ -51,6 +51,12 @@
       "source": "google/fonts@b78877b777ed3a18a1b431b0df7d8ee3f84c2e5f ofl/robotoflex/OFL.txt"
     },
     {
+      "file": "Roboto.woff2",
+      "sha256": "ac391ddf3c31120658c1916d78225cbd0107c1cde20cc2a3e4cc789aea9d194b",
+      "bytes": 222164,
+      "source": "Roboto.ttf converted by tools/build/make-woff2.mjs (wawoff2 2.0.1, see tools) (OFL-1.1)"
+    },
+    {
       "file": "Roboto.ttf",
       "sha256": "d7598e12c5dbef095ff8272cfc55da0250bd07fbdecbac8a530b9b277872a134",
       "bytes": 488584,

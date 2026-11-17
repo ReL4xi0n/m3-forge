@@ -1,11 +1,21 @@
 /* material3 skill asset: assets/web/fonts.css
- * @font-face rules for Roboto Flex and Material Symbols Outlined (woff2, variable, every axis).
+ * @font-face rules for Roboto, Roboto Flex and Material Symbols Outlined (woff2, variable, every axis).
  * The URLs are relative to this file: copy it next to the fonts/ folder the fonts part installs.
  * Roboto Flex axes (fvar): wght 100-1000, wdth 25-151, slnt -10-0, opsz 8-144, GRAD -200-150 and the
  * parametric axes (XOPQ, YOPQ, XTRA, YTUC, YTLC, YTAS, YTDE, YTFI) through font-variation-settings.
+ * Roboto axes (fvar): wght 100-900, wdth 75-100.
  * Material Symbols axes: wght 100-700, FILL 0-1, GRAD -50-200, opsz 20-48 (FILL, GRAD, opsz through
  * font-variation-settings; see the icons reference).
  */
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('fonts/Roboto.woff2') format('woff2');
+  font-weight: 100 900;
+  font-stretch: 75% 100%;
+  font-style: normal;
+  font-display: swap;
+}
 
 @font-face {
   font-family: 'Roboto Flex';

@@ -35,7 +35,7 @@ export const MANIFEST = {
     fonts: [
       { src: 'web/fonts.css', group: 'main' },
       { src: 'fonts/RobotoFlex.woff2', group: 'fonts' },
-      { src: 'fonts/Roboto.ttf', group: 'fonts' },
+      { src: 'fonts/Roboto.woff2', group: 'fonts' },
       { src: 'fonts/MaterialSymbolsOutlined.woff2', group: 'fonts' },
       ...LICENSES,
     ],
