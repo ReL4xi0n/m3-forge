@@ -70,7 +70,7 @@ Part `fab`. `<button class="m3-fab m3-fab--medium" aria-label="Compose">` + icon
 ## Extended FAB
 
 Part `fab`. `<button class="m3-extended-fab m3-extended-fab--medium">` + icon + short label. Sizes
-`--small`, `--medium`, `--large`; the same color modifiers as the FAB.
+Default (no modifier) is small; `--medium`, `--large`; the same color modifiers as the FAB.
 
 ## Floating action button menu
 
