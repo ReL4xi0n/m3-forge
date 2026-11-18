@@ -32,7 +32,7 @@ write no colors, shapes or text styles on them. Pieces the library lacks are in 
 | Bottom sheet | `showModalBottomSheet`, `BottomSheet` | `showDragHandle: true` |
 | Message | `ScaffoldMessenger.of(context).showSnackBar(SnackBar(...))` | One action at most |
 | Counts | `Badge` | Wrap the icon of a destination or button |
-| Progress | `LinearProgressIndicator`, `CircularProgressIndicator` | Pass `semanticLabel`; indeterminate when unknown |
+| Progress | `LinearProgressIndicator`, `CircularProgressIndicator` | Pass `semanticsLabel`; indeterminate when unknown |
 | Date, time | `showDatePicker`, `showTimePicker` | |
 
 ## Flutter specifics

@@ -59,7 +59,8 @@ the project already uses; do not add the other package to a project.
   `lightHighContrast`, `darkMediumContrast`, `darkHighContrast` as `ColorScheme(...)`. Each scheme
   string holds the `roles` in order, 6 hex digits each, written `Color(0xFF<hex>)`. Leave out
   `background`, `onBackground` and `surfaceVariant`; `inverseOnSurface` is `onInverseSurface`. Copy
-  the digits; never retype or round them. The file name marks it as the theme file for verify.
+  the digits; never retype or round them. The file name marks it as the theme file for verify;
+  import `m3/color_schemes.dart` wherever this reference and `theme.md` import `m3/schemes.dart`.
 - Icons: `icons.md` (No Node).
 
 Re-running `install-assets` later: leave out `fonts` once the icons script has replaced the font

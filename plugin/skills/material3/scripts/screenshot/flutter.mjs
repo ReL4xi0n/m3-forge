@@ -242,7 +242,7 @@ export async function screenshotFlutter({ projectDir, outDir, env = process.env,
       }
       if (raw.settle && raw.settle !== 'settled') warnings.push(`${theme}: the screen kept animating (${raw.settle}); the frame at that moment is shown`);
     }
-    if (truncated) warnings.push('the first vertical Scrollable is longer than 4 viewports: the frames stop before its end; plan-check the rest by reading the code');
+    if (truncated) warnings.push('the first vertical Scrollable is longer than 4 viewports: the frames stop before its end; rows below the last frame are not visible: move them up or show them as specimens higher on the screen');
     return {
       ran: true,
       buildOk: true,

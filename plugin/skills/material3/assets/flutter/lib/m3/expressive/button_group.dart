@@ -25,7 +25,7 @@ class _Spec {
   static const double innerCorner = 8; // md.comp.button-group.connected.small.inner-corner.corner-size
   static const double pressedInnerCorner = 4; // md.comp.button-group.connected.small.pressed.inner-corner.corner-size
   static const double expandedRatio = 0.15; // md.comp.button-group.standard.small.pressed.item.width.multiplier
-  static const double compressionLimit = M3Space.space200; // md.comp.button.small.trailing-space [impl: compose-material3 ButtonGroup.kt:1055]
+  static const double compressionLimit = M3Space.space200; // md.comp.button.small.trailing-space (Compose ButtonGroup.kt:1055 uses 24)
 }
 
 /// A row of buttons that react to each other.
