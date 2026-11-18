@@ -179,3 +179,45 @@
 .m3-slider > input:disabled {
   cursor: default;
 }
+
+
+/* Classic M3 (data-m3-style="classic" on the root): the 2023 slider, one size. A 4 px track and a 20 px
+   round handle (material-web tokens; no md.comp.slider token carries them, ladder rung: [impl:] in
+   tokens.css), no gap: the tracks meet under the handle. The handle keeps its level 1 shadow
+   (md.comp.slider.handle.elevation). Sizes and the narrowing handle are Expressive only. */
+:root[data-m3-style="classic"] .m3-slider {
+  --_track-height: var(--md-impl-classic-slider-track-height);
+  --_outer-corner: var(--md-comp-slider-active-track-shape);
+  --_inner-corner: var(--md-comp-slider-active-track-shape);
+  --_handle-height: var(--md-impl-classic-slider-handle-size);
+  --_handle-width: var(--md-impl-classic-slider-handle-size);
+  --_handle-visible-width: var(--md-impl-classic-slider-handle-size);
+  --_gap: calc(var(--md-sys-space-0) - var(--_handle-width) / 2);
+
+  isolation: isolate;
+}
+
+:root[data-m3-style="classic"] .m3-slider:is(:has(> input:focus-visible), :has(> input:active:not(:disabled))) {
+  --_handle-visible-width: var(--md-impl-classic-slider-handle-size);
+}
+
+:root[data-m3-style="classic"] .m3-slider::before,
+:root[data-m3-style="classic"] .m3-slider::after {
+  z-index: -1;
+}
+
+:root[data-m3-style="classic"] .m3-slider > input::-webkit-slider-thumb {
+  box-shadow: var(--md-sys-elevation-level1-shadow);
+}
+
+:root[data-m3-style="classic"] .m3-slider > input::-moz-range-thumb {
+  box-shadow: var(--md-sys-elevation-level1-shadow);
+}
+
+:root[data-m3-style="classic"] .m3-slider:has(> input:disabled) > input::-webkit-slider-thumb {
+  box-shadow: none;
+}
+
+:root[data-m3-style="classic"] .m3-slider:has(> input:disabled) > input::-moz-range-thumb {
+  box-shadow: none;
+}

@@ -295,6 +295,12 @@
   --md-impl-radio-button-dot-size: 12px; /* [impl:compose-material3/commonMain/androidx/compose/material3/RadioButton.kt:321] */
   --md-impl-radio-button-stroke-width: 2px; /* [impl:compose-material3/commonMain/androidx/compose/material3/RadioButton.kt:323] */
   --md-impl-slider-track-inner-corner-size: 2px; /* [impl:compose-material3/commonMain/androidx/compose/material3/Slider.kt:3357] */
+  --md-impl-classic-slider-track-height: 4px; /* [impl:material-web/tokens/versions/v0_192/_md-comp-slider.scss:38] */
+  --md-impl-classic-slider-handle-size: 20px; /* [impl:material-web/tokens/versions/v0_192/_md-comp-slider.scss:54] */
+  --md-impl-classic-button-height: 40px; /* [impl:material-web/tokens/versions/v0_192/_md-comp-filled-button.scss:39] */
+  --md-impl-classic-button-icon-size: 18px; /* [impl:material-web/tokens/versions/v0_192/_md-comp-filled-button.scss:89] */
+  --md-impl-classic-icon-button-size: 40px; /* [impl:material-web/tokens/versions/v0_192/_md-comp-filled-icon-button.scss:32] */
+  --md-impl-classic-icon-button-icon-size: 24px; /* [impl:material-web/tokens/versions/v0_192/_md-comp-filled-icon-button.scss:48] */
   --md-impl-badge-offset: 6px; /* [impl:compose-material3/commonMain/androidx/compose/material3/Badge.kt:218] */
   --md-impl-badge-large-offset-x: 12px; /* [impl:compose-material3/commonMain/androidx/compose/material3/Badge.kt:209] */
   --md-impl-badge-large-offset-y: 14px; /* [impl:compose-material3/commonMain/androidx/compose/material3/Badge.kt:211] */
@@ -319,9 +325,11 @@
   --md-comp-app-bar-container-shape: var(--md-sys-shape-corner-none); /* md.comp.app-bar.container.shape */
   --md-comp-app-bar-icon-button-space: 0px; /* md.comp.app-bar.icon-button-space */
   --md-comp-app-bar-icon-size: 24px; /* md.comp.app-bar.icon.size */
+  --md-comp-app-bar-large-container-height: 152px; /* md.comp.app-bar.large.container.height */
   --md-comp-app-bar-large-flexible-container-height: 120px; /* md.comp.app-bar.large-flexible.container.height */
   --md-comp-app-bar-large-flexible-with-subtitle-container-height: 152px; /* md.comp.app-bar.large-flexible.with-subtitle.container.height */
   --md-comp-app-bar-leading-space: 4px; /* md.comp.app-bar.leading-space */
+  --md-comp-app-bar-medium-container-height: 112px; /* md.comp.app-bar.medium.container.height */
   --md-comp-app-bar-medium-flexible-container-height: 112px; /* md.comp.app-bar.medium-flexible.container.height */
   --md-comp-app-bar-medium-flexible-with-subtitle-container-height: 136px; /* md.comp.app-bar.medium-flexible.with-subtitle.container.height */
   --md-comp-app-bar-small-container-height: 64px; /* md.comp.app-bar.small.container.height */
@@ -663,6 +671,7 @@
   --md-comp-loading-indicator-container-height: 48px; /* md.comp.loading-indicator.container.height */
   --md-comp-loading-indicator-container-shape: var(--md-sys-shape-corner-full); /* md.comp.loading-indicator.container.shape */
   --md-comp-loading-indicator-container-width: 48px; /* md.comp.loading-indicator.container.width */
+  --md-comp-menu-container-shape: var(--md-sys-shape-corner-extra-small); /* md.comp.menu.container.shape */
   --md-comp-menus-container-shape: var(--md-sys-shape-corner-large); /* md.comp.menus.container.shape */
   --md-comp-menus-gap: 2px; /* md.comp.menus.gap */
   --md-comp-menus-group-padding: 2px; /* md.comp.menus.group.padding */
@@ -727,6 +736,8 @@
   --md-comp-nav-rail-item-vertical-active-indicator-height: 32px; /* md.comp.nav-rail.item.vertical.active-indicator.height */
   --md-comp-nav-rail-item-vertical-active-indicator-width: 56px; /* md.comp.nav-rail.item.vertical.active-indicator.width */
   --md-comp-nav-rail-item-vertical-icon-label-space: 4px; /* md.comp.nav-rail.item.vertical.icon-label-space */
+  --md-comp-navigation-bar-active-indicator-width: 64px; /* md.comp.navigation-bar.active-indicator.width */
+  --md-comp-navigation-bar-container-height: 80px; /* md.comp.navigation-bar.container.height */
   --md-comp-navigation-drawer-active-indicator-height: 56px; /* md.comp.navigation-drawer.active-indicator.height */
   --md-comp-navigation-drawer-active-indicator-shape: var(--md-sys-shape-corner-full); /* md.comp.navigation-drawer.active-indicator.shape */
   --md-comp-navigation-drawer-active-indicator-width: 336px; /* md.comp.navigation-drawer.active-indicator.width */
@@ -753,6 +764,7 @@
   --md-comp-navigation-drawer-large-badge-label-tracking: var(--md-sys-typescale-label-large-tracking); /* md.comp.navigation-drawer.large-badge-label.tracking */
   --md-comp-navigation-drawer-large-badge-label-weight: var(--md-sys-typescale-label-large-weight); /* md.comp.navigation-drawer.large-badge-label.weight */
   --md-comp-navigation-drawer-pressed-state-layer-opacity: var(--md-sys-state-pressed-state-layer-opacity); /* md.comp.navigation-drawer.pressed.state-layer.opacity */
+  --md-comp-navigation-rail-container-width: 80px; /* md.comp.navigation-rail.container.width */
   --md-comp-outlined-card-container-shape: var(--md-sys-shape-corner-medium); /* md.comp.outlined-card.container.shape */
   --md-comp-outlined-card-disabled-outline-opacity: 0.12; /* md.comp.outlined-card.disabled.outline.opacity */
   --md-comp-outlined-card-outline-width: 1px; /* md.comp.outlined-card.outline.width */
@@ -863,6 +875,7 @@
   --md-comp-sheet-bottom-docked-drag-handle-height: 4px; /* md.comp.sheet.bottom.docked.drag-handle.height */
   --md-comp-sheet-bottom-docked-drag-handle-width: 32px; /* md.comp.sheet.bottom.docked.drag-handle.width */
   --md-comp-slider-active-handle-leading-space: 6px; /* md.comp.slider.active.handle.leading-space */
+  --md-comp-slider-active-track-shape: var(--md-sys-shape-corner-full); /* md.comp.slider.active.track.shape */
   --md-comp-slider-disabled-active-track-opacity: 0.38; /* md.comp.slider.disabled.active.track.opacity */
   --md-comp-slider-disabled-handle-opacity: 0.38; /* md.comp.slider.disabled.handle.opacity */
   --md-comp-slider-disabled-inactive-track-opacity: 0.12; /* md.comp.slider.disabled.inactive.track.opacity */

@@ -222,3 +222,18 @@
   --_supporting-color: rgb(from var(--_item-label-color) r g b / var(--md-comp-menus-standard-menu-item-disabled-supporting-text-opacity));
   cursor: default;
 }
+
+
+/* Classic M3 (data-m3-style="classic" on the root): the 2023 menu has one kind (the vibrant menu is
+   Expressive only): surface-container, extra small corners (md.comp.menu.container.shape), and a
+   secondary container for the selected item (md.comp.menu.list-item.selected.*, deprecated tokens). */
+:root[data-m3-style="classic"] .m3-menu {
+  --_container-color: var(--md-sys-color-surface-container);
+  --_item-label-color: var(--md-sys-color-on-surface);
+  --_item-icon-color: var(--md-sys-color-on-surface-variant);
+  --_item-supporting-color: var(--md-sys-color-on-surface-variant);
+  --_item-state-layer-color: var(--md-sys-color-on-surface);
+  --_selected-container-color: var(--md-sys-color-secondary-container);
+  --_selected-color: var(--md-sys-color-on-secondary-container);
+  border-radius: var(--md-comp-menu-container-shape);
+}

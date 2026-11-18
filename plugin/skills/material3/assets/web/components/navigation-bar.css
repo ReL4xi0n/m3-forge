@@ -129,3 +129,15 @@
 .m3-navigation-bar-item:active {
   --_state-layer-opacity: var(--md-sys-state-pressed-state-layer-opacity);
 }
+
+
+/* Classic M3 (data-m3-style="classic" on the root): the 2023 navigation bar is 80 high
+   (md.comp.navigation-bar.container.height); the Expressive bar is 64 high. */
+:root[data-m3-style="classic"] .m3-navigation-bar {
+  block-size: var(--md-comp-navigation-bar-container-height);
+}
+
+:root[data-m3-style="classic"] .m3-navigation-bar-item::before,
+:root[data-m3-style="classic"] .m3-navigation-bar-item::after {
+  inline-size: var(--md-comp-navigation-bar-active-indicator-width); /* 64; the Expressive one is 56 */
+}

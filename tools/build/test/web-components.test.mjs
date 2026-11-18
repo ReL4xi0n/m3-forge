@@ -135,6 +135,22 @@ test('colors come only from the --md-sys-color-* roles', () => {
   }
 });
 
+// Classic M3: every Expressive-only style sheet has a classic section scoped to the root attribute, and
+// no classic rule reads an Expressive size or shape token (the Expressive set is what it replaces).
+test('classic scoping: the Expressive-only styles have a classic section in their sheet', () => {
+  const classic = ['button', 'button-group', 'icon-button', 'list', 'loading-indicator', 'menu', 'navigation-bar', 'navigation-rail', 'progress', 'slider', 'top-app-bar'];
+  for (const c of classic) {
+    const css = sheets.get(`${c}.css`);
+    assert.match(css, /^:root\[data-m3-style="classic"\] /m,`${c}: no classic section`);
+    const section = css.slice(css.indexOf(':root[data-m3-style="classic"]'));
+    for (const d of declarations(section)) {
+      for (const v of usedIn(`x{a:${d.value}}`)) {
+        assert.ok(!/^--md-comp-(?:button|icon-button|slider)-(?:x?small|medium|x?large|xsmall)-|^--md-comp-app-bar-(?:medium|large)-flexible-|^--md-comp-list-.*expressive|^--md-comp-loading-indicator-/.test(v), `${c}: classic rule uses the Expressive token ${v}`);
+      }
+    }
+  }
+});
+
 // Variables the page sets for a component (CSS cannot read them): the slider's position, 0 to 1.
 const PAGE_INPUTS = ['--m3-slider-value', '--m3-text-field-notch-color', '--m3-progress-value'];
 
@@ -206,9 +222,9 @@ test('tokens.css: the --md-impl-* values the style sheets use, each with its sou
 // The cited line of each [impl:] value holds that number (the pinned Compose sources in the toolchain).
 test('[impl:] values: the cited Compose source line holds the value', { skip: toolchain }, () => {
   for (const v of IMPL_VALUES) {
-    const [, rel, line] = v.impl.match(/^compose-material3\/(.+):(\d+)$/);
-    const text = readFileSync(join(sourceDir('compose-material3'), ...rel.split('/')), 'utf8').split('\n')[Number(line) - 1];
-    const want = v.ms !== undefined ? `= ${v.ms}\\b` : `\\b${v.px}(?:\\.0)?\\.dp\\b`;
+    const [, lib, rel, line] = v.impl.match(/^(compose-material3|material-web)\/(.+):(\d+)$/);
+    const text = readFileSync(join(sourceDir(lib), ...rel.split('/')), 'utf8').split('\n')[Number(line) - 1];
+    const want = v.ms !== undefined ? `= ${v.ms}\\b` : `\\b${v.px}(?:\\.0)?(?:\\.dp|px)\\b`;
     assert.match(text, new RegExp(want), `${v.name}: ${v.impl}: ${text}`);
   }
 });
@@ -392,7 +408,7 @@ for (const g of galleries) {
 }
 
 // Elements the computed check measures on each gallery, at least.
-const MIN_CHECKED = { actions: 100, containment: 10, navigation: 40 };
+const MIN_CHECKED = { actions: 100, classic: 10, containment: 10, navigation: 40 };
 
 // Helpers on a page: a root variable, a pseudo-element's computed property, the alpha of a color,
 // the computed value of a box-shadow or color variable (from a probe element).
@@ -675,6 +691,49 @@ const STATE_CHECKS = {
     });
     near(headEnd, 0, 'first line head at the end at 1000 ms');
     await shot('progress', page.locator('.gallery-progress'));
+  },
+
+  // Classic M3 (data-m3-style="classic" on the root): the Expressive-only styles draw the classic visuals.
+  async classic(page, { scheme, outDir }) {
+    const px = async (loc, prop, pseudo = null) => parseFloat(await loc.evaluate((el, [p, w]) => getComputedStyle(el, w).getPropertyValue(p), [prop, pseudo]));
+    const impl = async name => parseFloat(await rootVar(page, name));
+    // Slider: the classic 4 px track and 20 px round handle, whatever the size class says.
+    for (const slider of await page.locator('.m3-slider:not(:has(> input:disabled))').all()) {
+      near(await px(slider, 'height', '::before'), await impl('--md-impl-classic-slider-track-height'), 'slider track');
+      const dim = n => slider.evaluate((el, v) => parseFloat(getComputedStyle(el).getPropertyValue(v)), n);
+      near(await dim('--_handle-width'), await impl('--md-impl-classic-slider-handle-size'), 'slider handle width');
+      near(await dim('--_handle-height'), await impl('--md-impl-classic-slider-handle-size'), 'slider handle height');
+      near(await dim('--_handle-visible-width'), await impl('--md-impl-classic-slider-handle-size'), 'handle does not narrow');
+    }
+    // Buttons and icon buttons: 40 px, fully round, in every size and shape class; no press morph.
+    for (const b of await page.locator('.m3-button:not(:disabled)').all()) {
+      near(await px(b, 'height', '::before'), await impl('--md-impl-classic-button-height'), 'button height');
+      assert.ok(await px(b, 'border-top-left-radius', '::before') >= (await impl('--md-impl-classic-button-height')) / 2, 'button is round');
+    }
+    for (const b of await page.locator('.m3-icon-button').all()) {
+      near(await px(b, 'width', '::before'), await impl('--md-impl-classic-icon-button-size'), 'icon button width');
+      near(await px(b, 'height', '::before'), await impl('--md-impl-classic-icon-button-size'), 'icon button height');
+    }
+    const filled = page.locator('.m3-button--filled:not(:disabled)').first();
+    await filled.hover();
+    await page.mouse.down();
+    assert.ok(await px(filled, 'border-top-left-radius', '::before') >= (await impl('--md-impl-classic-button-height')) / 2, 'no pressed shape morph');
+    await page.mouse.up();
+    await page.mouse.move(0, 0);
+    // Connected group: separate round buttons.
+    for (const b of await page.locator('.m3-button-group--connected > .m3-button').all()) {
+      assert.ok(await px(b, 'border-top-left-radius', '::before') >= (await impl('--md-impl-classic-button-height')) / 2, 'connected group button is round');
+    }
+    // Segmented list: no gap, square items. Wavy progress: the flat height. Navigation bar 80, app bars 112 and 152.
+    assert.equal(await page.locator('.m3-list--segmented').evaluate(el => getComputedStyle(el).rowGap), '0px');
+    near(await px(page.locator('.m3-progress--wavy:not(.m3-progress--circular)').first(), 'height'), parseFloat(await rootVar(page, '--md-comp-progress-indicator-linear-active-indicator-thickness')), 'flat progress');
+    near(await px(page.locator('.m3-navigation-bar'), 'height'), parseFloat(await rootVar(page, '--md-comp-navigation-bar-container-height')), 'navigation bar');
+    near(await px(page.locator('.m3-top-app-bar--medium-flexible'), 'height'), parseFloat(await rootVar(page, '--md-comp-app-bar-medium-container-height')), 'medium app bar');
+    near(await px(page.locator('.m3-top-app-bar--large-flexible'), 'height'), parseFloat(await rootVar(page, '--md-comp-app-bar-large-container-height')), 'large app bar');
+    assert.equal(await page.locator('.m3-top-app-bar-subtitle').first().evaluate(el => getComputedStyle(el).display), 'none');
+    // The vibrant menu is the standard one.
+    assert.equal(await page.locator('.m3-menu--vibrant').evaluate(el => getComputedStyle(el).backgroundColor), await probe(page, 'background-color', '--md-sys-color-surface-container'));
+    await page.screenshot({ path: join(outDir, `classic-${scheme}.png`), fullPage: true });
   },
 
   async containment(page, { scheme, outDir }) {

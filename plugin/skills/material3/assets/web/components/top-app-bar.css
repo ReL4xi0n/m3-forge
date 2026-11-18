@@ -178,3 +178,37 @@
   line-height: var(--md-sys-typescale-title-medium-line-height);
   letter-spacing: var(--md-sys-typescale-title-medium-tracking);
 }
+
+
+/* Classic M3 (data-m3-style="classic" on the root): the medium and large app bars of the 2023 spec
+   (md.comp.app-bar.{medium,large}.container.height): 112 and 152 high; the titles are headline small
+   and headline medium (md.comp.top-app-bar.{medium,large}.headline.*, deprecated, so the type roles
+   are used directly); no subtitle. The flexible heights, the subtitle and the Expressive title sizes are
+   Expressive only. */
+:root[data-m3-style="classic"] .m3-top-app-bar-subtitle {
+  display: none;
+}
+
+:root[data-m3-style="classic"] .m3-top-app-bar--medium-flexible {
+  --_height: var(--md-comp-app-bar-medium-container-height);
+}
+
+:root[data-m3-style="classic"] .m3-top-app-bar--large-flexible {
+  --_height: var(--md-comp-app-bar-large-container-height);
+}
+
+:root[data-m3-style="classic"] .m3-top-app-bar--medium-flexible .m3-top-app-bar-title {
+  font-family: var(--md-sys-typescale-headline-small-font);
+  font-weight: var(--md-sys-typescale-headline-small-weight);
+  font-size: var(--md-sys-typescale-headline-small-size);
+  line-height: var(--md-sys-typescale-headline-small-line-height);
+  letter-spacing: var(--md-sys-typescale-headline-small-tracking);
+}
+
+:root[data-m3-style="classic"] .m3-top-app-bar--large-flexible .m3-top-app-bar-title {
+  font-family: var(--md-sys-typescale-headline-medium-font);
+  font-weight: var(--md-sys-typescale-headline-medium-weight);
+  font-size: var(--md-sys-typescale-headline-medium-size);
+  line-height: var(--md-sys-typescale-headline-medium-line-height);
+  letter-spacing: var(--md-sys-typescale-headline-medium-tracking);
+}

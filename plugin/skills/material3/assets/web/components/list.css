@@ -261,3 +261,24 @@
 .m3-list--segmented .m3-list-item:is([role="option"][aria-selected="true"], [aria-current]:not([aria-current="false"])) {
   --_shape: var(--md-comp-list-list-item-selected-container-expressive-shape);
 }
+
+
+/* Classic M3 (data-m3-style="classic" on the root): the segmented list is Expressive only; its items
+   are drawn as the plain list (no gap, square items, the list's own shape on the outer corners). */
+:root[data-m3-style="classic"] .m3-list--segmented {
+  gap: var(--md-sys-space-0);
+}
+
+:root[data-m3-style="classic"] .m3-list--segmented .m3-list-item {
+  --_container-color: transparent;
+  --_shape: var(--md-sys-shape-corner-none);
+}
+
+:root[data-m3-style="classic"] .m3-list--segmented .m3-list-item:is(a[href], button, label, [tabindex]):hover:not(:disabled, [aria-disabled="true"]),
+:root[data-m3-style="classic"] .m3-list--segmented .m3-list-item:is(a[href], button, label, [tabindex]):is(:focus-visible, :active) {
+  border-radius: var(--md-sys-shape-corner-none);
+}
+
+:root[data-m3-style="classic"] .m3-list--segmented .m3-list-item:is([role="option"][aria-selected="true"], [aria-current]:not([aria-current="false"])) {
+  --_shape: var(--md-sys-shape-corner-none);
+}

@@ -311,3 +311,40 @@
   background: var(--md-sys-color-on-surface);
   opacity: var(--md-comp-button-disabled-container-opacity);
 }
+
+
+/* Classic M3 (data-m3-style="classic" on the root): 40 px high, fully round buttons in one size, with
+   no shape change on press or toggle. The 2023 button tokens are deprecated (not in the skill tokens),
+   so the height and icon size are [impl:] values in tokens.css (material-web _md-comp-filled-button.scss:39,89).
+   Padding is not a token either: 24 either side, 16 before a leading icon, 12 for a text button (material-web
+   tokens/_md-comp-filled-button.scss:96-101, _md-comp-text-button.scss), as the equal space step. */
+:root[data-m3-style="classic"] .m3-button {
+  --_height: var(--md-impl-classic-button-height);
+  --_leading-space: var(--md-sys-space-300);
+  --_trailing-space: var(--md-sys-space-300);
+  --_icon-size: var(--md-impl-classic-button-icon-size);
+  --_icon-label-space: var(--md-sys-space-100);
+  --_shape-round: var(--md-sys-shape-corner-full);
+  --_shape-square: var(--md-sys-shape-corner-full);
+  --_shape-pressed: var(--md-sys-shape-corner-full);
+  --_shape-selected-round: var(--md-sys-shape-corner-full);
+  --_shape-selected-square: var(--md-sys-shape-corner-full);
+  --_label-font: var(--md-sys-typescale-label-large-font);
+  --_label-weight: var(--md-sys-typescale-label-large-weight);
+  --_label-size: var(--md-sys-typescale-label-large-size);
+  --_label-line-height: var(--md-sys-typescale-label-large-line-height);
+  --_label-tracking: var(--md-sys-typescale-label-large-tracking);
+}
+
+:root[data-m3-style="classic"] .m3-button:has(> :is(.m3-icon, [class*="material-symbols"]):first-child) {
+  --_leading-space: var(--md-sys-space-200);
+}
+
+:root[data-m3-style="classic"] .m3-button--text {
+  --_leading-space: var(--md-sys-space-150);
+  --_trailing-space: var(--md-sys-space-150);
+}
+
+:root[data-m3-style="classic"] .m3-button--text:has(> :is(.m3-icon, [class*="material-symbols"]):first-child) {
+  --_trailing-space: var(--md-sys-space-200);
+}

@@ -277,3 +277,24 @@
   background: var(--md-sys-color-on-surface);
   opacity: var(--md-comp-icon-button-disabled-container-opacity);
 }
+
+
+/* Classic M3 (data-m3-style="classic" on the root): one 40 px round icon button with a 24 px icon (the
+   same in every kind); sizes, widths, square and the shape morph are Expressive only.
+   The 2023 icon button tokens are deprecated: the sizes are [impl:] values in tokens.css (material-web
+   _md-comp-filled-icon-button.scss:32-48). */
+:root[data-m3-style="classic"] .m3-icon-button {
+  --_height: var(--md-impl-classic-icon-button-size);
+  --_icon-size: var(--md-impl-classic-icon-button-icon-size);
+  --_narrow-leading-space: calc((var(--md-impl-classic-icon-button-size) - var(--_icon-size)) / 2);
+  --_narrow-trailing-space: var(--_narrow-leading-space);
+  --_default-leading-space: var(--_narrow-leading-space);
+  --_default-trailing-space: var(--_narrow-leading-space);
+  --_wide-leading-space: var(--_narrow-leading-space);
+  --_wide-trailing-space: var(--_narrow-leading-space);
+  --_shape-round: var(--md-sys-shape-corner-full);
+  --_shape-square: var(--md-sys-shape-corner-full);
+  --_shape-pressed: var(--md-sys-shape-corner-full);
+  --_shape-selected-round: var(--md-sys-shape-corner-full);
+  --_shape-selected-square: var(--md-sys-shape-corner-full);
+}

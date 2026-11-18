@@ -126,3 +126,18 @@
   border-end-end-radius: var(--_end-corner);
   transition-property: border-start-start-radius, border-end-start-radius, border-start-end-radius, border-end-end-radius;
 }
+
+
+/* Classic M3 (data-m3-style="classic" on the root): there is no button group; the classic connected
+   selection control is segmented-button.css. The group is a plain row of classic buttons with the
+   small standard gap, and a connected group's buttons keep fully round corners (no shared corners,
+   no inner-corner change on press or selection). */
+:root[data-m3-style="classic"] .m3-button-group {
+  --_between-space: var(--md-comp-button-group-standard-small-between-space);
+  --_outer-corner: var(--md-sys-shape-corner-full);
+}
+
+:root[data-m3-style="classic"] .m3-button-group--connected > :is(.m3-button, .m3-icon-button) {
+  --_start-corner: var(--_round-corner);
+  --_end-corner: var(--_round-corner);
+}

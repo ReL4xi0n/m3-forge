@@ -218,13 +218,14 @@ function renderWeb({ seed, variant, custom, modes, requested }) {
   const lines = headerLines(seed, variant, custom, requested).map(l => `/* ${l} */`);
   const decls = (m, indent) => [...Object.entries(m.roles), ...Object.entries(m.extra)]
     .map(([r, v]) => `${indent}--md-sys-color-${kebab(r)}: ${v};`);
-  const block = (sel, m) => [`${sel} {`, ...decls(m, '  '), '}'];
-  const media = (sel, m) => ['@media (prefers-color-scheme: dark) {', `  ${sel} {`, ...decls(m, '    '), '  }', '}'];
+  // color-scheme makes native controls (date pickers, scrollbars) follow the theme.
+  const block = (sel, m, cs) => [`${sel} {`, ...(cs ? [`  color-scheme: ${cs};`] : []), ...decls(m, '  '), '}'];
+  const media = (sel, m, cs) => ['@media (prefers-color-scheme: dark) {', `  ${sel} {`, ...(cs ? [`    color-scheme: ${cs};`] : []), ...decls(m, '    '), '  }', '}'];
   const by = name => modes.find(m => m.name === name);
   const parts = [
-    block(':root', by('light')),
-    media(':root:not([data-theme="light"])', by('dark')),
-    block(':root[data-theme="dark"]', by('dark')),
+    block(':root', by('light'), 'light'),
+    media(':root:not([data-theme="light"])', by('dark'), 'dark'),
+    block(':root[data-theme="dark"]', by('dark'), 'dark'),
   ];
   for (const [c, suffix] of [['medium', 'MediumContrast'], ['high', 'HighContrast']]) {
     parts.push(

@@ -203,6 +203,14 @@ test('web theme: header, light/dark via prefers-color-scheme and data-theme, med
   for (const w of [['m3', 'forge'].join('-'), ['hold', 'out'].join(''), ['reference', 'screenshots'].join('-')]) assert.ok(!t.includes(w), w);
 });
 
+test('web theme: color-scheme follows the theme (light, dark by media query and by attribute)', () => {
+  const t = renderTheme({ platform: 'web', seed: '#3366cc', variant: 'tonalSpot' });
+  const [light, media, attr] = t.split('\n\n').slice(0, 3);
+  assert.match(light, /^:root \{\n  color-scheme: light;/m);
+  assert.match(media, /:root:not\(\[data-theme="light"\]\) \{\n    color-scheme: dark;/);
+  assert.match(attr, /:root\[data-theme="dark"\] \{\n  color-scheme: dark;/);
+});
+
 test('baseline theme says it uses the published scheme', () => {
   const t = renderTheme({ platform: 'web', seed: '#6750A4', variant: 'tonalSpot' });
   assert.equal(t.split('\n')[1], '/* source: published baseline scheme (md.sys.color) */');

@@ -216,3 +216,11 @@
   /* md.comp.scrim.container.{color,opacity} */
   background: rgb(from var(--md-sys-color-scrim) r g b / var(--md-comp-scrim-container-opacity));
 }
+
+
+/* Classic M3 (data-m3-style="classic" on the root): the 2023 rail is 80 wide
+   (md.comp.navigation-rail.container.width); the Expressive collapsed rail is 96. The expanded rail
+   is Expressive only (the classic counterpart is the navigation drawer). */
+:root[data-m3-style="classic"] .m3-navigation-rail {
+  inline-size: var(--md-comp-navigation-rail-container-width);
+}

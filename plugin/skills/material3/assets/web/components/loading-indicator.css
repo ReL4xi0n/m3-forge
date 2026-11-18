@@ -43,3 +43,41 @@
   --_container-color: var(--md-sys-color-primary-container);
   --_indicator-color: var(--md-sys-color-on-primary-container);
 }
+
+
+/* Classic M3 (data-m3-style="classic" on the root): the loading indicator is Expressive only; the
+   classic indeterminate indicator is the circular progress indicator, so this draws that: a ring of
+   md.comp.progress-indicator.circular.size and active-indicator.thickness with a quarter arc that
+   turns. The contained variant has no classic form and is drawn without its container. */
+:root[data-m3-style="classic"] .m3-loading-indicator {
+  --_container-color: transparent;
+  --_indicator-color: var(--md-sys-color-primary);
+  --_full-turn: 1turn;
+  inline-size: var(--md-comp-progress-indicator-circular-size);
+  block-size: var(--md-comp-progress-indicator-circular-size);
+  border-radius: var(--md-sys-shape-corner-full);
+  animation: m3-loading-classic-turn var(--md-sys-motion-duration-extra-long4) linear infinite;
+}
+
+:root[data-m3-style="classic"] .m3-loading-indicator::before {
+  inset: 0;
+  inline-size: auto;
+  block-size: auto;
+  margin: 0;
+  border: var(--md-comp-progress-indicator-circular-active-indicator-thickness) solid transparent;
+  border-block-start-color: var(--_indicator-color);
+  border-radius: var(--md-sys-shape-corner-full);
+  background: none;
+}
+
+@keyframes m3-loading-classic-turn {
+  to {
+    transform: rotate(var(--_full-turn));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root[data-m3-style="classic"] .m3-loading-indicator {
+    animation: none;
+  }
+}

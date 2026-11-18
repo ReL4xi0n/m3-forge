@@ -38,6 +38,13 @@ export const IMPL_VALUES = [
   { name: '--md-impl-radio-button-dot-size', px: 12, impl: `${CM3}/RadioButton.kt:321` },
   { name: '--md-impl-radio-button-stroke-width', px: 2, impl: `${CM3}/RadioButton.kt:323` },
   { name: '--md-impl-slider-track-inner-corner-size', px: 2, impl: `${CM3}/Slider.kt:3357` },
+  // Classic M3 slider (the 2023 spec): material-web's slider tokens, which no md.comp.slider token carries.
+  { name: '--md-impl-classic-slider-track-height', px: 4, impl: 'material-web/tokens/versions/v0_192/_md-comp-slider.scss:38' },
+  { name: '--md-impl-classic-slider-handle-size', px: 20, impl: 'material-web/tokens/versions/v0_192/_md-comp-slider.scss:54' },
+  { name: '--md-impl-classic-button-height', px: 40, impl: 'material-web/tokens/versions/v0_192/_md-comp-filled-button.scss:39' },
+  { name: '--md-impl-classic-button-icon-size', px: 18, impl: 'material-web/tokens/versions/v0_192/_md-comp-filled-button.scss:89' },
+  { name: '--md-impl-classic-icon-button-size', px: 40, impl: 'material-web/tokens/versions/v0_192/_md-comp-filled-icon-button.scss:32' },
+  { name: '--md-impl-classic-icon-button-icon-size', px: 24, impl: 'material-web/tokens/versions/v0_192/_md-comp-filled-icon-button.scss:48' },
   { name: '--md-impl-badge-offset', px: 6, impl: `${CM3}/Badge.kt:218` },
   { name: '--md-impl-badge-large-offset-x', px: 12, impl: `${CM3}/Badge.kt:209` },
   { name: '--md-impl-badge-large-offset-y', px: 14, impl: `${CM3}/Badge.kt:211` },

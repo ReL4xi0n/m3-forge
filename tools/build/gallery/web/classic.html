@@ -1,0 +1,166 @@
+<!doctype html>
+<!-- Gallery of the Expressive-only component styles under Classic M3 (maintainer page, not shipped):
+     data-m3-style="classic" is on the root element. Build a servable folder with
+     "node tools/build/gallery/web/site.mjs classic <outDir>". Compare with the actions, containment and
+     navigation galleries (Expressive); tools/build/test/web-components.test.mjs measures both. -->
+<html lang="en" data-m3-style="classic">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Classic M3 components</title>
+  <link rel="stylesheet" href="assets/m3/fonts.css">
+  <link rel="stylesheet" href="assets/m3/tokens.css">
+  <link rel="stylesheet" href="assets/m3/theme.css">
+  <link rel="stylesheet" href="assets/m3/button.css">
+  <link rel="stylesheet" href="assets/m3/icon-button.css">
+  <link rel="stylesheet" href="assets/m3/button-group.css">
+  <link rel="stylesheet" href="assets/m3/slider.css">
+  <link rel="stylesheet" href="assets/m3/list.css">
+  <link rel="stylesheet" href="assets/m3/progress.css">
+  <link rel="stylesheet" href="assets/m3/loading-indicator.css">
+  <link rel="stylesheet" href="assets/m3/top-app-bar.css">
+  <link rel="stylesheet" href="assets/m3/navigation-bar.css">
+  <link rel="stylesheet" href="assets/m3/menu.css">
+  <style>
+    body {
+      margin: 0;
+      background: var(--md-sys-color-surface);
+      color: var(--md-sys-color-on-surface);
+      font-family: var(--md-sys-typescale-body-medium-font);
+    }
+    main {
+      display: grid;
+      gap: var(--md-sys-space-400);
+      padding: var(--md-sys-space-200);
+    }
+    section {
+      display: grid;
+      gap: var(--md-sys-space-200);
+    }
+    h1, h2, h3 {
+      margin: 0;
+    }
+    h3 {
+      color: var(--md-sys-color-on-surface-variant);
+    }
+    .gallery-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--md-sys-space-200);
+    }
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-style: normal;
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      font-feature-settings: 'liga';
+      letter-spacing: normal;
+      text-transform: none;
+      white-space: nowrap;
+      direction: ltr;
+      -webkit-font-smoothing: antialiased;
+    }
+    [aria-pressed="true"] .material-symbols-outlined {
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .gallery-stack {
+      display: grid;
+      gap: var(--md-sys-space-200);
+    }
+  </style>
+</head>
+<body>
+<main>
+  <h1 class="m3-type-headline-medium">Classic M3 components</h1>
+
+  <section aria-labelledby="buttons">
+    <h2 class="m3-type-title-large" id="buttons">Buttons and icon buttons</h2>
+    <p class="m3-type-body-medium">Size and shape classes of the Expressive set are ignored: one 40 px round button.</p>
+    <div class="gallery-row">
+      <button class="m3-button m3-button--elevated">Save</button>
+      <button class="m3-button m3-button--filled m3-button--large m3-button--square">Send</button>
+      <button class="m3-button m3-button--tonal"><span class="material-symbols-outlined" aria-hidden="true">share</span>Share</button>
+      <button class="m3-button m3-button--outlined m3-button--xlarge">Reply</button>
+      <button class="m3-button m3-button--text">Skip</button>
+      <button class="m3-button m3-button--filled" disabled>Disabled</button>
+    </div>
+    <div class="gallery-row">
+      <button class="m3-icon-button" aria-label="Search"><span class="material-symbols-outlined" aria-hidden="true">search</span></button>
+      <button class="m3-icon-button m3-icon-button--filled" aria-label="Add"><span class="material-symbols-outlined" aria-hidden="true">add</span></button>
+      <button class="m3-icon-button m3-icon-button--tonal m3-icon-button--xlarge m3-icon-button--wide" aria-label="Share"><span class="material-symbols-outlined" aria-hidden="true">share</span></button>
+      <button class="m3-icon-button m3-icon-button--outlined m3-icon-button--square" aria-label="Edit"><span class="material-symbols-outlined" aria-hidden="true">edit</span></button>
+    </div>
+    <h3 class="m3-type-title-small">Connected group: a plain row of classic buttons (segmented-button.css is the classic selection control)</h3>
+    <div class="m3-button-group m3-button-group--connected" role="group" aria-label="View">
+      <button class="m3-button m3-button--tonal" aria-pressed="true">Day</button>
+      <button class="m3-button m3-button--tonal" aria-pressed="false">Week</button>
+      <button class="m3-button m3-button--tonal" aria-pressed="false">Month</button>
+    </div>
+  </section>
+
+  <section aria-labelledby="sliders">
+    <h2 class="m3-type-title-large" id="sliders">Slider</h2>
+    <div class="gallery-stack">
+      <div class="m3-slider" style="--m3-slider-value: 0.4"><input type="range" min="0" max="100" value="40" aria-label="Volume"></div>
+      <div class="m3-slider m3-slider--xlarge" style="--m3-slider-value: 0.7"><input type="range" min="0" max="100" value="70" aria-label="Brightness"></div>
+      <div class="m3-slider" style="--m3-slider-value: 0"><input type="range" min="0" max="10" value="0" aria-label="Minimum"></div>
+      <div class="m3-slider" style="--m3-slider-value: 1"><input type="range" min="0" max="10" value="10" aria-label="Maximum"></div>
+      <div class="m3-slider" style="--m3-slider-value: 0.3"><input type="range" min="0" max="10" value="3" aria-label="Disabled" disabled></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="lists">
+    <h2 class="m3-type-title-large" id="lists">Segmented list (plain in classic)</h2>
+    <ul class="m3-list m3-list--segmented">
+      <li><a class="m3-list-item" href="#lists"><span class="material-symbols-outlined" aria-hidden="true">wifi</span><span class="m3-list-item-text">Network</span></a></li>
+      <li><a class="m3-list-item" href="#lists"><span class="material-symbols-outlined" aria-hidden="true">bluetooth</span><span class="m3-list-item-text">Connected devices</span></a></li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="progress">
+    <h2 class="m3-type-title-large" id="progress">Progress and loading</h2>
+    <div class="gallery-stack">
+      <div class="m3-progress m3-progress--wavy" role="progressbar" aria-label="Upload" aria-valuemin="0" aria-valuemax="100" aria-valuenow="40" style="--m3-progress-value: 0.4"></div>
+      <div class="gallery-row">
+        <div class="m3-progress m3-progress--circular m3-progress--wavy" role="progressbar" aria-label="Sync" aria-valuemin="0" aria-valuemax="100" aria-valuenow="60" style="--m3-progress-value: 0.6"></div>
+        <div class="m3-loading-indicator" role="progressbar" aria-label="Loading"></div>
+        <div class="m3-loading-indicator m3-loading-indicator--contained" role="progressbar" aria-label="Loading contained"></div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="bars">
+    <h2 class="m3-type-title-large" id="bars">App bars, navigation bar and menu</h2>
+    <header class="m3-top-app-bar m3-top-app-bar--medium-flexible">
+      <button class="m3-icon-button" aria-label="Back"><span class="material-symbols-outlined" aria-hidden="true">arrow_back</span></button>
+      <div class="m3-top-app-bar-text">
+        <p class="m3-top-app-bar-title">Recipes</p>
+        <p class="m3-top-app-bar-subtitle">48 saved</p>
+      </div>
+      <div class="m3-top-app-bar-actions"><button class="m3-icon-button" aria-label="Search"><span class="material-symbols-outlined" aria-hidden="true">search</span></button></div>
+    </header>
+    <header class="m3-top-app-bar m3-top-app-bar--large-flexible">
+      <button class="m3-icon-button" aria-label="Back"><span class="material-symbols-outlined" aria-hidden="true">arrow_back</span></button>
+      <div class="m3-top-app-bar-text"><p class="m3-top-app-bar-title">Library</p></div>
+      <div class="m3-top-app-bar-actions"><button class="m3-icon-button" aria-label="More"><span class="material-symbols-outlined" aria-hidden="true">more_vert</span></button></div>
+    </header>
+    <nav class="m3-navigation-bar" aria-label="Main">
+      <a class="m3-navigation-bar-item" href="#bars" aria-current="page"><span class="material-symbols-outlined" aria-hidden="true">home</span><span class="m3-navigation-bar-label">Home</span></a>
+      <a class="m3-navigation-bar-item" href="#bars"><span class="material-symbols-outlined" aria-hidden="true">explore</span><span class="m3-navigation-bar-label">Explore</span></a>
+      <a class="m3-navigation-bar-item" href="#bars"><span class="material-symbols-outlined" aria-hidden="true">person</span><span class="m3-navigation-bar-label">Profile</span></a>
+    </nav>
+    <div class="m3-menu m3-menu--vibrant" role="menu" data-open>
+      <button class="m3-menu-item" role="menuitem"><span class="material-symbols-outlined" aria-hidden="true">content_cut</span><span class="m3-menu-item-text">Cut</span></button>
+      <button class="m3-menu-item" role="menuitemradio" aria-checked="true"><span class="material-symbols-outlined" aria-hidden="true">content_copy</span><span class="m3-menu-item-text">Copy</span></button>
+    </div>
+  </section>
+</main>
+<script>
+  for (const input of document.querySelectorAll('.m3-slider > input')) {
+    input.addEventListener('input', () => {
+      input.parentElement.style.setProperty('--m3-slider-value', String((input.value - input.min) / (input.max - input.min)));
+    });
+  }
+</script>
+</body>
+</html>

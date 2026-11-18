@@ -253,3 +253,14 @@
   80% { transform: rotate(360deg); }
   100% { transform: rotate(360deg); }
 }
+
+
+/* Classic M3 (data-m3-style="classic" on the root): the wavy container size is Expressive only; a
+   wavy indicator takes the flat size. */
+:root[data-m3-style="classic"] .m3-progress--wavy:not(.m3-progress--circular) {
+  block-size: var(--_thickness);
+}
+
+:root[data-m3-style="classic"] .m3-progress--circular.m3-progress--wavy {
+  --_size: var(--md-comp-progress-indicator-circular-size);
+}
