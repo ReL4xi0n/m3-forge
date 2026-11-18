@@ -5,9 +5,9 @@
 // 1.5.0-rc01). Sizes extra small to extra large; elevated, filled, tonal and outlined.
 // Needs the `tokens` part (../tokens.dart).
 
-// install-assets rewrites this import to the Material library the project uses.
 import 'dart:math' as math;
 
+// install-assets rewrites this import to the Material library the project uses.
 import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
 
@@ -114,6 +114,7 @@ class _M3SplitButtonState extends State<M3SplitButton> with SingleTickerProvider
   // The site says the icon turns with the standard motion scheme, not the expressive one, and names no
   // spring: the standard scheme's default spatial spring is our reading [site:/components/split-button/guidelines].
   void _setOpen(bool open) {
+    if (!mounted) return;
     setState(() => _open = open);
     if (MediaQuery.disableAnimationsOf(context)) {
       _turn.value = open ? 1 : 0;

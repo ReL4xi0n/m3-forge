@@ -365,7 +365,12 @@ class _M3FabMenuState extends State<M3FabMenu> with TickerProviderStateMixin {
         },
         child: FocusTraversalGroup(
           policy: OrderedTraversalPolicy(),
-          child: AnimatedBuilder(
+          child: TapRegion(
+            // A tap outside the toggle and the items closes the open menu.
+            onTapOutside: (PointerDownEvent _) {
+              if (_open) _setExpanded(false);
+            },
+            child: AnimatedBuilder(
             animation: Listenable.merge(<Listenable>[_progress, _stagger, ..._width, ..._alpha]),
             builder: (BuildContext context, Widget? _) {
               final bool anyShown = _alpha.any((AnimationController a) => a.value > _settled);
@@ -399,6 +404,7 @@ class _M3FabMenuState extends State<M3FabMenu> with TickerProviderStateMixin {
                 ],
               );
             },
+            ),
           ),
         ),
       ),

@@ -81,4 +81,14 @@ void main() {
     final Material selected = tester.widget<Material>(find.descendant(of: find.widgetWithIcon(IconButton, M3Symbols.formatItalic), matching: find.byType(Material)).first);
     expect(selected.color, scheme.secondaryContainer); // md.comp.toolbar.standard.selected.button.container.color
   });
+
+  testWidgets('each shipped child is an official control of at least 48 dp (children are not resized by the toolbar)', (WidgetTester tester) async {
+    await pumpApp(tester, M3FloatingToolbar(children: toolbarActions()));
+    await tester.pumpAndSettle();
+    for (final Element e in find.byType(IconButton).evaluate()) {
+      final Size size = tester.getSize(find.byElementPredicate((Element x) => x == e));
+      expect(size.width, greaterThanOrEqualTo(48));
+      expect(size.height, greaterThanOrEqualTo(48));
+    }
+  });
 }

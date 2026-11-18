@@ -68,6 +68,15 @@ void main() {
     expect(find.text('Mail'), findsNothing);
   });
 
+  testWidgets('a tap outside the menu closes it; a tap on an item does not count as outside', (WidgetTester tester) async {
+    await pumpApp(tester, Align(alignment: Alignment.bottomRight, child: fabMenu(key: _menu, open: true)), height: 600);
+    await tester.pumpAndSettle();
+    expect(find.text('Mail'), findsOneWidget);
+    await tester.tapAt(const Offset(20, 20));
+    await tester.pumpAndSettle();
+    expect(find.text('Mail'), findsNothing);
+  });
+
   testWidgets('the back gesture closes the menu instead of leaving the screen', (WidgetTester tester) async {
     await pumpApp(tester, fabMenu(key: _menu, open: true), height: 400);
     await tester.pumpAndSettle();

@@ -71,6 +71,11 @@ search the package for the widget name.
   the top item and then down. Selecting an item closes it unless `closeOnSelect: false`.
 - Accessible names: the toggle says "Toggle menu" (change `toggleLabel` to say what it holds) and exposes
   expanded or collapsed; each item's name is its label. Hidden items leave the semantics and focus order.
+- Outside taps: a tap outside the toggle and the items closes the open menu (TapRegion).
+- Placement is the app's job, not built in the widget: from a medium FAB the menu sits 40 dp above the
+  bottom edge, from a large FAB 56 dp, and on large and extra large windows the FAB and menu margins grow
+  from 16 dp to 24 dp [site:/components/fab-menu/specs] [site:/components/fab-menu/guidelines]
+  `fabSize` only sets the closed FAB's size.
 - Not built: the hover lift of the close button (level 4), scrolling of the items in a short window, the
   container transform of an item, the 16 dp bottom padding Compose adds (the Scaffold margin covers it).
 

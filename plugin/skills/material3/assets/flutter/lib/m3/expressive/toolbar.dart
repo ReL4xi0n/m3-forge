@@ -76,7 +76,8 @@ Widget _themed(BuildContext context, _Colors c, Widget child) {
 /// A toolbar that hovers over the content, as large as its [children] and fully rounded.
 ///
 /// [children] are icon buttons (give each a `tooltip`: it is the accessible name), buttons or other
-/// controls, each at least 48 dp. Square icon buttons clash with the round container, and a vertical
+/// official controls, each at least 48 dp (the toolbar does not resize them: an official IconButton
+/// already has a 48 dp target; a custom control must size itself). Square icon buttons clash with the round container, and a vertical
 /// toolbar avoids wide ones. [floatingActionButton] is an optional FloatingActionButton shown beside
 /// it (after it when horizontal, below it when vertical); emphasize one action at most: a button or
 /// the FAB, not both. Keep the toolbar inside its window: margin 16 dp from the edge when horizontal,
