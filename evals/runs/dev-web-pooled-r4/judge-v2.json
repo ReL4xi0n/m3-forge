@@ -1,0 +1,170 @@
+{
+  "id": "web-r4",
+  "rows": [
+    {
+      "runId": "dev-2026-11-18-web-r3",
+      "condition": "skill-r3",
+      "cell": "podcast-player.web.web-empty.default",
+      "scores": {
+        "component-choice": 1,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "dev-2026-11-18-web-r3",
+      "condition": "skill-r3",
+      "cell": "expense-report.web.web-react.seed-2F6F5E",
+      "scores": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 2,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 2,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "dev-2026-11-18-web-r3",
+      "condition": "skill-r3",
+      "cell": "plant-shop.web.web-vue.classic",
+      "scores": {
+        "component-choice": 2,
+        "hierarchy-typography": 3,
+        "color-roles": 2,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 2,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "dev-2026-11-18-web-r3",
+      "condition": "skill-r3",
+      "cell": "clinic-schedule.web.web-empty.default",
+      "scores": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 2,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 2,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "dev-2026-11-18-web-r4",
+      "condition": "skill-r4",
+      "cell": "podcast-player.web.web-empty.default",
+      "scores": {
+        "component-choice": 1,
+        "hierarchy-typography": 2,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "dev-2026-11-18-web-r4",
+      "condition": "skill-r4",
+      "cell": "expense-report.web.web-react.seed-2F6F5E",
+      "scores": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 2,
+        "shape-expressive": 2,
+        "spacing-layout": 1,
+        "interaction-states": 2,
+        "dark-mode": 2,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "dev-2026-11-18-web-r4",
+      "condition": "skill-r4",
+      "cell": "plant-shop.web.web-vue.classic",
+      "scores": {
+        "component-choice": 1,
+        "hierarchy-typography": 2,
+        "color-roles": 2,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 2,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "dev-2026-11-18-web-r4",
+      "condition": "skill-r4",
+      "cell": "clinic-schedule.web.web-empty.default",
+      "scores": {
+        "component-choice": 3,
+        "hierarchy-typography": 2,
+        "color-roles": 2,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 2,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "dev-2026-11-18-webnonode-r2",
+      "condition": "skill-r4-nonode",
+      "cell": "podcast-player.web.web-empty.default",
+      "scores": {
+        "component-choice": 1,
+        "hierarchy-typography": 2,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 1
+      }
+    },
+    {
+      "runId": "dev-2026-11-18-webbase-r1",
+      "condition": "baseline",
+      "cell": "podcast-player.web.web-empty.default",
+      "scores": {
+        "component-choice": 1,
+        "hierarchy-typography": 2,
+        "color-roles": 1,
+        "shape-expressive": 2,
+        "spacing-layout": 1,
+        "interaction-states": 2,
+        "dark-mode": 2,
+        "overall-polish": 1
+      }
+    },
+    {
+      "runId": "dev-2026-11-18-webbase-r1",
+      "condition": "baseline",
+      "cell": "plant-shop.web.web-vue.classic",
+      "scores": {
+        "component-choice": 1,
+        "hierarchy-typography": 2,
+        "color-roles": 2,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    }
+  ]
+}
