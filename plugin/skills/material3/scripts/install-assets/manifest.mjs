@@ -60,6 +60,7 @@ export const MANIFEST = {
     'button-group': [{ src: 'flutter/lib/m3/expressive/button_group.dart', group: 'main', name: 'expressive/button_group.dart' }],
     'fab-menu': [{ src: 'flutter/lib/m3/expressive/fab_menu.dart', group: 'main', name: 'expressive/fab_menu.dart' }],
     'split-button': [{ src: 'flutter/lib/m3/expressive/split_button.dart', group: 'main', name: 'expressive/split_button.dart' }],
+    toolbar: [{ src: 'flutter/lib/m3/expressive/toolbar.dart', group: 'main', name: 'expressive/toolbar.dart' }],
   },
   compose: {
     theme: ['Motion', 'Shape', 'Space', 'Tokens', 'Type'].map((n) => ({ src: `compose/theme/${n}.kt`, group: 'main' })),
