@@ -14,6 +14,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 
 import { installAssets } from '../../../../plugin/skills/material3/scripts/install-assets/index.mjs';
 import { writeTheme } from '../../../../plugin/skills/material3/scripts/color/index.mjs';
+import { flutterIcons } from '../../../../plugin/skills/material3/scripts/icons/flutter.mjs';
 import { verify } from '../../../../plugin/skills/material3/scripts/verify/index.mjs';
 
 const HERE = fileURLToPath(new URL('.', import.meta.url));
@@ -48,6 +49,8 @@ export async function runGallery(library, outDir = join(OUT, library)) {
     if (inst.conflicts.length) throw new Error(`install conflicts: ${inst.conflicts.join(', ')}`);
     writeTheme({ platform: 'flutter', seed: SEED, style: 'expressive', flutterLibrary: library, out: join(dir, 'lib/m3/schemes.dart') });
     writeTheme({ platform: 'flutter', seed: SEED, style: 'classic', flutterLibrary: library, out: join(dir, 'lib/m3/schemes_classic.dart') });
+    // Icon constants for the Symbols golden; the font is already in place from install-assets.
+    flutterIcons({ projectDir: dir, names: ['settings'] });
     for (const f of ['lib/sample_screen.dart', 'test/m3_theme_test.dart']) {
       const p = join(dir, f);
       writeFileSync(p, useLibrary(readFileSync(p, 'utf8'), library));

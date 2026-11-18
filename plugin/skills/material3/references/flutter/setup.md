@@ -22,9 +22,8 @@ detect script reports `flutterLibrary`: `material_ui` when `pubspec.yaml` lists 
    `MaterialSymbolsOutlined`) and keep `uses-material-design: true`. Run `flutter pub get` when a
    dependency changed (no network: say so, skip it).
 4. Wire the theme into `MaterialApp` (`theme.md`).
-5. Icons: `node "S/scripts/icons/index.mjs" <project> --platform flutter --names a,b,c`. Exit 5 means
-   no Flutter icon back end in this version: use `IconData(<codepoint>, fontFamily: 'MaterialSymbolsOutlined')`
-   with codepoints from `S/assets/fonts/MaterialSymbolsOutlined.codepoints`, never `Icons.*`.
+5. Icons: `node "S/scripts/icons/index.mjs" <project> --platform flutter --names a,b,c` writes
+   `lib/m3/m3_symbols.dart`; show the user its `pubspecEdit` before applying it. Details: `icons.md`.
 
 ## Both libraries
 

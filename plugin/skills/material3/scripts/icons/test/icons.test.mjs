@@ -32,9 +32,9 @@ test('icons: unknown names exit 4 with suggestions', async () => {
 });
 
 test('icons: valid names without a back end exit 5', async () => {
-  const r = await icons({ projectDir: '.', platform: 'flutter', names: ['home'] });
+  const r = await icons({ projectDir: '.', platform: 'compose', names: ['home'] });
   assert.equal(r.exitCode, 5);
-  assert.match(r.error, /not implemented for flutter/);
+  assert.match(r.error, /not implemented for compose/);
 });
 
 test('icons: a registered back end is called with the defaults', async () => {
@@ -64,8 +64,8 @@ test('CLI: path with spaces, closed-port proxy, exit codes', async () => {
   const dir = await mkdtemp(join(tmpdir(), 'm3 icons cli '));
   const env = { ...process.env, HTTPS_PROXY: 'http://127.0.0.1:9', HTTP_PROXY: 'http://127.0.0.1:9' };
   try {
-    const ok = spawnSync(process.execPath, [INDEX, dir, '--platform', 'flutter', '--names', 'home'], { env, encoding: 'utf8' });
-    assert.equal(ok.status, 5); // web has a back end since Task 14
+    const ok = spawnSync(process.execPath, [INDEX, dir, '--platform', 'compose', '--names', 'home'], { env, encoding: 'utf8' });
+    assert.equal(ok.status, 5); // compose has no back end yet
     assert.deepEqual(JSON.parse(ok.stdout).known, ['home']);
     const bad = spawnSync(process.execPath, [INDEX, dir, '--platform', 'web', '--names', 'setings'], { env, encoding: 'utf8' });
     assert.equal(bad.status, 4);

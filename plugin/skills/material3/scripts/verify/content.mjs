@@ -129,7 +129,7 @@ const snake = s => s.replace(/([a-z0-9])([A-Z])/g, '$1_$2').toLowerCase();
 // A ligature (exact) or a constant name (exact, or camelCase for the snake_case icon name).
 export function knownIcon(name, { constant = false } = {}) {
   if (!codepoints) return true;
-  return codepoints.has(name) || (constant && codepoints.has(snake(name)));
+  return codepoints.has(name) || (constant && (codepoints.has(snake(name)) || (name.startsWith('$') && codepoints.has(snake(name.slice(1))))));
 }
 
 // ---------------------------------------------------------------------------------------------

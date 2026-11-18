@@ -8,11 +8,12 @@ import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { checkNames } from './names.mjs';
 import { webBackend } from './web.mjs';
+import { flutterBackend } from './flutter.mjs';
 
 const PLATFORMS = ['web', 'flutter', 'compose'];
 
 // Platform back ends: (request) => result. Each platform registers its own here.
-export const BACKENDS = { web: webBackend };
+export const BACKENDS = { web: webBackend, flutter: flutterBackend };
 
 export async function icons({ projectDir, platform, names, style = 'outlined', fill = [0, 1], dest, backends = BACKENDS }) {
   const { known, unknown } = checkNames(names);
