@@ -24,6 +24,11 @@ line says what a first-party screen has. Fix anything that does not match before
   collection. (F9)
 - Large screens reflow (navigation rail or drawer, panes, wider grids) instead of stretching the
   phone layout. (F9)
+- Panes and columns fill the window: no leftover empty gutter beside a pane; side panels end
+  where their content ends or stretch with the page. (F9)
+- On compact widths, secondary controls (filters, sort, options) sit in a chip row or open in a
+  bottom sheet; they do not push the main content below the first screen. (F9)
+- Fields and labels are wide enough for their realistic content: no clipped values. (F9)
 - Fixed and floating elements (app bars, bottom bars, FABs, sticky totals) reserve their own
   space: the scrolling content has matching padding, so nothing is covered at any width. (F9)
 - Text never collides: titles, avatars and trailing actions sit in separate slots; metadata fits
@@ -56,6 +61,8 @@ line says what a first-party screen has. Fix anything that does not match before
 
 - Surfaces use the surface-container roles to show depth; primary, secondary and tertiary
   containers mark emphasis, not decoration. (F2, F5)
+- Tertiary is one contrasting accent per view; avatars, chips, placeholders and status badges use
+  primary, secondary, error or surface-container roles. (F2)
 - Picture placeholders and decorative shapes in one collection all use the same container role,
   and only theme-changing roles (never `*-fixed`), so they darken with the dark scheme. (F2, F8)
 - Dark mode comes from the dark scheme alone: no inverted images, no hard-coded overrides, the

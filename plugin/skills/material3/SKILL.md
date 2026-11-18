@@ -55,6 +55,10 @@ the request asks for classic Material 3. Everything below is the order of work. 
 
 ## 5. Build the UI
 
+- Before writing code, list every screen, element and state the request names (panels, players,
+  pickers, badges, empty and error states, selected states). Each one must end up visible in the
+  delivered UI. (F9)
+
 Hard rules. `verify` checks these (contrast and touch targets only with the step 7 capture;
 judgment calls are not machine-checked).
 
@@ -110,7 +114,10 @@ judgment calls are not machine-checked).
   4. Checks that ran, with their result.
   5. Checks that were skipped, each with its reason (for example "Flutter SDK not found:
      screenshots skipped").
-  6. Anything the user must run later (package install, `flutter create .`, an upgrade).
+  6. Requested items: every item from the step 5 list and where it is visible (screen, section).
+  7. Screenshot review: each problem found in the images (overlap, clipped or colliding text,
+     covered content, empty gutters, off-scheme colors, missing states) and how it was fixed.
+  8. Anything the user must run later (package install, `flutter create .`, an upgrade).
 
 ## When a tool is missing
 
