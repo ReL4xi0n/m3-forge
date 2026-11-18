@@ -40,7 +40,8 @@ test('real Gradle: frames, ATF findings, states, project untouched', { skip, tim
   assert.ok(r.runtime.targets.some((e) => /Small target/.test(e.where)));
   assert.ok(!r.runtime.targets.some((e) => /Disabled small target/.test(e.where)), 'disabled node excluded');
   const byName = Object.fromEntries(r.states.map((s) => [s.name, s]));
-  for (const n of ['remove-dialog', 'empty-search', 'last-row']) {
+  // sort-menu leaves a DropdownMenu frame loop behind: the regression for the 45 min hang
+  for (const n of ['remove-dialog', 'empty-search', 'sort-menu', 'last-row']) {
     assert.equal(byName[n].ok, true, byName[n].error);
     assert.equal(byName[n].shots.length, 2);
   }

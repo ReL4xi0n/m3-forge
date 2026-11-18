@@ -28,6 +28,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
@@ -55,6 +58,8 @@ class MainActivity : ComponentActivity() {
                 Surface(modifier = Modifier.fillMaxSize()) {
                     var query by remember { mutableStateOf("") }
                     var confirm by remember { mutableStateOf(false) }
+                    var sortOpen by remember { mutableStateOf(false) }
+                    var sort by remember { mutableStateOf("Popular") }
                     val plants = remember { (1..40).map { "Fern number $it" } }
                     val shown = plants.filter { it.contains(query, ignoreCase = true) }
                     Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp)) {
@@ -66,6 +71,12 @@ class MainActivity : ComponentActivity() {
                             modifier = Modifier.fillMaxWidth(),
                         )
                         Button(onClick = { confirm = true }) { Text("Remove all") }
+                        FilterChip(selected = false, onClick = { sortOpen = true }, label = { Text(sort) })
+                        DropdownMenu(expanded = sortOpen, onDismissRequest = { sortOpen = false }) {
+                            listOf("Popular", "Newest", "Price").forEach { option ->
+                                DropdownMenuItem(text = { Text(option) }, onClick = { sort = option; sortOpen = false })
+                            }
+                        }
                         Text(text = "Faint caption", fontSize = 14.sp, color = if (dark) Color(0xFF3A3A3A) else Color(0xFFCFCFCF))
                         Box(
                             modifier = Modifier.size(32.dp).background(MaterialTheme.colorScheme.primary)
@@ -112,6 +123,7 @@ export const STATES = {
   states: [
     { name: 'remove-dialog', steps: [{ click: { text: 'Remove all' } }] },
     { name: 'empty-search', steps: [{ enterText: { into: { hint: 'Search plants' }, text: 'cactus' } }] },
+    { name: 'sort-menu', steps: [{ click: { text: 'Popular' } }] },
     { name: 'last-row', steps: [{ scrollTo: { text: 'Fern number 40' } }] },
     { name: 'broken', steps: [{ click: { text: 'No such button' } }] },
   ],

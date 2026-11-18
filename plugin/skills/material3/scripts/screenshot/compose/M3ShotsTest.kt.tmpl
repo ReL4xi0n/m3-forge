@@ -13,10 +13,16 @@ package m3shots
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.view.WindowManager
 import android.os.Build
 import android.os.Looper
 import android.provider.Settings
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ViewRootForTest
@@ -28,7 +34,6 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import com.github.takahirom.roborazzi.captureRoboImage
-import com.github.takahirom.roborazzi.captureScreenRoboImage
 import com.google.android.apps.common.testing.accessibility.framework.AccessibilityCheckPreset
 import com.google.android.apps.common.testing.accessibility.framework.AccessibilityCheckResult.AccessibilityCheckResultType
 import com.google.android.apps.common.testing.accessibility.framework.Parameters
@@ -46,6 +51,7 @@ import org.robolectric.Shadows.shadowOf
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 import org.robolectric.shadows.ShadowBuild
+import org.robolectric.shadows.ShadowSystemClock
 import org.robolectric.shadows.ShadowTrace
 
 private class StepFailure(message: String) : Exception(message)
@@ -82,7 +88,7 @@ class M3ShotsTest {
         val context = ApplicationProvider.getApplicationContext<Context>()
         val intent = launchIntent(context)
         prepare(context)
-        ActivityScenario.launch<android.app.Activity>(intent).use { scenario ->
+        launched(intent) { scenario ->
             settle(SETTLE_FRAMES)
             val frames = JSONArray()
             var truncated = false
@@ -131,9 +137,11 @@ class M3ShotsTest {
         for (i in 0 until specs.length()) {
             val spec = specs.getJSONObject(i)
             val name = spec.getString("name")
+            if (File(outDir, "state-$name-$theme.json").exists()) continue
             val rec = JSONObject().put("name", name).put("theme", theme).put("ok", true)
+            val watchdog = stateWatchdog(rec, name, theme)
             try {
-                ActivityScenario.launch<android.app.Activity>(intent).use { scenario ->
+                launched(intent) { scenario ->
                     settle(SETTLE_FRAMES)
                     lateinit var root: View
                     scenario.onActivity { root = it.window.decorView }
@@ -155,17 +163,19 @@ class M3ShotsTest {
                         settle(STEP_FRAMES)
                         val file = "state-$name-$theme-$VIEWPORT.png"
                         val png = File(outDir, file)
-                        // The whole screen, so dialogs and popups (separate windows) are in the picture.
-                        try {
-                            captureScreenRoboImage(png.absolutePath)
-                        } catch (t: Throwable) {
-                            root.captureRoboImage(png.absolutePath)
-                        }
+                        captureWindows(root, png)
                         if (png.isFile) rec.put("file", file) else rec.put("ok", false).put("error", "no picture was written")
                     }
                 }
             } catch (t: Throwable) {
                 rec.put("ok", false).put("error", "state did not run: $t")
+            }
+            watchdog.interrupt()
+            File(outDir, "state-$name-$theme.json").writeText(rec.toString(2))
+            if (frameCapped && i < specs.length() - 1) {
+                // An animation frame loop outlived the state (a menu popup started it): the next launch would
+                // never return. The result is written; compose.mjs runs the remaining states in a new JVM.
+                Runtime.getRuntime().halt(3)
             }
             File(outDir, "state-$name-$theme.json").writeText(rec.toString(2))
         }
@@ -403,15 +413,132 @@ class M3ShotsTest {
         runCatching { android.animation.ValueAnimator::class.java.getMethod("setDurationScale", Float::class.javaPrimitiveType).invoke(null, 0f) }
     }
 
-    // Advances the paused main looper by n frames. Fixed time, not "until idle", so endless
-    // animations cannot hang it.
+    // Launches the activity, runs the body, then finishes the activity and lets the looper run a few frames.
+    // ActivityScenario.close() is not used: it waits for the main looper to go idle, which never happens
+    // while a Compose animation frame loop runs (found with a DropdownMenu popup on screen: the test JVM
+    // spun until it was killed).
+    private fun <T> launched(intent: Intent, body: (ActivityScenario<android.app.Activity>) -> T): T {
+        val scenario = ActivityScenario.launch<android.app.Activity>(intent)
+        var activity: android.app.Activity? = null
+        scenario.onActivity { activity = it }
+        try {
+            return body(scenario)
+        } finally {
+            val a = activity
+            if (a != null) {
+                // Dialogs and popups first: a popup that stays up keeps its animation frame loop running into the
+                // next launch.
+                val decor = a.window.decorView
+                for (w in windowRoots(decor)) {
+                    if (w !== decor) runCatching { a.windowManager.removeViewImmediate(w) }
+                }
+                runCatching { a.finish() }
+            }
+            settle(STEP_FRAMES)
+        }
+    }
+
+    // The state picture: the activity window with every other window (dialog, bottom sheet, menu popup)
+    // drawn over it, bottom first, with the dim a window asks for. Drawn here with View.draw on a bitmap
+    // canvas: Roborazzi's capture calls wait for the main looper to go idle (Espresso.onIdle), and that
+    // never returns while a Compose animation frame loop runs (a menu popup started one).
+    private fun captureWindows(activityRoot: View, png: File) {
+        redraw(activityRoot)
+        val views = windowRoots(activityRoot).reversed()
+        val bitmap = Bitmap.createBitmap(activityRoot.width, activityRoot.height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        for (v in views) {
+            if (v !== activityRoot) redraw(v)
+            if (v.width <= 0 || v.height <= 0) continue
+            val params = v.layoutParams as? WindowManager.LayoutParams
+            var x = 0
+            var y = 0
+            if (v !== activityRoot && params != null) {
+                if ((params.flags and WindowManager.LayoutParams.FLAG_DIM_BEHIND) != 0 && params.dimAmount > 0f) {
+                    canvas.drawRect(0f, 0f, bitmap.width.toFloat(), bitmap.height.toFloat(), Paint().apply { color = Color.argb((params.dimAmount * 255).toInt(), 0, 0, 0) })
+                }
+                // Robolectric reports no screen position: place the window by its gravity and offsets.
+                val g = params.gravity
+                x = when (g and Gravity.HORIZONTAL_GRAVITY_MASK) {
+                    Gravity.CENTER_HORIZONTAL -> (bitmap.width - v.width) / 2 + params.x
+                    Gravity.RIGHT, Gravity.END -> bitmap.width - v.width - params.x
+                    else -> params.x
+                }
+                y = when (g and Gravity.VERTICAL_GRAVITY_MASK) {
+                    Gravity.CENTER_VERTICAL -> (bitmap.height - v.height) / 2 + params.y
+                    Gravity.BOTTOM -> bitmap.height - v.height - params.y
+                    else -> params.y
+                }
+            }
+            val save = canvas.save()
+            canvas.translate(x.toFloat(), y.toFloat())
+            v.draw(canvas)
+            canvas.restoreToCount(save)
+        }
+        png.outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG, 100, it) }
+    }
+
+    // Advances the paused main looper by n frames of 16 ms: the clock moves, then the due tasks run, at most
+    // MAX_TASKS_PER_FRAME of them. idleFor() would run every task that is due inside its window, and some
+    // views (a DropdownMenu popup, for one) post a new task at once each time one runs: idleFor never
+    // returned and the test JVM spun for hours: the Choreographer posts the next frame at the same instant
+    // for as long as a Compose animation frame loop runs. A bounded frame leaves such a loop unfinished and
+    // goes on (the clock still moves 16 ms per frame); one settle call also stops after SETTLE_BUDGET_MS.
     private fun settle(frames: Int) {
         val looper = shadowOf(Looper.getMainLooper())
+        val deadline = System.nanoTime() + SETTLE_BUDGET_MS * 1_000_000L
         repeat(frames) {
-            looper.idleFor(Duration.ofMillis(16))
+            ShadowSystemClock.advanceBy(Duration.ofMillis(16))
+            if (System.nanoTime() > deadline) return@repeat
+            var n = 0
+            while (!looper.isIdle && n < MAX_TASKS_PER_FRAME) {
+                looper.runOneTask()
+                n++
+            }
+            frameCapped = n >= MAX_TASKS_PER_FRAME
+            if (n >= MAX_TASKS_PER_FRAME && !loopReported) {
+                loopReported = true
+                File(outDir, "settle-loop.txt").writeText(pendingMessages())
+            }
             ShadowTrace.reset()
         }
     }
+
+    private var loopReported = false
+
+    // True when the last settled frame still had tasks due: an animation frame loop is running.
+    private var frameCapped = false
+
+    // The messages waiting in the main queue (what keeps a settle frame busy), for the log.
+    private fun pendingMessages(): String = try {
+        val queue = Looper.getMainLooper().queue
+        val field = queue.javaClass.getDeclaredField("mMessages").apply { isAccessible = true }
+        val sb = StringBuilder()
+        var m = field.get(queue) as android.os.Message?
+        var i = 0
+        while (m != null && i < 12) {
+            sb.append(m.toString()).append(" callback=").append(m.callback).append("\n")
+            val next = android.os.Message::class.java.getDeclaredField("next").apply { isAccessible = true }
+            m = next.get(m) as android.os.Message?
+            i++
+        }
+        sb.toString()
+    } catch (t: Throwable) {
+        "pending messages unavailable: $t"
+    }
+
+    // Stops the JVM when one state takes longer than STATE_LIMIT_MS (a loop the bounded settle cannot see,
+    // for example inside a step's own code): the state is recorded as failed first.
+    private fun stateWatchdog(rec: JSONObject, name: String, theme: String): Thread = Thread {
+        try {
+            Thread.sleep(STATE_LIMIT_MS)
+        } catch (_: InterruptedException) {
+            return@Thread
+        }
+        rec.put("ok", false).put("error", "stalled for ${STATE_LIMIT_MS / 1000} s (an endless animation or a layout loop); the test JVM was stopped")
+        File(outDir, "state-$name-$theme.json").writeText(rec.toString(2))
+        Runtime.getRuntime().halt(3)
+    }.apply { isDaemon = true; start() }
 
     private fun runAtf(root: View, png: File): JSONArray {
         val bitmap = requireNotNull(BitmapFactory.decodeFile(png.absolutePath)) { "cannot decode $png" }
@@ -459,6 +586,9 @@ class M3ShotsTest {
         const val SCROLL_FRAMES = 60
         const val STEP_FRAMES = 40
         const val MAX_FRAMES = 4
+        const val MAX_TASKS_PER_FRAME = 100
+        const val SETTLE_BUDGET_MS = 10_000L
+        const val STATE_LIMIT_MS = 90_000L
         const val MAX_SCROLL_STEPS = 40
         const val MIN_TARGET_DP = 48f
     }

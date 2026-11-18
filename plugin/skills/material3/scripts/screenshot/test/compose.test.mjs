@@ -25,6 +25,7 @@ const arg = (k) => args.find((a) => a.startsWith('-P' + k + '='))?.slice(k.lengt
 const cfg = JSON.parse(readFileSync(new URL('./fake-cfg.json', import.meta.url), 'utf8'));
 const out = arg('m3.outDir');
 if (cfg.mode === 'resolve') { console.error('Could not resolve io.github.takahirom.roborazzi:roborazzi:1.79.0.'); process.exit(1); }
+if (cfg.mode === 'hang') { console.log('> Task :app:testDebugUnitTest'); setInterval(() => {}, 1000); await new Promise(() => {}); }
 if (cfg.mode === 'compile') { console.error('e: MainActivity.kt: Unresolved reference'); process.exit(1); }
 const init = args[args.indexOf('--init-script') + 1];
 if (!existsSync(init) || !init.endsWith('m3-shots.init.gradle.kts')) { console.error('init script missing'); process.exit(3); }
@@ -34,7 +35,9 @@ if (process.cwd() === cfg.project) { console.error('ran inside the project'); pr
 mkdirSync(out, { recursive: true });
 const png = (f) => writeFileSync(join(out, f), Buffer.from([0x89, 0x50, 0x4e, 0x47]));
 const el = (text, enabled, bounds) => ({ check: 'TextContrastCheck', type: 'WARNING', message: 'ratio 1.5', element: { className: 'android.widget.TextView', text, enabled, bounds } });
+const statesFile = arg('m3.statesFile');
 for (const theme of ['light', 'dark']) {
+  if (statesFile) break;
   const frames = [1, 2].map((i) => ({
     frame: i, file: theme + '-412x915-0' + i + '.png',
     results: [el('Faint', true, [0, 0, 10, 10]), el('Faint off', false, [0, 20, 10, 30])],
@@ -45,8 +48,10 @@ for (const theme of ['light', 'dark']) {
   }));
   for (const f of frames) png(f.file);
   writeFileSync(join(out, 'runtime-' + theme + '.json'), JSON.stringify({ theme, frames, truncated: cfg.truncated === true }));
-  const statesFile = arg('m3.statesFile');
-  if (statesFile) {
+}
+if (statesFile) {
+  if (cfg.mode === 'states-hang') { setInterval(() => {}, 1000); await new Promise(() => {}); }
+  for (const theme of ['light', 'dark']) {
     for (const s of JSON.parse(readFileSync(statesFile, 'utf8')).states) {
       const bad = s.name === 'broken';
       const file = 'state-' + s.name + '-' + theme + '-412x915.png';
@@ -197,4 +202,24 @@ test('a run: shots in scroll order, one entry per element, disabled out, states 
   assert.ok(cap.shots.every((s) => !/[\\/]/.test(s)));
   assert.deepEqual(snapshot(dir), before);
   assert.ok(existsSync(INIT_SCRIPT));
+});
+
+test('hard cap: a wrapper that never returns is killed and the step reports ran:false with the phase', async () => {
+  const t = Date.now();
+  const r = await screenshot({ projectDir: project({ mode: 'hang' }), platform: 'compose', env: process.env, tools: TOOLS, timeoutMs: 4000 });
+  assert.ok(Date.now() - t < 60_000);
+  assert.equal(r.ran, false);
+  assert.match(r.skippedReason, /capped at 4 s in total/);
+  assert.match(r.skippedReason, /while running the Robolectric test/);
+  assert.match(r.skippedReason, /killed/);
+});
+
+test('hard cap in the states run: the main shots stay, the states fail with the cap message', async () => {
+  const states = { states: [{ name: 'dialog', steps: [{ click: { text: 'Remove' } }] }] };
+  const r = await screenshot({ projectDir: project({ mode: 'states-hang' }), platform: 'compose', env: process.env, tools: TOOLS, states, timeoutMs: 8000 });
+  assert.equal(r.ran, true, r.skippedReason);
+  assert.equal(r.shots.length, 4);
+  assert.equal(r.states[0].ok, false);
+  assert.match(r.states[0].error, /capped at 8 s/);
+  assert.ok(r.warnings.some((w) => /^states: .*killed/.test(w)));
 });

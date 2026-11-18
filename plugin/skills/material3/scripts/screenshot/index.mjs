@@ -110,7 +110,7 @@ export function loadStates(input, platform) {
   });
 }
 
-export async function screenshot({ projectDir, platform, out, url, states, roots, browsers, env, tools } = {}) {
+export async function screenshot({ projectDir, platform, out, url, states, roots, browsers, env, tools, timeoutMs } = {}) {
   if (!PLATFORMS.includes(platform)) throw new UsageError(`unknown platform "${platform}" (expected ${PLATFORMS.join(', ')})`);
   const dir = resolve(String(projectDir ?? ''));
   if (!isDir(dir)) throw new UsageError(`project folder not found: ${projectDir}`);
@@ -126,7 +126,7 @@ export async function screenshot({ projectDir, platform, out, url, states, roots
 
   const backend = BACKENDS[platform];
   const result = backend
-    ? await backend({ projectDir: dir, outDir, url, roots, browsers, env, states: stateList, tools })
+    ? await backend({ projectDir: dir, outDir, url, roots, browsers, env, states: stateList, tools, ...(timeoutMs ? { timeoutMs } : {}) })
     : { ran: false, skippedReason: `no screenshot back end for ${platform} in this version: screenshots skipped`, shots: [], runtime: { contrast: [], targets: [] } };
 
   const capture = join(outDir, 'capture.json');

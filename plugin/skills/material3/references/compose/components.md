@@ -44,6 +44,15 @@ styles them: write no colors, shapes or text styles on them. Icons: `icons.md`. 
   `Modifier.minimumInteractiveComponentSize()` before it, or use `IconButton`. Never turn the
   minimum off with `LocalMinimumInteractiveComponentSize`. The screenshot step reports clickables
   whose layout size is below the minimum (`screenshot.md`).
+- Layout size, not touch area (F6): the capture and verify measure the LAYOUT size of every clickable,
+  not the touch area `minimumInteractiveComponentSize()` adds around it. The default `Button` and the
+  chips are laid out shorter than the minimum [impl: Button.kt ButtonDefaults.MinHeight,
+  Chip.kt FilterChipDefaults.Height], so they are reported although they are tappable. Give every
+  button, chip (checkable chips included), icon button and clickable row a layout of at least the
+  minimum [token:md.sys.measurement.touch-target] in both directions: `Modifier.heightIn(min = 48.dp)`
+  on buttons and chips, `Modifier.sizeIn(minWidth = 48.dp, minHeight = 48.dp)` on icon buttons and
+  small clickables (use `M3Space` for the surrounding gaps, not for this minimum). Disabled
+  controls are not measured.
 - Labels: an `Icon` that carries meaning alone gets `contentDescription`; a decorative one next to
   text gets `null`. Images the same.
 - Selected states: use the component's own (`NavigationBarItem(selected)`, `FilterChip(selected)`,

@@ -31,7 +31,9 @@ const THEMES = ['light', 'dark'];
 const VIEWPORT = '412x915';
 const TAIL_LINES = 40;
 const SKIP_DIRS = new Set(['.git', '.gradle', '.kotlin', '.idea', 'node_modules', 'captures']);
-const GRADLE_TIMEOUT_MS = 30 * 60_000;
+// Wall-clock cap of the whole step (main shots and states): a stuck test JVM never holds a session longer.
+export const TOTAL_CAP_MS = 12 * 60_000;
+const MIN_STATES_MS = 45_000;
 
 const EMPTY = () => ({ shots: [], runtime: { contrast: [], targets: [] } });
 const tail = (text, n = TAIL_LINES) => text.replace(/\r\n/g, '\n').trimEnd().split('\n').slice(-n).join('\n');
@@ -146,7 +148,32 @@ export function isResolutionFailure(output) {
 
 const quoteWin = (a) => (/[\s"&|<>^()]/.test(a) ? `"${a.replace(/"/g, '""')}"` : a);
 
-function runGradle(dir, args, { env, timeoutMs }) {
+// Kills every process whose command line names `marker` (the Gradle daemon and the test JVM are not
+// children of the wrapper that was started).
+function killStray(marker) {
+  try {
+    if (process.platform === 'win32') {
+      const q = marker.replace(/'/g, "''");
+      spawnSync('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command',
+        `Get-CimInstance Win32_Process | Where-Object { $_.CommandLine -like '*${q}*' -and $_.ProcessId -ne $PID } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }`],
+      { windowsHide: true, timeout: 60_000 });
+    } else {
+      spawnSync('pkill', ['-9', '-f', marker], { timeout: 30_000 });
+    }
+  } catch { /* best effort */ }
+}
+
+// The phase a Gradle output line says the build is in.
+export function phaseOf(line) {
+  if (/> Task :\S*compile\S*/i.test(line)) return 'compiling';
+  if (/> Task :\S*test\S*UnitTest\s*$/i.test(line)) return 'running the Robolectric test';
+  if (/Configure project|> Configure/.test(line)) return 'configuring';
+  return null;
+}
+
+// Runs the project's wrapper. `timeoutMs` is a hard wall-clock limit: the wrapper tree and every stray
+// process that names `marker` (the temp copy) are killed. -> { code, timedOut, output, phase, seconds }
+function runGradle(dir, args, { env, timeoutMs, marker }) {
   return new Promise((res) => {
     const win = process.platform === 'win32';
     // Node refuses to spawn .bat files directly; cmd /d /s /c with a verbatim, fully quoted command
@@ -156,17 +183,31 @@ function runGradle(dir, args, { env, timeoutMs }) {
         cwd: dir, env, windowsHide: true, windowsVerbatimArguments: true,
       })
       : spawn('sh', [join(dir, 'gradlew'), ...args], { cwd: dir, env });
+    const started = Date.now();
     let output = '';
-    child.stdout.on('data', (d) => { output += d; });
-    child.stderr.on('data', (d) => { output += d; });
+    let phase = 'starting Gradle';
+    let carry = '';
+    const onData = (d) => {
+      output += d;
+      const lines = (carry + d).split(/\r?\n/);
+      carry = lines.pop();
+      for (const l of lines) { const p = phaseOf(l); if (p) phase = p; }
+    };
+    child.stdout.on('data', onData);
+    child.stderr.on('data', onData);
     let timedOut = false;
     const timer = setTimeout(() => {
       timedOut = true;
       if (win) spawn('taskkill', ['/pid', String(child.pid), '/T', '/F'], { windowsHide: true });
       else child.kill('SIGKILL');
-    }, timeoutMs);
+      if (marker) killStray(marker);
+    }, Math.max(1000, timeoutMs));
     child.on('error', (e) => { output += `\n${e.message}`; });
-    child.on('close', (code) => { clearTimeout(timer); res({ code: timedOut ? null : code, timedOut, output }); });
+    child.on('close', (code) => {
+      clearTimeout(timer);
+      if (marker) killStray(marker);
+      res({ code: timedOut ? null : code, timedOut, output, phase, seconds: Math.round((Date.now() - started) / 1000) });
+    });
   });
 }
 
@@ -229,7 +270,7 @@ function dedupe(list, seen, theme) {
 
 // screenshotCompose({ projectDir, outDir, env?, states?, timeoutMs?, tools? }) -> result (see index.mjs).
 // `tools` ({ java: { exe, major }, sdk }) replaces the JDK and SDK lookup (tests with a fake wrapper).
-export async function screenshotCompose({ projectDir, outDir, env = process.env, timeoutMs = GRADLE_TIMEOUT_MS, states, tools }) {
+export async function screenshotCompose({ projectDir, outDir, env = process.env, timeoutMs = TOTAL_CAP_MS, states, tools }) {
   const skip = (reason, extra = {}) => ({ ran: false, skippedReason: reason, ...EMPTY(), ...extra });
   const wrapperName = process.platform === 'win32' ? 'gradlew.bat' : 'gradlew';
   if (!existsSync(join(projectDir, wrapperName))) return skip(`no Gradle wrapper (${wrapperName}) in the project: screenshots skipped (this step uses the project's own wrapper and never installs Gradle)`);
@@ -274,27 +315,62 @@ export async function screenshotCompose({ projectDir, outDir, env = process.env,
     }
 
     const childEnv = { ...env, ANDROID_HOME: sdk, ANDROID_SDK_ROOT: envGet(env, 'ANDROID_SDK_ROOT') ?? sdk };
-    const args = [
+    const base = [
       '--no-daemon', '--console=plain',
-      'testDebugUnitTest', '--tests', '*M3ShotsTest*',
+      'testDebugUnitTest',
       '--init-script', INIT_SCRIPT,
       `-Pm3.outDir=${outDir}`,
       `-Pm3.testSrcDir=${join(work, 'test-src')}`,
       `-Pm3.launcher=${app.activity}`,
-      ...(states?.length ? [`-Pm3.statesFile=${statesFile}`] : []),
       '-Pandroid.builder.sdkDownload=false',
       '-Pkotlin.compiler.execution.strategy=in-process',
     ];
-    const gradle = await runGradle(copy, args, { env: childEnv, timeoutMs });
-    if (gradle.timedOut) return skip(`Gradle timed out after ${timeoutMs} ms: screenshots skipped\n${tail(gradle.output)}`, { ...tag, buildOk: false });
+    const started = Date.now();
+    const left = () => timeoutMs - (Date.now() - started);
+    const written = () => readdirSync(outDir).filter((f) => f.endsWith('.png')).length;
+    const capMessage = (g, what) => `the screenshot step is capped at ${Math.round(timeoutMs / 1000)} s in total; ${what} was stopped after ${g.seconds} s while ${g.phase} (${written()} PNGs written so far). The Gradle build and the test JVM were killed. A screen that animates endlessly or loops in layout is the usual cause: simplify it or skip the screenshot step`;
 
+    // Phase 1: the main shots. The states run in a second Gradle call so that a stuck state never costs them.
+    const gradle = await runGradle(copy, [...base, '--tests', '*M3ShotsTest.light', '--tests', '*M3ShotsTest.dark'], { env: childEnv, timeoutMs: left(), marker: work });
+    tag.gradle.seconds = { shots: gradle.seconds };
     const missing = THEMES.filter((t) => !existsSync(join(outDir, `runtime-${t}.json`)));
-    if (gradle.code !== 0 || missing.length) {
+    if (missing.length) {
+      if (gradle.timedOut) return skip(`${capMessage(gradle, 'the shots run')}\n${tail(gradle.output, 12)}`, { ...tag, buildOk: false });
       if (isResolutionFailure(gradle.output)) {
         return skip(`Gradle could not resolve or download dependencies (offline? The first run needs the network for Robolectric, Roborazzi and the project's own libraries): screenshots skipped\n${tail(gradle.output)}`, { ...tag, buildOk: false });
       }
       const why = gradle.code === 0 ? 'Gradle passed but wrote no capture' : 'the app did not build or run under Robolectric';
       return skip(`${why}: screenshots skipped\n${tail(gradle.output)}`, { ...tag, buildOk: gradle.code === 0 ? false : /M3ShotsTest > \w+.* FAILED/.test(gradle.output) });
+    }
+    // Both captures were written: a run that then hung or failed while closing the app still counts.
+    if (gradle.timedOut) warnings.push(capMessage(gradle, 'the shots run (after the captures were written)'));
+    else if (gradle.code !== 0) warnings.push(`the shots run ended with an error after the captures were written: ${tail(gradle.output, 6).replace(/\s*\n\s*/g, ' | ')}`);
+
+    // Phase 2: the states (the compiled test is reused).
+    const stateFiles = () => readdirSync(outDir).filter((f) => /^state-.*-(light|dark)\.json$/.test(f)).length;
+    const allStatesWritten = () => (states ?? []).every((st) => THEMES.every((t) => existsSync(join(outDir, `state-${st.name}-${t}.json`))));
+    let statesNote = null;
+    if (states?.length) {
+      // A state that leaves an animation frame loop behind stops the test JVM (the next launch would never
+      // return); the next Gradle call starts a fresh JVM and carries on with the states without a result.
+      const MAX_RUNS = 8;
+      let runs = 0;
+      while (!allStatesWritten()) {
+        if (left() < Math.min(MIN_STATES_MS, timeoutMs / 4)) {
+          statesNote = `no time left for the states within the ${Math.round(timeoutMs / 1000)} s cap`;
+          break;
+        }
+        const before = stateFiles();
+        const g2 = await runGradle(copy, [...base, `-Pm3.statesFile=${statesFile}`, '--tests', '*M3ShotsTest.stateLight', '--tests', '*M3ShotsTest.stateDark'], { env: childEnv, timeoutMs: left(), marker: work });
+        runs += 1;
+        tag.gradle.seconds.states = (tag.gradle.seconds.states ?? 0) + g2.seconds;
+        if (allStatesWritten()) break;
+        if (g2.timedOut) { statesNote = capMessage(g2, 'the states run'); break; }
+        if (stateFiles() <= before && g2.code !== 0) { statesNote = `the states run ended with an error: ${tail(g2.output, 8).replace(/\s*\n\s*/g, ' | ')}`; break; }
+        if (runs >= MAX_RUNS) { statesNote = `the states needed more than ${MAX_RUNS} test runs`; break; }
+      }
+      if (runs > 1) tag.gradle.statesRuns = runs;
+      if (statesNote) warnings.push(`states: ${statesNote}`);
     }
 
     const shots = [];
@@ -324,7 +400,7 @@ export async function screenshotCompose({ projectDir, outDir, env = process.env,
         for (const theme of THEMES) {
           let rec = null;
           try { rec = JSON.parse(readFileSync(join(outDir, `state-${s.name}-${theme}.json`), 'utf8')); } catch { /* none */ }
-          if (!rec) { if (r.ok) { r.ok = false; r.error = `${theme}: no result (the test did not reach this state)`; } continue; }
+          if (!rec) { if (r.ok) { r.ok = false; r.error = `${theme}: no result (${statesNote ?? 'the test did not reach this state'})`; } continue; }
           if (rec.ok && rec.file && existsSync(join(outDir, rec.file))) r.shots.push(join(outDir, rec.file));
           else if (r.ok) { r.ok = false; r.error = `${theme}: ${rec.error ?? 'no shot written'}`; }
         }
