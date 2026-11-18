@@ -1,0 +1,80 @@
+{
+  "id": "compose-dev",
+  "rows": [
+    {
+      "runId": "dev-2026-11-18-compose-r1",
+      "condition": "r1-clean",
+      "cell": "podcast-player.compose.compose-1.5.default",
+      "scores": {
+        "component-choice": 2,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "dev-2026-11-18-compose-r1",
+      "condition": "r1-clean",
+      "cell": "clinic-schedule.compose.compose-1.5.default",
+      "scores": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 2,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "dev-2026-11-18-compose-r2",
+      "condition": "r2",
+      "cell": "expense-report.compose.compose-1.5.seed-2F6F5E",
+      "scores": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 3,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "dev-2026-11-18-compose-r2",
+      "condition": "r2",
+      "cell": "plant-shop.compose.compose-1.5.classic",
+      "scores": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 2,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 2,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "dev-2026-11-18-composenonode-r2",
+      "condition": "nonode",
+      "cell": "plant-shop.compose.compose-1.5.classic",
+      "scores": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 2,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 2,
+        "dark-mode": 2,
+        "overall-polish": 2
+      }
+    }
+  ]
+}
