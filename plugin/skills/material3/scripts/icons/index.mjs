@@ -9,12 +9,13 @@ import { fileURLToPath } from 'node:url';
 import { checkNames } from './names.mjs';
 import { webBackend } from './web.mjs';
 import { flutterBackend } from './flutter.mjs';
+import { composeBackend } from './compose.mjs';
 import { STYLES } from './download.mjs';
 
 const PLATFORMS = ['web', 'flutter', 'compose'];
 
 // Platform back ends: (request) => result. Each platform registers its own here.
-export const BACKENDS = { web: webBackend, flutter: flutterBackend };
+export const BACKENDS = { web: webBackend, flutter: flutterBackend, compose: composeBackend };
 
 export async function icons({ projectDir, platform, names, style = 'outlined', fill = [0, 1], dest, backends = BACKENDS, fetchImpl }) {
   const { known, unknown } = checkNames(names);

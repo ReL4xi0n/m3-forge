@@ -166,3 +166,24 @@ test('sync-versions --check reports a template catalog, wrapper or compileSdk th
     assert.deepEqual(syncReport({ check: true, root: tmp }).differ, []);
   } finally { rmSync(tmp, { recursive: true, force: true }); }
 });
+
+test('toolchain: Roborazzi shows the settings icon unfilled and filled', { skip, timeout: 40 * 60_000 }, async () => {
+  const { captureCompose } = await import(pathToFileURL(join(REPO, 'harness/compose/capture.mjs')).href);
+  const { composeIcons } = await import(skill('scripts/icons/compose.mjs'));
+  const dir = await project({ name: 'm3ico-' });
+  const out = mkdtempSync(join(tmpdir(), 'm3ico-out-'));
+  try {
+    assert.equal(composeIcons({ projectDir: dir, names: ['settings'] }).files.length, 2);
+    const f = join(dir, 'app/src/main/kotlin/m3/app/MainActivity.kt');
+    const row = 'Row {\n Icon(painterResource(R.drawable.m3s_settings), contentDescription = "Settings")\n Icon(painterResource(R.drawable.m3s_settings_fill1), contentDescription = "Settings selected")\n }\n FilledTonalButton(onClick = { }) {';
+    writeFileSync(f, readFileSync(f, 'utf8')
+      .replace('FilledTonalButton(onClick = { }) {', row)
+      .replace('import androidx.compose.material3.Scaffold', 'import androidx.compose.material3.Icon\nimport androidx.compose.material3.Scaffold\nimport androidx.compose.ui.res.painterResource'));
+    const cap = await captureCompose({ projectDir: dir, outDir: out });
+    assert.ok(existsSync(join(out, 'light-412x915.png')), JSON.stringify(cap).slice(0, 3000));
+    if (process.env.M3_KEEP_SHOTS) cpSync(out, join(process.env.M3_KEEP_SHOTS, basename(out)), { recursive: true });
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+    rmSync(out, { recursive: true, force: true });
+  }
+});

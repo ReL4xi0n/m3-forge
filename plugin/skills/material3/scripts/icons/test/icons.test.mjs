@@ -32,7 +32,7 @@ test('icons: unknown names exit 4 with suggestions', async () => {
 });
 
 test('icons: valid names without a back end exit 5', async () => {
-  const r = await icons({ projectDir: '.', platform: 'compose', names: ['home'] });
+  const r = await icons({ projectDir: '.', platform: 'compose', names: ['home'], backends: {} });
   assert.equal(r.exitCode, 5);
   assert.match(r.error, /not implemented for compose/);
 });
@@ -65,7 +65,7 @@ test('CLI: path with spaces, closed-port proxy, exit codes', async () => {
   const env = { ...process.env, HTTPS_PROXY: 'http://127.0.0.1:9', HTTP_PROXY: 'http://127.0.0.1:9' };
   try {
     const ok = spawnSync(process.execPath, [INDEX, dir, '--platform', 'compose', '--names', 'home'], { env, encoding: 'utf8' });
-    assert.equal(ok.status, 5); // compose has no back end yet
+    assert.equal(ok.status, 0); // compose writes the drawables (bundled Outlined, no network)
     assert.deepEqual(JSON.parse(ok.stdout).known, ['home']);
     const bad = spawnSync(process.execPath, [INDEX, dir, '--platform', 'web', '--names', 'setings'], { env, encoding: 'utf8' });
     assert.equal(bad.status, 4);
@@ -85,7 +85,7 @@ test('CLI: --style accepts outlined, rounded and sharp; other styles exit 2', as
       assert.equal(r.status, 2, `style "${style}"`);
     }
     const ok = spawnSync(process.execPath, [INDEX, dir, '--platform', 'compose', '--names', 'home', '--style', 'outlined'], { encoding: 'utf8' });
-    assert.equal(ok.status, 5);
+    assert.equal(ok.status, 0);
   } finally {
     await rm(dir, { recursive: true, force: true });
   }

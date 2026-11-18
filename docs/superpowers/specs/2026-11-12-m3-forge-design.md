@@ -837,6 +837,15 @@ results, screenshots, green CI, and both install paths shown working.
     not the M3 Expressive style, and the skill must not confuse the two.
   - **Re-verification.** A fresh agent re-checks 6 randomly chosen corrected notes before Phase 1
     closes.
+- Icons, 2026-11-18 (supersedes the font-based Compose icon wording in §10):
+  - Compose icons are the official Android vector drawables (`m3s_<name>.xml`, `_fill1.xml`), written
+    from a bundled gzipped TSV of every Outlined icon (`assets/icons/symbols-outlined-24.tsv.gz`);
+    kept at gzip size so the skill stays under its size cap, with a no-Node route through
+    `gzip -dc | awk` or PowerShell `GZipStream` (ruling R28).
+  - Rounded and Sharp are available on request for web, Flutter and Compose: downloaded at the pinned
+    commit and verified (font size and SHA-256 for web and Flutter; every vector path hashed into
+    `symbols-paths.json` for Compose). On any failure the skill uses bundled Outlined and says so
+    with the notice in §3.
 
 ### Builder decisions, already accepted by the owner
 - JDK 21 instead of 17.
