@@ -13,6 +13,7 @@ import { basename, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 import { installAssets } from '../../../../plugin/skills/material3/scripts/install-assets/index.mjs';
+import { MANIFEST } from '../../../../plugin/skills/material3/scripts/install-assets/manifest.mjs';
 import { writeTheme } from '../../../../plugin/skills/material3/scripts/color/index.mjs';
 import { flutterIcons } from '../../../../plugin/skills/material3/scripts/icons/flutter.mjs';
 import { verify } from '../../../../plugin/skills/material3/scripts/verify/index.mjs';
@@ -31,6 +32,11 @@ async function toolchainRoot() {
   return root();
 }
 
+// Expressive gap widgets with a golden test each (test/m3_<name>_test.dart); a widget the library
+// cannot use (library: 'material_ui', ruling R24) is neither installed nor tested under the other.
+export const WIDGETS = ['loading-indicator', 'button-group'].filter(p => MANIFEST.flutter[p]);
+export const widgetsFor = library => WIDGETS.filter(p => !MANIFEST.flutter[p].some(e => e.library && e.library !== library));
+
 const useLibrary = (text, library) => (library === 'material_ui'
   ? text.replace(/package:flutter\/material\.dart/g, 'package:material_ui/material_ui.dart')
   : text);
@@ -45,13 +51,16 @@ export async function runGallery(library, outDir = join(OUT, library)) {
       const pub = join(dir, 'pubspec.yaml');
       writeFileSync(pub, readFileSync(pub, 'utf8').replace(/^ {2}material_ui: .*\n/m, ''));
     }
-    const inst = installAssets({ projectDir: dir, platform: 'flutter', parts: ['tokens', 'fonts'], flutterLibrary: library });
+    const inst = installAssets({ projectDir: dir, platform: 'flutter', parts: ['tokens', 'fonts', ...widgetsFor(library)], flutterLibrary: library });
     if (inst.conflicts.length) throw new Error(`install conflicts: ${inst.conflicts.join(', ')}`);
     writeTheme({ platform: 'flutter', seed: SEED, style: 'expressive', flutterLibrary: library, out: join(dir, 'lib/m3/schemes.dart') });
     writeTheme({ platform: 'flutter', seed: SEED, style: 'classic', flutterLibrary: library, out: join(dir, 'lib/m3/schemes_classic.dart') });
     // Icon constants for the Symbols golden; the font is already in place from install-assets.
     flutterIcons({ projectDir: dir, names: ['settings'] });
-    for (const f of ['lib/sample_screen.dart', 'test/m3_theme_test.dart']) {
+    for (const w of WIDGETS) {
+      if (!widgetsFor(library).includes(w)) rmSync(join(dir, 'test', `m3_${w.replace(/-/g, '_')}_test.dart`), { force: true });
+    }
+    for (const f of ['lib/sample_screen.dart', ...readdirSync(join(dir, 'test')).filter(n => n.endsWith('.dart')).map(n => `test/${n}`)]) {
       const p = join(dir, f);
       writeFileSync(p, useLibrary(readFileSync(p, 'utf8'), library));
     }
@@ -78,7 +87,7 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   for (const lib of libs) {
     const r = await runGallery(lib);
     console.log(`${lib}: analyze exit ${r.analyze.code}, test exit ${r.test.code}, ${r.images.length} images in ${r.dir}`);
-    if (r.test.code !== 0) console.log(r.test.out.slice(-3000));
+    if (r.test.code !== 0) console.log(r.test.out.slice(-Number(process.env.M3_GALLERY_TAIL || 3000)));
     if (r.analyze.code !== 0) console.log(r.analyze.out.slice(-3000));
     console.log(`  verify: ${JSON.stringify(r.verify.counts)}`);
     process.exitCode ||= r.test.code === 0 && r.analyze.code === 0 ? 0 : 1;

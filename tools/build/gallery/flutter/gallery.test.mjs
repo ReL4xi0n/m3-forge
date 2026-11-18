@@ -5,7 +5,12 @@ import assert from 'node:assert/strict';
 import { statSync } from 'node:fs';
 import { join } from 'node:path';
 
-import { runGallery } from './run.mjs';
+import { runGallery, widgetsFor } from './run.mjs';
+
+const IMAGES = {
+  'loading-indicator': ['loading_indicator_dark.png', 'loading_indicator_light.png'],
+  'button-group': ['button_group_dark.png', 'button_group_light.png'],
+};
 
 const skip = process.env.M3_TOOLCHAIN_TESTS !== '1' && 'needs the local toolchain (M3_TOOLCHAIN_TESTS=1)';
 
@@ -14,7 +19,8 @@ for (const library of ['material_ui', 'material']) {
     const r = await runGallery(library);
     assert.equal(r.analyze.code, 0, r.analyze.out);
     assert.equal(r.test.code, 0, r.test.out.slice(-4000));
-    assert.deepEqual(r.images, ['classic_dark.png', 'classic_light.png', 'expressive_dark.png', 'expressive_light.png', 'symbols_axes.png']);
+    const expected = ['classic_dark.png', 'classic_light.png', 'expressive_dark.png', 'expressive_light.png', 'symbols_axes.png', ...widgetsFor(library).flatMap(w => IMAGES[w])].sort();
+    assert.deepEqual(r.images, expected);
     for (const n of r.images) assert.ok(statSync(join(r.dir, n)).size > 10_000, `${n} is not an empty image`);
     // The installed assets, the generated schemes and the sample screen report no findings at all.
     assert.deepEqual(r.verify.violations, []);

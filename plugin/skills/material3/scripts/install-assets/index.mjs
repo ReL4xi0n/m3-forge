@@ -19,6 +19,7 @@
 //            licenses <module>/src/main/res/raw/
 // Rewrites applied while copying (and when judging "identical"):
 //   Compose: `package m3.theme` becomes `package <package>.theme`
+//   Flutter: an entry marked library: 'material_ui' is skipped (reported in `skipped`) on other projects
 //   Flutter: `package:flutter/material.dart` becomes `package:material_ui/material_ui.dart`
 //            when the project uses material_ui; a line `// [material_ui] <code>` becomes
 //            `<code> // [material_ui]` (code only material_ui compiles, e.g. StyleVariant)
@@ -116,8 +117,13 @@ export function installAssets({ projectDir, platform, parts, dest, packageName, 
 
   // Plan every file first; write only if nothing conflicts.
   const plan = [];
+  const skipped = [];
   for (const part of parts) {
     for (const entry of table[part]) {
+      if (platform === 'flutter' && entry.library && entry.library !== library) {
+        skipped.push({ part, reason: `${part} needs ${entry.library}; this project uses flutter/${library === 'material' ? 'material.dart' : library}. Use the closest official widget (CircularProgressIndicator) or add material_ui with the user's consent.` });
+        continue;
+      }
       const name = platform === 'compose' && entry.androidName ? entry.androidName : (entry.name ?? basename(entry.src));
       const rel = `${dirs[entry.group]}/${name}`;
       plan.push({ rel, abs: join(projectDir, rel), data: render(entry, { platform, themePackage, flutterLibrary: library }) });
@@ -134,13 +140,14 @@ export function installAssets({ projectDir, platform, parts, dest, packageName, 
     try { same = readFileSync(item.abs).equals(item.data); } catch { /* unreadable: conflict */ }
     (same ? identical : conflicts).push(item.rel);
   }
-  if (conflicts.length) return { copied: [], identical, conflicts };
+  if (conflicts.length) return { copied: [], identical, conflicts, ...(skipped.length ? { skipped } : {}) };
 
   for (const item of todo) {
     mkdirSync(dirname(item.abs), { recursive: true });
     writeFileSync(item.abs, item.data);
   }
   const result = { copied, identical, conflicts };
+  if (skipped.length) result.skipped = skipped;
   if (platform === 'flutter' && parts.includes('fonts')) result.pubspec = pubspecSnippet(dirs.fonts);
   return result;
 }
