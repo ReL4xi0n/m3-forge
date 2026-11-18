@@ -4,6 +4,10 @@ Which official `androidx.compose.material3` composable to use for a need. `M3The
 styles them: write no colors, shapes or text styles on them. Icons: `icons.md`. Rows marked
 `1.5+` need material3 1.5 or newer (`versions.md`); below that use the classic row.
 
+**Rule (F6):** every button, chip, checkable chip, icon button and clickable row gets a layout of at
+least 48 dp in both directions (`heightIn(min = 48.dp)`, `sizeIn(...)`): see "Layout size, not touch
+area" below. The default sizes of `Button` and the chips are shorter and are reported as findings.
+
 ## Which composable
 
 | Need | Use | Notes |
