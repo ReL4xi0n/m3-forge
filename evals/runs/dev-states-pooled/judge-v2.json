@@ -1,0 +1,95 @@
+{
+  "id": "states-r1",
+  "rows": [
+    {
+      "runId": "dev-2026-11-18-webstates-r1",
+      "condition": "skill-states",
+      "cell": "podcast-player.web.web-empty.default",
+      "scores": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "dev-2026-11-18-webstates-r1",
+      "condition": "skill-states",
+      "cell": "expense-report.web.web-react.seed-2F6F5E",
+      "scores": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 2,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 2,
+        "dark-mode": 2,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "dev-2026-11-18-webstates-r1",
+      "condition": "skill-states",
+      "cell": "plant-shop.web.web-vue.classic",
+      "scores": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 2,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 2,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "dev-2026-11-18-flutterstates-r1",
+      "condition": "skill-states",
+      "cell": "podcast-player.flutter.flutter-material_ui.default",
+      "scores": {
+        "component-choice": 2,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 3,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "dev-2026-11-18-flutterstates-r1",
+      "condition": "skill-states",
+      "cell": "expense-report.flutter.flutter-legacy.classic",
+      "scores": {
+        "component-choice": 2,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 3,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "dev-2026-11-18-flutterstates-r1",
+      "condition": "skill-states",
+      "cell": "plant-shop.flutter.flutter-material_ui.seed-2F6F5E",
+      "scores": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 2,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    }
+  ]
+}
