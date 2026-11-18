@@ -2,7 +2,7 @@
 // Pre-3b probes (measurement only). Isolated config folder + OAuth token as run-cell uses.
 //   probe-skill-dir.mjs personal              stub skill installed as a personal skill
 //   probe-skill-dir.mjs plugin <prompt...>    stub skill installed as a plugin from a local marketplace
-//   probe-skill-dir.mjs tokens <base|refs|skill>   input-token total of a minimal run
+//   probe-skill-dir.mjs tokens <base|refs|skill|checklist>   input-token total of a minimal run
 import { spawn, spawnSync } from 'node:child_process';
 import { cpSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -65,10 +65,11 @@ if (mode === 'personal') {
 } else if (mode === 'tokens') {
   const which = process.argv[3];
   const core = join(root, 'plugin', 'skills', 'material3');
-  const files = ['color', 'typography', 'shape', 'layout', 'icons', 'content', 'components'].map(n => join(core, 'references', 'core', `${n}.md`));
+  const files = ['color', 'typography', 'shape', 'layout', 'composition', 'icons', 'content', 'components'].map(n => join(core, 'references', 'core', `${n}.md`));
   let text = '';
   if (which === 'refs') text = files.map(f => readFileSync(f, 'utf8')).join('\n');
   if (which === 'skill') text = readFileSync(join(core, 'SKILL.md'), 'utf8');
+  if (which === 'checklist') text = readFileSync(join(core, 'CHECKLIST.md'), 'utf8');
   const { cfg, work, base: b } = fresh('tokens');
   const prompt = `Reply with the single word OK. Do not use any tool.\n${text}`;
   const s = summarize(cli(['-p', ...base], mkEnv(cfg), work, prompt).stdout);

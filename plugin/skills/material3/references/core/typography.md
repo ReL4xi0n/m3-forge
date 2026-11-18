@@ -20,6 +20,23 @@ keeps the size and line height and is heavier.
 - Body text never uses a display or decorative face; label and body stay legible at small sizes.
 - Heading level (h1, h2 ...) follows the content outline, not the visual size.
 
+## Hierarchy recipes by screen type
+
+Neighboring levels must differ in at least two ways: role or size, weight (emphasized twin), and
+color (`onSurface` against `onSurfaceVariant`). Same size and weight for a name and its price reads
+as one level. "(E)" means the emphasized twin in M3 Expressive and the baseline style in classic.
+
+| Screen | Focal point | Second level | Supporting text | Metadata and small print |
+|---|---|---|---|---|
+| Product detail | product name: headline medium | price: headline small (E), `onSurface` | description: body large | rating, stock, delivery: label large, `onSurfaceVariant` |
+| Product card in a grid | price: title large (E) | name: title medium | one attribute: body medium, `onSurfaceVariant` | badge text: label small |
+| List or queue | selected or current item label: body large (E) | item label: body large [token:md.comp.list.list-item.label-text.type] | body medium [token:md.comp.list.list-item.supporting-text.type], one or two lines | trailing time, count, price: label small [token:md.comp.list.list-item.trailing-supporting-text.type]; section headers: title small |
+| Form | screen title: headline small (or the app bar title) | section titles: title medium | inputs: body large [token:md.comp.filled-text-field.input-text.type] | total or result: title large (E); helper text stays the field's default |
+| Media player | track title: headline small (E) | artist or show: title medium, `onSurfaceVariant` | episode notes: body medium | elapsed and remaining time: label medium, tabular figures |
+| Dashboard | key numbers: display small or headline large (E), one row | card titles: title medium | chart and table text: body medium | number labels and deltas: label large, `onSurfaceVariant`; a delta carries an icon, not color alone |
+
+- One focal point per screen or card. A collection repeats its card recipe exactly.
+
 ## Emphasized styles (M3 Expressive)
 
 - Use an emphasized twin where weight carries meaning: selected or unread items, the primary
@@ -41,12 +58,9 @@ Install the asset with `scripts/install-assets` before using it. Do not copy the
 
 ## Typefaces
 
-- Two slots: brand (display, headline) and plain (body, label). Both default to Roboto, shipped in
-  `assets/fonts/` with its license; Roboto Flex is also shipped for variable-axis use.
-- Changing the brand face for expression is allowed; change the typeface variable, not the sizes.
-  After a face change, adjust line height and tracking only.
-- Fallback chain when Roboto Flex is used: Roboto Flex, then Roboto, then a system sans covering the
-  user's scripts.
+- Two slots: brand (display, headline) and plain (body, label), both Roboto from `assets/fonts/`
+  (Roboto Flex also ships). A brand face may change the typeface variable, never the sizes; fall
+  back to Roboto, then a system sans.
 - Numbers that line up or update (tables, prices, timers): turn on tabular figures
   (`font-variant-numeric: tabular-nums`, `FontFeature.tabularFigures()`,
   `fontFeatureSettings = "tnum"`).
@@ -61,19 +75,14 @@ Install the asset with `scripts/install-assets` before using it. Do not copy the
 
 - Text must grow with the user's font setting up to 200% [site:/foundations/writing/text-resizing]:
   web sizes in `rem` (the tokens are), Flutter and Compose in `sp` (the assets are).
-- Padding and gaps stay at their normal values when text grows; only text and line height scale.
 - When enlarged text does not fit: let the container grow taller, then reflow side-by-side items
   into a stack, then allow vertical scrolling. Never two-way scrolling.
-- Wrap instead of truncating. An ellipsis is allowed only when the full text is reachable (tooltip,
-  detail view).
+- Wrap instead of truncating. An ellipsis only when the full text is reachable (tooltip, detail
+  view), as for one-line titles in dense queues and tables.
 - Fixed-height bars (app bar, navigation bar, rail, tabs) keep labels at normal size and show the
   full label in a tooltip.
 
 ## Do not
 
-- Write a literal `font-size`, `font-weight`, `TextStyle(fontSize: ...)` or `fontSize = <n>.sp` in
-  UI code.
-- Change the scale's sizes to fit a layout.
-- Use very thin weights or decorative faces for body or label text.
-- Use ALL CAPS styling for labels; Material text is sentence case.
-- Mix more than two families on a screen.
+- Change the scale's sizes to fit a layout; use ALL CAPS labels (Material is sentence case); mix
+  more than two families on a screen.

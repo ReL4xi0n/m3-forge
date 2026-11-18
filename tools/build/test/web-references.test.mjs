@@ -24,7 +24,7 @@ test(`the four web references total at most ${WEB_REFS_MAX_CHARS} characters`, (
 });
 
 test('every components.md#<anchor> link in the core components note has a web section', () => {
-  const links = [...read('references/core/components.md').matchAll(/references\/<platform>\/components\.md#([\w-]+)/g)].map((m) => m[1]);
+  const links = [...read('references/core/components.md').matchAll(/\| `#([\w-]+)` \|/g)].map((m) => m[1]);
   assert.ok(links.length >= 30, `${links.length} links`);
   assert.ok(links.includes('floating-action-button-menu'));
   const have = anchors(refs.components);

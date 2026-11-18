@@ -4,18 +4,22 @@ Every corner radius is a step of the shape scale. Never write a radius number in
 
 ## The scale
 
-| Step | Web (`assets/web/tokens.css`) | Flutter (`lib/m3/shape.dart`) | Compose (`theme/Shape.kt`) | Radius |
-|---|---|---|---|---|
-| None | `--md-sys-shape-corner-none` | `M3Corners.none` / `M3Shapes.none` | `M3Shapes.none` | 0dp [token:md.sys.shape.corner-value.none] |
-| Extra small | `--md-sys-shape-corner-extra-small` | `M3Corners.extraSmall` | `M3Shapes.extraSmall` | 4dp [token:md.sys.shape.corner-value.extra-small] |
-| Small | `--md-sys-shape-corner-small` | `M3Corners.small` | `M3Shapes.small` | 8dp [token:md.sys.shape.corner-value.small] |
-| Medium | `--md-sys-shape-corner-medium` | `M3Corners.medium` | `M3Shapes.medium` | 12dp [token:md.sys.shape.corner-value.medium] |
-| Large | `--md-sys-shape-corner-large` | `M3Corners.large` | `M3Shapes.large` | 16dp [token:md.sys.shape.corner-value.large] |
-| Large increased (Expressive) | `--md-sys-shape-corner-large-increased` | `M3Corners.largeIncreased` | `M3Shapes.largeIncreased` | 20dp [token:md.sys.shape.corner-value.large-increased] |
-| Extra large | `--md-sys-shape-corner-extra-large` | `M3Corners.extraLarge` | `M3Shapes.extraLarge` | 28dp [token:md.sys.shape.corner-value.extra-large] |
-| Extra large increased (Expressive) | `--md-sys-shape-corner-extra-large-increased` | `M3Corners.extraLargeIncreased` | `M3Shapes.extraLargeIncreased` | 32dp [token:md.sys.shape.corner-value.extra-large-increased] |
-| Extra extra large (Expressive) | `--md-sys-shape-corner-extra-extra-large` | `M3Corners.extraExtraLarge` | `M3Shapes.extraExtraLarge` | 48dp [token:md.sys.shape.corner-value.extra-extra-large] |
-| Full (pill, circle) | `--md-sys-shape-corner-full` | `M3Shapes.full` (`StadiumBorder`) | `M3Shapes.full` (`CircleShape`) | fully round [token:md.sys.shape.corner.full] |
+Names: web `--md-sys-shape-corner-<step>` (`assets/web/tokens.css`); Flutter `M3Corners.<camel>`
+and `M3Shapes.<camel>` (`lib/m3/shape.dart`); Compose `M3Shapes.<camel>` (`theme/Shape.kt`). (E) marks
+the Expressive-only steps.
+
+| Step | camel | Radius |
+|---|---|---|
+| none | none | 0dp [token:md.sys.shape.corner-value.none] |
+| extra-small | extraSmall | 4dp [token:md.sys.shape.corner-value.extra-small] |
+| small | small | 8dp [token:md.sys.shape.corner-value.small] |
+| medium | medium | 12dp [token:md.sys.shape.corner-value.medium] |
+| large | large | 16dp [token:md.sys.shape.corner-value.large] |
+| large-increased (E) | largeIncreased | 20dp [token:md.sys.shape.corner-value.large-increased] |
+| extra-large | extraLarge | 28dp [token:md.sys.shape.corner-value.extra-large] |
+| extra-large-increased (E) | extraLargeIncreased | 32dp [token:md.sys.shape.corner-value.extra-large-increased] |
+| extra-extra-large (E) | extraExtraLarge | 48dp [token:md.sys.shape.corner-value.extra-extra-large] |
+| full (pill, circle) | `M3Shapes.full` (Flutter `StadiumBorder`, Compose `CircleShape`) | fully round [token:md.sys.shape.corner.full] |
 
 - Partial-corner steps: web `--md-sys-shape-corner-extra-small-top`, `-large-top`, `-large-start`,
   `-large-end`, `-extra-large-top`; Flutter `M3Corners.extraSmallTop`, `largeTop`, `largeStart`,
@@ -59,9 +63,4 @@ Every corner radius is a step of the shape scale. Never write a radius number in
   with the spatial curve from motion.md.
 - Reduced motion: jump straight to the end shape.
 
-## Do not
-
-- A literal radius in UI code: `border-radius: <n>px`, `BorderRadius.circular(<n>)`,
-  `RoundedCornerShape(<n>.dp)`.
-- A percentage radius for pills or circles; use the full step.
-- Cut corners or odd library shapes on text-heavy surfaces.
+- Pills and circles use the full step, never a percentage radius.

@@ -33,7 +33,8 @@ the request asks for classic Material 3. Everything below is the order of work. 
 ## 3. Load references
 
 - Always read `CHECKLIST.md` (before building, as the recipe) and `references/core/color.md`,
-  `typography.md`, `shape.md`, `layout.md`, `icons.md`, `content.md` and `components.md`. (W)
+  `typography.md`, `shape.md`, `layout.md`, `composition.md`, `icons.md`, `content.md` and
+  `components.md`. (W)
 - Then every file in `references/<platform>/`, and from `references/core/` only the other notes
   the request needs (`elevation.md`, `motion.md`, `states.md`, `accessibility.md`,
   `expressive.md`, `anti-patterns.md`). (W)
@@ -58,6 +59,8 @@ the request asks for classic Material 3. Everything below is the order of work. 
 - Before writing code, list every screen, element and state the request names (panels, players,
   pickers, badges, empty and error states, selected states). Each one must end up visible in the
   delivered UI. (F9)
+- Then name the canonical layout per window size (`layout.md`) and the hierarchy recipe for the
+  screen type (`typography.md`), and build to them. (F9, F10)
 
 Hard rules. `verify` checks these (contrast and touch targets only with the step 7 capture;
 judgment calls are not machine-checked).

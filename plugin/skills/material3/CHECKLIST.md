@@ -12,7 +12,9 @@ line says what a first-party screen has. Fix anything that does not match before
   chips, tabs and metadata. One role per level across the whole UI. (F10)
 - In M3 Expressive, emphasized roles mark the one or two things that matter most on the screen
   (a key number, the primary headline), not every heading. (F10)
-- Numbers people compare (prices, totals, times) share a role and align. (F10)
+- Each text level follows the hierarchy recipe for the screen type (`references/core/typography.md`):
+  neighboring levels differ in two of size, weight and color, so a price or total never looks like
+  the name beside it. Numbers people compare share a role and align. (F10)
 
 ## Spacing and layout
 
@@ -24,8 +26,12 @@ line says what a first-party screen has. Fix anything that does not match before
   collection. (F9)
 - Large screens reflow (navigation rail or drawer, panes, wider grids) instead of stretching the
   phone layout. (F9)
-- Panes and columns fill the window: no leftover empty gutter beside a pane; side panels end
-  where their content ends or stretch with the page. (F9)
+- The layout is the canonical one for what the screen does (`references/core/layout.md`: feed,
+  list-detail, supporting pane or single pane), chosen before building. Panes run to the bottom of
+  the window and grids fill their pane: no blank column and no pane ending halfway beside a long
+  one. (F9)
+- Placement, grouping, spacing rhythm and emphasis follow `references/core/composition.md`: groups
+  sit in containers, three spacing distances, one filled element per view. (F9)
 - On compact widths, secondary controls (filters, sort, options) sit in a chip row or open in a
   bottom sheet; they do not push the main content below the first screen. (F9)
 - Fields and labels are wide enough for their realistic content: no clipped values. (F9)
@@ -61,6 +67,8 @@ line says what a first-party screen has. Fix anything that does not match before
 
 - Surfaces use the surface-container roles to show depth; primary, secondary and tertiary
   containers mark emphasis, not decoration. (F2, F5)
+- Alerts, warnings and late or overdue states use `error-container` with `on-error-container`; a
+  full `error` fill is only for small badges. (F2, F9)
 - Tertiary is one contrasting accent per view; avatars, chips, placeholders and status badges use
   primary, secondary, error or surface-container roles. (F2)
 - Picture placeholders and decorative shapes in one collection all use the same container role,
