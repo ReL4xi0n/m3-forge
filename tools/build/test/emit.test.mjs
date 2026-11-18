@@ -58,8 +58,8 @@ function traced(text) {
 test('the emitters write exactly the theme asset files verify allowlists', () => {
   assert.deepEqual([...files.keys()].sort(), [...PATHS].sort());
   // Plus fonts.css (font files build step), whose @font-face weight ranges are not UI literals, and
-  // the progress component, whose arcs are gradients of the color roles, and the hand-written Flutter theme.
-  assert.deepEqual([...THEME_ASSETS].sort(), [...PATHS, 'assets/web/fonts.css', 'assets/web/components/progress.css', 'assets/flutter/lib/m3/theme.dart'].sort());
+  // the progress component, whose arcs are gradients of the color roles, and the hand-written Flutter and Compose themes.
+  assert.deepEqual([...THEME_ASSETS].sort(), [...PATHS, 'assets/web/fonts.css', 'assets/web/components/progress.css', 'assets/flutter/lib/m3/theme.dart', 'assets/compose/theme/Theme.kt', 'assets/compose/theme/below-1.5/Theme.kt'].sort());
 });
 
 test('every file starts with the skill asset marker and the generated notice, and names no repo-only terms', () => {

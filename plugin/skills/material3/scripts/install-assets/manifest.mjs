@@ -63,7 +63,12 @@ export const MANIFEST = {
     toolbar: [{ src: 'flutter/lib/m3/expressive/toolbar.dart', group: 'main', name: 'expressive/toolbar.dart' }],
   },
   compose: {
-    theme: ['Motion', 'Shape', 'Space', 'Tokens', 'Type'].map((n) => ({ src: `compose/theme/${n}.kt`, group: 'main' })),
+    // M3Theme: Theme.kt needs material3 1.5 (MaterialExpressiveTheme); below 1.5 use theme-below-1.5 instead (never both).
+    theme: ['Motion', 'Shape', 'Space', 'Theme', 'Tokens', 'Type'].map((n) => ({ src: `compose/theme/${n}.kt`, group: 'main' })),
+    'theme-below-1.5': [
+      ...['Motion', 'Shape', 'Space', 'Tokens', 'Type'].map((n) => ({ src: `compose/theme/${n}.kt`, group: 'main' })),
+      { src: 'compose/theme/below-1.5/Theme.kt', group: 'main' },
+    ],
     fonts: [...COMPOSE_FONTS, ...COMPOSE_LICENSES],
   },
 };

@@ -4,3 +4,6 @@ plugin/skills/material3/assets/fonts/** -text
 *.ttf binary
 *.woff2 binary
 plugin/skills/material3/scripts/color/vendor/** -text
+plugin/skills/material3/assets/compose/template/gradlew text eol=lf
+plugin/skills/material3/assets/compose/template/gradlew.bat text eol=crlf
+plugin/skills/material3/assets/compose/template/gradle/wrapper/*.jar binary

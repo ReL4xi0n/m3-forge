@@ -12,7 +12,13 @@ export const TARGETS = [
   'evals/fixtures/compose-1.5/gradle/libs.versions.toml',
   'harness/compose/test/sample_app/gradle/libs.versions.toml',
 ];
-export const TEMPLATE_TARGETS = ['plugin/skills/material3/assets/compose/template/gradle/libs.versions.toml'];
+const TEMPLATE = 'plugin/skills/material3/assets/compose/template';
+export const TEMPLATE_TARGETS = [`${TEMPLATE}/gradle/libs.versions.toml`];
+// Other pins of the template that versions.json decides: [file, pattern with one capture group, expected value].
+export const TEMPLATE_PINS = (v) => [
+  [`${TEMPLATE}/gradle/wrapper/gradle-wrapper.properties`, /^distributionUrl=.*gradle-([\d.]+)-bin\.zip\r?$/m, v.compose.gradle],
+  [`${TEMPLATE}/app/build.gradle.kts`, /^\s*compileSdk\s*=\s*(\d+)\s*$/m, String(v.compose.compileSdk)],
+];
 
 function expected(v) {
   return { agp: v.compose.agp, kotlin: v.compose.kotlin, material3: v.compose.material3, compileSdk: String(v.compose.compileSdk) };
@@ -44,6 +50,15 @@ export function syncReport({ check = true, root = REPO } = {}) {
       for (const [key, value] of bad) text = text.replace(new RegExp(`^(${key}\\s*=\\s*")[^"]*(")`, 'm'), `$1${value}$2`);
       writeFileSync(abs, text);
     }
+  }
+  for (const [rel, re, value] of TEMPLATE_PINS(v)) {
+    const abs = join(root, rel);
+    if (!existsSync(abs)) { absent.push(rel); continue; }
+    const text = readFileSync(abs, 'utf8');
+    const m = re.exec(text);
+    if (!m || m[1] === value) continue;
+    differ.push(rel);
+    if (!check) writeFileSync(abs, text.replace(m[0], m[0].replace(m[1], value)));
   }
   return { differ, absent };
 }

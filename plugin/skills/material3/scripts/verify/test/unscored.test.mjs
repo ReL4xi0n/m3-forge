@@ -121,7 +121,7 @@ test('compose: exact theme assets (package rewrite) are theme files; an edited c
   const dir = project({ 'app/build.gradle.kts': 'android { namespace = "com.example.shelf" }\n' });
   try {
     const res = installAssets({ projectDir: dir, platform: 'compose', parts: ['theme'] });
-    assert.equal(res.copied.length, 5);
+    assert.equal(res.copied.length, 6);
     assert.match(readFileSync(join(dir, res.copied[0]), 'utf8'), /^package com\.example\.shelf\.theme$/m);
     put(dir, 'app/src/main/java/com/example/shelf/Screen.kt', 'package com.example.shelf\n\nimport com.example.shelf.theme.M3Space\n\nval gap = M3Space.space200\n');
     const r = await verify({ projectDir: dir, platform: 'compose' });

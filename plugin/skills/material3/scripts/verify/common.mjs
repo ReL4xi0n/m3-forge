@@ -128,6 +128,8 @@ export const THEME_ASSETS = new Set([
   'assets/compose/theme/Space.kt',
   'assets/compose/theme/Motion.kt',
   'assets/compose/theme/Tokens.kt',
+  'assets/compose/theme/Theme.kt',
+  'assets/compose/theme/below-1.5/Theme.kt',
 ]);
 
 export const ASSET_MARKER_LINES = 3;
