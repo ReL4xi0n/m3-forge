@@ -7,9 +7,11 @@ skill folder, `<project>` the target folder. Read `detect` first: `tools.flutter
 ## With the SDK (`tools.flutter.available: true`)
 
 1. `flutter create --empty --project-name <name> --org <reverse.domain> --platforms android,ios --no-pub <project>`
-   - Pinned options: `--empty` (no counter demo and no comments), `--platforms android,ios` (the
-     phone targets the shots measure; add `web` or others only when the user asked), `--no-pub`
-     (resolve once, after the dependency edit below). `<name>` is lowercase with underscores; the org
+   - Pinned options (all checked against `flutter create --help` of Flutter 3.50.0): `--empty`
+     (a minimal `main.dart`, no counter demo), `--platforms android,ios` (the phone targets; add
+     `web` or others only when the user asked), `--no-pub` (resolve once, after the dependency edit
+     below). `--project-name` and `--org` are plain options; the project name must be a valid Dart
+     package name. `<name>` is lowercase with underscores; the org
      is the user's, else ask or use `com.example`.
    - `--empty` writes a minimal `lib/main.dart`: replace it as in step 3. Write
      `test/widget_test.dart` from `S/assets/flutter/scaffold/test/widget_test.dart` (package name
@@ -25,8 +27,8 @@ skill folder, `<project>` the target folder. Read `detect` first: `tools.flutter
 
 ## Without the SDK (`tools.flutter.available: false`)
 
-Copy `S/assets/flutter/scaffold/` into `<project>` (`pubspec.yaml`, `lib/main.dart`,
-`test/widget_test.dart`; rename the package in `pubspec.yaml` and in the test import if the user
+Copy `S/assets/flutter/scaffold/` into `<project>` (`pubspec.yaml`, `analysis_options.yaml`,
+`lib/main.dart`, `test/widget_test.dart`; rename the package in `pubspec.yaml` and in the test import if the user
 named the app). It depends on `material_ui` and sets the Dart and Flutter constraints of the pinned
 toolchain (Flutter 3.50.0, Dart 3.14.0); it has no platform folders. `lib/main.dart` imports
 `m3/schemes.dart` and `m3/theme.dart`, which `setup.md` creates, so run its steps next.
@@ -36,7 +38,9 @@ Tell the user, in the report, to run once in `<project>`:
 flutter create .
 ```
 
-which adds the platform folders, followed by `flutter pub get`. State that the build, `flutter analyze` and the screenshots were skipped.
+which adds the platform folders (`--no-overwrite` is the default: the scaffold's own files stay,
+including its `analysis_options.yaml`; add `--project-name m3_app` when the folder is named otherwise),
+followed by `flutter pub get`. State that the build, `flutter analyze` and the screenshots were skipped.
 A project that must stay on `flutter/material.dart` (Flutter older than 3.47): replace the one
 `material_ui` import in `lib/main.dart` and drop the dependency; install-assets does the same for
 its files.

@@ -1,0 +1,4 @@
+# Default analyzer rules. `flutter create .` leaves this file as it is (it does not overwrite).
+analyzer:
+  language:
+    strict-casts: true

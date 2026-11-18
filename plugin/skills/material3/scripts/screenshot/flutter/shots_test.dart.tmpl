@@ -104,6 +104,8 @@ void main() {
       addTearDown(tester.platformDispatcher.clearPlatformBrightnessTestValue);
       final SemanticsHandle semantics = tester.ensureSemantics();
 
+      // The debug banner is not part of the app: keep it out of the shots.
+      WidgetsApp.debugAllowBannerOverride = false;
       await _runMain();
       String settle = await _settle(tester);
 
