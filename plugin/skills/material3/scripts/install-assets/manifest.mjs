@@ -59,6 +59,7 @@ export const MANIFEST = {
     'loading-indicator': [{ src: 'flutter/lib/m3/expressive/loading_indicator.dart', group: 'main', name: 'expressive/loading_indicator.dart', library: 'material_ui' }],
     'button-group': [{ src: 'flutter/lib/m3/expressive/button_group.dart', group: 'main', name: 'expressive/button_group.dart' }],
     'fab-menu': [{ src: 'flutter/lib/m3/expressive/fab_menu.dart', group: 'main', name: 'expressive/fab_menu.dart' }],
+    'split-button': [{ src: 'flutter/lib/m3/expressive/split_button.dart', group: 'main', name: 'expressive/split_button.dart' }],
   },
   compose: {
     theme: ['Motion', 'Shape', 'Space', 'Tokens', 'Type'].map((n) => ({ src: `compose/theme/${n}.kt`, group: 'main' })),
