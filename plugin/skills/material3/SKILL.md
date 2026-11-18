@@ -60,8 +60,10 @@ the request asks for classic Material 3. Everything below is the order of work. 
 - Screen plan, before any code: one row per screen, element and state the request names (panels,
   players, pickers, badges, empty and error states, selected states), each with its M3 component
   (`components.md`) and its region per window size class (compact, medium, expanded; canonical
-  layout from `layout.md`). Every row is visible without interaction. Add the hierarchy recipe for
-  the screen type (`typography.md`), then build to the plan. (F9, F10)
+  layout from `layout.md`). Every row is visible on first load: a state that follows an action (a
+  mini-player, an empty result, a confirmation) is also rendered as a labelled specimen below the
+  main content, never only behind a tap, link or URL. Add the hierarchy recipe for the screen type
+  (`typography.md`), then build to the plan. (F9, F10)
 
 Hard rules. `verify` checks these (contrast and touch targets only with the step 7 capture;
 judgment calls are not machine-checked).

@@ -130,3 +130,55 @@ Baseline-mode costs: podcast-player 11.8 min $2.18, plant-shop 9.4 min $1.87.
 - Product cards: round 3's judge asked for a stronger price, round 4's judge found the larger
   price competing with the name.
 - No round 4 cell used the new shapes part.
+
+## Plan-check re-run (after round 4; not a gate round)
+
+Owner decision 2026-11-18: no new dev round; re-run only the three cells where requested parts were
+missing, after adding the screen plan (step 5) and the plan check on the screenshots (step 7) to
+the shared core, the color spec per style and the error-container composition rule (skill at
+a4ccba1). Run `dev-2026-11-18-webplan-r1`. Every cell built; verify 0 scored and 0 unscored
+findings in all three; capture 0 contrast and 0 touch-target findings.
+
+Visible in the harness screenshots (light and dark, 412 and 1440 wide, read by the controller):
+
+| cell | requested element | visible | where / note |
+|---|---|---|---|
+| podcast-player | cover placeholder, show name, episode title | yes | top (412), leading half (1440); cover is a library shape |
+| podcast-player | seek bar with elapsed and remaining time | yes | 18:24 / -28:36 under the title |
+| podcast-player | play/pause, back 15 s, forward 30 s | yes | controls row |
+| podcast-player | playback speed 0.8x-2x | yes | settings panel slider, 1.2x |
+| podcast-player | sleep timer 15/30/60 min, end of episode | yes | connected button group, 30 min selected |
+| podcast-player | Up next: six episodes with title, show, length, download state | yes | all three download states shown |
+| podcast-player | remove and move up | yes | per row |
+| podcast-player | compact mini-player | **no** | built in a separate `#library` view; the session shot it itself, the delivered page does not show it |
+| plant-shop | search field | yes | top |
+| plant-shop | cart icon with count badge | yes | top trailing, badge 2 |
+| plant-shop | filters: light, pet safety, size, price up to 80 EUR | yes (1440); partly (412) | 412 shows light and pet-safe chips; size and price are in the filters sheet |
+| plant-shop | clear all, matching count | yes | "Clear all" in the filter panel (1440 only); "16 plants" |
+| plant-shop | sort control | yes | "Popular" menu button |
+| plant-shop | grid of 12+ with placeholder, name, price, light, add to basket | yes | 16 plants |
+| plant-shop | "Out of stock" / "Only 2 left" | yes | badges on cards |
+| plant-shop | empty result state | **no** | reachable only with `?q=cactus` |
+| expense-report | title, project code list, date range | yes | Report details |
+| expense-report | line items with date, category, merchant, amount, currency, note | yes | 7 lines |
+| expense-report | add, duplicate, delete | yes | Add line; per-line icons |
+| expense-report | receipt preview with replace and remove | yes | lines 1, 3, 5, 7 |
+| expense-report | subtotals per category, grand total in EUR, conversion | yes | summary pane; rate shown on GBP and USD lines |
+| expense-report | validation | yes (one rule) | "1 issue to fix": receipt over 25 EUR; date and amount rules have no violating line |
+| expense-report | save draft, submit for approval | yes | summary pane |
+| expense-report | confirmation summary before submitting | **no** | dialog behind "Submit for approval" |
+
+Result: the plan check did not close the gap. All three sessions listed the missing item in their
+plan and reported where it lives, but each placed it behind an interaction (a second view, a URL
+query, a dialog) and counted that as visible. The plant-shop session also could not open the
+screenshot PNGs (reads of the temporary folder are denied in isolated runs; two of three sessions
+copied them into the project to read them).
+
+Change after this run (shared core, budget-neutral): the screen plan now says that a state which
+follows an action (a mini-player, an empty result, a confirmation) is also rendered as a labelled
+specimen below the main content, never only behind a tap, link or URL. Not re-run on the web; the
+Flutter dev loop (3c) is its first test.
+
+Pipeline judge (v1, informational, not the record): podcast 1,2,3,3,2,3,3,2; expense
+2,2,3,2,2,2,3,2; plant 1,2,2,2,2,2,3,1. Costs: podcast $2.82, expense $3.47, plant $2.74, judge
+$0.52.

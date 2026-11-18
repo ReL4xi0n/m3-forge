@@ -28,15 +28,14 @@ first-party screen has. Fix every mismatch before reporting.
   list-detail, supporting pane or single pane), chosen before building. Panes run to the bottom of
   the window and grids fill their pane: no blank column and no pane ending halfway beside a long
   one. (F9)
-- Placement, grouping, spacing rhythm and emphasis follow `references/core/composition.md`: groups
-  sit in containers, three spacing distances, one filled element per view. (F9)
+- Placement, grouping, rhythm and emphasis follow `references/core/composition.md`. (F9)
 - On compact widths, secondary controls (filters, sort, options) sit in a chip row or open in a
   bottom sheet; they do not push the main content below the first screen. (F9)
 - Fields and labels are wide enough for their realistic content: no clipped values. (F9)
-- Fixed and floating elements (app bars, bottom bars, FABs, sticky totals) reserve their own
-  space: the scrolling content has matching padding, so nothing is covered at any width. (F9)
-- Text never collides: titles, avatars and trailing actions sit in separate slots; metadata fits
-  on one line at its role or moves to its own line. (F9, F10)
+- Fixed and floating elements (app bars, bottom bars, FABs, sticky totals) get matching padding
+  in the scrolling content, so nothing is covered. (F9)
+- Text never collides: titles, avatars and trailing actions take separate slots; metadata fits on
+  one line or gets its own. (F9, F10)
 
 ## Components and character
 
@@ -45,8 +44,7 @@ first-party screen has. Fix every mismatch before reporting.
   action, navigation bar or rail for top-level destinations. (F9)
 - Exactly one primary action per screen region carries the strongest emphasis (filled button or
   FAB); others step down (tonal, outlined, text). (F9)
-- Each action appears once per view: no second toolbar or summary panel repeating the same
-  buttons. (F9)
+- Each action appears once per view: no second toolbar repeating it. (F9)
 - Selection is always shown: filters, chips, tabs, segmented buttons and list items display
   their selected state when one is active. (F9)
 - M3 Expressive cards, sheets and hero containers use the large to extra-extra-large corner
