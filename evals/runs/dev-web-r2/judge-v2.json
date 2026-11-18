@@ -1,0 +1,161 @@
+{
+  "runId": "dev-2026-11-18-web-r2",
+  "byPlatform": {
+    "web": {
+      "v1": {
+        "component-choice": 2.25,
+        "hierarchy-typography": 2.25,
+        "color-roles": 2.75,
+        "shape-expressive": 2.5,
+        "spacing-layout": 2,
+        "interaction-states": 2.75,
+        "dark-mode": 3,
+        "overall-polish": 2
+      },
+      "v2": {
+        "component-choice": 1.75,
+        "hierarchy-typography": 2.25,
+        "color-roles": 2,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 2.75,
+        "dark-mode": 2.75,
+        "overall-polish": 1.75
+      },
+      "threes": {
+        "v1": 14,
+        "v2": 7,
+        "of": 32
+      }
+    }
+  },
+  "overall": {
+    "v1": {
+      "component-choice": 2.25,
+      "hierarchy-typography": 2.25,
+      "color-roles": 2.75,
+      "shape-expressive": 2.5,
+      "spacing-layout": 2,
+      "interaction-states": 2.75,
+      "dark-mode": 3,
+      "overall-polish": 2
+    },
+    "v2": {
+      "component-choice": 1.75,
+      "hierarchy-typography": 2.25,
+      "color-roles": 2,
+      "shape-expressive": 2,
+      "spacing-layout": 2,
+      "interaction-states": 2.75,
+      "dark-mode": 2.75,
+      "overall-polish": 1.75
+    },
+    "threes": {
+      "v1": 14,
+      "v2": 7,
+      "of": 32
+    }
+  },
+  "cells": [
+    {
+      "cell": "podcast-player.web.web-empty.default",
+      "platform": "web",
+      "harness": "v1",
+      "v1": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      },
+      "v2": {
+        "component-choice": 1,
+        "hierarchy-typography": 2,
+        "color-roles": 2,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 1
+      }
+    },
+    {
+      "cell": "expense-report.web.web-react.seed-2F6F5E",
+      "platform": "web",
+      "harness": "v1",
+      "v1": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 3,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      },
+      "v2": {
+        "component-choice": 2,
+        "hierarchy-typography": 3,
+        "color-roles": 2,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 2,
+        "overall-polish": 2
+      }
+    },
+    {
+      "cell": "plant-shop.web.web-vue.classic",
+      "platform": "web",
+      "harness": "v1",
+      "v1": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 2,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 2,
+        "dark-mode": 3,
+        "overall-polish": 2
+      },
+      "v2": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 2,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 2,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "cell": "clinic-schedule.web.web-empty.default",
+      "platform": "web",
+      "harness": "v1",
+      "v1": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      },
+      "v2": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 2,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "runId": "dev-2026-11-18-webnonode-r1",
+  "byPlatform": {
+    "web": {
+      "v1": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 2,
+        "dark-mode": 3,
+        "overall-polish": 2
+      },
+      "v2": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 2,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 2,
+        "dark-mode": 3,
+        "overall-polish": 2
+      },
+      "threes": {
+        "v1": 3,
+        "v2": 2,
+        "of": 8
+      }
+    }
+  },
+  "overall": {
+    "v1": {
+      "component-choice": 2,
+      "hierarchy-typography": 2,
+      "color-roles": 3,
+      "shape-expressive": 3,
+      "spacing-layout": 2,
+      "interaction-states": 2,
+      "dark-mode": 3,
+      "overall-polish": 2
+    },
+    "v2": {
+      "component-choice": 2,
+      "hierarchy-typography": 2,
+      "color-roles": 2,
+      "shape-expressive": 3,
+      "spacing-layout": 2,
+      "interaction-states": 2,
+      "dark-mode": 3,
+      "overall-polish": 2
+    },
+    "threes": {
+      "v1": 3,
+      "v2": 2,
+      "of": 8
+    }
+  },
+  "cells": [
+    {
+      "cell": "podcast-player.web.web-empty.default",
+      "platform": "web",
+      "harness": "v1",
+      "v1": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 2,
+        "dark-mode": 3,
+        "overall-polish": 2
+      },
+      "v2": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 2,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 2,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    }
+  ]
+}
