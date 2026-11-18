@@ -7,7 +7,8 @@
 //
 // The app's own fonts come first (every family in the FontManifest.json that `flutter test` builds:
 // fonts the app declares, MaterialIcons, package fonts). A family the app declares is not
-// registered again from the skill fonts. Roboto is registered under every family name the
+// registered again from the skill fonts. A flutter_test_config.dart of the project runs after the
+// fonts load (it is moved to m3_project_test_config.dart in the copy). Roboto is registered under every family name the
 // framework's default typographies ask for.
 import 'dart:async';
 import 'dart:convert';
@@ -16,6 +17,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+__M3_PROJECT_CONFIG_IMPORT__
 
 const String m3RobotoFlex = 'Roboto Flex';
 const String m3Symbols = 'Material Symbols Outlined';
@@ -32,7 +34,7 @@ const List<String> m3RobotoAliases = <String>[
 Future<void> testExecutable(FutureOr<void> Function() testMain) async {
   TestWidgetsFlutterBinding.ensureInitialized();
   await m3LoadFonts();
-  await testMain();
+  await __M3_RUN_MAIN__;
 }
 
 bool _loaded = false;

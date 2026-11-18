@@ -5,7 +5,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
-import { cpSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, realpathSync, rmSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdtempSync, readdirSync, readFileSync, realpathSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -58,7 +58,20 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(title: const Text('Home')),
       body: ListView.builder(
         itemCount: 40,
-        itemBuilder: (BuildContext context, int i) => ListTile(
+        itemBuilder: (BuildContext context, int i) => i == 0
+            ? Row(children: <Widget>[
+                TextButton(
+                  onPressed: () {},
+                  style: TextButton.styleFrom(foregroundColor: const Color(0xFFDDDDDD)),
+                  child: const Text('EnabledFaint'),
+                ),
+                const TextButton(
+                  onPressed: null,
+                  style: ButtonStyle(foregroundColor: WidgetStatePropertyAll<Color>(Color(0xFFDDDDDD))),
+                  child: Text('DisabledFaint'),
+                ),
+              ])
+            : ListTile(
           leading: const Icon(Icons.map_outlined),
           title: Text('Route number \${i + 1}'),
           subtitle: const Text('Lake Orta, 6 km'),
@@ -91,6 +104,8 @@ test('real SDK: scaffold analyzes clean; screenshot step gives 8 PNGs and leaves
     // A home screen that scrolls, so the scrolled frames exist.
     writeFileSync(join(dir, 'lib/main.dart'), SCREEN);
     writeFileSync(join(dir, 'test/widget_test.dart'), "import 'package:flutter_test/flutter_test.dart';\nvoid main() { test('ok', () {}); }\n");
+    // The project's own test config must stay in effect (chained after the fonts load).
+    writeFileSync(join(dir, 'test/flutter_test_config.dart'), "import 'dart:async';\n\nFuture<void> testExecutable(FutureOr<void> Function() testMain) async {\n  await testMain();\n}\n");
     const before = snapshot(dir);
     const out = join(root, 'shots');
     const r = await screenshot({ projectDir: dir, platform: 'flutter', out, env: withToolchain(process.env) });
@@ -99,9 +114,12 @@ test('real SDK: scaffold analyzes clean; screenshot step gives 8 PNGs and leaves
     for (const s of r.shots) assert.ok(readFileSync(s).subarray(1, 4).toString() === 'PNG', s);
     assert.ok(Array.isArray(r.runtime.contrast) && Array.isArray(r.runtime.targets));
     for (const f of [...r.runtime.contrast, ...r.runtime.targets]) assert.ok(f.where && f.detail);
+    // Contrast: the enabled faint button is reported, the disabled one is not.
+    const text = JSON.stringify(r.runtime.contrast);
+    assert.match(text, /EnabledFaint/, text);
+    assert.doesNotMatch(text, /DisabledFaint/, text);
     assert.deepEqual(snapshot(dir), before);
     assert.ok(!existsSync(join(dir, 'test', 'm3_shots_test.dart')));
     if (process.env.M3_KEEP_SHOTS) cpSync(out, process.env.M3_KEEP_SHOTS, { recursive: true });
-    mkdirSync(out, { recursive: true });
   } finally { rmSync(root, { recursive: true, force: true }); }
 });

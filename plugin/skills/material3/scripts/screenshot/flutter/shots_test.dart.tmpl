@@ -22,6 +22,7 @@ import 'package:__M3_APP_PACKAGE__/main.dart' as app;
 
 const double kWidth = 412;
 const double kHeight = 915;
+// The phone viewport of the screenshot step: 412 x 915 dp at device pixel ratio 2.625.
 const double kRatio = 2.625;
 const String kViewport = '412x915';
 const int kMaxFrames = 4;
@@ -83,6 +84,8 @@ ScrollableState? _firstVerticalScrollable(WidgetTester tester) {
     final State<StatefulWidget> state = element.state;
     if (state is! ScrollableState) continue;
     if (state.widget.axis != Axis.vertical) continue;
+    // A text field scrolls its own text: not the screen's list.
+    if (element.findAncestorWidgetOfExactType<EditableText>() != null) continue;
     final ScrollPosition position = state.position;
     if (position.hasContentDimensions && position.maxScrollExtent > 0.5) return state;
   }

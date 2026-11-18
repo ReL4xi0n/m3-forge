@@ -49,6 +49,8 @@ if (args[0] === 'test') {
   const cwd = process.cwd();
   const gen = join(cwd, 'test', 'm3_shots_test.dart');
   if (!existsSync(gen) || !existsSync(join(cwd, 'test', 'flutter_test_config.dart'))) { console.error('generated test missing'); process.exit(3); }
+  const conf = readFileSync(join(cwd, 'test', 'flutter_test_config.dart'), 'utf8');
+  if (!existsSync(join(cwd, 'test', 'm3_project_test_config.dart')) || !conf.includes('project.testExecutable(testMain)') || conf.includes('__M3_')) { console.error('project config not chained'); process.exit(3); }
   if (!readFileSync(gen, 'utf8').includes('package:my_app/main.dart')) { console.error('package not substituted'); process.exit(3); }
   const out = process.env.M3_CAPTURE_OUT;
   const reason = cfg.contrast ? 'SemanticsNode#7(Rect.fromLTRB(0.0, 0.0, 40.0, 20.0), label: "Tiny"): Expected contrast ratio of at least 4.5 but found 2.1 for a font size of 14.0.\\nSee also: https://www.w3.org/TR/WCAG21/#contrast-minimum' : null;
@@ -139,6 +141,17 @@ test('guideline blocks become { where, detail }', () => {
   assert.equal(out.length, 2);
   assert.equal(out[0].where, 'dark frame 2/3: SemanticsNode#3(Rect.fromLTRB(0, 0, 20, 20), label: "x")');
   assert.equal(out[0].detail, 'Tap target too small.');
+});
+
+test('the scaffold pubspec follows versions.json and the pinned toolchain', () => {
+  const skill = join(here, '..', '..', '..');
+  const pub = readFileSync(join(skill, 'assets', 'flutter', 'scaffold', 'pubspec.yaml'), 'utf8');
+  const v = JSON.parse(readFileSync(join(skill, 'versions.json'), 'utf8')).flutter.materialUi;
+  assert.ok(pub.split(/\r?\n/).includes(`  material_ui: ^${v}`), `material_ui ^${v}`);
+  const tc = JSON.parse(readFileSync(join(skill, '..', '..', '..', 'tools', 'toolchain', 'toolchain.json'), 'utf8')).components.flutter.version;
+  const [, flutter, dart] = tc.match(/^(\d+\.\d+\.\d+) stable \(Dart (\d+\.\d+\.\d+)\)/);
+  assert.ok(pub.split(/\r?\n/).includes(`  sdk: ^${dart}`), `sdk ^${dart}`);
+  assert.ok(pub.split(/\r?\n/).includes(`  flutter: ">=${flutter}"`), `flutter >=${flutter}`);
 });
 
 test('the shipped scaffold has a pubspec on material_ui, lib/ and test/', () => {

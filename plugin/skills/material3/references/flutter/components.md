@@ -17,7 +17,7 @@ write no colors, shapes or text styles on them. Pieces the library lacks are in 
 | Split action with a menu | `M3SplitButton` | `coverage.md` |
 | Related buttons in a row | `M3ButtonGroup` | `coverage.md`; `SegmentedButton` is the older single-choice control |
 | Choose one of 2 to 5 | `SegmentedButton` | `selected` is a set; `showSelectedIcon` for the check |
-| Filter, choice, input, suggestion | `FilterChip`, `ChoiceChip`, `InputChip`, `ActionChip` | Chips are 32 dp tall: the tap area still pads to 48 dp, do not set `materialTapTargetSize` to shrinkWrap |
+| Filter, choice, input, suggestion | `FilterChip`, `ChoiceChip`, `InputChip`, `ActionChip` | Chips are 32 dp tall [token:md.comp.filter-chip.container.height]: the tap area still pads to 48 dp, do not set `materialTapTargetSize` to shrinkWrap |
 | Top of screen | `AppBar`, or `SliverAppBar` / `.medium` / `.large` in a scroll view | Subtitle is not built: `coverage.md` row 8 |
 | Primary navigation, 3 to 5 | `NavigationBar` on phones, `NavigationRail` from medium width, `NavigationDrawer` for more | Each `NavigationDestination` has a `label`, `icon` and `selectedIcon` |
 | Bottom bar of actions | `BottomAppBar`, or `M3DockedToolbar` | As `Scaffold.bottomNavigationBar` |
@@ -52,8 +52,8 @@ write no colors, shapes or text styles on them. Pieces the library lacks are in 
 - Slots: build a screen as `Scaffold(appBar:, body:, floatingActionButton:, bottomNavigationBar:)`.
   The `Scaffold` reserves the space of the app bar and the bottom bar and lifts snack bars and the
   FAB above the bottom bar, so nothing is covered. Do not stack a FAB or bar in a `Stack` over the
-  body. A body that scrolls under a FAB needs bottom padding for it (the FAB is 56 dp plus 16 dp
-  margin).
+  body. A body that scrolls under a FAB needs bottom padding for it (the FAB is 56 dp [token:md.comp.fab.container.height]
+  and the Scaffold adds its own margin).
 - Lists: `ListView.builder` (or slivers) for long content; the first vertical scrollable of the home
   screen is what the screenshot step scrolls (`scaffold.md`).
 - Text: `Theme.of(context).textTheme.<role>`; the emphasized scale is `M3EmphasizedType` (`theme.md`).

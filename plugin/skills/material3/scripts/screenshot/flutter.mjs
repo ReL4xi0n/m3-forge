@@ -13,7 +13,7 @@
 // Without the Flutter SDK on PATH the step is skipped with the reason.
 import { spawn, spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { cpSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, renameSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { delimiter, dirname, extname, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -24,6 +24,7 @@ const THEMES = ['light', 'dark'];
 const VIEWPORT = '412x915';
 const TEST_FILE = 'm3_shots_test.dart';
 const CONFIG_FILE = 'flutter_test_config.dart';
+const PROJECT_CONFIG_FILE = 'm3_project_test_config.dart';
 const NEEDED_FONTS = ['RobotoFlex.ttf', 'Roboto.ttf', 'MaterialSymbolsOutlined.ttf'];
 const SKIP_TOP = new Set(['.git', 'build', '.dart_tool', 'node_modules', 'android', 'ios', 'macos', 'linux', 'windows', 'web', '.idea', '.gradle']);
 const TEST_TIMEOUT_MS = 10 * 60_000;
@@ -187,8 +188,13 @@ export async function screenshotFlutter({ projectDir, outDir, env = process.env,
     });
     absolutizePathDeps(copy, projectDir);
     mkdirSync(join(copy, 'test'), { recursive: true });
+    // The project's own test config stays in effect: it runs after the fonts load.
+    const hasConfig = existsSync(join(copy, 'test', CONFIG_FILE));
+    if (hasConfig) renameSync(join(copy, 'test', CONFIG_FILE), join(copy, 'test', PROJECT_CONFIG_FILE));
     writeFileSync(join(copy, 'test', TEST_FILE), readFileSync(join(here, 'flutter', 'shots_test.dart.tmpl'), 'utf8').replaceAll('__M3_APP_PACKAGE__', name));
-    writeFileSync(join(copy, 'test', CONFIG_FILE), readFileSync(join(here, 'flutter', 'flutter_test_config.dart.tmpl'), 'utf8'));
+    writeFileSync(join(copy, 'test', CONFIG_FILE), readFileSync(join(here, 'flutter', 'flutter_test_config.dart.tmpl'), 'utf8')
+      .replace('__M3_PROJECT_CONFIG_IMPORT__', hasConfig ? `import '${PROJECT_CONFIG_FILE}' as project;` : '')
+      .replace('__M3_RUN_MAIN__', hasConfig ? 'project.testExecutable(testMain)' : 'testMain()'));
 
     const childEnv = { ...env, M3_FONTS_DIR: fonts, M3_CAPTURE_OUT: outDir, FLUTTER_SUPPRESS_ANALYTICS: 'true' };
     let pub = await run(exe, ['pub', 'get', '--offline'], { cwd: copy, env: childEnv, timeoutMs: PUB_TIMEOUT_MS });
@@ -211,10 +217,10 @@ export async function screenshotFlutter({ projectDir, outDir, env = process.env,
     const contrast = [];
     const targets = [];
     const seen = new Set();
-    // The same fixed element shows in several frames: keep it once per theme.
+    // The same fixed element shows in several frames: keep it once per theme (the node id and its rect, which moves with the scroll, are left out of the key).
     const add = (list, items, theme) => {
       for (const it of items) {
-        const key = `${theme}|${it.where.split(': ').slice(1).join(': ').replace(/#\d+/g, '')}|${it.detail}`;
+        const key = `${theme}|${it.where.split(': ').slice(1).join(': ').replace(/#\d+/g, '').replace(/Rect\.fromLTRB\([^)]*\)/g, '')}|${it.detail}`;
         if (seen.has(key)) continue;
         seen.add(key);
         list.push(it);

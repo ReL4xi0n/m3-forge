@@ -7,7 +7,7 @@ skill folder, `<project>` the target folder. Read `detect` first: `tools.flutter
 ## With the SDK (`tools.flutter.available: true`)
 
 1. `flutter create --empty --project-name <name> --org <reverse.domain> --platforms android,ios --no-pub <project>`
-   - Pinned options (all checked against `flutter create --help` of Flutter 3.50.0): `--empty`
+   - Pinned options (all checked against `flutter create --help` of the Flutter release the skill was tested with, 3.50.0): `--empty`
      (a minimal `main.dart`, no counter demo), `--platforms android,ios` (the phone targets; add
      `web` or others only when the user asked), `--no-pub` (resolve once, after the dependency edit
      below). `--project-name` and `--org` are plain options; the project name must be a valid Dart
@@ -30,7 +30,7 @@ skill folder, `<project>` the target folder. Read `detect` first: `tools.flutter
 Copy `S/assets/flutter/scaffold/` into `<project>` (`pubspec.yaml`, `analysis_options.yaml`,
 `lib/main.dart`, `test/widget_test.dart`; rename the package in `pubspec.yaml` and in the test import if the user
 named the app). It depends on `material_ui` and sets the Dart and Flutter constraints of the pinned
-toolchain (Flutter 3.50.0, Dart 3.14.0); it has no platform folders. `lib/main.dart` imports
+release the skill was tested with (Flutter 3.50.0, Dart 3.14.0; the `material_ui` version is `flutter.materialUi` in `S/versions.json`); it has no platform folders. `lib/main.dart` imports
 `m3/schemes.dart` and `m3/theme.dart`, which `setup.md` creates, so run its steps next.
 Tell the user, in the report, to run once in `<project>`:
 
@@ -64,7 +64,7 @@ Adding `material_ui` to an existing project is a dependency change: ask first (`
 - It copies the project to a temporary folder, runs `flutter pub get` and a generated test there,
   and deletes the copy. The project stays byte for byte as it was. Shots and `capture.json` go to a
   new folder under the OS temp directory (or `--out`, outside the project).
-- Shots at 412x915 (device pixel ratio 2.625), light and dark, of the app's home (`lib/main.dart`
+- Shots at 412x915 (device pixel ratio 2.625: the phone viewport this step uses for every phone shot), light and dark, of the app's home (`lib/main.dart`
   `main()`; the dark run sets the platform brightness, so the app needs `themeMode: ThemeMode.system`).
   Named `<theme>-412x915-<nn>.png`: `01` is the top, `02` and on are the first vertical scrollable
   that can scroll, moved one viewport down each time, to its end. At most 4 frames per theme; when
@@ -73,5 +73,6 @@ Adding `material_ui` to an existing project is a dependency change: ask first (`
   menu, a dialog, another route) are not captured, so say which row was checked by reading the code.
 - `runtime.contrast` and `runtime.targets` are flutter_test's text contrast guideline and a 48 x 48
   dp check of enabled tappable or focusable nodes, once per element; pass `capture.json` to verify.
+- A `test/flutter_test_config.dart` of the project stays in effect in the copy: the step moves it to `test/m3_project_test_config.dart` and its `testExecutable` runs after the fonts load.
 - Fonts come from the skill (Roboto Flex, Roboto, Material Symbols Outlined) unless the app declares
   the family itself. Without the SDK the step reports `ran: false` and its reason.
