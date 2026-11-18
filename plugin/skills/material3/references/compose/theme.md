@@ -22,8 +22,9 @@ setContent {
 
 - 1.5 or newer: `MaterialExpressiveTheme` with `MotionScheme.expressive()`. `Theme.kt` opts in to
   `ExperimentalMaterial3ExpressiveApi` with a one-line comment. The Expressive components
-  (`LoadingIndicator`, `ButtonGroup`, `MaterialShapes`, ...) are experimental: each file that uses one
-  carries `@OptIn(ExperimentalMaterial3ExpressiveApi::class)` and a one-line comment saying why.
+  (`expressive.md` lists what exists and which APIs, such as `LoadingIndicator` and `MaterialShapes`, are
+  still experimental): each file that uses one carries `@OptIn(ExperimentalMaterial3ExpressiveApi::class)` and a
+  one-line comment saying why.
 - Below 1.5 (`theme-below-1.5`): `MaterialTheme`, no motion scheme. Missing there: `MaterialExpressiveTheme`,
   `MotionScheme`, `MaterialShapes`, `LoadingIndicator`, `ButtonGroup` and the other Expressive APIs.
   Use the closest stable component (`CircularProgressIndicator`) and say so in the report.

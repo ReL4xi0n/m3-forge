@@ -158,13 +158,10 @@ test('browser candidates: Chrome / Edge / Chromium per OS; the first that exists
   assert.equal(findBrowser([join(bin, 'missing')]), null);
 });
 
-test('compose has no back end yet: skipped with the reason', async () => {
-  const dir = project();
-  for (const platform of ['compose']) {
-    const r = await screenshot({ projectDir: dir, platform, roots: [] });
-    assert.equal(r.ran, false);
-    assert.match(r.skippedReason, new RegExp(`no screenshot back end for ${platform}`));
-  }
+test('compose is registered: a project without a Gradle wrapper is skipped with the reason', async () => {
+  const r = await screenshot({ projectDir: project(), platform: 'compose', roots: [] });
+  assert.equal(r.ran, false);
+  assert.match(r.skippedReason, /no Gradle wrapper/);
 });
 
 test('an output folder inside the project is refused (function and CLI)', async () => {
@@ -334,10 +331,8 @@ test('states file: invalid content is a UsageError, in the function and the CLI 
   assert.match(missing.stderr, /not found/);
 });
 
-test('compose accepts states and ignores them', async () => {
-  const r = await screenshot({ projectDir: project(), platform: 'compose', states: { states: [{ name: 'a', steps: [{ tap: { text: 'x' } }] }] } });
-  assert.equal(r.ran, false);
-  assert.equal(r.states, undefined);
+test('compose validates its states file like the other platforms', async () => {
+  await assert.rejects(screenshot({ projectDir: project(), platform: 'compose', states: { states: [{ name: 'a', steps: [{ tap: { text: 'x' } }] }] } }), UsageError);
 });
 
 test('states with Playwright: dialog, empty search and a failing step', { skip: toolchain || noBrowser, timeout: 900_000 }, async () => {

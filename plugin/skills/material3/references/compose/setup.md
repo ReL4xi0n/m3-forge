@@ -43,7 +43,8 @@ manifest and a `MainActivity` that wraps a sample screen in `M3Theme`.
 4. Wire the theme (`theme.md`).
 5. Icons: `icons.md`.
 6. Build: `./gradlew :app:assembleDebug` (`gradlew.bat` on Windows) when the Android SDK and a JDK are
-   present (see `tools` in detect). Fix every compile error before the screenshot step.
+   present (see `tools` in detect). Fix every compile error before the screenshot step
+   (`screenshot.md`).
 
 ## Files
 

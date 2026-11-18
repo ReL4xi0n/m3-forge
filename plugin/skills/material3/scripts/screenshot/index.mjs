@@ -7,6 +7,9 @@
 //     runtime: { contrast: [{ where, detail }], targets: [{ where, detail }] },
 //     states?: [{ name, ok, shots: string[], error? }],
 //     out, capture (capture.json path), pageErrors?, warnings?, measured?, playwright?, browser? }
+//   Compose: back end in compose.mjs (Robolectric + Roborazzi + ATF through an init script, in a temporary copy
+//   of the project; needs no Roborazzi in the project; frames named like Flutter's; `env` replaces the
+//   environment that finds JAVA_HOME, ANDROID_HOME and the project's Gradle wrapper, tests).
 //   Flutter: back end in flutter.mjs (frames named <theme>-412x915-<nn>.png, 01 = top of the home screen;
 //   `env` replaces the environment whose PATH finds the flutter launcher, tests).
 //   Interaction states (screens reached by an action: dialog, empty search result, open menu):
@@ -17,11 +20,13 @@
 //     flutter steps: {"tap":F} {"enterText":{"into":I,"text":"cactus"}} {"scrollTo":F}
 //                    F: {"text":..} | {"key":..} | {"tooltip":..} | {"semanticsLabel":..}
 //                    I: {"type":"TextField","index":0} | {"key":..} | {"hint":..}
+//     compose steps: {"click":C} {"enterText":{"into":I,"text":"cactus"}} {"scrollTo":C} {"waitMs":300}
+//                    C: {"text":..} | {"tag":..} | {"desc":..}  (+ optional "index")
+//                    I: {"text":..} | {"tag":..} | {"hint":..}  (+ optional "index"); text is the label shown
 //   After the main shots, each state starts the app fresh, runs its steps and shoots as
-//   state-<name>-<theme>-<viewport>.png (web: 412x915 and 1440x900, flutter: 412x915; light and dark).
+//   state-<name>-<theme>-<viewport>.png (web: 412x915 and 1440x900, flutter and compose: 412x915; light and dark).
 //   A failing step (not found, exception) gives that state ok:false with `error` and an entry in
-//   `warnings`; the other shots still run. Compose ignores `states` for now. An invalid file is a
-//   UsageError (exit 2). `shots` stays the main shots; each state lists its own.
+//   `warnings`; the other shots still run. An invalid file is a UsageError (exit 2). `shots` stays the main shots; each state lists its own.
 //   `runtime` is what verify reads from capture.json. `roots` replaces the global node_modules
 //   folders searched for Playwright, `browsers` the browser executables tried without it (tests).
 //   engine 'playwright': a Playwright that resolves; 'cdp': an installed Chrome, Edge or Chromium.
@@ -34,12 +39,13 @@ import { mkdirSync, mkdtempSync, readFileSync, statSync, writeFileSync } from 'n
 import { tmpdir } from 'node:os';
 import { isAbsolute, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { screenshotCompose } from './compose.mjs';
 import { screenshotFlutter } from './flutter.mjs';
 import { screenshotWeb } from './web.mjs';
 
 export const PLATFORMS = ['web', 'flutter', 'compose'];
 // Platform back ends: ({ projectDir, outDir, url, roots, browsers }) -> result without out/capture.
-export const BACKENDS = { web: screenshotWeb, flutter: screenshotFlutter };
+export const BACKENDS = { web: screenshotWeb, flutter: screenshotFlutter, compose: screenshotCompose };
 
 export class UsageError extends Error {}
 
@@ -67,6 +73,14 @@ const FLUTTER_STEPS = {
   enterText: (st) => isObj(st.enterText) && typeof st.enterText.text === 'string'
     && finderOk(st.enterText.into, ['type', 'key', 'hint']),
 };
+const COMPOSE_FINDER = ['text', 'tag', 'desc'];
+const COMPOSE_STEPS = {
+  click: (st) => finderOk(st.click, COMPOSE_FINDER),
+  scrollTo: (st) => finderOk(st.scrollTo, COMPOSE_FINDER),
+  enterText: (st) => isObj(st.enterText) && typeof st.enterText.text === 'string'
+    && finderOk(st.enterText.into, ['text', 'tag', 'hint']),
+  waitMs: WEB_STEPS.waitMs,
+};
 
 // The states of a --states file (path), or of its parsed content -> [{ name, steps }]. Throws UsageError.
 export function loadStates(input, platform) {
@@ -76,7 +90,7 @@ export function loadStates(input, platform) {
   }
   const list = Array.isArray(data) ? data : data?.states;
   if (!Array.isArray(list) || list.length === 0) throw new UsageError('states: expected { "states": [ { "name", "steps" } ] } with at least one state');
-  const allowed = platform === 'web' ? WEB_STEPS : platform === 'flutter' ? FLUTTER_STEPS : null;
+  const allowed = platform === 'web' ? WEB_STEPS : platform === 'flutter' ? FLUTTER_STEPS : COMPOSE_STEPS;
   const names = new Set();
   return list.map((st, i) => {
     const at = `states[${i}]`;
@@ -86,7 +100,6 @@ export function loadStates(input, platform) {
     if (!Array.isArray(st.steps) || st.steps.length === 0) throw new UsageError(`state "${st.name}": "steps" must be a non-empty array`);
     st.steps.forEach((step, j) => {
       if (!isObj(step)) throw new UsageError(`state "${st.name}" step ${j + 1}: expected an object`);
-      if (!allowed) return;
       const kinds = Object.keys(allowed).filter((k) => k in step);
       const extra = Object.keys(step).filter((k) => !(k in allowed) && k !== 'text');
       if (kinds.length !== 1 || extra.length || !allowed[kinds[0]](step)) {
@@ -97,7 +110,7 @@ export function loadStates(input, platform) {
   });
 }
 
-export async function screenshot({ projectDir, platform, out, url, states, roots, browsers, env } = {}) {
+export async function screenshot({ projectDir, platform, out, url, states, roots, browsers, env, tools } = {}) {
   if (!PLATFORMS.includes(platform)) throw new UsageError(`unknown platform "${platform}" (expected ${PLATFORMS.join(', ')})`);
   const dir = resolve(String(projectDir ?? ''));
   if (!isDir(dir)) throw new UsageError(`project folder not found: ${projectDir}`);
@@ -113,7 +126,7 @@ export async function screenshot({ projectDir, platform, out, url, states, roots
 
   const backend = BACKENDS[platform];
   const result = backend
-    ? await backend({ projectDir: dir, outDir, url, roots, browsers, env, states: stateList })
+    ? await backend({ projectDir: dir, outDir, url, roots, browsers, env, states: stateList, tools })
     : { ran: false, skippedReason: `no screenshot back end for ${platform} in this version: screenshots skipped`, shots: [], runtime: { contrast: [], targets: [] } };
 
   const capture = join(outDir, 'capture.json');
