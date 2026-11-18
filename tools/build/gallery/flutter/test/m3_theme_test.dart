@@ -30,14 +30,29 @@ void main() {
   testWidgets('classic light', (WidgetTester tester) => _shot(tester, M3Theme.light(classic.M3ColorSchemes.light, expressive: false), 'classic_light'));
   testWidgets('classic dark', (WidgetTester tester) => _shot(tester, M3Theme.dark(classic.M3ColorSchemes.dark, expressive: false), 'classic_dark'));
 
-  test('classic theme has standard motion and no emphasized type; expressive has both', () {
+  testWidgets('M3EmphasizedType.of: emphasized under Expressive, plain type roles under Classic', (WidgetTester tester) async {
+    Future<M3EmphasizedType> read(ThemeData theme) async {
+      late M3EmphasizedType got;
+      await tester.pumpWidget(MaterialApp(theme: theme, home: Builder(builder: (BuildContext context) {
+        got = M3EmphasizedType.of(context);
+        return const SizedBox();
+      })));
+      await tester.pumpAndSettle(); // the app theme animates between the two themes
+      return got;
+    }
+
+    final M3EmphasizedType e = await read(M3Theme.light(M3ColorSchemes.light));
+    final M3EmphasizedType c = await read(M3Theme.light(classic.M3ColorSchemes.light, expressive: false));
+    expect(e.titleLarge, M3EmphasizedType.baseline.titleLarge);
+    expect(e.titleLarge, isNot(M3Type.textTheme.titleLarge));
+    expect(c.titleLarge, M3Type.textTheme.titleLarge);
+    expect(c.headlineMedium, M3Type.textTheme.headlineMedium);
+    expect(c.labelSmall, M3Type.textTheme.labelSmall);
+  });
+
+  test('motion scheme and brightness follow the theme', () {
     final ThemeData e = M3Theme.light(M3ColorSchemes.light);
     final ThemeData c = M3Theme.light(classic.M3ColorSchemes.light, expressive: false);
-    expect(e.extension<M3EmphasizedType>(), isNotNull);
-    expect(c.extension<M3EmphasizedType>(), isNull);
-    // M3EmphasizedType.of falls back to the baseline emphasized scale when the theme has none,
-    // so a Classic sample must read the extension (or the plain textTheme), not .of(context).
-    expect(c.extension<M3EmphasizedType>() ?? M3EmphasizedType.baseline, same(M3EmphasizedType.baseline));
     expect(e.extension<M3MotionTheme>()!.scheme, same(M3Motion.expressive));
     expect(c.extension<M3MotionTheme>()!.scheme, same(M3Motion.standard));
     expect(e.colorScheme.brightness, Brightness.light);

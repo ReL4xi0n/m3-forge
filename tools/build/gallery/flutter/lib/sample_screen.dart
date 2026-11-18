@@ -28,8 +28,7 @@ class _SampleScreenState extends State<SampleScreen> {
   Widget build(BuildContext context) {
     final ColorScheme colors = Theme.of(context).colorScheme;
     final TextTheme text = Theme.of(context).textTheme;
-    // Classic themes carry no emphasized type: use the plain text roles there.
-    final M3EmphasizedType? emphasized = Theme.of(context).extension<M3EmphasizedType>();
+    final M3EmphasizedType emphasized = M3EmphasizedType.of(context);
     return Scaffold(
       appBar: AppBar(title: const Text('Shelf'), actions: <Widget>[
         IconButton(icon: const Icon(_search), tooltip: 'Search', onPressed: () {}),
@@ -37,7 +36,7 @@ class _SampleScreenState extends State<SampleScreen> {
       body: ListView(
         padding: const EdgeInsets.all(M3Space.space200),
         children: <Widget>[
-          Text('Good evening', style: (emphasized?.headlineMedium ?? text.headlineMedium!).copyWith(color: colors.onSurface)),
+          Text('Good evening', style: emphasized.headlineMedium.copyWith(color: colors.onSurface)),
           const SizedBox(height: M3Space.space100),
           Text('Three books are due this week.', style: text.bodyLarge!.copyWith(color: colors.onSurfaceVariant)),
           const SizedBox(height: M3Space.space200),
@@ -47,7 +46,7 @@ class _SampleScreenState extends State<SampleScreen> {
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
                 Text('Currently reading', style: text.titleMedium),
                 const SizedBox(height: M3Space.space100),
-                Text('The Left Hand of Darkness', style: emphasized?.titleLarge ?? text.titleLarge),
+                Text('The Left Hand of Darkness', style: emphasized.titleLarge),
                 const SizedBox(height: M3Space.space200),
                 Row(children: <Widget>[
                   FilledButton(onPressed: () {}, child: const Text('Continue')),

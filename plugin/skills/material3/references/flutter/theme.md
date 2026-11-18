@@ -27,14 +27,14 @@ one. Keep one `M3Theme` call per brightness; do not build `ThemeData` by hand ne
 - `textTheme`: `M3Type.textTheme`. Read styles with `Theme.of(context).textTheme.<role>`.
 - Shapes: `cardTheme` (`M3Shapes.medium`), `dialogTheme` (`M3Shapes.extraLarge`),
   `bottomSheetTheme` (`M3Shapes.extraLargeTop`). Other shapes: `M3Shapes.*` or `M3Corners.*`.
-- Extensions: `M3MotionTheme` (always) and `M3EmphasizedType` (Expressive only).
+- Extensions: `M3MotionTheme` (always) and `M3EmphasizedType` (Expressive: the emphasized scale; Classic: the plain type roles).
 - `material_ui` only: the style variant on elevated and icon buttons (`setup.md`).
 
 ## Reading the extensions
 
 - Emphasized type: `M3EmphasizedType.of(context).titleLarge` for the headline of a card, a screen
-  title or a selected state. It falls back to the baseline emphasized scale when the theme has none,
-  so call sites need no Classic branch. In a Classic app, use the plain `textTheme` roles instead.
+  title or a selected state. Under an Expressive theme it is the emphasized scale; under a Classic theme
+  it returns the plain type-scale styles, so call sites need no Classic branch.
 - Motion: `M3MotionTheme.of(context)` returns the `M3MotionScheme` of the theme (expressive by default,
   standard for Classic): `M3MotionTheme.of(context).defaultSpatial` for movement,
   `.defaultEffects` for color and opacity. Durations and easings stay on `M3Motion`.
@@ -42,7 +42,7 @@ one. Keep one `M3Theme` call per brightness; do not build `ThemeData` by hand ne
 ## Classic Material 3
 
 `M3Theme.light(scheme, expressive: false)` and `M3Theme.dark(scheme, expressive: false)`: standard motion
-scheme, no `M3EmphasizedType`, no Expressive style variant. Pair it with a scheme written by the
+scheme, emphasized roles equal to the plain type roles, no Expressive style variant. Pair it with a scheme written by the
 color script with `--style classic`; an Expressive scheme in a Classic theme (or the reverse) mixes
 two color specs. Use Classic only when the user asks for it or the project already is Classic.
 

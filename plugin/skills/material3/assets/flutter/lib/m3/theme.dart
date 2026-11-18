@@ -27,12 +27,34 @@ class M3MotionTheme extends ThemeExtension<M3MotionTheme> {
       other is M3MotionTheme && t >= 0.5 ? other : this;
 }
 
+/// Classic Material 3 has no emphasized scale: its emphasized roles are the plain type-scale styles,
+/// so M3EmphasizedType.of(context) returns the same styles as the textTheme.
+final M3EmphasizedType _classicEmphasized = _plainAsEmphasized(M3Type.textTheme);
+
+M3EmphasizedType _plainAsEmphasized(TextTheme t) => M3EmphasizedType(
+      displayLarge: t.displayLarge!,
+      displayMedium: t.displayMedium!,
+      displaySmall: t.displaySmall!,
+      headlineLarge: t.headlineLarge!,
+      headlineMedium: t.headlineMedium!,
+      headlineSmall: t.headlineSmall!,
+      titleLarge: t.titleLarge!,
+      titleMedium: t.titleMedium!,
+      titleSmall: t.titleSmall!,
+      bodyLarge: t.bodyLarge!,
+      bodyMedium: t.bodyMedium!,
+      bodySmall: t.bodySmall!,
+      labelLarge: t.labelLarge!,
+      labelMedium: t.labelMedium!,
+      labelSmall: t.labelSmall!,
+    );
+
 /// Material 3 themes. Pass a scheme from M3ColorSchemes (lib/m3/schemes.dart, written by the color
 /// script): M3Theme.light(M3ColorSchemes.light), M3Theme.dark(M3ColorSchemes.dark).
 ///
 /// expressive: true (default) adds the emphasized type scale (M3EmphasizedType), the expressive
 /// motion scheme and, on material_ui, the Expressive style variant. expressive: false builds
-/// Classic Material 3: standard motion, no emphasized type, no style variant.
+/// Classic Material 3: standard motion, emphasized roles equal the plain type roles, no style variant.
 class M3Theme {
   M3Theme._();
 
@@ -58,7 +80,7 @@ class M3Theme {
       // [material_ui] iconButtonTheme: IconButtonThemeData(variant: expressive ? StyleVariant.material3Expressive : StyleVariant.material3),
       extensions: <ThemeExtension<dynamic>>[
         M3MotionTheme(scheme: expressive ? M3Motion.expressive : M3Motion.standard),
-        if (expressive) M3EmphasizedType.baseline,
+        expressive ? M3EmphasizedType.baseline : _classicEmphasized,
       ],
     );
   }
