@@ -10,6 +10,10 @@
 // loader flutter_test_config.dart.tmpl) runs from the copy. The copy is deleted afterwards. Files:
 //   <theme>-412x915-<nn>.png   nn = 01 for the top of the home screen, 02.. one viewport lower each
 //   runtime-<theme>.json       raw guideline results per frame; app-fonts.json
+// States (`states`, see index.mjs): after the main shots, one more `flutter test` per theme runs each
+// state (main() again, the steps, a settle after each) and writes
+//   state-<name>-<theme>-412x915.png   and state-<name>-<theme>.json (ok, error)
+// A failing step marks that state ok:false in `states` and adds a warning; the shots still count.
 // Without the Flutter SDK on PATH the step is skipped with the reason.
 import { spawn, spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
@@ -158,8 +162,27 @@ export function parseGuidelineFailures(reason, label) {
   return out;
 }
 
-// screenshotFlutter({ projectDir, outDir, env? }) -> result (see index.mjs).
-export async function screenshotFlutter({ projectDir, outDir, env = process.env, timeoutMs = TEST_TIMEOUT_MS }) {
+// Runs every state in both themes (one `flutter test` per theme). -> [{ name, ok, shots, error? }]
+async function runStates({ exe, copy, outDir, childEnv, states, timeoutMs, warnings }) {
+  const results = new Map(states.map((s) => [s.name, { name: s.name, ok: true, shots: [] }]));
+  const fail = (r, message) => { if (r.ok) { r.ok = false; r.error = message; } };
+  for (const theme of THEMES) {
+    const run1 = await run(exe, ['test', `test/${TEST_FILE}`, '--name', `m3.state.${theme}.`, '--reporter', 'expanded'], { cwd: copy, env: childEnv, timeoutMs });
+    for (const s of states) {
+      const r = results.get(s.name);
+      let rec = null;
+      try { rec = JSON.parse(readFileSync(join(outDir, `state-${s.name}-${theme}.json`), 'utf8')); } catch { /* none */ }
+      if (!rec) { fail(r, `${theme}: no result (${run1.timedOut ? `flutter test timed out after ${timeoutMs} ms` : tail(run1.output, 6).replace(/\s*\n\s*/g, ' | ')})`); continue; }
+      if (rec.ok && rec.file && existsSync(join(outDir, rec.file))) r.shots.push(join(outDir, rec.file));
+      else fail(r, `${theme}: ${rec.error ?? 'no shot written'}`);
+    }
+  }
+  for (const r of results.values()) if (!r.ok) warnings.push(`state "${r.name}" failed: ${r.error}`);
+  return [...results.values()];
+}
+
+// screenshotFlutter({ projectDir, outDir, env?, states? }) -> result (see index.mjs).
+export async function screenshotFlutter({ projectDir, outDir, env = process.env, timeoutMs = TEST_TIMEOUT_MS, states }) {
   const skip = (reason, extra = {}) => ({ ran: false, skippedReason: reason, ...EMPTY(), ...extra });
   const exe = findFlutter(env);
   if (!exe) return skip('Flutter SDK not found on PATH: screenshots skipped (this step never installs); run the shots later with the SDK');
@@ -196,13 +219,15 @@ export async function screenshotFlutter({ projectDir, outDir, env = process.env,
       .replace('__M3_PROJECT_CONFIG_IMPORT__', hasConfig ? `import '${PROJECT_CONFIG_FILE}' as project;` : '')
       .replace('__M3_RUN_MAIN__', hasConfig ? 'project.testExecutable(testMain)' : 'testMain()'));
 
-    const childEnv = { ...env, M3_FONTS_DIR: fonts, M3_CAPTURE_OUT: outDir, FLUTTER_SUPPRESS_ANALYTICS: 'true' };
+    const statesFile = join(work, 'states.json');
+    if (states?.length) writeFileSync(statesFile, JSON.stringify({ states }));
+    const childEnv = { ...env, M3_FONTS_DIR: fonts, M3_CAPTURE_OUT: outDir, FLUTTER_SUPPRESS_ANALYTICS: 'true', ...(states?.length ? { M3_STATES_FILE: statesFile } : {}) };
     let pub = await run(exe, ['pub', 'get', '--offline'], { cwd: copy, env: childEnv, timeoutMs: PUB_TIMEOUT_MS });
     if (pub.code !== 0) pub = await run(exe, ['pub', 'get'], { cwd: copy, env: childEnv, timeoutMs: PUB_TIMEOUT_MS });
     if (pub.code !== 0) return skip(`flutter pub get failed in the temporary copy: screenshots skipped\n${tail(pub.output)}`, { ...tag, buildOk: false });
 
     for (const theme of THEMES) {
-      for (const f of readdirSync(outDir)) if (f.startsWith(`${theme}-${VIEWPORT}-`) || f === `runtime-${theme}.json`) rmSync(join(outDir, f), { force: true });
+      for (const f of readdirSync(outDir)) if (f.startsWith(`${theme}-${VIEWPORT}-`) || f === `runtime-${theme}.json` || f.startsWith(`state-`)) rmSync(join(outDir, f), { force: true });
     }
     let last;
     // One `flutter test` process per theme: an endless animation of one theme must not reach the next.
@@ -242,6 +267,7 @@ export async function screenshotFlutter({ projectDir, outDir, env = process.env,
       }
       if (raw.settle && raw.settle !== 'settled') warnings.push(`${theme}: the screen kept animating (${raw.settle}); the frame at that moment is shown`);
     }
+    const stateResults = states?.length ? await runStates({ exe, copy, outDir, childEnv, states, timeoutMs, warnings }) : undefined;
     if (truncated) warnings.push('the first vertical Scrollable is longer than 4 viewports: the frames stop before its end; rows below the last frame are not visible: move them up or show them as specimens higher on the screen');
     return {
       ran: true,
@@ -249,6 +275,7 @@ export async function screenshotFlutter({ projectDir, outDir, env = process.env,
       ...tag,
       shots,
       runtime: { contrast, targets },
+      ...(stateResults ? { states: stateResults } : {}),
       ...(warnings.length ? { warnings } : {}),
     };
   } finally {

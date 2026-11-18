@@ -50,9 +50,9 @@ How first-party Material 3 screens arrange their parts: for the screen plan and 
   navigation item. Secondary actions are tonal, outlined or text buttons.
 - The accent color appears in few places with a job: the active destination, the main action,
   section labels, links and the selected state. Large areas stay on surface roles.
-- Error containers fill only small areas: an inline alert, a chip, a banner. A large error area
-  (a panel, a list of issues) sits on a surface container and marks the error with the error
-  color on its icon, title or edge. A full `error` fill is only for small badges.
+- `tertiary-container` and `error-container` never fill wide areas: only small ones (inline alert,
+  chip, banner). A large error area (panel, list of issues) sits on a surface container, marked
+  with the error color on its icon, title or edge. A full `error` fill is only for small badges.
 - A floating action (FAB, extended FAB) sits at the bottom trailing corner over content, and the
   scrolling content has bottom padding so the last row clears it.
 

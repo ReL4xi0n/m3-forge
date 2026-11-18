@@ -13,6 +13,11 @@
 // DevTools protocol (cdp.mjs). Both run the same capture loop and the same in-page measurement.
 // Nothing is ever installed; with neither, the step is skipped with the reason.
 //
+// States (`states`: [{ name, steps }], see index.mjs): after the four main shots, each state reloads
+// the page fresh, runs its steps (click, fill, press, waitMs; a target is a CSS selector or
+// `text=Label`) and shoots both viewports in both themes as state-<name>-<theme>-<viewport>.png.
+// A failing step marks that state ok:false with the error and a warning; the rest still runs.
+//
 // What is served: --url when given (a running dev server); a Vite project is built into the output
 // folder (vite build --outDir <out>/site); otherwise the first index.html in the project root, dist/,
 // public/ or src/ is served from a local static server. Nothing is written into the project
@@ -339,6 +344,101 @@ function measureInPage({ min, targets }) {
   return { contrast, targets: small, checked, unmeasured, scrollWidth: document.documentElement.scrollWidth };
 }
 
+// ---- Interaction states -----------------------------------------------------------------------
+
+// Runs in the browser: the element a step names (CSS selector, or `text=Label`: the innermost visible
+// element whose text is exactly Label), scrolled into view. `edit` focuses it and selects its text.
+// -> { x, y } (center) or { error }.
+function locateInPage({ sel, edit }) {
+  const norm = (s) => String(s ?? '').replace(/\s+/g, ' ').trim();
+  const visible = (el) => {
+    const r = el.getBoundingClientRect();
+    return r.width > 0 && r.height > 0 && (!el.checkVisibility || el.checkVisibility({ checkVisibilityCSS: true }));
+  };
+  let el = null;
+  if (sel.startsWith('text=')) {
+    const want = norm(sel.slice(5));
+    const hits = [...document.body.querySelectorAll('*')].filter((e) => !e.closest('script, style, template, noscript') && visible(e) && norm(e.innerText) === want);
+    el = hits.find((e) => !hits.some((o) => o !== e && e.contains(o))) ?? null;
+  } else {
+    let all;
+    try { all = [...document.querySelectorAll(sel)]; } catch { return { error: `invalid selector "${sel}"` }; }
+    el = all.find(visible) ?? null;
+  }
+  if (!el) return { error: `no visible element for "${sel}"` };
+  el.scrollIntoView({ block: 'center', inline: 'center' });
+  if (edit) {
+    const editable = el.matches('input, textarea') || el.isContentEditable;
+    if (!editable) return { error: `"${sel}" is not a text field` };
+    el.focus();
+    if (typeof el.select === 'function') el.select();
+    else document.getSelection().selectAllChildren(el);
+  }
+  const r = el.getBoundingClientRect();
+  return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+}
+
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const STEP_PAUSE_MS = 100;
+
+async function runStep(page, step) {
+  const at = async (opts) => {
+    const r = await page.evaluate(locateInPage, opts);
+    if (r.error) throw new Error(r.error);
+    return r;
+  };
+  if ('click' in step) {
+    const { x, y } = await at({ sel: step.click });
+    await page.click(x, y);
+  } else if ('fill' in step) {
+    await at({ sel: step.fill, edit: true });
+    await page.insertText(step.text);
+  } else if ('press' in step) {
+    await page.press(step.press);
+  } else if ('waitMs' in step) {
+    await sleep(step.waitMs);
+  }
+  await sleep(STEP_PAUSE_MS);
+}
+
+// One state at one viewport and theme: fresh page, steps, settle, shot. Returns the PNG path.
+async function shootState(open, url, outDir, state, vp, theme, warnings) {
+  const key = `state-${state.name}-${theme}-${vp.name}`;
+  const page = await open({ width: vp.width, height: vp.height, theme });
+  try {
+    await page.goto(url, NAV_TIMEOUT_MS);
+    if (!(await page.idle(IDLE_TIMEOUT_MS))) warnings.push(`${key}: network not idle after ${IDLE_TIMEOUT_MS} ms`);
+    for (const step of state.steps) await runStep(page, step);
+    await page.idle(IDLE_TIMEOUT_MS);
+    await page.evaluate(() => document.fonts.ready.then(() => undefined));
+    await page.evaluate(addStyle, NO_MOTION_CSS);
+    await page.evaluate(() => { for (const a of document.getAnimations()) { try { a.finish(); } catch { a.cancel(); } } });
+    const file = join(outDir, `${key}.png`);
+    await page.screenshot(file);
+    return file;
+  } finally {
+    await page.close();
+  }
+}
+
+// Every state at both viewports and themes. A failing step marks the state ok:false and stops that
+// state only. -> [{ name, ok, shots, error? }]
+async function captureStates(open, url, outDir, states, warnings) {
+  const results = [];
+  for (const state of states) {
+    const r = { name: state.name, ok: true, shots: [] };
+    try {
+      for (const vp of VIEWPORTS) for (const theme of THEMES) r.shots.push(await shootState(open, url, outDir, state, vp, theme, warnings));
+    } catch (e) {
+      r.ok = false;
+      r.error = firstLine(e);
+      warnings.push(`state "${state.name}" failed: ${r.error}`);
+    }
+    results.push(r);
+  }
+  return results;
+}
+
 // ---- Capture ----------------------------------------------------------------------------------
 
 function collector() {
@@ -383,6 +483,9 @@ async function playwrightPage(browser, { width, height, theme }) {
       },
       idle: (timeout) => page.waitForLoadState('networkidle', { timeout }).then(() => true, () => false),
       evaluate: (fn, arg) => page.evaluate(fn, arg),
+      click: (x, y) => page.mouse.click(x, y),
+      insertText: (text) => page.keyboard.insertText(text),
+      press: (key) => page.keyboard.press(key),
       screenshot: (path) => page.screenshot({ path, fullPage: true, animations: 'disabled', caret: 'hide' }),
       close: () => context.close(),
     };
@@ -393,7 +496,7 @@ async function playwrightPage(browser, { width, height, theme }) {
 }
 
 // The capture loop both engines run. open({ width, height, theme }) -> page adapter.
-async function captureAll(open, url, outDir) {
+async function captureAll(open, url, outDir, states) {
   const shots = [];
   const contrast = collector();
   const targets = collector();
@@ -426,7 +529,8 @@ async function captureAll(open, url, outDir) {
       }
     }
   }
-  return { shots, runtime: { contrast: contrast.list(), targets: targets.list() }, pageErrors, warnings, measured };
+  const stateResults = states?.length ? await captureStates(open, url, outDir, states, warnings) : undefined;
+  return { shots, runtime: { contrast: contrast.list(), targets: targets.list() }, pageErrors, warnings, measured, ...(stateResults ? { states: stateResults } : {}) };
 }
 
 const EMPTY = () => ({ shots: [], runtime: { contrast: [], targets: [] } });
@@ -458,9 +562,9 @@ async function startEngine(pw, exe) {
   }
 }
 
-// screenshotWeb({ projectDir, outDir, url?, roots?, browsers? }) -> result (see index.mjs).
+// screenshotWeb({ projectDir, outDir, url?, roots?, browsers?, states? }) -> result (see index.mjs).
 // `browsers` replaces the browser executables tried for the CDP engine (tests).
-export async function screenshotWeb({ projectDir, outDir, url, roots, browsers }) {
+export async function screenshotWeb({ projectDir, outDir, url, roots, browsers, states }) {
   const pw = findPlaywright(projectDir, { roots });
   const exe = findBrowser(browsers ?? browserCandidates());
   if (!pw && !exe) return { ran: false, skippedReason: NOTHING, ...EMPTY() };
@@ -474,7 +578,7 @@ export async function screenshotWeb({ projectDir, outDir, url, roots, browsers }
   let server = null;
   try {
     server = target.url ? null : await serve(target.root, { spa: target.spa });
-    const cap = await withTimeout(captureAll(eng.open, target.url ?? server.origin + target.path, outDir), CAPTURE_TIMEOUT_MS, 'capture');
+    const cap = await withTimeout(captureAll(eng.open, target.url ?? server.origin + target.path, outDir, states), CAPTURE_TIMEOUT_MS + (states?.length ?? 0) * 4 * 60_000, 'capture');
     return { ran: true, ...tag, ...cap };
   } catch (e) {
     return { ran: false, skippedReason: `capture failed: ${firstLine(e)}`, ...EMPTY(), ...tag };

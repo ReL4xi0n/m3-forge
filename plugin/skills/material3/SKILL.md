@@ -10,19 +10,18 @@ disable-model-invocation: true
 Request: $ARGUMENTS
 
 Build the requested UI so that it looks like a first-party Material 3 product: M3 Expressive unless
-the request asks for classic Material 3. Everything below is the order of work. `S` stands for
-`${CLAUDE_SKILL_DIR}`; run every script as `node "S/scripts/<name>/index.mjs" ...`.
+the request asks for classic Material 3. Below is the order of work. `S` is `${CLAUDE_SKILL_DIR}`; run scripts as `node "S/scripts/<name>/index.mjs" ...`.
 
 ## 1. Read the request
 
-- Note the platform if named, a classic-M3 wish, a brand or seed color, dark-mode or density
-  wishes, a requested icon style (Rounded, Sharp) and the language of the UI text. (W)
+- Note the platform if named, classic M3, a brand or seed color, dark-mode or density wishes, an
+  icon style (Rounded, Sharp) and the language of the UI text. (W)
 
 ## 2. Detect the project
 
-- Run `detect` with the project folder (and the platform if the request names one). It prints
-  JSON: `platform`, `framework`, `flutterLibrary`, `composeMaterial3`, `belowExpressive`,
-  `composeBom`, `themeFiles`, `empty`, and `tools.<name>.available`. (W)
+- Run `detect` with the project folder (and the platform if named). It prints JSON: `platform`,
+  `framework`, `flutterLibrary`, `composeMaterial3`, `belowExpressive`, `composeBom`,
+  `themeFiles`, `empty`, `tools.<name>.available`. (W)
 - An explicit platform in the request wins over detection. An empty or non-matching folder is
   scaffolded as `references/<platform>/setup.md` says. (W)
 - Compose: `belowExpressive: true` means material3 is older than 1.5. Say that Expressive needs
@@ -42,9 +41,8 @@ the request asks for classic Material 3. Everything below is the order of work. 
 ## 4. Theme, fonts and icons
 
 - Color: run `color` with `--seed`, `--platform` and `--out` (the platform reference names the
-  file; it never overwrites a user file, exit 3). A brand color in the request is the seed. With no
-  color in the request, pick a seed that
-  fits the subject and say which; use the baseline seed `#6750A4` only for neutral requests.
+  file; it never overwrites a user file, exit 3). A brand color in the request is the seed. With
+  none, pick a seed that fits the subject and say which; baseline `#6750A4` only for neutral requests.
   Variant stays tonal spot unless the request names another variant. Classic M3: add
   `--style classic` (2021 color spec; Expressive uses 2025). Status and chart colors use roles, or
   `--custom name=#hex` for harmonized extra roles. (F2, F8)
@@ -58,12 +56,13 @@ the request asks for classic Material 3. Everything below is the order of work. 
 ## 5. Build the UI
 
 - Screen plan, before any code: one row per screen, element and state the request names (panels,
-  players, pickers, badges, empty and error states, selected states), each with its M3 component
-  (`components.md`) and its region per window size class (compact, medium, expanded; canonical
-  layout from `layout.md`). Every row is visible on first load: a state that follows an action (a
-  mini-player, an empty result, a confirmation) is also rendered as a labelled specimen below the
-  main content, never only behind a tap, link or URL. Add the hierarchy recipe for the screen type
-  (`typography.md`), then build to the plan. (F9, F10)
+  players, pickers, badges, empty, error and selected states), each with its M3 component
+  (`components.md`) and its region per window size class (canonical layout from `layout.md`). Mark
+  a row `main` (on first load; whatever stays on screen, like a mini-player, nav bar or cart badge,
+  is `main`) or `reached` (follows an action: confirmation dialog, empty search result, open menu
+  or sheet). Never add a labelled "specimen" or demo section to show a state. For `reached` rows
+  write a states file (outside the project; format in the platform's screenshot section) with the
+  interaction that gets there. Add the hierarchy recipe (`typography.md`), then build. (F9, F10)
 
 Hard rules. `verify` checks these (contrast and touch targets only with the step 7 capture;
 judgment calls are not machine-checked).
@@ -104,24 +103,24 @@ judgment calls are not machine-checked).
   desktop) into a temporary folder and prints the PNG paths, the `contrast` and `targets` findings
   and `capture` (for step 6).
   `ran: false` comes with `skippedReason` (no Playwright, browser or SDK): report it. Open every
-  PNG yourself (overlaps and icons shown as words appear only there), critique it against
+  PNG yourself (overlaps and icons shown as words show only there), critique it against
   `CHECKLIST.md`, fix, then run `screenshot` and `verify` again. (F6, F8, F9, F10)
-- Plan check: for each screen-plan row, is it visible, and in which shot and where? Place every
-  row that is not (as the plan says) and render again until all are. (F9)
+- Plan check: pass `--states <file>`. Each `main` row must be visible in a main shot, each
+  `reached` row in its state's shot. Fix any row seen in none and render again. (F9)
 
 ## 8. Report
 
 - End with this report, in the language the user wrote in: (W)
   1. What was built, and where (files).
-  2. Platform, style (M3 Expressive or classic) and, on Compose, the material3 version.
+  2. Platform, style (Expressive or classic) and, on Compose, the material3 version.
   3. Color source: the exact seed and variant, or the precomputed seed used instead of the
      requested one, and why.
   4. Checks that ran, with their result.
   5. Checks that were skipped, each with its reason (for example "Flutter SDK not found:
      screenshots skipped").
-  6. Requested items: the step 7 plan check, each row with the shot and place it is visible in.
-  7. Screenshot review: each problem found in the images (overlap, clipped or colliding text,
-     covered content, empty gutters, off-scheme colors, missing states) and how it was fixed.
+  6. Requested items: the step 7 plan check, each row with its shot (main or state) and place.
+  7. Screenshot review: each problem found in the images (overlap, clipped text, covered
+     content, empty gutters, off-scheme colors, missing states) and its fix.
   8. Anything the user must run later (package install, `flutter create .`, an upgrade).
 
 ## When a tool is missing

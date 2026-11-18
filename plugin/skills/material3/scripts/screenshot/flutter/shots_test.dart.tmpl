@@ -7,6 +7,11 @@
 //                              vertical Scrollable that can scroll, at most kMaxFrames in all
 //   runtime-<theme>.json       textContrastGuideline and the 48 x 48 touch target check per frame
 // Guideline failures are recorded, not thrown.
+//
+// With M3_STATES_FILE (the validated states file, see index.mjs) it also has one test per state and
+// theme, `m3 state <theme> <name>`: main() again, the state's steps (each followed by a settle),
+// then state-<name>-<theme>-412x915.png and state-<name>-<theme>.json ({ ok, file?, error? }).
+// A failing step is recorded in the json, never thrown.
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -57,6 +62,36 @@ class M3TouchTargetGuideline extends MinimumTapTargetGuideline {
   String get description => 'Clickable or focusable nodes should be at least $size';
 }
 
+/// The root render view as PNG bytes, at the device pixel ratio.
+Future<List<int>> _png(WidgetTester tester) async {
+  final RenderView view = tester.binding.renderViews.first;
+  final OffsetLayer layer = view.debugLayer! as OffsetLayer;
+  return (await tester.runAsync(() async {
+    final ui.Image image = await layer.toImage(view.paintBounds);
+    final ByteData bytes = (await image.toByteData(format: ui.ImageByteFormat.png))!;
+    final List<int> out = bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes);
+    image.dispose();
+    return out;
+  }))!;
+}
+
+/// Phone viewport, platform brightness, no debug banner, real shadows. -> the semantics handle.
+SemanticsHandle _prepare(WidgetTester tester, ui.Brightness brightness) {
+  tester.view.devicePixelRatio = kRatio;
+  tester.view.physicalSize = const Size(kWidth * kRatio, kHeight * kRatio);
+  tester.platformDispatcher.platformBrightnessTestValue = brightness;
+  addTearDown(tester.view.reset);
+  addTearDown(tester.platformDispatcher.clearPlatformBrightnessTestValue);
+  final SemanticsHandle semantics = tester.ensureSemantics();
+  // The debug banner is not part of the app: keep it out of the shots.
+  WidgetsApp.debugAllowBannerOverride = false;
+  // flutter_test paints elevation shadows as solid black outlines unless this is off; the shots
+  // must show the app as a device draws it.
+  debugDisableShadows = false;
+  addTearDown(() => debugDisableShadows = true);
+  return semantics;
+}
+
 Future<Map<String, Object?>> _guideline(WidgetTester tester, AccessibilityGuideline guideline) async {
   try {
     final Evaluation e = await guideline.evaluate(tester);
@@ -92,27 +127,133 @@ ScrollableState? _firstVerticalScrollable(WidgetTester tester) {
   return null;
 }
 
+// ---- Interaction states
+
+/// The widget(s) a finder object names: text (exact), key (a string key), tooltip, semanticsLabel,
+/// hint (the hint of a TextField or SearchBar) or type (the widget's class name).
+Finder _finderOf(Map<String, dynamic> f) {
+  final Object? text = f['text'];
+  final Object? key = f['key'];
+  final Object? tooltip = f['tooltip'];
+  final Object? label = f['semanticsLabel'];
+  final Object? hint = f['hint'];
+  final Object? type = f['type'];
+  if (text is String) return find.text(text);
+  if (key is String) return find.byKey(ValueKey<String>(key));
+  if (tooltip is String) return find.byTooltip(tooltip);
+  if (label is String) return find.bySemanticsLabel(label);
+  if (hint is String) {
+    return find.byWidgetPredicate((Widget w) {
+      try {
+        final String name = w.runtimeType.toString();
+        if (name == 'TextField') return (w as dynamic).decoration?.hintText == hint;
+        if (name == 'SearchBar') return (w as dynamic).hintText == hint;
+      } catch (_) {}
+      return false;
+    });
+  }
+  if (type is String) return find.byElementPredicate((Element e) => e.widget.runtimeType.toString() == type);
+  throw ArgumentError('unknown finder ${jsonEncode(f)}');
+}
+
+/// The one widget a finder object names (the `index`-th match, 0 by default).
+Finder _one(Map<String, dynamic> f) {
+  final Finder all = _finderOf(f);
+  final int index = (f['index'] as int?) ?? 0;
+  if (all.evaluate().length <= index) throw StateError('no widget found for ${jsonEncode(f)}');
+  return all.at(index);
+}
+
+Future<void> _runStep(WidgetTester tester, Map<String, dynamic> step) async {
+  if (step['tap'] is Map) {
+    final Finder f = _one((step['tap'] as Map).cast<String, dynamic>());
+    try {
+      await tester.ensureVisible(f);
+    } catch (_) {}
+    await tester.tap(f);
+  } else if (step['enterText'] is Map) {
+    final Map<String, dynamic> e = (step['enterText'] as Map).cast<String, dynamic>();
+    await tester.enterText(_one((e['into'] as Map).cast<String, dynamic>()), e['text'] as String);
+  } else if (step['scrollTo'] is Map) {
+    final Map<String, dynamic> spec = (step['scrollTo'] as Map).cast<String, dynamic>();
+    final Finder all = _finderOf(spec);
+    final ScrollableState? scrollable = _firstVerticalScrollable(tester);
+    if (all.evaluate().isEmpty && scrollable != null) {
+      await tester.scrollUntilVisible(
+        all,
+        300,
+        scrollable: find.byElementPredicate((Element e) => e is StatefulElement && identical(e.state, scrollable)),
+        maxScrolls: 60,
+      );
+    }
+    final Finder f = _one(spec);
+    await tester.ensureVisible(f);
+  } else {
+    throw ArgumentError('unknown step');
+  }
+}
+
+String _oneLine(Object error) {
+  final String text = error.toString().split('\n').map((String l) => l.trim()).firstWhere((String l) => l.isNotEmpty, orElse: () => 'error');
+  return text.length > 300 ? '${text.substring(0, 300)}...' : text;
+}
+
+List<Map<String, dynamic>> _loadStates() {
+  final String? path = Platform.environment['M3_STATES_FILE'];
+  if (path == null || path.isEmpty) return <Map<String, dynamic>>[];
+  final Map<String, dynamic> data = jsonDecode(File(path).readAsStringSync()) as Map<String, dynamic>;
+  return (data['states'] as List<dynamic>).cast<Map<String, dynamic>>();
+}
+
+void _stateTests(String outDir) {
+  for (final ui.Brightness brightness in <ui.Brightness>[ui.Brightness.light, ui.Brightness.dark]) {
+    final String theme = brightness == ui.Brightness.light ? 'light' : 'dark';
+    for (final Map<String, dynamic> state in _loadStates()) {
+      final String name = state['name'] as String;
+      final List<Map<String, dynamic>> steps = (state['steps'] as List<dynamic>).cast<Map<String, dynamic>>();
+      testWidgets('m3 state $theme $name', (WidgetTester tester) async {
+        final SemanticsHandle semantics = _prepare(tester, brightness);
+        String? error;
+        String? file;
+        int at = 0;
+        try {
+          await _runMain();
+          await _settle(tester);
+          for (final Map<String, dynamic> step in steps) {
+            at++;
+            await _runStep(tester, step);
+            await _settle(tester);
+          }
+          at = 0;
+          file = 'state-$name-$theme-$kViewport.png';
+          Directory(outDir).createSync(recursive: true);
+          File('$outDir${Platform.pathSeparator}$file').writeAsBytesSync(await _png(tester));
+        } catch (e) {
+          file = null;
+          error = at > 0 ? 'step $at (${jsonEncode(steps[at - 1])}): ${_oneLine(e)}' : _oneLine(e);
+        }
+        File('$outDir${Platform.pathSeparator}state-$name-$theme.json').writeAsStringSync(
+          jsonEncode(<String, Object?>{'name': name, 'theme': theme, 'ok': error == null, 'file': file, 'error': error}),
+        );
+        // Exceptions the app reported while it ran are not this test's result.
+        tester.takeException();
+        semantics.dispose();
+      });
+    }
+  }
+}
+
 void main() {
   final String outDir = Platform.environment['M3_CAPTURE_OUT'] ??
       (throw StateError('set M3_CAPTURE_OUT to the capture output folder'));
+
+  _stateTests(outDir);
 
   for (final ui.Brightness brightness in <ui.Brightness>[ui.Brightness.light, ui.Brightness.dark]) {
     final String theme = brightness == ui.Brightness.light ? 'light' : 'dark';
 
     testWidgets('m3 shots $theme $kViewport', (WidgetTester tester) async {
-      tester.view.devicePixelRatio = kRatio;
-      tester.view.physicalSize = const Size(kWidth * kRatio, kHeight * kRatio);
-      tester.platformDispatcher.platformBrightnessTestValue = brightness;
-      addTearDown(tester.view.reset);
-      addTearDown(tester.platformDispatcher.clearPlatformBrightnessTestValue);
-      final SemanticsHandle semantics = tester.ensureSemantics();
-
-      // The debug banner is not part of the app: keep it out of the shots.
-      WidgetsApp.debugAllowBannerOverride = false;
-      // flutter_test paints elevation shadows as solid black outlines unless this is off; the shots
-      // must show the app as a device draws it.
-      debugDisableShadows = false;
-      addTearDown(() => debugDisableShadows = true);
+      final SemanticsHandle semantics = _prepare(tester, brightness);
       await _runMain();
       String settle = await _settle(tester);
 
@@ -122,15 +263,7 @@ void main() {
         final String nn = index.toString().padLeft(2, '0');
         final Map<String, Object?> contrast = await _guideline(tester, textContrastGuideline);
         final Map<String, Object?> targets = await _guideline(tester, const M3TouchTargetGuideline());
-        final RenderView view = tester.binding.renderViews.first;
-        final OffsetLayer layer = view.debugLayer! as OffsetLayer;
-        final List<int> png = (await tester.runAsync(() async {
-          final ui.Image image = await layer.toImage(view.paintBounds);
-          final ByteData bytes = (await image.toByteData(format: ui.ImageByteFormat.png))!;
-          final List<int> out = bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes);
-          image.dispose();
-          return out;
-        }))!;
+        final List<int> png = await _png(tester);
         Directory(outDir).createSync(recursive: true);
         final String file = '$theme-$kViewport-$nn.png';
         File('$outDir${Platform.pathSeparator}$file').writeAsBytesSync(png);

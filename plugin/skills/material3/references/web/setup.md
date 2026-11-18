@@ -87,7 +87,7 @@ On the root element (`<html>`):
 ## Screenshot step (SKILL step 7)
 
 ```
-node "S/scripts/screenshot/index.mjs" <project> --platform web [--url <dev server address>]
+node "S/scripts/screenshot/index.mjs" <project> --platform web [--url <dev server address>] [--states <file.json>]
 node "S/scripts/verify/index.mjs" <project> web "<capture.json>"
 ```
 
@@ -103,6 +103,17 @@ node "S/scripts/verify/index.mjs" <project> web "<capture.json>"
 - It prints `contrast` (text against the background actually drawn) and `targets` (interactive
   elements below the minimum at 412 width), plus `warnings` (sideways scroll) and `pageErrors`.
   Fix them all, read every PNG against `CHECKLIST.md`, and run it again. Pass `capture.json` to verify.
+- States (screens reached by an action): `--states <file>`, a JSON file outside the project. Each
+  state reloads the page, runs its steps, and shoots both viewports in both themes as
+  `state-<name>-<theme>-<viewport>.png`. `capture.json` gets `states: [{ name, ok, shots, error? }]`;
+  a step that finds nothing marks that state `ok: false` (and a warning): fix the steps or the page.
+  A target is a CSS selector, or `text=Label` for exact visible text. Steps: `click`, `fill` (with
+  `text`), `press` (a key name such as `Enter`), `waitMs`.
+
+  ```json
+  { "states": [ { "name": "empty-search", "steps": [
+    { "fill": "#search", "text": "cactus" }, { "press": "Enter" } ] } ] }
+  ```
 
 ## Without Node
 

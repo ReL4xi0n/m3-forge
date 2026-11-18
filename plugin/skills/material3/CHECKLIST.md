@@ -12,9 +12,9 @@ first-party screen has. Fix every mismatch before reporting.
   chips, tabs and metadata. One role per level across the whole UI. (F10)
 - In M3 Expressive, emphasized roles mark the one or two things that matter most on the screen
   (a key number, the primary headline), not every heading. (F10)
-- Each text level follows the hierarchy recipe for the screen type (`references/core/typography.md`):
-  neighboring levels differ in two of size, weight and color, so a price or total never looks like
-  the name beside it. Numbers people compare share a role and align. (F10)
+- Each text level follows the hierarchy recipe for the screen type (`typography.md`): neighboring
+  levels differ in two of size, weight and color, so a price or total never looks like the name
+  beside it. Numbers people compare share a role and align. (F10)
 
 ## Spacing and layout
 
@@ -24,8 +24,8 @@ first-party screen has. Fix every mismatch before reporting.
   never touches the screen edge unless it is a full-bleed image or app bar. (F9)
 - Lists and cards have a consistent density: one list-item style per list, one card style per
   collection. (F9)
-- The layout is the canonical one for what the screen does (`references/core/layout.md`: feed,
-  list-detail, supporting pane or single pane), chosen before building. Panes run to the bottom of
+- The layout is the canonical one for what the screen does (`layout.md`: feed, list-detail,
+  supporting pane or single pane), chosen before building. Panes run to the bottom of
   the window and grids fill their pane: no blank column and no pane ending halfway beside a long
   one. (F9)
 - Placement, grouping, rhythm and emphasis follow `references/core/composition.md`. (F9)
@@ -61,10 +61,10 @@ first-party screen has. Fix every mismatch before reporting.
 
 - Surfaces use the surface-container roles to show depth; primary, secondary and tertiary
   containers mark emphasis, not decoration. (F2, F5)
-- Error colors follow `composition.md` (Emphasis): `error-container` only for small areas (inline
-  alert, chip, banner); large error areas on a surface container, marked in the error color. (F2, F9)
-- Tertiary is one contrasting accent per view; avatars, chips, placeholders and status badges use
-  primary, secondary, error or surface-container roles. (F2)
+- `tertiary-container` and `error-container` never fill wide areas (`composition.md`, Emphasis):
+  small ones only; a large error area sits on a surface container marked in the error color.
+  Tertiary is one contrasting accent per view; avatars, chips, placeholders and status badges use
+  primary, secondary, error or surface-container roles. (F2, F9)
 - Picture placeholders and decorative shapes in one collection all use the same container role,
   and only theme-changing roles (never `*-fixed`), so they darken with the dark scheme. (F2, F8)
 - Dark mode comes from the dark scheme alone: no inverted images, no hard-coded overrides, the

@@ -161,6 +161,14 @@ class Connection {
   close() { try { this.ws.close(); } catch { /* closed */ } }
 }
 
+// Keys `press` knows by name (a single character is typed as itself).
+const KEYS = {
+  Enter: { code: 'Enter', vk: 13, text: '\r' }, Escape: { code: 'Escape', vk: 27 }, Tab: { code: 'Tab', vk: 9 },
+  Backspace: { code: 'Backspace', vk: 8 }, Delete: { code: 'Delete', vk: 46 }, Space: { code: 'Space', vk: 32, text: ' ' },
+  ArrowUp: { code: 'ArrowUp', vk: 38 }, ArrowDown: { code: 'ArrowDown', vk: 40 }, ArrowLeft: { code: 'ArrowLeft', vk: 37 },
+  ArrowRight: { code: 'ArrowRight', vk: 39 }, Home: { code: 'Home', vk: 36 }, End: { code: 'End', vk: 35 },
+};
+
 // ---- A page in its own browser context ---------------------------------------------------------
 
 // The page adapter the capture loop drives (same shape as the Playwright one in web.mjs).
@@ -240,6 +248,20 @@ async function openPage(conn, { width, height, theme, initScript }) {
         return false;
       },
       evaluate,
+      async click(x, y) {
+        const m = { x, y, button: 'left', clickCount: 1 };
+        await send('Input.dispatchMouseEvent', { type: 'mouseMoved', x, y });
+        await send('Input.dispatchMouseEvent', { type: 'mousePressed', buttons: 1, ...m });
+        await send('Input.dispatchMouseEvent', { type: 'mouseReleased', ...m });
+      },
+      insertText: (text) => send('Input.insertText', { text }),
+      async press(name) {
+        const k = KEYS[name] ?? (name.length === 1 ? { code: /[a-z]/i.test(name) ? `Key${name.toUpperCase()}` : '', vk: name.toUpperCase().charCodeAt(0), text: name } : null);
+        if (!k) throw new Error(`unknown key "${name}"`);
+        const e = { key: name, code: k.code, windowsVirtualKeyCode: k.vk, nativeVirtualKeyCode: k.vk };
+        await send('Input.dispatchKeyEvent', { type: k.text ? 'keyDown' : 'rawKeyDown', ...e, ...(k.text ? { text: k.text } : {}) });
+        await send('Input.dispatchKeyEvent', { type: 'keyUp', ...e });
+      },
       async screenshot(path) {
         const m = await send('Page.getLayoutMetrics');
         const size = m.cssContentSize ?? m.contentSize;

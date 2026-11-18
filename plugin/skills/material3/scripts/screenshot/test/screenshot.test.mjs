@@ -254,3 +254,113 @@ test('without Playwright: a system Chrome / Edge over CDP gives the same shots a
 
   assert.deepEqual(listing(dir), before, 'nothing written into the project');
 });
+
+// ---- Interaction states ----------------------------------------------------------------------
+
+const STATES_PAGE = `<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>States</title>
+<style>body { font-family: sans-serif; margin: 16px } #dlg { position: fixed; inset: 20% 10%; background: #eee; padding: 16px } [hidden] { display: none }</style></head>
+<body>
+<h1>Cactus shop</h1>
+<button id="open" style="min-width:48px;min-height:48px">Open details</button>
+<div id="dlg" role="dialog" hidden><p>Remove this plant?</p><button>Cancel</button></div>
+<input id="q" aria-label="Search" placeholder="Search plants">
+<p id="empty" hidden></p>
+<script>
+  document.getElementById('open').addEventListener('click', () => { document.getElementById('dlg').hidden = false; });
+  document.getElementById('q').addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter') return;
+    const p = document.getElementById('empty');
+    p.textContent = 'No results for ' + e.target.value;
+    p.hidden = false;
+  });
+</script></body></html>`;
+
+const STATES = [
+  { name: 'dialog', steps: [{ click: 'text=Open details' }, { waitMs: 50 }] },
+  { name: 'empty-search', steps: [{ fill: '#q', text: 'cactus' }, { press: 'Enter' }] },
+  { name: 'broken', steps: [{ click: '#nope' }] },
+];
+
+// The states of STATES_PAGE: both viewports and themes, a failing step only marks its own state.
+async function assertStates(r, dir) {
+  assert.equal(r.ran, true, r.skippedReason);
+  assert.deepEqual(r.shots.map((s) => relative(r.out, s)).sort(), SHOTS, 'main shots stay the main shots');
+  assert.deepEqual(r.states.map((s) => [s.name, s.ok]), [['dialog', true], ['empty-search', true], ['broken', false]]);
+  for (const st of r.states.filter((s) => s.ok)) {
+    assert.deepEqual(st.shots.map((s) => relative(r.out, s)).sort(),
+      ALL.map((k) => { const [theme, vp] = k.split('-'); return `state-${st.name}-${theme}-${vp}.png`; }).sort());
+    for (const s of st.shots) assert.deepEqual([...readFileSync(s).subarray(0, 4)], [0x89, 0x50, 0x4e, 0x47], s);
+  }
+  const broken = r.states[2];
+  assert.match(broken.error, /no visible element for "#nope"/);
+  assert.ok(r.warnings.some((w) => w.includes('state "broken" failed')), r.warnings.join('\n'));
+  // The dialog and the empty-search message are in their shots only: states differ from the main shot and from each other.
+  const png = (n) => readFileSync(join(r.out, n));
+  assert.notDeepEqual(png('state-dialog-light-412x915.png'), png('light-412x915.png'));
+  assert.notDeepEqual(png('state-empty-search-light-412x915.png'), png('light-412x915.png'));
+  assert.notDeepEqual(png('state-dialog-light-412x915.png'), png('state-empty-search-light-412x915.png'));
+  const cap = JSON.parse(readFileSync(r.capture, 'utf8'));
+  assert.deepEqual(cap.states.map((s) => s.name), ['dialog', 'empty-search', 'broken']);
+  assert.ok(cap.states[0].shots.every((s) => s.startsWith('state-dialog-')), 'capture.json lists state shots relative to the folder');
+  assert.equal(cap.states[2].ok, false);
+  assert.equal(readFileSync(join(dir, 'index.html'), 'utf8'), STATES_PAGE, 'project untouched');
+}
+
+test('states file: invalid content is a UsageError, in the function and the CLI (exit 2)', async () => {
+  const dir = project();
+  const base = mkdtempSync(join(tmpdir(), 'm3 states-'));
+  const bad = [
+    ['{"states":[]}', 'web'],
+    ['{"states":[{"name":"a b","steps":[{"click":"#x"}]}]}', 'web'],
+    ['{"states":[{"name":"a","steps":[]}]}', 'web'],
+    ['{"states":[{"name":"a","steps":[{"click":"#x","press":"Enter"}]}]}', 'web'],
+    ['{"states":[{"name":"a","steps":[{"tap":{"text":"x"}}]}]}', 'web'],
+    ['{"states":[{"name":"a","steps":[{"click":"#x"}]}]}', 'flutter'],
+    ['{"states":[{"name":"a","steps":[{"tap":{}}]}]}', 'flutter'],
+    ['{"states":[{"name":"a","steps":[{"enterText":{"into":{"hint":"h"}}}]}]}', 'flutter'],
+    ['{"states":[{"name":"a","steps":[{"waitMs":1}]},{"name":"a","steps":[{"waitMs":1}]}]}', 'web'],
+    ['not json', 'web'],
+  ];
+  for (const [i, [text, platform]] of bad.entries()) {
+    const file = join(base, `s${i}.json`);
+    writeFileSync(file, text);
+    await assert.rejects(screenshot({ projectDir: dir, platform, states: file, roots: [] }), UsageError, text);
+    const cli = spawnSync(process.execPath, [INDEX, dir, '--platform', platform, '--states', file], { encoding: 'utf8' });
+    assert.equal(cli.status, 2, `${text}\n${cli.stderr}`);
+  }
+  const missing = spawnSync(process.execPath, [INDEX, dir, '--platform', 'web', '--states', join(base, 'none.json')], { encoding: 'utf8' });
+  assert.equal(missing.status, 2);
+  assert.match(missing.stderr, /not found/);
+});
+
+test('compose accepts states and ignores them', async () => {
+  const r = await screenshot({ projectDir: project(), platform: 'compose', states: { states: [{ name: 'a', steps: [{ tap: { text: 'x' } }] }] } });
+  assert.equal(r.ran, false);
+  assert.equal(r.states, undefined);
+});
+
+test('states with Playwright: dialog, empty search and a failing step', { skip: toolchain || noBrowser, timeout: 900_000 }, async () => {
+  const { withToolchain } = await import('../../../../../../evals/tools/toolchain-env.mjs');
+  process.env.PLAYWRIGHT_BROWSERS_PATH = withToolchain(process.env).PLAYWRIGHT_BROWSERS_PATH;
+  const dir = project(STATES_PAGE);
+  mkdirSync(join(dir, 'node_modules'));
+  symlinkSync(join(REPO, 'node_modules', 'playwright'), join(dir, 'node_modules', 'playwright'), 'junction');
+  const r = await screenshot({ projectDir: dir, platform: 'web', roots: [], states: { states: STATES } });
+  assert.equal(r.engine, 'playwright');
+  await assertStates(r, dir);
+});
+
+test('states without Playwright: a system browser over CDP gives the same', { skip: toolchain || noBrowser, timeout: 900_000 }, async (t) => {
+  const dir = project(STATES_PAGE);
+  if (findPlaywright(dir, { roots: [] })) { t.skip('a Playwright resolves from the temp folder'); return; }
+  const r = await screenshot({ projectDir: dir, platform: 'web', roots: [], states: { states: STATES } });
+  assert.equal(r.engine, 'cdp');
+  await assertStates(r, dir);
+  // CLI: --states file, the summary lists the states.
+  const file = join(mkdtempSync(join(tmpdir(), 'm3 states-')), 'states.json');
+  writeFileSync(file, JSON.stringify({ states: STATES.slice(0, 1) }));
+  const cli = spawnSync(process.execPath, [INDEX, dir, '--platform', 'web', '--states', file], { encoding: 'utf8', timeout: 600_000 });
+  assert.equal(cli.status, 0, cli.stderr);
+  assert.deepEqual(JSON.parse(cli.stdout).states.map((s) => [s.name, s.ok]), [['dialog', true]]);
+});

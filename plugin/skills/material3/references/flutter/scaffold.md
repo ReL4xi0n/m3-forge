@@ -59,7 +59,7 @@ Adding `material_ui` to an existing project is a dependency change: ask first (`
 
 ## Screenshot step
 
-`node "S/scripts/screenshot/index.mjs" <project> --platform flutter` (needs the SDK on `PATH`).
+`node "S/scripts/screenshot/index.mjs" <project> --platform flutter [--states <file.json>]` (needs the SDK on `PATH`).
 
 - It copies the project to a temporary folder, runs `flutter pub get` and a generated test there,
   and deletes the copy. The project stays byte for byte as it was. Shots and `capture.json` go to a
@@ -69,9 +69,19 @@ Adding `material_ui` to an existing project is a dependency change: ask first (`
   Named `<theme>-412x915-<nn>.png`: `01` is the top, `02` and on are the first vertical scrollable
   that can scroll, moved one viewport down each time, to its end. At most 4 frames per theme; when
   it is longer a warning says so.
-- Plan check: every requested element must be visible in some frame. Elements behind a tap (a
-  menu, a dialog, another route) are not captured: a row seen in no frame is not visible. Render it
-  as a labelled specimen within the frames (SKILL.md step 5) and run the step again.
+- Plan check: every requested element must be visible in a main frame or in a state shot. Elements
+  behind an action (a menu, a dialog, an empty result, another route) are reached with `--states`,
+  a JSON file outside the project. Each state starts the app fresh (`main()` again), runs its steps
+  with a settle after each, and shoots light and dark as `state-<name>-<theme>-412x915.png`.
+  `capture.json` gets `states: [{ name, ok, shots, error? }]`; a step whose finder matches nothing
+  marks that state `ok: false` (and a warning): fix the steps or the screen, run again. Steps:
+  `tap` and `scrollTo` take a finder (`text` exact, `key`, `tooltip` or `semanticsLabel`);
+  `enterText` takes `into` (`{"type":"TextField","index":0}`, `{"key":..}` or `{"hint":..}`) and `text`.
+
+  ```json
+  { "states": [ { "name": "empty-search", "steps": [
+    { "enterText": { "into": { "hint": "Search" }, "text": "cactus" } } ] } ] }
+  ```
 - `runtime.contrast` and `runtime.targets` are flutter_test's text contrast guideline and a 48 x 48
   dp check of enabled tappable or focusable nodes, once per element; pass `capture.json` to verify.
 - A `test/flutter_test_config.dart` of the project stays in effect in the copy: the step moves it to `test/m3_project_test_config.dart` and its `testExecutable` runs after the fonts load.
