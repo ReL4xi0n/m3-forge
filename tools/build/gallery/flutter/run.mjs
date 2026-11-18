@@ -34,7 +34,7 @@ async function toolchainRoot() {
 
 // Expressive gap widgets with a golden test each (test/m3_<name>_test.dart); a widget the library
 // cannot use (library: 'material_ui', ruling R24) is neither installed nor tested under the other.
-export const WIDGETS = ['loading-indicator', 'button-group'].filter(p => MANIFEST.flutter[p]);
+export const WIDGETS = ['loading-indicator', 'button-group', 'fab-menu'].filter(p => MANIFEST.flutter[p]);
 export const widgetsFor = library => WIDGETS.filter(p => !MANIFEST.flutter[p].some(e => e.library && e.library !== library));
 
 const useLibrary = (text, library) => (library === 'material_ui'
@@ -56,7 +56,7 @@ export async function runGallery(library, outDir = join(OUT, library)) {
     writeTheme({ platform: 'flutter', seed: SEED, style: 'expressive', flutterLibrary: library, out: join(dir, 'lib/m3/schemes.dart') });
     writeTheme({ platform: 'flutter', seed: SEED, style: 'classic', flutterLibrary: library, out: join(dir, 'lib/m3/schemes_classic.dart') });
     // Icon constants for the Symbols golden; the font is already in place from install-assets.
-    flutterIcons({ projectDir: dir, names: ['settings'] });
+    flutterIcons({ projectDir: dir, names: ['settings', 'add', 'close', 'mail', 'share', 'edit', 'keyboard_arrow_down', 'more_vert'] });
     for (const w of WIDGETS) {
       if (widgetsFor(library).includes(w)) continue;
       const snake = w.replace(/-/g, '_');

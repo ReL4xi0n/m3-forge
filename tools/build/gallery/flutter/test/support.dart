@@ -1,5 +1,6 @@
 // Shared helpers for the gap-component goldens: a themed app at phone width, light or dark.
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart' show debugDisableShadows;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:m3_gallery/m3/schemes.dart';
 import 'package:m3_gallery/m3/theme.dart';
@@ -20,4 +21,10 @@ Future<void> pumpApp(WidgetTester tester, Widget child, {Brightness brightness =
     ),
     home: Scaffold(body: SafeArea(child: child)),
   ));
+}
+
+/// flutter_test draws shadows as hard black outlines; call this first in a golden that shows elevation.
+void useRealShadows() {
+  debugDisableShadows = false;
+  addTearDown(() => debugDisableShadows = true);
 }

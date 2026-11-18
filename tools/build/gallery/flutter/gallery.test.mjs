@@ -10,6 +10,7 @@ import { runGallery, widgetsFor } from './run.mjs';
 const IMAGES = {
   'loading-indicator': ['loading_indicator_dark.png', 'loading_indicator_light.png'],
   'button-group': ['button_group_dark.png', 'button_group_light.png'],
+  'fab-menu': ['fab_menu_dark.png', 'fab_menu_light.png'],
 };
 
 const skip = process.env.M3_TOOLCHAIN_TESTS !== '1' && 'needs the local toolchain (M3_TOOLCHAIN_TESTS=1)';
