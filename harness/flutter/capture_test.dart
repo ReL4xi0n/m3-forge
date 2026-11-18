@@ -1,4 +1,7 @@
-// m3-forge Flutter capture (spec §10). harness/flutter/capture.mjs copies this file to a result
+// m3-forge Flutter capture, harness v3 (spec §10; owner decision 2026-11-18). v3 differs from v2
+// (capture_test.v2.dart, kept for re-captures with the old measurement) only in painting real
+// elevation shadows: flutter_test keeps debugDisableShadows on, which draws every shadow as a solid
+// black outline. harness/flutter/capture.mjs copies this file to a result
 // project's test/m3_capture_test.dart after the run, replacing __M3_APP_PACKAGE__ with the `name`
 // from the project's pubspec.yaml. The session that wrote the app never sees it.
 //
@@ -78,6 +81,8 @@ void main() {
     final String theme = brightness == ui.Brightness.light ? 'light' : 'dark';
 
     testWidgets('m3 capture $theme $kViewport', (WidgetTester tester) async {
+      debugDisableShadows = false; // harness v3: real shadows, not black outlines
+      addTearDown(() => debugDisableShadows = true);
       tester.view.devicePixelRatio = kRatio;
       tester.view.physicalSize = const Size(kWidth * kRatio, kHeight * kRatio);
       tester.platformDispatcher.platformBrightnessTestValue = brightness;
@@ -119,7 +124,7 @@ void main() {
           'settle': settle,
           'textContrastGuideline': contrast,
           'touchTargetGuideline': targets,
-          'harness': 'v2',
+          'harness': 'v3',
         }),
       );
       semantics.dispose();

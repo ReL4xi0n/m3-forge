@@ -105,11 +105,14 @@ function finish(outDir, capture) {
   return capture;
 }
 
-export async function captureFlutter({ projectDir, outDir, timeoutMs = 15 * 60_000 }) {
+// version 'v3' (default): real shadows. 'v2': the measurement the baseline was first re-scored with
+// (shadows drawn as black outlines); kept only to reproduce it.
+export async function captureFlutter({ projectDir, outDir, timeoutMs = 15 * 60_000, version = 'v3' }) {
+  if (!['v2', 'v3'].includes(version)) throw new Error(`m3-forge: unknown harness version ${version}`);
   projectDir = resolve(projectDir);
   outDir = resolve(outDir);
   const fonts = verifyFonts();
-  const base = { platform: 'flutter', buildOk: false, reason: undefined, shots: [], runtime: { contrast: [], targets: [] }, raw: {} };
+  const base = { platform: 'flutter', harness: version, buildOk: false, reason: undefined, shots: [], runtime: { contrast: [], targets: [] }, raw: {} };
 
   const name = packageName(projectDir);
   if (!name) return finish(outDir, { ...base, reason: `no package name in ${join(projectDir, 'pubspec.yaml')}` });
@@ -133,7 +136,7 @@ export async function captureFlutter({ projectDir, outDir, timeoutMs = 15 * 60_0
 
   let result;
   try {
-    const template = readFileSync(join(here, 'capture_test.dart'), 'utf8');
+    const template = readFileSync(join(here, version === 'v2' ? 'capture_test.v2.dart' : 'capture_test.dart'), 'utf8');
     writeFileSync(testPath, template.replaceAll('__M3_APP_PACKAGE__', name));
     copyFileSync(join(here, CONFIG_FILE), configPath);
     const env = {

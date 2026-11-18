@@ -1,0 +1,565 @@
+{
+  "runId": "baseline-2026-11-17",
+  "rows": [
+    {
+      "cell": "landing.flutter.flutter-material_ui.default",
+      "v2": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 2,
+        "shape-expressive": 3,
+        "spacing-layout": 3,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      },
+      "v3": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 2,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "cell": "settings.flutter.flutter-material_ui.default",
+      "v2": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 3,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 3
+      },
+      "v3": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 3,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 3
+      }
+    },
+    {
+      "cell": "dashboard.flutter.flutter-material_ui.default",
+      "v2": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 2,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      },
+      "v3": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 2,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "cell": "product-detail.flutter.flutter-material_ui.default",
+      "v2": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 2,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 1
+      },
+      "v3": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 2,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 2,
+        "overall-polish": 1
+      }
+    },
+    {
+      "cell": "onboarding.flutter.flutter-material_ui.default",
+      "v2": {
+        "component-choice": 2,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      },
+      "v3": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 2,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 2,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "cell": "empty-error.flutter.flutter-material_ui.default",
+      "v2": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 2,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 2,
+        "dark-mode": 2,
+        "overall-polish": 1
+      },
+      "v3": {
+        "component-choice": 3,
+        "hierarchy-typography": 2,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 1
+      }
+    },
+    {
+      "cell": "settings.flutter.flutter-legacy.default",
+      "v2": {
+        "component-choice": 3,
+        "hierarchy-typography": 2,
+        "color-roles": 2,
+        "shape-expressive": 3,
+        "spacing-layout": 3,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      },
+      "v3": {
+        "component-choice": 3,
+        "hierarchy-typography": 2,
+        "color-roles": 2,
+        "shape-expressive": 3,
+        "spacing-layout": 3,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "cell": "settings.flutter.flutter-material_ui.classic",
+      "v2": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 3,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 3
+      },
+      "v3": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 3,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 3
+      }
+    },
+    {
+      "cell": "dashboard.flutter.flutter-material_ui.seed-B5651D",
+      "v2": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 2,
+        "shape-expressive": 3,
+        "spacing-layout": 3,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      },
+      "v3": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 2,
+        "shape-expressive": 3,
+        "spacing-layout": 3,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    }
+  ],
+  "automated": [
+    {
+      "cell": "landing.flutter.flutter-material_ui.default",
+      "v2": {
+        "token-fidelity": 2,
+        "contrast-targets": 3,
+        "anti-patterns": 1,
+        "icon-source": 0
+      },
+      "v3": {
+        "token-fidelity": 2,
+        "contrast-targets": 3,
+        "anti-patterns": 1,
+        "icon-source": 0
+      },
+      "counts": {
+        "v2": {
+          "hardcoded-color": 0,
+          "off-token-type": 0,
+          "off-token-radius": 2,
+          "off-grid-spacing": 9,
+          "shadow-gradient": 2,
+          "icon-source": 17,
+          "foreign-styling": 0,
+          "contrast": 0,
+          "touch-target": 0
+        },
+        "v3": {
+          "hardcoded-color": 0,
+          "off-token-type": 0,
+          "off-token-radius": 2,
+          "off-grid-spacing": 9,
+          "shadow-gradient": 2,
+          "icon-source": 17,
+          "foreign-styling": 0,
+          "contrast": 0,
+          "touch-target": 0
+        }
+      }
+    },
+    {
+      "cell": "settings.flutter.flutter-material_ui.default",
+      "v2": {
+        "token-fidelity": 2,
+        "contrast-targets": 3,
+        "anti-patterns": 3,
+        "icon-source": 0
+      },
+      "v3": {
+        "token-fidelity": 2,
+        "contrast-targets": 3,
+        "anti-patterns": 3,
+        "icon-source": 0
+      },
+      "counts": {
+        "v2": {
+          "hardcoded-color": 1,
+          "off-token-type": 0,
+          "off-token-radius": 2,
+          "off-grid-spacing": 3,
+          "shadow-gradient": 0,
+          "icon-source": 26,
+          "foreign-styling": 0,
+          "contrast": 0,
+          "touch-target": 0
+        },
+        "v3": {
+          "hardcoded-color": 1,
+          "off-token-type": 0,
+          "off-token-radius": 2,
+          "off-grid-spacing": 3,
+          "shadow-gradient": 0,
+          "icon-source": 26,
+          "foreign-styling": 0,
+          "contrast": 0,
+          "touch-target": 0
+        }
+      }
+    },
+    {
+      "cell": "dashboard.flutter.flutter-material_ui.default",
+      "v2": {
+        "token-fidelity": 2,
+        "contrast-targets": 3,
+        "anti-patterns": 2,
+        "icon-source": 0
+      },
+      "v3": {
+        "token-fidelity": 2,
+        "contrast-targets": 3,
+        "anti-patterns": 2,
+        "icon-source": 0
+      },
+      "counts": {
+        "v2": {
+          "hardcoded-color": 4,
+          "off-token-type": 0,
+          "off-token-radius": 2,
+          "off-grid-spacing": 6,
+          "shadow-gradient": 1,
+          "icon-source": 24,
+          "foreign-styling": 0,
+          "contrast": 0,
+          "touch-target": 0
+        },
+        "v3": {
+          "hardcoded-color": 4,
+          "off-token-type": 0,
+          "off-token-radius": 2,
+          "off-grid-spacing": 6,
+          "shadow-gradient": 1,
+          "icon-source": 24,
+          "foreign-styling": 0,
+          "contrast": 0,
+          "touch-target": 0
+        }
+      }
+    },
+    {
+      "cell": "product-detail.flutter.flutter-material_ui.default",
+      "v2": {
+        "token-fidelity": 2,
+        "contrast-targets": 2,
+        "anti-patterns": 2,
+        "icon-source": 0
+      },
+      "v3": {
+        "token-fidelity": 2,
+        "contrast-targets": 2,
+        "anti-patterns": 2,
+        "icon-source": 0
+      },
+      "counts": {
+        "v2": {
+          "hardcoded-color": 9,
+          "off-token-type": 1,
+          "off-token-radius": 5,
+          "off-grid-spacing": 19,
+          "shadow-gradient": 1,
+          "icon-source": 36,
+          "foreign-styling": 0,
+          "contrast": 1,
+          "touch-target": 0
+        },
+        "v3": {
+          "hardcoded-color": 9,
+          "off-token-type": 1,
+          "off-token-radius": 5,
+          "off-grid-spacing": 19,
+          "shadow-gradient": 1,
+          "icon-source": 36,
+          "foreign-styling": 0,
+          "contrast": 1,
+          "touch-target": 0
+        }
+      }
+    },
+    {
+      "cell": "onboarding.flutter.flutter-material_ui.default",
+      "v2": {
+        "token-fidelity": 3,
+        "contrast-targets": 2,
+        "anti-patterns": 3,
+        "icon-source": 0
+      },
+      "v3": {
+        "token-fidelity": 3,
+        "contrast-targets": 2,
+        "anti-patterns": 3,
+        "icon-source": 0
+      },
+      "counts": {
+        "v2": {
+          "hardcoded-color": 0,
+          "off-token-type": 0,
+          "off-token-radius": 0,
+          "off-grid-spacing": 6,
+          "shadow-gradient": 0,
+          "icon-source": 26,
+          "foreign-styling": 0,
+          "contrast": 1,
+          "touch-target": 0
+        },
+        "v3": {
+          "hardcoded-color": 0,
+          "off-token-type": 0,
+          "off-token-radius": 0,
+          "off-grid-spacing": 6,
+          "shadow-gradient": 0,
+          "icon-source": 26,
+          "foreign-styling": 0,
+          "contrast": 1,
+          "touch-target": 0
+        }
+      }
+    },
+    {
+      "cell": "empty-error.flutter.flutter-material_ui.default",
+      "v2": {
+        "token-fidelity": 2,
+        "contrast-targets": 3,
+        "anti-patterns": 3,
+        "icon-source": 0
+      },
+      "v3": {
+        "token-fidelity": 2,
+        "contrast-targets": 3,
+        "anti-patterns": 3,
+        "icon-source": 0
+      },
+      "counts": {
+        "v2": {
+          "hardcoded-color": 1,
+          "off-token-type": 1,
+          "off-token-radius": 0,
+          "off-grid-spacing": 9,
+          "shadow-gradient": 0,
+          "icon-source": 25,
+          "foreign-styling": 0,
+          "contrast": 0,
+          "touch-target": 0
+        },
+        "v3": {
+          "hardcoded-color": 1,
+          "off-token-type": 1,
+          "off-token-radius": 0,
+          "off-grid-spacing": 9,
+          "shadow-gradient": 0,
+          "icon-source": 25,
+          "foreign-styling": 0,
+          "contrast": 0,
+          "touch-target": 0
+        }
+      }
+    },
+    {
+      "cell": "settings.flutter.flutter-legacy.default",
+      "v2": {
+        "token-fidelity": 2,
+        "contrast-targets": 3,
+        "anti-patterns": 3,
+        "icon-source": 0
+      },
+      "v3": {
+        "token-fidelity": 2,
+        "contrast-targets": 3,
+        "anti-patterns": 3,
+        "icon-source": 0
+      },
+      "counts": {
+        "v2": {
+          "hardcoded-color": 0,
+          "off-token-type": 1,
+          "off-token-radius": 1,
+          "off-grid-spacing": 6,
+          "shadow-gradient": 0,
+          "icon-source": 28,
+          "foreign-styling": 0,
+          "contrast": 0,
+          "touch-target": 0
+        },
+        "v3": {
+          "hardcoded-color": 0,
+          "off-token-type": 1,
+          "off-token-radius": 1,
+          "off-grid-spacing": 6,
+          "shadow-gradient": 0,
+          "icon-source": 28,
+          "foreign-styling": 0,
+          "contrast": 0,
+          "touch-target": 0
+        }
+      }
+    },
+    {
+      "cell": "settings.flutter.flutter-material_ui.classic",
+      "v2": {
+        "token-fidelity": 2,
+        "contrast-targets": 3,
+        "anti-patterns": 3,
+        "icon-source": 0
+      },
+      "v3": {
+        "token-fidelity": 2,
+        "contrast-targets": 3,
+        "anti-patterns": 3,
+        "icon-source": 0
+      },
+      "counts": {
+        "v2": {
+          "hardcoded-color": 1,
+          "off-token-type": 0,
+          "off-token-radius": 0,
+          "off-grid-spacing": 0,
+          "shadow-gradient": 0,
+          "icon-source": 24,
+          "foreign-styling": 0,
+          "contrast": 0,
+          "touch-target": 0
+        },
+        "v3": {
+          "hardcoded-color": 1,
+          "off-token-type": 0,
+          "off-token-radius": 0,
+          "off-grid-spacing": 0,
+          "shadow-gradient": 0,
+          "icon-source": 24,
+          "foreign-styling": 0,
+          "contrast": 0,
+          "touch-target": 0
+        }
+      }
+    },
+    {
+      "cell": "dashboard.flutter.flutter-material_ui.seed-B5651D",
+      "v2": {
+        "token-fidelity": 2,
+        "contrast-targets": 3,
+        "anti-patterns": 2,
+        "icon-source": 0
+      },
+      "v3": {
+        "token-fidelity": 2,
+        "contrast-targets": 3,
+        "anti-patterns": 2,
+        "icon-source": 0
+      },
+      "counts": {
+        "v2": {
+          "hardcoded-color": 1,
+          "off-token-type": 0,
+          "off-token-radius": 2,
+          "off-grid-spacing": 8,
+          "shadow-gradient": 1,
+          "icon-source": 25,
+          "foreign-styling": 0,
+          "contrast": 0,
+          "touch-target": 0
+        },
+        "v3": {
+          "hardcoded-color": 1,
+          "off-token-type": 0,
+          "off-token-radius": 2,
+          "off-grid-spacing": 8,
+          "shadow-gradient": 1,
+          "icon-source": 25,
+          "foreign-styling": 0,
+          "contrast": 0,
+          "touch-target": 0
+        }
+      }
+    }
+  ]
+}
