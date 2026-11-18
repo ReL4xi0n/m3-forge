@@ -48,5 +48,19 @@ the project already uses; do not add the other package to a project.
 | `lib/m3/{tokens,type,shape,space,motion,theme}.dart` | install-assets | `tokens.dart` exports type, shape, space, motion |
 | `assets/fonts/*` | install-assets (`fonts`) | licenses ship next to the fonts |
 
+## Without Node
+
+- Copy `S/assets/flutter/lib/m3/*.dart` to `lib/m3/` and the fonts with their licenses to
+  `assets/fonts/`. With `material_ui`, apply the import rewrite by hand: the import line becomes
+  `package:material_ui/material_ui.dart` and each `// [material_ui] <code>` line becomes `<code>`.
+- Colors: pick the seed by `nearest` in `S/tokens/precomputed-schemes.json` (`references/core/color.md`;
+  classic M3: the `classic` entry for the `classicVariants`). Write `lib/m3/color_schemes.dart` with
+  `abstract final class M3ColorSchemes` holding `light`, `dark`, `lightMediumContrast`,
+  `lightHighContrast`, `darkMediumContrast`, `darkHighContrast` as `ColorScheme(...)`. Each scheme
+  string holds the `roles` in order, 6 hex digits each, written `Color(0xFF<hex>)`. Leave out
+  `background`, `onBackground` and `surfaceVariant`; `inverseOnSurface` is `onInverseSurface`. Copy
+  the digits; never retype or round them. The file name marks it as the theme file for verify.
+- Icons: `icons.md` (No Node).
+
 Re-running `install-assets` later: leave out `fonts` once the icons script has replaced the font
 subset (a differing file is a conflict, exit 3).

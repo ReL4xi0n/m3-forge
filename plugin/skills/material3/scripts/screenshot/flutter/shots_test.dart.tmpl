@@ -109,6 +109,10 @@ void main() {
 
       // The debug banner is not part of the app: keep it out of the shots.
       WidgetsApp.debugAllowBannerOverride = false;
+      // flutter_test paints elevation shadows as solid black outlines unless this is off; the shots
+      // must show the app as a device draws it.
+      debugDisableShadows = false;
+      addTearDown(() => debugDisableShadows = true);
       await _runMain();
       String settle = await _settle(tester);
 

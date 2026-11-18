@@ -160,3 +160,9 @@ test('the shipped scaffold has a pubspec on material_ui, lib/ and test/', () => 
   for (const f of ['lib/main.dart', 'test/widget_test.dart']) assert.ok(statSync(join(dir, f)).isFile());
   assert.match(readFileSync(join(dir, 'lib', 'main.dart'), 'utf8'), /package:material_ui\/material_ui\.dart/);
 });
+
+test('the shots template paints real elevation shadows (flutter_test draws them as black outlines by default)', () => {
+  const tmpl = readFileSync(fileURLToPath(new URL('../flutter/shots_test.dart.tmpl', import.meta.url)), 'utf8');
+  assert.match(tmpl, /debugDisableShadows = false;/);
+  assert.match(tmpl, /addTearDown\(\(\) => debugDisableShadows = true\)/);
+});
