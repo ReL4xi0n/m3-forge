@@ -1,7 +1,6 @@
 # Composition
 
-How first-party Material 3 screens arrange their parts. Use it before writing code and again on
-the screenshots.
+How first-party Material 3 screens arrange their parts: for the screen plan and the screenshots.
 
 ## Placement
 
@@ -35,8 +34,8 @@ the screenshots.
 - Forms: one column of full-width fields; a field's extra action (remove, choose type) sits
   outside the field at its trailing side; optional fields hide behind a row of tonal "add" buttons
   at the end of the form; the save action lives in the top app bar or at the end, not both.
-- Empty states: an illustration-sized shape container, a one-line title, one line of help, and
-  the way out as the screen's FAB or a single button.
+- Empty states: an illustration-sized graphic (Expressive: a library shape, below), a one-line
+  title, one line of help, and the way out as the screen's FAB or a single button.
 
 ## Spacing rhythm
 
@@ -51,7 +50,17 @@ the screenshots.
   navigation item. Secondary actions are tonal, outlined or text buttons.
 - The accent color appears in few places with a job: the active destination, the main action,
   section labels, links and the selected state. Large areas stay on surface roles.
-- Alerts and warnings use the error-container pair (or a tonal container with an error icon),
-  never a saturated error fill that outshouts the main action.
+- Error containers fill only small areas: an inline alert, a chip, a banner. A large error area
+  (a panel, a list of issues) sits on a surface container and marks the error with the error
+  color on its icon, title or edge. A full `error` fill is only for small badges.
 - A floating action (FAB, extended FAB) sits at the bottom trailing corner over content, and the
   scrolling content has bottom padding so the last row clears it.
+
+## Library shapes (M3 Expressive only)
+
+The 35 library shapes (`shape.md`) are for imagery, for emphasis, one or two per view:
+- Avatars and media placeholders: the shape is the avatar mask or image crop; initials, an icon
+  or the picture sit inside on a container role.
+- Empty states and moments of success: the graphic is a library shape holding one large icon.
+- Hero area: the key visual or image takes the crop; its headline and actions stay outside it.
+- Never on text containers, content cards, buttons or fields. None in classic M3.

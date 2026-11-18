@@ -2,7 +2,8 @@
 // Pre-3b probes (measurement only). Isolated config folder + OAuth token as run-cell uses.
 //   probe-skill-dir.mjs personal              stub skill installed as a personal skill
 //   probe-skill-dir.mjs plugin <prompt...>    stub skill installed as a plugin from a local marketplace
-//   probe-skill-dir.mjs tokens <base|refs|skill|checklist>   input-token total of a minimal run
+//   probe-skill-dir.mjs tokens <base|refs|skill|checklist|always>   input-token total of a minimal run
+//   (always = every file SKILL.md says to always read, the set tools/ci/skill-budget.mjs counts)
 import { spawn, spawnSync } from 'node:child_process';
 import { cpSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -10,6 +11,7 @@ import { fileURLToPath } from 'node:url';
 import { childEnv } from './isolation.mjs';
 import { toolchainRoot } from './toolchain-env.mjs';
 import { DEFAULT_MODEL } from './run-cell.mjs';
+import { alwaysRead } from '../../tools/ci/skill-budget.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const EVAL = 'C:/m3-eval/probe-pre3b';
@@ -70,6 +72,7 @@ if (mode === 'personal') {
   if (which === 'refs') text = files.map(f => readFileSync(f, 'utf8')).join('\n');
   if (which === 'skill') text = readFileSync(join(core, 'SKILL.md'), 'utf8');
   if (which === 'checklist') text = readFileSync(join(core, 'CHECKLIST.md'), 'utf8');
+  if (which === 'always') text = alwaysRead(core).map(f => readFileSync(join(core, f), 'utf8')).join('\n');
   const { cfg, work, base: b } = fresh('tokens');
   const prompt = `Reply with the single word OK. Do not use any tool.\n${text}`;
   const s = summarize(cli(['-p', ...base], mkEnv(cfg), work, prompt).stdout);

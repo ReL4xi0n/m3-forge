@@ -25,17 +25,12 @@ make it specific to the request.
 5. Contact details belong to the invented product: emails at its own domain (for example
    `<name>@<productname>.<tld>` with a plausible top-level domain), phone numbers in the local
    format.
-6. Imagery: no image files or URLs. In place of a picture:
-   - M3 Expressive on Compose and Flutter: a shape from the Material shape library (expressive.md,
-     "Imagery and decoration"), filled with a container role (`primaryContainer`,
-     `secondaryContainer`, `tertiaryContainer`) and, when it helps, a centered Material Symbols
-     icon in the matching on role that names the subject (`landscape`, `restaurant`,
-     `directions_car`). Use library shapes sparingly, for decoration and image crops only.
-   - Web, and classic M3 everywhere: a container with a shape-scale corner (shape.md) filled the
-     same way. The library shape geometry for the web is [NOT FOUND] in our sources; never draw an
-     imitation.
-   - Avatars: the person's initials in a full-shape (circular) container filled with a container
-     role, text in its on role; the `person` icon when there is no name.
+6. Imagery: no image files or URLs. A picture becomes a container filled with a container role
+   (`primaryContainer`, `secondaryContainer`, `tertiaryContainer`) holding, when it helps, a
+   centered Material Symbols icon in the matching on role that names the subject (`landscape`,
+   `restaurant`). Avatars hold the person's initials (the `person` icon without a name). Shape: M3
+   Expressive uses a library shape (composition.md, "Library shapes"; all three platforms),
+   classic M3 a shape-scale corner (avatars full).
 7. Destinations: the requested screen is complete. Every other visible destination (tab,
    navigation item, menu entry, link) opens a simple but credible screen with real content (a
    short list, a summary or a form with plausible data), never a blank or "coming soon" page.

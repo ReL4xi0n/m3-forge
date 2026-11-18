@@ -53,10 +53,8 @@ the Expressive-only steps.
 
 ## Expressive shape library and morphing
 
-- Decorative library shapes (Compose `MaterialShapes`, Flutter `MaterialShapes` /
-  `MaterialShapeBorder`, web part `shapes`) are for imagery: avatar masks, image crops, empty-state
-  art. Never for text containers.
-- Use them sparingly; a shape carries no fixed meaning.
+- Library shapes: Compose `MaterialShapes`, Flutter `MaterialShapes` / `MaterialShapeBorder`, web
+  part `shapes`; where they go is in composition.md. A shape carries no fixed meaning.
 - Morphs answer an interaction (pressed, selected, loading). Drive them with the motion scheme's
   spatial springs (motion.md), never a fixed duration.
 - Web has no shape morph; switch between scale steps on state change and transition the radius

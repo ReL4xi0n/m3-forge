@@ -7,7 +7,7 @@ import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import {
-  ACHROMATIC_CHROMA, BASELINE_SEED, CONTRASTS, ROLES, VARIANTS, decodeScheme, generatedTheme, gridSeeds, harmonize, nearest,
+  ACHROMATIC_CHROMA, BASELINE_SEED, CONTRASTS, ROLES, VARIANTS, decodeScheme, effectiveSpec, generatedTheme, gridSeeds, harmonize, nearest,
   precomputed, renderTheme, scheme, writeTheme,
 } from '../index.mjs';
 import { DynamicScheme, Hct, MaterialDynamicColors, Variant, argbFromHex, customColor, hexFromArgb } from '../mcu.mjs';
@@ -179,8 +179,8 @@ test('nearest picks by hue, then chroma, deterministically', () => {
   assert.throws(() => nearest('#12'), /seed/);
 });
 
-test('the precomputed file is at most 1.5 MB', () => {
-  assert.ok(statSync(PRECOMPUTED).size <= 1.5 * 1024 * 1024, `${statSync(PRECOMPUTED).size} bytes`);
+test('the precomputed file is at most 2 MB', () => {
+  assert.ok(statSync(PRECOMPUTED).size <= 2 * 1024 * 1024, `${statSync(PRECOMPUTED).size} bytes`);
 });
 
 // ---------------------------------------------------------------------------------------------
@@ -279,7 +279,7 @@ test('writeTheme and the CLI write the file (path with spaces) and report the se
   try {
     const out = join(dir, 'lib dir', 'm3', 'schemes.dart');
     const r = writeTheme({ platform: 'flutter', seed: '#3366cc', variant: 'tonalSpot', out });
-    assert.deepEqual(r, { seedRequested: '#3366cc', seedUsed: '#3366CC', exact: true, source: 'material-color-utilities 0.4.0, spec 2025', out });
+    assert.deepEqual(r, { seedRequested: '#3366cc', seedUsed: '#3366CC', exact: true, style: 'expressive', source: 'material-color-utilities 0.4.0, spec 2025', out });
     assert.equal(readFileSync(out, 'utf8'), renderTheme({ platform: 'flutter', seed: '#3366CC', variant: 'tonalSpot' }));
 
     const css = join(dir, 'web out', 'colors.css');
@@ -382,7 +382,7 @@ test('an achromatic seed (HCT chroma < 12) uses the baseline seed, on every path
   try {
     const out = join(dir, 'colors.css');
     const r = writeTheme({ platform: 'web', seed: '#222222', variant: 'tonalSpot', out });
-    assert.deepEqual(r, { seedRequested: '#222222', seedUsed: BASELINE_SEED, exact: false, source: 'published baseline scheme (md.sys.color)', out, note: 'achromatic seed, baseline used' });
+    assert.deepEqual(r, { seedRequested: '#222222', seedUsed: BASELINE_SEED, exact: false, style: 'expressive', source: 'published baseline scheme (md.sys.color)', out, note: 'achromatic seed, baseline used' });
     const text = readFileSync(out, 'utf8');
     const lines = text.split('\n');
     assert.equal(lines[0], '/* material3 skill generated: color #6750A4 tonalSpot */');
@@ -435,5 +435,84 @@ test('the file states the no-Node nearest rule and carries HSL hue/saturation pe
     const other = p.seeds.find(x => x.seed === got);
     assert.deepEqual([other.hslHue, other.hslSat], [s.hslHue, s.hslSat], `${s.seed} -> ${got}`);
     assert.ok(p.seeds.indexOf(other) < p.seeds.indexOf(s));
+  }
+});
+
+// ---------------------------------------------------------------------------------------------
+// Style -> color spec (owner, 2026-11-18): Expressive uses the MCU 2025 spec, classic M3 the 2021 spec;
+// a scheme never mixes roles from the two specs.
+
+test('classic style is MCU 2021 output and Expressive is MCU 2025 output, every role from one spec', () => {
+  const colors = new MaterialDynamicColors();
+  for (const [seed, variant, v] of [['#2F6F5E', 'tonalSpot', Variant.TONAL_SPOT], ['#B5651D', 'vibrant', Variant.VIBRANT]]) {
+    for (const [style, spec] of [['classic', '2021'], ['expressive', '2025']]) {
+      for (const dark of [false, true]) {
+        const s = new DynamicScheme({ sourceColorHct: Hct.fromInt(argbFromHex(seed)), variant: v, contrastLevel: 0, isDark: dark, specVersion: spec });
+        const want = Object.fromEntries(ROLES.map(r => [r, hexFromArgb(colors[r]().getArgb(s))]));
+        assert.deepEqual(scheme({ seed, variant, dark, spec }), want, `${seed} ${style} ${dark}`);
+        const t = renderTheme({ platform: 'web', seed, variant, style });
+        assert.ok(t.includes(`spec ${spec} */`), `${style} source line`);
+        assert.ok(t.includes(`--md-sys-color-error-container: ${want.errorContainer};`), `${style} errorContainer`);
+      }
+    }
+  }
+  assert.throws(() => renderTheme({ platform: 'web', seed: '#2F6F5E', style: 'loud' }), /style/);
+  assert.throws(() => scheme({ seed: '#2F6F5E', spec: '2023' }), /spec/);
+});
+
+// MCU source (color_spec_2025 errorContainer, phone): light tone = tMaxC(errorPalette, 0, 90), the tone
+// of highest chroma of the error palette, which for tonalSpot is hue 12/22/32 (piecewise by seed hue) at
+// chroma 60; dark tone = tMinC(errorPalette, 30, 93). The 2021 spec: tone 90 light / 30 dark of hue 25,
+// chroma 84. MCU's own tests pin no values for these roles (constraint tests only), so this test pins the
+// source-derived behavior for the dev seed.
+test('error roles per spec for #2F6F5E (2025: max-chroma light container; 2021: tone 90 / 30)', () => {
+  const e25 = scheme({ seed: '#2F6F5E', spec: '2025' });
+  const e21 = scheme({ seed: '#2F6F5E', spec: '2021' });
+  assert.equal(e25.errorContainer, '#fa746f');
+  assert.equal(e21.errorContainer, '#ffdad6');
+  assert.equal(e21.error, '#ba1a1a');
+  assert.equal(scheme({ seed: '#2F6F5E', spec: '2021', dark: true }).errorContainer, '#93000a');
+  const t25 = Hct.fromInt(argbFromHex(e25.errorContainer)).tone;
+  assert.ok(t25 > 60 && t25 < 70, `2025 light errorContainer tone ${t25}`);
+});
+
+test('a generated classic theme is recognized by verify and re-renders from its source line', () => {
+  for (const platform of ['web', 'flutter', 'compose']) {
+    const t = renderTheme({ platform, seed: '#2F6F5E', style: 'classic' });
+    const rel = { web: 'src/theme.css', flutter: 'lib/m3/schemes.dart', compose: 'app/src/main/java/m3/theme/Color.kt' }[platform];
+    assert.equal(generatedTheme(rel, t), 'color #2F6F5E tonalSpot');
+    // The same file with Expressive values swapped in is not the script's output.
+    const e = renderTheme({ platform, seed: '#2F6F5E', style: 'expressive' });
+    assert.equal(generatedTheme(rel, e.replace('spec 2025', 'spec 2021')), null);
+  }
+});
+
+test('the CLI takes --style classic and rejects an unknown style', () => {
+  const dir = tmp('style');
+  try {
+    const css = join(dir, 'theme.css');
+    const p = spawnSync(process.execPath, [INDEX, '--seed', '#2F6F5E', '--style', 'classic', '--platform', 'web', '--out', css], { encoding: 'utf8' });
+    assert.equal(p.status, 0, p.stderr);
+    const j = JSON.parse(p.stdout);
+    assert.equal(j.style, 'classic');
+    assert.equal(j.source, 'material-color-utilities 0.4.0, spec 2021');
+    const bad = spawnSync(process.execPath, [INDEX, '--seed', '#2F6F5E', '--style', 'retro', '--platform', 'web', '--out', join(dir, 'b.css')], { encoding: 'utf8' });
+    assert.equal(bad.status, 2);
+  } finally { rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('precomputed classic schemes are the 2021 spec, for exactly the variants whose specs differ', () => {
+  const p = precomputed();
+  const differ = VARIANTS.filter(v => effectiveSpec(v, '2025') !== effectiveSpec(v, '2021'));
+  assert.deepEqual(p.classicVariants, differ);
+  for (const { seed } of p.seeds.filter((_, i) => i % 18 === 0)) {
+    assert.deepEqual(Object.keys(p.classic[seed]), differ);
+    for (const variant of differ) {
+      for (const dark of [false, true]) {
+        CONTRASTS.forEach((contrast, i) => {
+          assert.deepEqual(decodeScheme(p.classic[seed][variant][dark ? 'dark' : 'light'][i]), scheme({ seed, variant, contrast, dark, spec: '2021' }), `${seed} ${variant}`);
+        });
+      }
+    }
   }
 });

@@ -45,8 +45,9 @@ the request asks for classic Material 3. Everything below is the order of work. 
   file; it never overwrites a user file, exit 3). A brand color in the request is the seed. With no
   color in the request, pick a seed that
   fits the subject and say which; use the baseline seed `#6750A4` only for neutral requests.
-  Variant stays tonal spot unless the request names another variant. Status and chart colors use
-  roles, or `--custom name=#hex` for harmonized extra roles. (F2, F8)
+  Variant stays tonal spot unless the request names another variant. Classic M3: add
+  `--style classic` (2021 color spec; Expressive uses 2025). Status and chart colors use roles, or
+  `--custom name=#hex` for harmonized extra roles. (F2, F8)
 - Copy the theme, token and font assets with `install-assets` (`--parts` per the platform
   reference). It never overwrites a user file: on exit 3, read the listed conflicts and merge by
   hand. A project that already has a role-based M3 theme (`themeFiles`) is extended, not
@@ -56,11 +57,11 @@ the request asks for classic Material 3. Everything below is the order of work. 
 
 ## 5. Build the UI
 
-- Before writing code, list every screen, element and state the request names (panels, players,
-  pickers, badges, empty and error states, selected states). Each one must end up visible in the
-  delivered UI. (F9)
-- Then name the canonical layout per window size (`layout.md`) and the hierarchy recipe for the
-  screen type (`typography.md`), and build to them. (F9, F10)
+- Screen plan, before any code: one row per screen, element and state the request names (panels,
+  players, pickers, badges, empty and error states, selected states), each with its M3 component
+  (`components.md`) and its region per window size class (compact, medium, expanded; canonical
+  layout from `layout.md`). Every row is visible without interaction. Add the hierarchy recipe for
+  the screen type (`typography.md`), then build to the plan. (F9, F10)
 
 Hard rules. `verify` checks these (contrast and touch targets only with the step 7 capture;
 judgment calls are not machine-checked).
@@ -91,21 +92,20 @@ judgment calls are not machine-checked).
 ## 6. Verify
 
 - Run `verify` with the project folder and platform (add `capture.json` from step 7 when it
-  exists). It writes `verify.json` to a temporary folder (path printed), never into the project;
-  `--out <dir>` picks another folder. Fix every error, and also every `off-grid-spacing` and `asset-unused` warning. Repeat
-  until it reports none. (F1, F2, F3, F4, F5, F6, F7, F8, F11, F12)
+  exists). It writes `verify.json` to a printed temporary folder. Fix every error and every
+  `off-grid-spacing` and `asset-unused` warning; repeat until it reports none. (F1, F2, F3, F4, F5, F6, F7, F8, F11, F12)
 
 ## 7. Look
 
 - Run `screenshot` with the project folder and `--platform` (`--url <address>` for a running dev
-  server where the platform reference says so). It renders mobile and desktop (web) or phone
-  (Flutter, Compose), light and dark, into a temporary folder, never the project, and prints the PNG
-  paths, the `contrast` and `targets` findings and `capture` (the `capture.json` for step 6).
-  `ran: false` comes with `skippedReason` (no Playwright, browser or SDK): report it. Read every
-  image, critique it against `CHECKLIST.md`, fix, then run `screenshot` and `verify` again.
-  Web uses Playwright or, without it, an installed Chrome or Edge; open and look at every PNG
-  yourself, since overlaps and icons shown as words appear only in the images.
-  (F6, F8, F9, F10)
+  server where the platform reference says so). It renders light and dark shots (web: mobile and
+  desktop) into a temporary folder and prints the PNG paths, the `contrast` and `targets` findings
+  and `capture` (for step 6).
+  `ran: false` comes with `skippedReason` (no Playwright, browser or SDK): report it. Open every
+  PNG yourself (overlaps and icons shown as words appear only there), critique it against
+  `CHECKLIST.md`, fix, then run `screenshot` and `verify` again. (F6, F8, F9, F10)
+- Plan check: for each screen-plan row, is it visible, and in which shot and where? Place every
+  row that is not (as the plan says) and render again until all are. (F9)
 
 ## 8. Report
 
@@ -117,7 +117,7 @@ judgment calls are not machine-checked).
   4. Checks that ran, with their result.
   5. Checks that were skipped, each with its reason (for example "Flutter SDK not found:
      screenshots skipped").
-  6. Requested items: every item from the step 5 list and where it is visible (screen, section).
+  6. Requested items: the step 7 plan check, each row with the shot and place it is visible in.
   7. Screenshot review: each problem found in the images (overlap, clipped or colliding text,
      covered content, empty gutters, off-scheme colors, missing states) and how it was fixed.
   8. Anything the user must run later (package install, `flutter create .`, an upgrade).
@@ -126,7 +126,7 @@ judgment calls are not machine-checked).
 
 | Missing | Do instead | Say in the report |
 |---|---|---|
-| Node | Detect by reading `pubspec.yaml`, Gradle files and `package.json`. Color: pick the scheme from `tokens/precomputed-schemes.json` by its `nearest` rule. Icons: the steps in the platform's `icons.md` without Node. Review the code against `CHECKLIST.md` by reading it. | Verify, icon subsetting and screenshots skipped; precomputed seed used; install Node for an exact scheme |
+| Node | Detect by reading `pubspec.yaml`, Gradle files and `package.json`. Color: pick the scheme from `tokens/precomputed-schemes.json` by its `nearest` rule. Icons: the steps in the platform's `icons.md` without Node. Check the code against `CHECKLIST.md` and the screen plan by reading it. | Verify, icon subsetting and screenshots skipped; precomputed seed used; install Node for an exact scheme |
 | Platform SDK | Write the code anyway. | Build and screenshots skipped, with the command to run later |
 | Network | Nothing: fonts and icons are bundled. A requested Rounded or Sharp style falls back to Outlined. | "Rounded icons requested but could not be downloaded (offline?); used bundled Outlined. Re-run with network access to switch." |
 

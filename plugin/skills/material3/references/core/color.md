@@ -14,6 +14,8 @@ Every color in the UI is a color role. A scheme maps roles to values; the code o
 3. Run `scripts/color/index.mjs` (its header comment is the interface):
    `node "S/scripts/color/index.mjs" --seed <hex> --platform web|flutter|compose --out <theme file>`
    plus `--package` (Compose) or `--flutter-library` (Flutter) when needed.
+   - Spec follows the style: M3 Expressive uses MCU's 2025 spec, classic M3 the 2021 spec
+     (`--style classic`). A scheme never mixes roles from the two.
    - It writes light, dark, medium-contrast and high-contrast schemes.
    - It never overwrites a file that is not its own output: exit 3 with the path. Pick another
      file name; re-running over its own output is fine.
@@ -24,7 +26,8 @@ Every color in the UI is a color role. A scheme maps roles to values; the code o
    comes back harmonized with the seed as four roles: `name`, `onName`, `nameContainer`,
    `onNameContainer`. Never define another red; the error roles exist.
 5. No Node: follow `nearest` in `tokens/precomputed-schemes.json` (achromatic test, then HSL hue
-   and saturation), copy that seed's scheme, and tell the user which seed was used.
+   and saturation), copy that seed's scheme (classic M3: `classic` for the `classicVariants`), and
+   tell the user which seed was used.
 
 Never edit the generated theme file by hand. Re-run the script to change it.
 

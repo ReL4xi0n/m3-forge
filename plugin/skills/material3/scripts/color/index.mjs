@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 // Color script of the material3 skill: Material 3 color schemes from a seed color, written into a
-// platform theme file. Uses the vendored material-color-utilities 0.4.0 (2025 spec where MCU has it).
+// platform theme file. Uses the vendored material-color-utilities 0.4.0. The style picks the MCU color
+// spec (owner, 2026-11-18): M3 Expressive uses the 2025 spec, classic M3 the 2021 spec. One scheme
+// always comes from one spec, so the error roles are never mixed between specs.
 //
-//   scheme({ seed, variant = 'tonalSpot', contrast = 0, dark = false }) -> { role: '#rrggbb' }
-//   renderTheme({ platform, seed, variant, custom, packageName, flutterLibrary }) -> file text
-//   writeTheme({ platform, seed, variant, out, custom, packageName, flutterLibrary })
-//     -> { seedRequested, seedUsed, exact, source, out, note? }
+//   scheme({ seed, variant = 'tonalSpot', contrast = 0, dark = false, spec = '2025' }) -> { role: '#rrggbb' }
+//   renderTheme({ platform, seed, variant, style, custom, packageName, flutterLibrary }) -> file text
+//   writeTheme({ platform, seed, variant, style, out, custom, packageName, flutterLibrary })
+//     -> { seedRequested, seedUsed, exact, style, source, out, note? }
 //   nearest(seedHex) -> { seed, hue, chroma, note? }   nearest precomputed seed: by HCT hue, then chroma
 // An achromatic seed (HCT chroma below 12, half the lowest grid chroma) is replaced by the baseline
 // seed: writeTheme reports exact: false and note 'achromatic seed, baseline used', and the theme
@@ -13,13 +15,14 @@
 //   generatedTheme(relPath, text) -> 'color <seed> <variant>' | null   (used by verify)
 //
 // CLI:
-//   node index.mjs --seed #hex [--variant v] --platform web|flutter|compose --out file
-//                  [--custom name=#hex]... [--package com.example.app] [--flutter-library material|material_ui]
+//   node index.mjs --seed #hex [--variant v] [--style expressive|classic] --platform web|flutter|compose
+//                  --out file [--custom name=#hex]... [--package com.example.app] [--flutter-library material|material_ui]
 //   node index.mjs --nearest #hex
 // Prints JSON. Exit code 0 on success, 2 on bad usage or input.
 //
 // The baseline seed #6750A4 with tonalSpot gives the published baseline scheme (md.sys.color, all six
-// modes, stored in tokens/precomputed-schemes.json); every other seed/variant is MCU output.
+// modes, stored in tokens/precomputed-schemes.json) in both styles; every other seed/variant is MCU
+// output in the style's spec. Variants MCU defines only in the 2021 spec use it in both styles.
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { basename, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -29,6 +32,10 @@ import { Blend, DynamicScheme, Hct, MaterialDynamicColors, Variant, argbFromHex,
 export const BASELINE_SEED = '#6750A4';
 export const MCU_VERSION = '0.4.0';
 export const SPEC_VERSION = '2025';
+// Style -> MCU color spec.
+export const STYLE_SPECS = { expressive: '2025', classic: '2021' };
+export const STYLES = Object.keys(STYLE_SPECS);
+export const SPECS = Object.values(STYLE_SPECS);
 export const CONTRASTS = [0, 0.5, 1];
 export const PLATFORMS = ['web', 'flutter', 'compose'];
 // Chroma levels of the precomputed grid. A seed whose HCT chroma is below half the lowest level is
@@ -91,49 +98,65 @@ function checkVariant(variant) {
   if (!VARIANTS.includes(variant)) throw new UsageError(`variant must be one of ${VARIANTS.join(', ')}; got ${JSON.stringify(variant)}`);
 }
 
+function checkSpec(spec) {
+  if (!SPECS.includes(spec)) throw new UsageError(`spec must be ${SPECS.join(' or ')}; got ${JSON.stringify(spec)}`);
+}
+
+function specOfStyle(style) {
+  if (!STYLES.includes(style)) throw new UsageError(`style must be ${STYLES.join(' or ')}; got ${JSON.stringify(style)}`);
+  return STYLE_SPECS[style];
+}
+
+// The spec MCU actually uses for a variant (2021 for variants without a 2025 definition).
+export function effectiveSpec(variant, spec = SPEC_VERSION) {
+  return DynamicScheme.maybeFallbackSpecVersion(spec, VARIANT_IDS[variant]);
+}
+
 function checkContrast(contrast) {
   if (!CONTRASTS.includes(contrast)) throw new UsageError(`contrast must be 0, 0.5 or 1; got ${JSON.stringify(contrast)}`);
 }
 
 const colors = new MaterialDynamicColors();
 
-function dynamicScheme(seed, variant, contrast, dark, palettes = {}) {
+function dynamicScheme(seed, variant, contrast, dark, spec, palettes = {}) {
   return new DynamicScheme({
     sourceColorHct: Hct.fromInt(argbFromHex(seed)),
     variant: VARIANT_IDS[variant],
     contrastLevel: contrast,
     isDark: dark,
-    specVersion: SPEC_VERSION,
+    specVersion: spec,
     ...palettes,
   });
 }
 
 // MCU output; the spec version is what MCU uses for the variant (2021 for variants without a 2025 spec).
-export function mcuScheme({ seed, variant = 'tonalSpot', contrast = 0, dark = false }) {
-  const s = dynamicScheme(normalizeSeed(seed), variant, contrast, dark);
+export function mcuScheme({ seed, variant = 'tonalSpot', contrast = 0, dark = false, spec = SPEC_VERSION }) {
+  checkSpec(spec);
+  const s = dynamicScheme(normalizeSeed(seed), variant, contrast, dark, spec);
   return { roles: Object.fromEntries(ROLES.map(r => [r, hexFromArgb(colors[r]().getArgb(s))])), specVersion: s.specVersion };
 }
 
 const isPublished = (seed, variant) => seed === BASELINE_SEED && variant === 'tonalSpot';
 
-export function sourceOf(seed, variant) {
+export function sourceOf(seed, variant, spec = SPEC_VERSION) {
   if (isPublished(normalizeSeed(seed), variant)) return 'published baseline scheme (md.sys.color)';
-  return `material-color-utilities ${MCU_VERSION}, spec ${DynamicScheme.maybeFallbackSpecVersion(SPEC_VERSION, VARIANT_IDS[variant])}`;
+  return `material-color-utilities ${MCU_VERSION}, spec ${effectiveSpec(variant, spec)}`;
 }
 
 export function decodeScheme(str) {
   return Object.fromEntries(precomputed().roles.map((r, k) => [r, `#${str.slice(k * 6, k * 6 + 6)}`]));
 }
 
-export function scheme({ seed, variant = 'tonalSpot', contrast = 0, dark = false } = {}) {
+export function scheme({ seed, variant = 'tonalSpot', contrast = 0, dark = false, spec = SPEC_VERSION } = {}) {
   const s = normalizeSeed(seed);
   checkVariant(variant);
   checkContrast(contrast);
+  checkSpec(spec);
   if (isPublished(s, variant)) {
     const p = precomputed();
     return decodeScheme(p.schemes[s][variant][dark ? 'dark' : 'light'][p.contrasts.indexOf(contrast)]);
   }
-  return mcuScheme({ seed: s, variant, contrast, dark }).roles;
+  return mcuScheme({ seed: s, variant, contrast, dark, spec }).roles;
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -197,25 +220,25 @@ const FLUTTER_IMPORTS = {
 };
 const DEFAULT_THEME_PACKAGE = 'm3.theme';
 
-function headerLines(seed, variant, custom, requested) {
+function headerLines(seed, variant, custom, requested, spec) {
   const out = [`material3 skill generated: color ${seed} ${variant}`];
   if (requested !== seed) out.push(`requested: ${requested} (${ACHROMATIC_NOTE}; HCT chroma below ${ACHROMATIC_CHROMA})`);
   if (custom.length) out.push(`custom: ${custom.map(([n, h]) => `${n}=${h}`).join(', ')}`);
-  out.push(`source: ${sourceOf(seed, variant)}`);
+  out.push(`source: ${sourceOf(seed, variant, spec)}`);
   out.push(NOTE);
   return out;
 }
 
-function modeValues(seed, variant, custom) {
+function modeValues(seed, variant, custom, spec) {
   return MODES.map(m => {
-    const roles = scheme({ seed, variant, contrast: m.contrast, dark: m.dark });
+    const roles = scheme({ seed, variant, contrast: m.contrast, dark: m.dark, spec });
     const extra = Object.assign({}, ...custom.map(([n, h]) => customRolesFor(n, h, seed, m.dark)));
     return { ...m, roles, extra };
   });
 }
 
-function renderWeb({ seed, variant, custom, modes, requested }) {
-  const lines = headerLines(seed, variant, custom, requested).map(l => `/* ${l} */`);
+function renderWeb({ seed, variant, custom, modes, requested, spec }) {
+  const lines = headerLines(seed, variant, custom, requested, spec).map(l => `/* ${l} */`);
   const decls = (m, indent) => [...Object.entries(m.roles), ...Object.entries(m.extra)]
     .map(([r, v]) => `${indent}--md-sys-color-${kebab(r)}: ${v};`);
   // color-scheme makes native controls (date pickers, scrollbars) follow the theme.
@@ -244,8 +267,8 @@ function renderWeb({ seed, variant, custom, modes, requested }) {
 const FLUTTER_ROLES = ROLES.filter(r => !['background', 'onBackground', 'surfaceVariant'].includes(r));
 const flutterParam = r => (r === 'inverseOnSurface' ? 'onInverseSurface' : r);
 
-function renderFlutter({ seed, variant, custom, modes, flutterLibrary, requested }) {
-  const out = headerLines(seed, variant, custom, requested).map(l => `// ${l}`);
+function renderFlutter({ seed, variant, custom, modes, flutterLibrary, requested, spec }) {
+  const out = headerLines(seed, variant, custom, requested, spec).map(l => `// ${l}`);
   out.push('// With the material_ui package the import is package:material_ui/material_ui.dart (--flutter-library material_ui).');
   out.push(FLUTTER_IMPORTS[flutterLibrary], '');
   out.push(`/// Color schemes for seed ${seed} (${variant}): light and dark at standard, medium and high contrast.`);
@@ -286,8 +309,8 @@ function renderFlutter({ seed, variant, custom, modes, flutterLibrary, requested
 // Compose lightColorScheme/darkColorScheme parameters: every role except shadow.
 const COMPOSE_ROLES = ROLES.filter(r => r !== 'shadow');
 
-function renderCompose({ seed, variant, custom, modes, themePackage, requested }) {
-  const out = headerLines(seed, variant, custom, requested).map(l => `// ${l}`);
+function renderCompose({ seed, variant, custom, modes, themePackage, requested, spec }) {
+  const out = headerLines(seed, variant, custom, requested, spec).map(l => `// ${l}`);
   out.push(`// package ${DEFAULT_THEME_PACKAGE} is a placeholder: --package com.example.app writes package com.example.app.theme.`);
   out.push(`package ${themePackage}`, '');
   out.push('import androidx.compose.material3.darkColorScheme', 'import androidx.compose.material3.lightColorScheme');
@@ -320,23 +343,24 @@ export function seedUsedFor(seed) {
   return isAchromatic(s) ? BASELINE_SEED : s;
 }
 
-export function renderTheme({ platform, seed, variant = 'tonalSpot', custom = {}, packageName, themePackage, flutterLibrary = 'material' } = {}) {
+export function renderTheme({ platform, seed, variant = 'tonalSpot', style = 'expressive', custom = {}, packageName, themePackage, flutterLibrary = 'material' } = {}) {
   if (!PLATFORMS.includes(platform)) throw new UsageError(`platform must be one of ${PLATFORMS.join(', ')}`);
   const requested = normalizeSeed(seed);
   const s = seedUsedFor(requested);
   checkVariant(variant);
+  const spec = specOfStyle(style);
   const c = checkCustom(custom);
   if (!FLUTTER_IMPORTS[flutterLibrary]) throw new UsageError('flutter library must be material or material_ui');
   if (packageName != null && !/^[a-zA-Z_]\w*(?:\.[a-zA-Z_]\w*)*$/.test(packageName)) throw new UsageError(`bad package: ${packageName}`);
   const pkg = themePackage || (packageName ? `${packageName}.theme` : DEFAULT_THEME_PACKAGE);
-  const modes = modeValues(s, variant, c);
-  const args = { seed: s, variant, custom: c, modes, flutterLibrary, themePackage: pkg, requested };
+  const modes = modeValues(s, variant, c, spec);
+  const args = { seed: s, variant, custom: c, modes, flutterLibrary, themePackage: pkg, requested, spec };
   return platform === 'web' ? renderWeb(args) : platform === 'flutter' ? renderFlutter(args) : renderCompose(args);
 }
 
-export function writeTheme({ platform, seed, variant = 'tonalSpot', out, custom, packageName, flutterLibrary } = {}) {
+export function writeTheme({ platform, seed, variant = 'tonalSpot', style = 'expressive', out, custom, packageName, flutterLibrary } = {}) {
   if (!out) throw new UsageError('out is required');
-  const text = renderTheme({ platform, seed, variant, custom, packageName, flutterLibrary });
+  const text = renderTheme({ platform, seed, variant, style, custom, packageName, flutterLibrary });
   // Never replace a user's file: only this script's own output may be overwritten (a re-run).
   if (existsSync(out)) {
     let old = null;
@@ -348,7 +372,7 @@ export function writeTheme({ platform, seed, variant = 'tonalSpot', out, custom,
   mkdirSync(dirname(resolve(out)), { recursive: true });
   writeFileSync(out, text);
   const seedUsed = seedUsedFor(seed);
-  const r = { seedRequested: seed, seedUsed, exact: seedUsed === normalizeSeed(seed), source: sourceOf(seedUsed, variant), out };
+  const r = { seedRequested: seed, seedUsed, exact: seedUsed === normalizeSeed(seed), style, source: sourceOf(seedUsed, variant, STYLE_SPECS[style]), out };
   if (!r.exact) r.note = ACHROMATIC_NOTE;
   return r;
 }
@@ -385,7 +409,9 @@ export function generatedTheme(rel, text) {
       custom[n] = h;
     }
   }
-  const opts = { platform, seed, variant: m[2], custom };
+  // The style is read back from the source line's spec (the published baseline is the same in both).
+  const sp = /^(?:\/\*|\/\/) source: .*, spec (2021|2025)(?: \*\/)?$/m.exec(src);
+  const opts = { platform, seed, variant: m[2], custom, style: sp && sp[1] === '2021' ? 'classic' : 'expressive' };
   if (platform === 'compose') {
     const p = /^package (\S+)$/m.exec(src);
     if (!p) return null;
@@ -434,6 +460,7 @@ function parseArgs(argv) {
     };
     if (a === '--seed') o.seed = val();
     else if (a === '--variant') o.variant = val();
+    else if (a === '--style') o.style = val();
     else if (a === '--platform') o.platform = val();
     else if (a === '--out') o.out = val();
     else if (a === '--package') o.packageName = val();
@@ -449,7 +476,7 @@ function parseArgs(argv) {
   return o;
 }
 
-const USAGE = 'usage: index.mjs --seed #hex [--variant v] --platform web|flutter|compose --out file [--custom name=#hex]... '
+const USAGE = 'usage: index.mjs --seed #hex [--variant v] [--style expressive|classic] --platform web|flutter|compose --out file [--custom name=#hex]... '
   + '[--package com.example.app] [--flutter-library material|material_ui]\n       index.mjs --nearest #hex';
 
 function main(argv) {

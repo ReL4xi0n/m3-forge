@@ -12,12 +12,14 @@
 // material-web md.sys.color.* resolved through md.ref.palette, all six modes; ruling R13). Everything
 // else is scripts/color MCU output.
 // Layout: schemes[seed][variant].light|dark = 3 strings (contrast 0, 0.5, 1); each string is the
-// roles' hex values without '#', 6 characters per role, in `roles` order.
+// roles' hex values without '#', 6 characters per role, in `roles` order. `schemes` is the 2025 spec
+// (M3 Expressive). `classic[seed][variant]` holds the 2021 spec (classic M3) for the variants whose
+// 2021 and 2025 specs differ (`classicVariants`); for the other variants both styles use `schemes`.
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
-  ACHROMATIC_CHROMA, ACHROMATIC_NOTE, BASELINE_SEED, CONTRASTS, GRID_CHROMAS, MCU_VERSION, ROLES, SPEC_VERSION, VARIANTS, mcuScheme,
+  ACHROMATIC_CHROMA, ACHROMATIC_NOTE, BASELINE_SEED, CONTRASTS, GRID_CHROMAS, MCU_VERSION, ROLES, SPEC_VERSION, VARIANTS, effectiveSpec, mcuScheme,
 } from '../../plugin/skills/material3/scripts/color/index.mjs';
 import { Hct, TonalPalette, argbFromHex, hexFromArgb } from '../../plugin/skills/material3/scripts/color/mcu.mjs';
 
@@ -117,24 +119,28 @@ export function nearestRule(rgbRange = minChromaticRgbRange()) {
 
 const pack = roles => ROLES.map(r => roles[r].slice(1)).join('');
 
+export const CLASSIC_VARIANTS = VARIANTS.filter(v => effectiveSpec(v, '2025') !== effectiveSpec(v, '2021'));
+
 export function buildPrecomputed(merged) {
   const baseline = publishedBaseline(merged);
   const seeds = gridSeedList();
-  const schemes = {};
-  for (const { seed } of seeds) {
-    schemes[seed] = {};
-    for (const variant of VARIANTS) {
-      const entry = { light: [], dark: [] };
-      for (const dark of [false, true]) {
-        for (const [i, contrast] of CONTRASTS.entries()) {
-          const roles = seed === BASELINE_SEED && variant === 'tonalSpot'
-            ? baseline[`${dark ? 'dark' : 'light'}${['', '-medium-contrast', '-high-contrast'][i]}`]
-            : mcuScheme({ seed, variant, contrast, dark }).roles;
-          entry[dark ? 'dark' : 'light'].push(pack(roles));
-        }
+  const entryFor = (seed, variant, spec) => {
+    const entry = { light: [], dark: [] };
+    for (const dark of [false, true]) {
+      for (const [i, contrast] of CONTRASTS.entries()) {
+        const roles = seed === BASELINE_SEED && variant === 'tonalSpot'
+          ? baseline[`${dark ? 'dark' : 'light'}${['', '-medium-contrast', '-high-contrast'][i]}`]
+          : mcuScheme({ seed, variant, contrast, dark, spec }).roles;
+        entry[dark ? 'dark' : 'light'].push(pack(roles));
       }
-      schemes[seed][variant] = entry;
     }
+    return entry;
+  };
+  const schemes = {};
+  const classic = {};
+  for (const { seed } of seeds) {
+    schemes[seed] = Object.fromEntries(VARIANTS.map(v => [v, entryFor(seed, v, SPEC_VERSION)]));
+    classic[seed] = Object.fromEntries(CLASSIC_VARIANTS.map(v => [v, entryFor(seed, v, '2021')]));
   }
   return {
     about: 'Precomputed Material 3 color schemes for the material3 skill. Generated; rebuild with the precompute tool.',
@@ -144,11 +150,14 @@ export function buildPrecomputed(merged) {
     grid: 'baseline seed, then hue 0..345 step 15 x chroma 24, 48, 72; a grid seed is MCU TonalPalette.fromHueAndChroma(hue, chroma).keyColor',
     nearest: nearestRule(),
     layout: 'schemes[seed][variant].light|dark = [contrast 0, 0.5, 1]; each string holds the roles in order, 6 hex digits each',
+    styles: 'M3 Expressive: schemes (2025 spec). Classic M3: classic[seed][variant] (2021 spec) for the classicVariants, schemes for every other variant (MCU defines those only in the 2021 spec).',
     roles: ROLES,
     variants: VARIANTS,
     contrasts: CONTRASTS,
+    classicVariants: CLASSIC_VARIANTS,
     seeds,
     schemes,
+    classic,
   };
 }
 
@@ -157,19 +166,24 @@ export function serialize(p) {
   const head = { ...p };
   delete head.seeds;
   delete head.schemes;
+  delete head.classic;
   const lines = ['{'];
   for (const [k, v] of Object.entries(head)) lines.push(`  ${JSON.stringify(k)}: ${JSON.stringify(v)},`);
   lines.push('  "seeds": [');
   p.seeds.forEach((s, i) => lines.push(`    ${JSON.stringify(s)}${i < p.seeds.length - 1 ? ',' : ''}`));
-  lines.push('  ],', '  "schemes": {');
-  const keys = Object.keys(p.schemes);
-  keys.forEach((seed, i) => {
-    lines.push(`    ${JSON.stringify(seed)}: {`);
-    const vs = Object.keys(p.schemes[seed]);
-    vs.forEach((v, j) => lines.push(`      ${JSON.stringify(v)}: ${JSON.stringify(p.schemes[seed][v])}${j < vs.length - 1 ? ',' : ''}`));
-    lines.push(`    }${i < keys.length - 1 ? ',' : ''}`);
-  });
-  lines.push('  }', '}');
+  lines.push('  ],');
+  for (const [name, last] of [['schemes', false], ['classic', true]]) {
+    lines.push(`  ${JSON.stringify(name)}: {`);
+    const keys = Object.keys(p[name]);
+    keys.forEach((seed, i) => {
+      lines.push(`    ${JSON.stringify(seed)}: {`);
+      const vs = Object.keys(p[name][seed]);
+      vs.forEach((v, j) => lines.push(`      ${JSON.stringify(v)}: ${JSON.stringify(p[name][seed][v])}${j < vs.length - 1 ? ',' : ''}`));
+      lines.push(`    }${i < keys.length - 1 ? ',' : ''}`);
+    });
+    lines.push(last ? '  }' : '  },');
+  }
+  lines.push('}');
   return `${lines.join('\n')}\n`;
 }
 

@@ -196,10 +196,20 @@ Cells, 4 per platform:
 - The fixtures are reused from `evals/fixtures/`. They are project skeletons, not requests.
 - Dev runs are scored like Phase 4 but never pooled with it. Records go to
   `private/evals/runs/dev-*`, and summaries to `evals/runs/dev-*/summary.md`.
-- Dev gate per platform:
+- Dev gate per platform (web, 3b; superseded for 3c and 3d below):
   - every cell `buildOk`;
   - zero F1–F8, F11 and F12 findings;
   - judge v2 mean ≥ 2.5 on each judged item, and no single score below 2.
+- **Dev gate for 3c and 3d (owner, 2026-11-18; spec §15).** The same outputs move by about ±0.5
+  per item between judge sessions, so a mean over 4 cells cannot decide the gate. A platform
+  passes when:
+  - every cell `buildOk`;
+  - zero automated findings (verify scored and unscored checks, runtime checks where they run);
+  - every requested element is visible: per cell, a yes/no table of the request's elements, read
+    from the screenshots by the controller;
+  - no judge v2 score is below 1.
+  The mean-based bar (≥ 2.5 per item, no score below 2) is measured in Phase 4 with pooled blind
+  judging.
 - If the gate is not met after 3 dev rounds, stop and report the remaining gaps.
 
 ---
@@ -760,6 +770,8 @@ Same steps as Task 19 for FAB menu, SplitButton and the toolbars. One commit per
 - [ ] Same as Task 16, with the 4 Flutter dev cells and one no-Node run (plant-shop,
   flutter-material_ui).
 - [ ] Builds run one at a time.
+- [ ] Gate: the 3c/3d dev gate ("Development request set"), with the per-cell yes/no table of
+  requested elements.
 - **3c checkpoint (STOP):**
   - dev summary;
   - gap-component goldens;

@@ -370,10 +370,30 @@ This rule covers an explicit platform in an empty or non-matching folder.
 ## 8. Color
 
 - `scripts/color` uses a vendored, bundled `@material/material-color-utilities` (TS 0.4.0,
-  Apache-2.0) with the 2025 spec.
-  - Input: seed and variant.
+  Apache-2.0).
+  - Input: seed, variant and style.
   - Output: light and dark schemes at standard, medium and high contrast, written as explicit values
     into each platform's theme. This avoids the Dart port, which lacks the 2025 spec.
+- **Color spec per style (owner, 2026-11-18).** M3 Expressive uses the MCU 2025 spec; classic M3
+  uses the 2021 spec (`--style classic`). A scheme comes from one spec only, so error roles are
+  never mixed between the specs. Variants that MCU defines only in the 2021 spec use it in both
+  styles. The published baseline scheme (baseline seed, tonal spot) is used in both styles.
+- **2025 `errorContainer`, verified from MCU source** (vendored 0.4.0
+  `dynamiccolor/color_spec_2025.js`, identical for phone on upstream `main` f242efc,
+  `typescript/dynamiccolor/color_spec_2025.ts`):
+  - The light tone is `tMaxC(errorPalette, 0, 90)`: the tone where the error palette reaches its
+    highest chroma, capped at 90. The dark tone is `tMinC(errorPalette, 30, 93)`.
+  - The 2025 tonal-spot error palette is hue 12, 22 or 32 (piecewise by the seed hue) at chroma 60
+    (phone). The 2021 spec uses tone 90 (light) and 30 (dark) of hue 25, chroma 84.
+  - Result for seed `#2F6F5E`: 2025 light `errorContainer` `#fa746f` (tone about 65, a vivid
+    salmon); 2021 light `#ffdad6` (tone 90, pale).
+  - MCU's own tests pin no value for these roles: `dynamic_color_test.ts` and the Dart
+    `dynamic_color_test.dart` / `scheme_correctness_test.dart` check contrast and tone-delta
+    constraints only, and the TS test schemes use the default 2021 spec. Our color tests pin the
+    source-derived values above.
+- **Composition rule for error colors.** `errorContainer` fills only small areas (an inline alert, a
+  chip, a banner). A large error area sits on a surface container and marks the error in the
+  `error` color on its icon, title or edge (`references/core/composition.md`).
 - **Default seed.**
   - With no seed in the request, the skill picks one that fits the request's subject and states it.
   - The baseline seed is used only for neutral, generic requests.
@@ -382,6 +402,8 @@ This rule covers an explicit platform in an empty or non-matching folder.
 - **No Node.**
   - `tokens/precomputed-schemes.json` holds a fixed set of seeds (baseline plus an even spread of hues
     and chroma levels) × variants × light/dark × contrast levels, each with its seed hue/chroma.
+    It holds the 2025 spec for every variant and the 2021 spec (`classic`) for the variants whose
+    two specs differ.
   - With a custom seed, the skill picks the nearest precomputed scheme by hue, then chroma. It states
     this explicitly: which seed was requested, which was used, and that installing Node gives an
     exact scheme.
@@ -739,6 +761,16 @@ Compose, each with its own evidence.
 - Color script and precomputed schemes.
 - Detect, install, screenshot and verify.
 
+**Dev gate for 3c and 3d (owner, 2026-11-18).** A gate on the mean of 4 judged cells is not
+reliable: the same outputs move by about ±0.5 per item between judge sessions (web round 4,
+pooled). For Flutter and Compose a platform passes its dev loop when:
+1. automated findings are zero (verify scored and unscored checks, runtime checks where they run);
+2. every requested element is visible: a yes/no table per cell, built from the screenshots;
+3. no judge v2 score is below 1.
+
+The mean-based bar (≥ 2.5 per item, no score below 2) moves to Phase 4, where it is measured with
+pooled blind judging (§12).
+
 ### Phase 4: improvement round and release
 - Re-measure with the skill. Report the first 2 runs' cost before the rest.
 - Run at most 3 improvement rounds on the weak cells.
@@ -789,6 +821,14 @@ results, screenshots, green CI, and both install paths shown working.
   - New verify checks that are not scored (`placeholder-content`, `brand`, `unknown-icon`,
     `asset-unused`).
   - Every sub-phase checkpoint (3a–3d) is a stop for owner review.
+- After web round 4, on 2026-11-18:
+  - color spec per style: Expressive 2025, classic 2021, never mixed; error-container only for
+    small areas (§8);
+  - a screen plan before coding and a per-element visibility check on the screenshots, in the
+    shared core;
+  - one always-read budget for SKILL.md, CHECKLIST.md and the always-read core references, capped
+    at the total at 9628455 and checked in CI (`tools/ci/skill-budget.mjs`);
+  - the 3c/3d dev gate in §15; the mean-based bar moves to Phase 4.
 - Phase 1 approved on 2026-11-13, with three decisions:
   - **Conflict policy.** This is the precedence in `knowledge/README.md`, with one exception. When
     the site disagrees with material-web and both Flutter and Compose give the site's value,
