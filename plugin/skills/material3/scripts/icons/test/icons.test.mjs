@@ -76,3 +76,17 @@ test('CLI: path with spaces, closed-port proxy, exit codes', async () => {
     await rm(dir, { recursive: true, force: true });
   }
 });
+
+test('CLI: --style accepts outlined, rounded and sharp; other styles exit 2', async () => {
+  const dir = await mkdtemp(join(tmpdir(), 'm3 icons style '));
+  try {
+    for (const style of ['filled', 'Rounded', '']) {
+      const r = spawnSync(process.execPath, [INDEX, dir, '--platform', 'compose', '--names', 'home', '--style', style], { encoding: 'utf8' });
+      assert.equal(r.status, 2, `style "${style}"`);
+    }
+    const ok = spawnSync(process.execPath, [INDEX, dir, '--platform', 'compose', '--names', 'home', '--style', 'outlined'], { encoding: 'utf8' });
+    assert.equal(ok.status, 5);
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});

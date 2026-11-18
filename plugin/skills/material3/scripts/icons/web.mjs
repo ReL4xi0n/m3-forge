@@ -13,6 +13,7 @@ import { fileURLToPath } from 'node:url';
 import { brotliCompressSync, constants } from 'node:zlib';
 import { loadCodepoints } from './names.mjs';
 import { pruneLigatures, readSfnt } from './sfnt.mjs';
+import { fallbackNotice, resolveStyleFont } from './download.mjs';
 
 const HERE = fileURLToPath(new URL('.', import.meta.url));
 export const WASM_FILE = join(HERE, 'vendor', 'hb-subset.wasm');
@@ -104,25 +105,37 @@ export function subsetFont(names, { ttf = FULL_TTF, wasm = WASM_FILE } = {}) {
   const map = loadCodepoints();
   const cps = letters(names);
   for (const n of names) cps.add(parseInt(map.get(n), 16));
-  const out = subsetTtf(pruneLigatures(readFileSync(ttf), names), cps, wasm);
+  const src = Buffer.isBuffer(ttf) ? ttf : readFileSync(ttf); // a path, or the bytes of a downloaded style
+  const out = subsetTtf(pruneLigatures(src, names), cps, wasm);
   return { ttf: out, woff2: ttfToWoff2(out) };
 }
 
-// webIcons({ projectDir, names, dest }) -> { woff2, bytes, subset }
+// webIcons({ projectDir, names, dest, style, styleFont, notice }) -> { woff2, bytes, subset, style, notice? }
 // `dest` is the folder that holds fonts.css (install-assets' web "main" folder); the font goes to
-// <dest>/fonts/MaterialSymbolsOutlined.woff2, the path fonts.css already points at.
-export function webIcons({ projectDir, names, dest, wasm = WASM_FILE }) {
+// <dest>/fonts/MaterialSymbolsOutlined.woff2, the path fonts.css already points at. The file name and
+// the family label stay "Outlined" for every style: for Rounded or Sharp the file holds that style
+// (`styleFont` = the verified TTF bytes from download.mjs). Without `styleFont` the bundled Outlined
+// is used, and `notice` (or the offline one) says so. `style` in the result is the style written.
+export function webIcons({ projectDir, names, dest, wasm = WASM_FILE, style = 'outlined', styleFont, notice }) {
   const main = dest ?? (isDir(join(projectDir, 'src')) ? 'src/styles/m3' : 'assets/m3');
   const target = join(projectDir, main, 'fonts', FONT_NAME);
   mkdirSync(dirname(target), { recursive: true });
+  const wanted = style !== 'outlined';
+  const useStyle = wanted && !!styleFont;
   let buf = null;
   if (existsSync(wasm) && typeof WebAssembly === 'object') {
-    try { buf = subsetFont(names, { wasm }).woff2; } catch { buf = null; }
+    try { buf = subsetFont(names, { wasm, ...(useStyle ? { ttf: styleFont } : {}) }).woff2; } catch { buf = null; }
   }
   if (buf) writeFileSync(target, buf);
+  else if (useStyle) writeFileSync(target, ttfToWoff2(styleFont)); // subsetter unavailable: the full verified style font
   else copyFileSync(FULL_WOFF2, target);
-  return { woff2: target, bytes: statSync(target).size, subset: !!buf };
+  const out = { woff2: target, bytes: statSync(target).size, subset: !!buf, style: useStyle ? style : 'outlined' };
+  if (wanted && !useStyle) out.notice = notice ?? fallbackNotice(style);
+  return out;
 }
 
-// Registration for the icons CLI.
-export const webBackend = ({ projectDir, names, dest }) => webIcons({ projectDir, names, dest });
+// Registration for the icons CLI: Rounded and Sharp are downloaded and verified first.
+export async function webBackend({ projectDir, names, dest, style = 'outlined', fetchImpl, timeoutMs }) {
+  const r = style === 'outlined' ? {} : await resolveStyleFont({ style, fetchImpl, timeoutMs });
+  return webIcons({ projectDir, names, dest, style, styleFont: r.font, notice: r.notice });
+}

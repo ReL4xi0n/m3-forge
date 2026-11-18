@@ -19,6 +19,13 @@ node "S/scripts/icons/index.mjs" <project> --platform web --names home,search,fa
 - Output `subset: true` means only the requested glyphs are in the font (a few KB). `subset: false`
   means the full font was copied (the subsetter could not run): every icon works, the file is just
   large; say so in the report.
+- `--style rounded` or `--style sharp` (only when the user asks): the script downloads that font at
+  the pinned commit, checks size and SHA-256 against `versions.json`, subsets it the same way and
+  writes it to the same `MaterialSymbolsOutlined.woff2` path (the file then holds that style; the
+  family label in CSS stays `Material Symbols Outlined`). Output `style` is the style written.
+  Offline or a failed check: bundled Outlined is used and `notice` holds the line to put in the
+  report ("Rounded icons requested but could not be downloaded (offline?); used bundled Outlined.
+  Re-run with network access to switch."; "failed verification" on a hash mismatch).
 - Every icon showing as its name, although every name was passed, means the font did not load (the
   browser console shows a font decode error). Copy the full font as in "Without Node" below and say
   so in the report.

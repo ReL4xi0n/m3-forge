@@ -1,21 +1,22 @@
 #!/usr/bin/env node
 // Validate Material Symbols names, then hand them to a platform back end.
-// Usage: node index.mjs <projectDir> --platform web|flutter|compose --names a,b [--style outlined] [--dest dir]
+// Usage: node index.mjs <projectDir> --platform web|flutter|compose --names a,b [--style outlined|rounded|sharp] [--dest dir]
 //   (JSON on stdout). Exit 4: unknown names. Exit 5: no back end for the platform yet.
-// Outlined never touches the network.
+// Outlined never touches the network; Rounded and Sharp download the pinned font and verify its hash.
 import { statSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { checkNames } from './names.mjs';
 import { webBackend } from './web.mjs';
 import { flutterBackend } from './flutter.mjs';
+import { STYLES } from './download.mjs';
 
 const PLATFORMS = ['web', 'flutter', 'compose'];
 
 // Platform back ends: (request) => result. Each platform registers its own here.
 export const BACKENDS = { web: webBackend, flutter: flutterBackend };
 
-export async function icons({ projectDir, platform, names, style = 'outlined', fill = [0, 1], dest, backends = BACKENDS }) {
+export async function icons({ projectDir, platform, names, style = 'outlined', fill = [0, 1], dest, backends = BACKENDS, fetchImpl }) {
   const { known, unknown } = checkNames(names);
   if (unknown.length) {
     return { exitCode: 4, error: 'unknown icon names', known, unknown };
@@ -24,7 +25,7 @@ export async function icons({ projectDir, platform, names, style = 'outlined', f
   if (!backend) {
     return { exitCode: 5, error: `icons: not implemented for ${platform}`, known, unknown };
   }
-  const result = await backend({ projectDir, platform, names: known, style, fill, dest });
+  const result = await backend({ projectDir, platform, names: known, style, fill, dest, fetchImpl });
   return { exitCode: 0, known, unknown, ...result };
 }
 
@@ -40,11 +41,11 @@ function parseArgs(argv) {
 }
 
 async function main(argv) {
-  const usage = 'usage: icons <projectDir> --platform web|flutter|compose --names a,b [--style outlined] [--fill 0,1] [--dest dir]';
+  const usage = 'usage: icons <projectDir> --platform web|flutter|compose --names a,b [--style outlined|rounded|sharp] [--fill 0,1] [--dest dir]';
   const o = parseArgs(argv);
   let isDir = false;
   try { isDir = !!o?.dir && statSync(o.dir).isDirectory(); } catch { /* not a dir */ }
-  if (!o || !isDir || !PLATFORMS.includes(o.platform) || !o.names) {
+  if (!o || !isDir || !PLATFORMS.includes(o.platform) || !o.names || !STYLES.includes(o.style ?? 'outlined')) {
     process.stderr.write(`${usage}\n`);
     return 2;
   }

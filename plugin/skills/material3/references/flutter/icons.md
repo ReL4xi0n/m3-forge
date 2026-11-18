@@ -23,8 +23,13 @@ node "S/scripts/icons/index.mjs" <project> --platform flutter --names settings,h
 - The file starts with `// material3 skill asset: generated/m3_symbols.dart`. Do not edit it: re-run
   the script. verify scans it like UI code; a hand edit with `Icons.*` is flagged.
 - Exit 3: `lib/m3/m3_symbols.dart` exists and is not generated; the skill never overwrites it.
-- Rounded or Sharp asked for: the report says "Rounded icons requested but could not be downloaded
-  (offline?); used bundled Outlined. Re-run with network access to switch."
+- `--style rounded` or `--style sharp` (only when the user asks): the script downloads that TTF at the
+  pinned commit, checks size and SHA-256 against `versions.json`, and writes
+  `assets/fonts/MaterialSymbolsRounded.ttf` (or `Sharp`). The constants then use
+  `fontFamily: 'MaterialSymbolsRounded'` and `pubspecEdit` declares that family instead.
+- If that download fails (output `style` is `outlined`, `notice` is set), bundled Outlined is used and
+  the report says: "Rounded icons requested but could not be downloaded (offline?); used bundled
+  Outlined. Re-run with network access to switch." ("failed verification" on a hash mismatch).
 
 ## pubspec.yaml
 

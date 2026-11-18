@@ -11,10 +11,11 @@ import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from
 import { dirname, join } from 'node:path';
 import { loadCodepoints } from './names.mjs';
 import { FULL_TTF } from './web.mjs';
+import { fallbackNotice, label, resolveStyleFont } from './download.mjs';
 
 export const DART_FILE = 'lib/m3/m3_symbols.dart';
 const FONT_DIR = 'assets/fonts';
-const FAMILY = 'MaterialSymbolsOutlined';
+const familyOf = (style) => `MaterialSymbols${label(style)}`;
 const MARKER = '// material3 skill asset: generated/m3_symbols.dart';
 const RESERVED = new Set(['class', 'switch', 'try']);
 
@@ -27,18 +28,20 @@ export function constantName(name) {
   return /^\d/.test(id) || RESERVED.has(id) ? `$${id}` : id;
 }
 
-export function pubspecEntry(fontDir = FONT_DIR) {
+export function pubspecEntry(fontDir = FONT_DIR, style = 'outlined') {
+  const FAMILY = familyOf(style);
   return `    - family: ${FAMILY}\n      fonts:\n        - asset: ${fontDir}/${FAMILY}.ttf`;
 }
 
-export function renderDart(names, map = loadCodepoints()) {
+export function renderDart(names, map = loadCodepoints(), style = 'outlined') {
+  const FAMILY = familyOf(style);
   const lines = [...new Set(names)].sort().map((n) => {
     const cp = map.get(n).toLowerCase();
     return `  static const IconData ${constantName(n)} = IconData(0x${cp}, fontFamily: '${FAMILY}');`;
   });
   return [
     MARKER,
-    '// Material Symbols Outlined icons used by this app (scripts/icons). Generated: re-run the script to',
+    `// Material Symbols ${label(style)} icons used by this app (scripts/icons). Generated: re-run the script to`,
     '// add icons; do not edit. Default axes: FILL 0, wght 400, GRAD 0, opsz 24; set them per use with',
     '// Icon(M3Symbols.name, fill: 1, weight: 700, grade: 0, opticalSize: 24).',
     "import 'package:flutter/widgets.dart' show IconData;",
@@ -56,8 +59,13 @@ function existingNames(text, map) {
   return [...text.matchAll(/static const IconData (\S+) = IconData\(/g)].map((m) => byConst.get(m[1])).filter(Boolean);
 }
 
-// flutterIcons({ projectDir, names, style }) -> { dartFile, pubspecEdit, font, fontCopied, notice? }
-export function flutterIcons({ projectDir, names, style = 'outlined' }) {
+// flutterIcons({ projectDir, names, style, styleFont, notice }) -> { dartFile, pubspecEdit, font, fontCopied, style, notice? }
+// `styleFont` = the verified TTF bytes of Rounded or Sharp (download.mjs); without it the bundled
+// Outlined is used and `notice` (or the offline one) says so.
+export function flutterIcons({ projectDir, names, style = 'outlined', styleFont, notice }) {
+  const wanted = style !== 'outlined';
+  const used = wanted && styleFont ? style : 'outlined';
+  const FAMILY = familyOf(used);
   const map = loadCodepoints();
   const target = join(projectDir, DART_FILE);
   let all = names;
@@ -69,21 +77,25 @@ export function flutterIcons({ projectDir, names, style = 'outlined' }) {
     all = [...existingNames(text, map), ...names];
   }
   mkdirSync(dirname(target), { recursive: true });
-  writeFileSync(target, renderDart(all, map));
+  writeFileSync(target, renderDart(all, map, used));
 
   const font = join(projectDir, FONT_DIR, `${FAMILY}.ttf`);
-  const fontCopied = !existsSync(font);
-  if (fontCopied) {
+  let fontCopied = !existsSync(font);
+  if (used !== 'outlined') {
+    // Verified bytes only; an existing file with other bytes is replaced.
+    fontCopied = fontCopied || !readFileSync(font).equals(styleFont);
+    if (fontCopied) { mkdirSync(dirname(font), { recursive: true }); writeFileSync(font, styleFont); }
+  } else if (fontCopied) {
     mkdirSync(dirname(font), { recursive: true });
     copyFileSync(FULL_TTF, font);
   }
-  const out = { dartFile: DART_FILE, pubspecEdit: pubspecEntry(), font: `${FONT_DIR}/${FAMILY}.ttf`, fontCopied };
-  if (style !== 'outlined') {
-    const s = style[0].toUpperCase() + style.slice(1);
-    out.notice = `${s} icons requested but could not be downloaded (offline?); used bundled Outlined. Re-run with network access to switch.`;
-  }
+  const out = { dartFile: DART_FILE, pubspecEdit: pubspecEntry(FONT_DIR, used), font: `${FONT_DIR}/${FAMILY}.ttf`, fontCopied, style: used };
+  if (wanted && used === 'outlined') out.notice = notice ?? fallbackNotice(style);
   return out;
 }
 
-// Registration for the icons CLI.
-export const flutterBackend = ({ projectDir, names, style }) => flutterIcons({ projectDir, names, style });
+// Registration for the icons CLI: Rounded and Sharp are downloaded and verified first.
+export async function flutterBackend({ projectDir, names, style = 'outlined', fetchImpl, timeoutMs }) {
+  const r = style === 'outlined' ? {} : await resolveStyleFont({ style, fetchImpl, timeoutMs });
+  return flutterIcons({ projectDir, names, style, styleFont: r.font, notice: r.notice });
+}
