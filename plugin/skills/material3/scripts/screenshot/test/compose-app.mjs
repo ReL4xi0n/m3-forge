@@ -1,5 +1,5 @@
 // A small Compose app for the screenshot step tests: the harness sample project (Gradle files only) with
-// our own MainActivity. It has a search field, a long list (the first vertical scrollable), an empty
+// our own MainActivity. It has a search field, a notes field that ignores what is typed, a long list (the first vertical scrollable), an empty
 // text, a confirmation dialog, a 32 dp clickable (below the target size), a disabled 32 dp clickable and
 // a low-contrast caption.
 import { cpSync, mkdirSync, mkdtempSync, writeFileSync } from 'node:fs';
@@ -70,6 +70,12 @@ class MainActivity : ComponentActivity() {
                             label = { Text("Search plants") },
                             modifier = Modifier.fillMaxWidth(),
                         )
+                        OutlinedTextField(
+                            value = "",
+                            onValueChange = { },
+                            label = { Text("Garden notes") },
+                            modifier = Modifier.fillMaxWidth(),
+                        )
                         Button(onClick = { confirm = true }) { Text("Remove all") }
                         FilterChip(selected = false, onClick = { sortOpen = true }, label = { Text(sort) })
                         DropdownMenu(expanded = sortOpen, onDismissRequest = { sortOpen = false }) {
@@ -125,6 +131,7 @@ export const STATES = {
     { name: 'empty-search', steps: [{ enterText: { into: { hint: 'Search plants' }, text: 'cactus' } }] },
     { name: 'sort-menu', steps: [{ click: { text: 'Popular' } }] },
     { name: 'last-row', steps: [{ scrollTo: { text: 'Fern number 40' } }] },
+    { name: 'ignored-text', steps: [{ enterText: { into: { hint: 'Garden notes' }, text: 'tulips' } }] },
     { name: 'broken', steps: [{ click: { text: 'No such button' } }] },
   ],
 };

@@ -130,8 +130,9 @@ const inside = (p, b) => p[0] >= b[0] && p[0] <= b[2] && p[1] >= b[1] && p[1] <=
 // SemanticsProperties.Disabled, which ATF sees as isEnabled() == false) are left out.
 // - contrast: ATF TextContrastCheck ERROR or WARNING. For Compose text ATF cannot read the text
 //   color, so it estimates both colors from the screenshot and reports a WARNING.
-// - targets: clickable semantics nodes under 48x48dp, plus any ATF TouchTargetSizeCheck ERROR
-//   that is not the same node (ATF sees the touch area Compose extends to 48dp).
+// - targets: clickable semantics nodes whose touch bounds (harness v3: minimumInteractiveComponentSize
+//   included; v2: layout size) are under 48x48dp, plus any ATF
+//   TouchTargetSizeCheck ERROR that is not the same node.
 export function normalizeReport(theme, report) {
   const contrast = [];
   const targets = [];
@@ -141,7 +142,7 @@ export function normalizeReport(theme, report) {
     const b = t.bounds ?? [];
     targets.push({
       where: `${theme}: clickable ${label}${t.role ? ` role=${t.role}` : ''} bounds=[${b[0]},${b[1]}][${b[2]},${b[3]}]`,
-      detail: `${t.widthDp}x${t.heightDp}dp, below the 48x48dp minimum touch target (layout size)`,
+      detail: `${t.widthDp}x${t.heightDp}dp, below the 48x48dp minimum touch target (${t.measure === 'layout' ? 'layout size' : 'touch bounds'})`,
     });
   }
   for (const r of report?.results ?? []) {
@@ -163,10 +164,14 @@ function finish(outDir, capture) {
   return capture;
 }
 
-export async function captureCompose({ projectDir, outDir, timeoutMs = 45 * 60_000 }) {
+// version 'v3' (default): the touch target includes the padding minimumInteractiveComponentSize() adds
+// (owner decision 2026-11-18). 'v2': the layout size, the measurement of the baseline re-score; kept only
+// to reproduce those numbers.
+export async function captureCompose({ projectDir, outDir, timeoutMs = 45 * 60_000, version = 'v3' }) {
+  if (!['v2', 'v3'].includes(version)) throw new Error(`m3-forge: unknown harness version ${version}`);
   projectDir = resolve(projectDir);
   outDir = resolve(outDir);
-  const base = { platform: 'compose', buildOk: false, reason: undefined, shots: [], runtime: { contrast: [], targets: [] }, raw: {} };
+  const base = { platform: 'compose', harness: version, buildOk: false, reason: undefined, shots: [], runtime: { contrast: [], targets: [] }, raw: {} };
 
   mkdirSync(outDir, { recursive: true });
   for (const t of THEMES) {
@@ -185,6 +190,7 @@ export async function captureCompose({ projectDir, outDir, timeoutMs = 45 * 60_0
     '--init-script', INIT_SCRIPT,
     `-Pm3.outDir=${outDir}`,
     `-Pm3.harnessDir=${here}`,
+    `-Pm3.targets=${version === 'v2' ? 'layout' : 'touch'}`,
     ...(app.activity ? [`-Pm3.launcher=${app.activity}`] : []),
     '-Pandroid.builder.sdkDownload=false',
     '-Pkotlin.compiler.execution.strategy=in-process',

@@ -1,0 +1,197 @@
+{
+  "runId": "baseline-2026-11-17",
+  "rows": [
+    {
+      "cell": "landing.compose.compose-1.5.default",
+      "v2": {
+        "token-fidelity": 2,
+        "contrast-targets": 2,
+        "anti-patterns": 1,
+        "icon-source": 0
+      },
+      "v3": {
+        "token-fidelity": 2,
+        "contrast-targets": 3,
+        "anti-patterns": 1,
+        "icon-source": 0
+      },
+      "targets": {
+        "v2": 2,
+        "v3": 0
+      },
+      "contrast": {
+        "v2": 0,
+        "v3": 0
+      },
+      "shotsIdentical": true
+    },
+    {
+      "cell": "settings.compose.compose-1.5.default",
+      "v2": {
+        "token-fidelity": 2,
+        "contrast-targets": 0,
+        "anti-patterns": 3,
+        "icon-source": 0
+      },
+      "v3": {
+        "token-fidelity": 2,
+        "contrast-targets": 3,
+        "anti-patterns": 3,
+        "icon-source": 0
+      },
+      "targets": {
+        "v2": 10,
+        "v3": 0
+      },
+      "contrast": {
+        "v2": 0,
+        "v3": 0
+      },
+      "shotsIdentical": true
+    },
+    {
+      "cell": "dashboard.compose.compose-1.5.default",
+      "v2": {
+        "token-fidelity": 2,
+        "contrast-targets": 0,
+        "anti-patterns": 2,
+        "icon-source": 0
+      },
+      "v3": {
+        "token-fidelity": 2,
+        "contrast-targets": 3,
+        "anti-patterns": 2,
+        "icon-source": 0
+      },
+      "targets": {
+        "v2": 12,
+        "v3": 0
+      },
+      "contrast": {
+        "v2": 0,
+        "v3": 0
+      },
+      "shotsIdentical": true
+    },
+    {
+      "cell": "product-detail.compose.compose-1.5.default",
+      "v2": {
+        "token-fidelity": 2,
+        "contrast-targets": 0,
+        "anti-patterns": 3,
+        "icon-source": 0
+      },
+      "v3": {
+        "token-fidelity": 2,
+        "contrast-targets": 2,
+        "anti-patterns": 3,
+        "icon-source": 0
+      },
+      "targets": {
+        "v2": 24,
+        "v3": 2
+      },
+      "contrast": {
+        "v2": 0,
+        "v3": 0
+      },
+      "shotsIdentical": true
+    },
+    {
+      "cell": "onboarding.compose.compose-1.5.default",
+      "v2": {
+        "token-fidelity": 2,
+        "contrast-targets": 1,
+        "anti-patterns": 3,
+        "icon-source": 0
+      },
+      "v3": {
+        "token-fidelity": 2,
+        "contrast-targets": 3,
+        "anti-patterns": 3,
+        "icon-source": 0
+      },
+      "targets": {
+        "v2": 4,
+        "v3": 0
+      },
+      "contrast": {
+        "v2": 0,
+        "v3": 0
+      },
+      "shotsIdentical": true
+    },
+    {
+      "cell": "empty-error.compose.compose-1.5.default",
+      "v2": {
+        "token-fidelity": 2,
+        "contrast-targets": 0,
+        "anti-patterns": 2,
+        "icon-source": 0
+      },
+      "v3": {
+        "token-fidelity": 2,
+        "contrast-targets": 3,
+        "anti-patterns": 2,
+        "icon-source": 0
+      },
+      "targets": {
+        "v2": 12,
+        "v3": 0
+      },
+      "contrast": {
+        "v2": 0,
+        "v3": 0
+      },
+      "shotsIdentical": true
+    },
+    {
+      "cell": "settings.compose.compose-1.5.classic",
+      "v2": {
+        "token-fidelity": 2,
+        "contrast-targets": 2,
+        "anti-patterns": 3,
+        "icon-source": 0
+      },
+      "v3": {
+        "token-fidelity": 2,
+        "contrast-targets": 3,
+        "anti-patterns": 3,
+        "icon-source": 0
+      },
+      "targets": {
+        "v2": 2,
+        "v3": 0
+      },
+      "contrast": {
+        "v2": 0,
+        "v3": 0
+      },
+      "shotsIdentical": true
+    },
+    {
+      "cell": "dashboard.compose.compose-1.5.seed-B5651D",
+      "v2": {
+        "token-fidelity": 2,
+        "contrast-targets": 2,
+        "anti-patterns": 2,
+        "icon-source": 0
+      },
+      "v3": {
+        "token-fidelity": 2,
+        "contrast-targets": 3,
+        "anti-patterns": 2,
+        "icon-source": 0
+      },
+      "targets": {
+        "v2": 2,
+        "v3": 0
+      },
+      "contrast": {
+        "v2": 0,
+        "v3": 0
+      },
+      "shotsIdentical": true
+    }
+  ]
+}

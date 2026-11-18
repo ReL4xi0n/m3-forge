@@ -176,14 +176,19 @@ class M3CaptureTest {
         }
     }
 
-    // Every clickable Compose node (merged semantics tree) whose layout size is under 48x48dp.
-    // ATF alone misses these: Compose reports the touch area it extends to 48dp as the node's
-    // accessibility bounds, so a 32dp clickable Box passes TouchTargetSizeCheck while it is
-    // visibly 32dp. Disabled nodes are reported with enabled=false; capture.mjs leaves them out.
+    // Every clickable Compose node (merged semantics tree) whose touch target is under 48x48dp.
+    // Measurement versions (owner decision 2026-11-18; -Pm3.targets):
+    //   touch (v3, default): the node's layout size or, when the node has the
+    //     minimumInteractiveComponentSize() modifier, that modifier's bounds (the padding the official
+    //     40dp buttons and 32dp chips get): the area a finger can hit by design.
+    //   layout (v2): the node's layout size. It reports every official 40dp button and 32dp chip; kept
+    //     only to reproduce the old numbers.
+    // Disabled nodes carry enabled=false; capture.mjs leaves them out.
     private fun semanticsTargets(root: View): JSONArray {
         val out = JSONArray()
         val density = root.resources.displayMetrics.density
         val minPx = MIN_TARGET_DP * density
+        val layoutMeasure = System.getProperty("m3.targets") == "layout"
         for (owner in composeRoots(root)) {
             val stack = ArrayDeque<SemanticsNode>().apply { add(owner.semanticsOwner.rootSemanticsNode) }
             while (stack.isNotEmpty()) {
@@ -191,8 +196,7 @@ class M3CaptureTest {
                 stack.addAll(node.children)
                 val config = node.config
                 if (SemanticsActions.OnClick !in config && SemanticsActions.OnLongClick !in config) continue
-                val w = node.size.width
-                val h = node.size.height
+                val (w, h) = if (layoutMeasure) node.size.width.toFloat() to node.size.height.toFloat() else touchSize(node)
                 if (w + 0.5f >= minPx && h + 0.5f >= minPx) continue
                 val b = node.boundsInWindow
                 val label = config.getOrNull(SemanticsProperties.ContentDescription)?.joinToString(" ")
@@ -204,11 +208,29 @@ class M3CaptureTest {
                         .put("enabled", SemanticsProperties.Disabled !in config)
                         .put("widthDp", Math.round(w / density * 10) / 10.0)
                         .put("heightDp", Math.round(h / density * 10) / 10.0)
+                        .put("measure", if (layoutMeasure) "layout" else "touch")
                         .put("bounds", JSONArray(listOf(b.left.toInt(), b.top.toInt(), b.right.toInt(), b.bottom.toInt()))),
                 )
             }
         }
         return out
+    }
+
+    // The touch target of a clickable node: the larger of its layout size and the bounds of the
+    // minimumInteractiveComponentSize() modifier on the same layout node (the padding the official
+    // buttons, chips and icon buttons get). Compose's own pointer-input expansion to 48dp is left out on
+    // purpose: SemanticsNode.touchBoundsInRoot includes it, so every clickable, even a bare 32dp box,
+    // would report 48dp and the check could never fire.
+    private fun touchSize(node: SemanticsNode): Pair<Float, Float> {
+        var w = node.size.width.toFloat()
+        var h = node.size.height.toFloat()
+        val infos = runCatching { node.layoutInfo.getModifierInfo() }.getOrDefault(emptyList())
+        for (info in infos) {
+            if (!info.modifier.javaClass.name.contains("MinimumInteractive")) continue
+            w = maxOf(w, info.coordinates.size.width.toFloat())
+            h = maxOf(h, info.coordinates.size.height.toFloat())
+        }
+        return w to h
     }
 
     private fun composeRoots(view: View): List<ViewRootForTest> {

@@ -44,12 +44,33 @@ test('captures light and dark with touch-target and contrast hits', { skip, time
     assert.ok(cap.runtime.targets.length >= 1, 'expected a touch-target hit');
     assert.ok(cap.runtime.targets.some(t => /Small target/.test(t.where)), JSON.stringify(cap.runtime.targets));
     assert.ok(!cap.runtime.targets.some(t => /Disabled small target/.test(t.where)), 'disabled node must be excluded');
+    // harness v3: the official 40 dp button and 32 dp chip pad out to 48 dp (minimumInteractiveComponentSize)
+    assert.ok(!cap.runtime.targets.some(t => /Official/.test(t.where)), JSON.stringify(cap.runtime.targets));
+    assert.equal(cap.harness, 'v3');
     assert.ok(cap.runtime.contrast.length >= 1, 'expected a contrast hit');
     assert.ok(cap.raw.atf.light.length > 0 && cap.raw.atf.dark.length > 0, 'raw ATF results per theme');
     assert.deepEqual(JSON.parse(readFileSync(join(outDir, 'capture.json'), 'utf8')), JSON.parse(JSON.stringify(cap)));
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
+});
+
+test('harness v2 (layout size) still reports the official button and chip', { skip, timeout: GRADLE_TIMEOUT }, async () => {
+  const { root, projectDir, outDir } = copySample();
+  try {
+    const cap = await captureCompose({ projectDir, outDir, version: 'v2' });
+    assert.equal(cap.buildOk, true, cap.reason);
+    assert.equal(cap.harness, 'v2');
+    for (const name of ['Official button', 'Official chip', 'Small target']) {
+      assert.ok(cap.runtime.targets.some(t => t.where.includes(name)), `${name}: ${JSON.stringify(cap.runtime.targets)}`);
+    }
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test('an unknown harness version is refused', async () => {
+  await assert.rejects(() => captureCompose({ projectDir: sample, outDir: tmpdir(), version: 'v9' }), /unknown harness version/);
 });
 
 test('a Kotlin compile error gives buildOk false with the log tail', { skip, timeout: GRADLE_TIMEOUT }, async () => {

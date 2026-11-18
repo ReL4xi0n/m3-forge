@@ -5,7 +5,7 @@
 // and +night, and per theme:
 //   frames  <theme>-412x915-<nn>.png: the top of the screen, then the first vertical scrollable moved
 //           one viewport down each time (4 frames at most); ATF hierarchy checks and the clickable
-//           Compose nodes under 48dp for every frame -> runtime-<theme>.json
+//           Compose nodes whose touch bounds are under 48dp for every frame -> runtime-<theme>.json
 //   states  (with -Dm3.statesFile) one fresh launch per state, the steps (click, enterText, scrollTo,
 //           waitMs) performed through the Compose semantics actions, then state-<name>-<theme>-412x915.png
 //           and state-<name>-<theme>.json { ok, error?, file? }. A failing step never throws.
@@ -134,6 +134,9 @@ class M3ShotsTest {
         val context = ApplicationProvider.getApplicationContext<Context>()
         val intent = launchIntent(context)
         prepare(context)
+        // The first launch in a JVM is cold: a text field there drops the first typed text (measured on a
+        // search bar: light theme failed, dark, the second launch, worked). One throwaway launch first.
+        runCatching { launched(intent) { settle(SETTLE_FRAMES) } }
         for (i in 0 until specs.length()) {
             val spec = specs.getJSONObject(i)
             val name = spec.getString("name")
@@ -212,8 +215,21 @@ class M3ShotsTest {
     private fun enterText(s: Sel, text: String, root: View) {
         val field = findAll(s, root).mapNotNull { settable(it) }.getOrNull(s.index) ?: throw StepFailure("no text field matches $s")
         runCatching { field.config.getOrNull(SemanticsActions.RequestFocus)?.action?.invoke() }
+        settle(STEP_FRAMES)
         val set = field.config.getOrNull(SemanticsActions.SetText)?.action ?: throw StepFailure("$s is not a text field")
-        if (!set(AnnotatedString(text))) throw StepFailure("$s did not accept the text")
+        // The state only counts when the text is really in a text field afterwards: a field that ignores
+        // its change callback, or a custom field the action did not reach, accepts the action and shows
+        // the old screen (owner decision 2026-11-18). A field that is not ready on the first frames gets
+        // the text again, up to three times.
+        var shown = false
+        for (attempt in 1..3) {
+            if (!set(AnnotatedString(text))) throw StepFailure("$s did not accept the text")
+            settle(STEP_FRAMES * attempt)
+            shown = (nodes(listOf(root), true) + nodes(listOf(root), false))
+                .any { n -> n.config.getOrNull(SemanticsProperties.EditableText)?.text == text }
+            if (shown) break
+        }
+        if (!shown) throw StepFailure("the text \"$text\" did not appear in the text field $s")
     }
 
     // The node itself, a descendant or an ancestor that takes text.
@@ -294,6 +310,23 @@ class M3ShotsTest {
         return found.reversed()
     }
 
+    // The touch target of a clickable node: the larger of its layout size and the bounds of the
+    // minimumInteractiveComponentSize() modifier on the same layout node (the padding the official
+    // buttons, chips and icon buttons get). Compose's own pointer-input expansion to 48dp is left out on
+    // purpose: SemanticsNode.touchBoundsInRoot includes it, so every clickable, even a bare 32dp box,
+    // would report 48dp and the check could never fire.
+    private fun touchSize(node: SemanticsNode): Pair<Float, Float> {
+        var w = node.size.width.toFloat()
+        var h = node.size.height.toFloat()
+        val infos = runCatching { node.layoutInfo.getModifierInfo() }.getOrDefault(emptyList())
+        for (info in infos) {
+            if (!info.modifier.javaClass.name.contains("MinimumInteractive")) continue
+            w = maxOf(w, info.coordinates.size.width.toFloat())
+            h = maxOf(h, info.coordinates.size.height.toFloat())
+        }
+        return w to h
+    }
+
     private fun composeRoots(view: View): List<ViewRootForTest> {
         val found = mutableListOf<ViewRootForTest>()
         fun visit(v: View) {
@@ -354,9 +387,10 @@ class M3ShotsTest {
         action(0f, dy)
     }
 
-    // Every clickable Compose node (merged semantics tree) whose layout size is under 48x48dp.
-    // ATF alone misses these: Compose reports the touch area it extends to 48dp as the node's
-    // accessibility bounds. Disabled nodes carry enabled=false; compose.mjs leaves them out.
+    // Every clickable Compose node (merged semantics tree) whose touch target is under 48x48dp. The touch
+    // target includes the padding minimumInteractiveComponentSize() adds around the official 40dp buttons
+    // and 32dp chips, the same measurement as harness v2 (owner decision 2026-11-18). Disabled nodes carry
+    // enabled=false; compose.mjs leaves them out.
     private fun semanticsTargets(root: View): JSONArray {
         val out = JSONArray()
         val density = root.resources.displayMetrics.density
@@ -364,8 +398,7 @@ class M3ShotsTest {
         for (node in nodes(listOf(root), true)) {
             val config = node.config
             if (SemanticsActions.OnClick !in config && SemanticsActions.OnLongClick !in config) continue
-            val w = node.size.width
-            val h = node.size.height
+            val (w, h) = touchSize(node)
             if (w + 0.5f >= minPx && h + 0.5f >= minPx) continue
             val b = node.boundsInWindow
             val label = config.getOrNull(SemanticsProperties.ContentDescription)?.joinToString(" ")

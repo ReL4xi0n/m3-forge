@@ -44,3 +44,7 @@ Finding: the web podcast and the Flutter podcast both made the mini-player a `re
 although SKILL.md says anything that stays on screen is `main`. The mini-player appears only on the library
 view, which is how a mini-player works when the full player is closed, so it is shown, but the rule is only
 partly followed. No change made.
+
+Update 2026-11-18 (owner): an element that stays on screen (mini-player, nav bar, cart badge) counts as `main` in
+the plan check and must be on the first screen; SKILL.md step 5 now says so. The two podcast cells above that
+marked the mini-player `reached` are the case this rule closes.

@@ -1,10 +1,14 @@
 {
   "flutterHarness": "v3",
+  "composeHarness": "v3",
   "frozenOn": "2026-11-18",
   "files": {
     "harness/flutter/capture_test.dart": "063a2a6a33b861fb8e98015b5773e92a6bdd887b97e73d23c9621dd0117b5ea0",
     "harness/flutter/capture_test.v2.dart": "a4d69d10dbf4cd1cd188f35eb5da5e20188640705cdf0635f4902a18849a8b02",
     "harness/flutter/flutter_test_config.dart": "2c8c3aa62d306d6dcdb6e23dd13d561349342bcf9fc5dbca268f04af3aafa2ee",
-    "harness/flutter/capture.mjs": "18527c68bc3f4ef89bb8bde2ea57bf87c922549facf55498b3e4b29d1172f67a"
+    "harness/flutter/capture.mjs": "18527c68bc3f4ef89bb8bde2ea57bf87c922549facf55498b3e4b29d1172f67a",
+    "harness/compose/capture.mjs": "284aac3580e285d61f0504d578b3725662834efe4713af3ba041cad46cb3c3e5",
+    "harness/compose/roborazzi.init.gradle.kts": "9264513105ca036ffbfbb318c52aba187e0412265c44d6d2bab43fe07b6b83fa",
+    "harness/compose/src/test/kotlin/m3forge/harness/CaptureTest.kt": "11989a126e65c6e016d1c71b356b89114d522d317677361529ee3f3c1ac1af18"
   }
 }

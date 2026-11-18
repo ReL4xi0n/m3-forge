@@ -12,6 +12,7 @@
 //   m3.outDir      where M3CaptureTest writes screenshots and ATF results (required)
 //   m3.launcher    fully qualified launcher activity (optional; else the merged manifest is used)
 //   m3.harnessDir  harness/compose (optional; defaults to this script's folder)
+//   m3.targets     touch (default, harness v3: minimum interactive size included) or layout (v2: layout size)
 
 val m3Pins = listOf(
     "junit:junit:4.13.2",
@@ -30,6 +31,7 @@ val m3HarnessDir: File = m3Props["m3.harnessDir"]?.let(::File)
 val m3OutDir: String = m3Props["m3.outDir"]
     ?: throw GradleException("m3-forge: pass -Pm3.outDir=<folder for screenshots>")
 val m3Launcher: String? = m3Props["m3.launcher"]?.takeIf { it.isNotBlank() }
+val m3Targets: String = m3Props["m3.targets"] ?: "touch"
 // Robolectric downloads android-all jars through its own Maven resolver (default ~/.m2).
 // Keep them inside the toolchain's GRADLE_USER_HOME.
 val m3RobolectricRepo: File = File(gradle.gradleUserHomeDir, "m3-robolectric-m2")
@@ -70,6 +72,7 @@ gradle.allprojects {
             systemProperty("roborazzi.test.record", "true")
             systemProperty("m3.outDir", m3OutDir)
             if (m3Launcher != null) systemProperty("m3.launcher", m3Launcher)
+            systemProperty("m3.targets", m3Targets)
             systemProperty("maven.repo.local", m3RobolectricRepo.absolutePath)
             val tmp = tmpDir.get().asFile
             jvmArgs("-Djava.io.tmpdir=${tmp.absolutePath}")

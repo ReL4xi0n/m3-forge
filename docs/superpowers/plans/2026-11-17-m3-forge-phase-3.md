@@ -839,8 +839,9 @@ Same steps as Task 19 for FAB menu, SplitButton and the toolbars. One commit per
 `scripts/screenshot/compose.mjs`, and tests.
 
 **Interfaces:**
-- `screenshot` for Compose runs only when the project already applies Roborazzi or Compose
-  screenshot testing. Otherwise `ran: false` with "offer to add it".
+- `screenshot` for Compose runs the project's Gradle on a temporary copy with its own init script
+  (Robolectric and Roborazzi; ruling R28, owner 2026-11-18, spec §7); the project is never edited.
+  Offline: `ran: false` with the reason.
 - On `belowExpressive`, the skill reports "Expressive needs material3 1.5, offer the upgrade" and
   never edits Gradle without consent.
 

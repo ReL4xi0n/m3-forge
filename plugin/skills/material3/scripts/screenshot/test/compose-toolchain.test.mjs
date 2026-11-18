@@ -45,6 +45,9 @@ test('real Gradle: frames, ATF findings, states, project untouched', { skip, tim
     assert.equal(byName[n].ok, true, byName[n].error);
     assert.equal(byName[n].shots.length, 2);
   }
+  // enterText only counts when the text shows up in a field (a field that ignores its change callback fails)
+  assert.equal(byName['ignored-text'].ok, false);
+  assert.match(byName['ignored-text'].error, /did not appear in the text field/);
   assert.equal(byName.broken.ok, false);
   assert.ok(r.warnings.some((w) => /state "broken" failed/.test(w)));
   assert.deepEqual(snapshot(dir), before, 'the project is byte for byte the same');

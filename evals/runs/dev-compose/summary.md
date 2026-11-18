@@ -84,3 +84,33 @@ were present on the main screen in the other platforms' tables and were not re-r
 3. `enterText` does not report a miss when the text field is custom (plant search): the state is marked ok and
    shows the unchanged screen. A "text did not appear" check is a small follow-up.
 4. The no-Node Compose cell still has 8 touch-target findings after 3 rounds.
+
+## 3d owner decisions (2026-11-18) and the re-check without a new round
+
+1. **R28 accepted.** Roborazzi and Robolectric run only in a temporary copy of the project (own Gradle init
+   script); offline, the step is skipped and the report says so. Spec §7 now says this.
+2. **Compose harness v3 (frozen in `evals/frozen-harness.json`).** The touch target now includes the padding
+   `minimumInteractiveComponentSize()` adds, so official 40 dp buttons and 32 dp chips are not findings; a bare
+   clickable under 48 dp still is (the sample app proves both). Measured with the modifier's own bounds, not
+   `SemanticsNode.touchBoundsInRoot`: that includes Compose's pointer-input expansion to 48 dp, so every
+   clickable, even a bare 32 dp box, reported 48 dp and the check could never fire (tried first, 0 findings
+   everywhere). Harness v2 (layout size) stays selectable to reproduce the old numbers. The "layout at least
+   48 dp" rule is gone from `references/compose/components.md` (official sizes stay: 40 dp button, 32 dp chip).
+   Baseline Compose cells, recorded code captured again (`evals/runs/2026-11-17-baseline/compose-harness-v3.md`):
+   touch-target findings 68 → 2 over 8 cells, automated contrast-targets mean 0.88 → 2.88. The pictures are
+   byte-identical to the earlier ones (SHA-256, 8/8), so the judge v2 scores cannot change and the judge was
+   not run again; the "blind re-score" is the frozen automated formula on the new capture.
+3. **`enterText` fails a state whose text is not in a text field afterwards.** Tested with a fixture field that
+   ignores its change callback (`ignored-text` state: `ok: false`, "did not appear in the text field"). On the
+   real plant-shop search it exposed a cold-start bug: the first launch of a JVM dropped the typed text (light
+   theme failed, dark worked). The step now makes one throwaway launch before the first state.
+4. **Rule text.** SKILL.md step 5: anything always visible (mini-player, nav bar, cart badge) is `main`, sits on
+   the first screen and never only in a state (budget 54,509 / 54,514). Known limitation, in
+   `references/compose/screenshot.md`: a popup menu (`DropdownMenu`, sort menu) is not drawn by Robolectric, so
+   the sort-menu popup cannot be proved visible there.
+5. **Re-check of the existing outputs** (`recheck.md`; harness v3 capture and verify on the last run of each cell):
+   the four skill cells still give 0 touch-target and 0 contrast findings (the rule was reverted, but their code was
+   written while it applied: a fresh round would be the real test of the reverted rule; not run, as decided); the
+   no-Node plant-shop cell went from 8 touch-target findings to 0; plant-shop `empty-search` now shoots the empty
+   result state in both themes (recorded in `private/`). The gate item "every requested element visible" now holds
+   for the plant empty result state; `sorted-price-low` is still a failed state of the r2 run (not re-shot).

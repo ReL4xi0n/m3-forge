@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.AssistChip
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -26,7 +28,8 @@ import androidx.compose.ui.unit.sp
 
 // Hand-written sample for the Compose capture harness test. It has three planted findings:
 // a low-contrast caption, a 32dp clickable box (below the 48dp touch target) and a disabled
-// 32dp clickable box that the harness must leave out.
+// 32dp clickable box that the harness must leave out. The official Button (40dp) and AssistChip (32dp)
+// keep their layout size but extend the touch area to 48dp (minimumInteractiveComponentSize).
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +61,8 @@ class MainActivity : ComponentActivity() {
                                 .semantics { contentDescription = "Disabled small target" }
                                 .clickable(enabled = false) { },
                         )
+                        Button(onClick = { }) { Text("Official button") }
+                        AssistChip(onClick = { }, label = { Text("Official chip") })
                     }
                 }
             }

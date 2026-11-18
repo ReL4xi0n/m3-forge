@@ -56,11 +56,11 @@ the request asks for classic Material 3. Below is the order of work. `S` is `${C
 ## 5. Build the UI
 
 - Screen plan, before any code: one row per screen, element and state the request names (panels,
-  players, pickers, badges, empty, error and selected states), each with its M3 component
+  players, pickers, badges, empty, error, selected), each with its M3 component
   (`components.md`) and its region per window size class (canonical layout from `layout.md`). Mark
-  a row `main` (on first load; whatever stays on screen, like a mini-player, nav bar or cart badge,
-  is `main`) or `reached` (follows an action: confirmation dialog, empty search result, open menu
-  or sheet). Never add a labelled "specimen" or demo section to show a state. For `reached` rows
+  a row `main` (on first load; anything always visible, like a mini-player, nav bar or cart badge,
+  is `main` and sits on the first screen, never only in a state) or `reached` (follows an action:
+  dialog, empty result, open menu or sheet). No labelled "specimen" or demo sections. For `reached` rows
   write a states file (in the OS temp dir; format in the platform's screenshot section) with the
   interaction that gets there. Add the hierarchy recipe (`typography.md`), then build. (F9, F10)
 

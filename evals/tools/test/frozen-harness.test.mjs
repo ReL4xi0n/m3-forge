@@ -7,9 +7,10 @@ import { hashes } from '../freeze-harness.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 
-// Flutter harness v3 is frozen: a change needs a new version and a re-capture of the baseline.
-test('harness/flutter files match evals/frozen-harness.json', () => {
+// Flutter and Compose harness v3 are frozen: a change needs a new version and a re-capture of the baseline.
+test('harness/flutter and harness/compose files match evals/frozen-harness.json', () => {
   const frozen = JSON.parse(readFileSync(join(root, 'evals', 'frozen-harness.json'), 'utf8'));
   assert.equal(frozen.flutterHarness, 'v3');
+  assert.equal(frozen.composeHarness, 'v3');
   assert.deepEqual(hashes(root), frozen.files);
 });

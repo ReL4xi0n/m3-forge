@@ -362,8 +362,14 @@ This rule covers an explicit platform in an empty or non-matching folder.
     Gradle sync).
   - If package installs fail, the code is still written and the report gives the exact command to
     run later.
-- End-user Compose screenshots run only if the project already has Roborazzi or Compose screenshot
-  testing set up. Otherwise the skill offers to add it and does not touch Gradle files uninvited.
+- End-user Compose screenshots (owner decision 2026-11-18, ruling R28; this replaces "only if the
+  project already has Roborazzi"):
+  - The step runs the project's own Gradle wrapper on a temporary copy of the project, with an init
+    script of its own that adds Robolectric and Roborazzi there. Roborazzi need not be in the project,
+    and the project and its Gradle files are never edited.
+  - Offline, or without a JDK or an Android SDK, the step is skipped: `ran: false` with the reason,
+    and the report says which step was skipped. The first run needs the network for Robolectric and
+    Roborazzi.
 - Generated preview tests and images go to a temporary location. They do not stay in the user's
   project unless the user asks.
 

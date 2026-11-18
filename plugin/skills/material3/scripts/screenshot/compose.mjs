@@ -1,7 +1,7 @@
 // Compose back end of the screenshot step: renders the app's launcher activity at 412x915 dp (420 dpi)
 // in light and dark under Robolectric (native graphics) with Roborazzi, plus frames scrolled one
 // viewport at a time down the first vertical scrollable (at most 4 frames per theme), and measures
-// text contrast (Accessibility Test Framework) and 48 dp touch targets. Results are { where, detail }
+// text contrast (Accessibility Test Framework) and 48 dp touch targets (semantic touch bounds, minimum interactive size included). Results are { where, detail }
 // entries, the shape verify reads from capture.json `runtime`; disabled nodes are left out.
 //
 // The project does not need Roborazzi, and none of its files is edited: the project is copied to a
@@ -228,7 +228,7 @@ const inside = (p, b) => p[0] >= b[0] && p[0] <= b[2] && p[1] >= b[1] && p[1] <=
 // SemanticsProperties.Disabled, which ATF sees as isEnabled() == false) are left out.
 // - contrast: ATF TextContrastCheck ERROR or WARNING. For Compose text ATF cannot read the text color,
 //   so it estimates both from the screenshot and reports a WARNING.
-// - targets: clickable semantics nodes under 48x48dp, plus any ATF TouchTargetSizeCheck ERROR that is
+// - targets: clickable semantics nodes whose touch bounds (minimum interactive size included) are under 48x48dp, plus any ATF TouchTargetSizeCheck ERROR that is
 //   not the same node (ATF sees the touch area Compose extends to 48dp).
 export function normalizeReport(label, report) {
   const contrast = [];
@@ -239,7 +239,7 @@ export function normalizeReport(label, report) {
     const b = t.bounds ?? [];
     targets.push({
       where: `${label}: clickable ${name}${t.role ? ` role=${t.role}` : ''} bounds=[${b[0]},${b[1]}][${b[2]},${b[3]}]`,
-      detail: `${t.widthDp}x${t.heightDp}dp, below the 48x48dp minimum touch target (layout size)`,
+      detail: `${t.widthDp}x${t.heightDp}dp, below the 48x48dp minimum touch target (touch bounds)`,
     });
   }
   for (const r of report?.results ?? []) {

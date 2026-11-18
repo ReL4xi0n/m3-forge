@@ -28,8 +28,7 @@ use Roborazzi.
 Plan check: every requested element must be visible in a main frame or in a state shot. Elements
 behind an action (a dialog, an empty result, an open menu, a row far down the list) are reached with
 `--states`, a JSON file outside the project. Each state launches the app fresh, runs its steps with a
-settle after each, and shoots light and dark as `state-<name>-<theme>-412x915.png` (dialogs and popups
-are in the picture). `capture.json` gets `states: [{ name, ok, shots, error? }]`; a step whose finder
+settle after each, and shoots light and dark as `state-<name>-<theme>-412x915.png` (dialogs are in the picture, popup menus are not: see "Known limitations"). `capture.json` gets `states: [{ name, ok, shots, error? }]`; a step whose finder
 matches nothing marks that state `ok: false` (and a warning): fix the steps or the screen, run again.
 The main shots never depend on the states.
 
@@ -39,6 +38,15 @@ The main shots never depend on the states.
 | Type | `{"enterText": {"into": {"hint": "Search"}, "text": "cactus"}}`; `into` is `hint` (the label), `text` (the current text) or `tag` |
 | Scroll | `{"scrollTo": {"text": "Order total"}}` scrolls the first vertical scrollable until the element is on screen |
 | Wait | `{"waitMs": 300}` |
+
+Known limitations of the Robolectric render:
+- A popup menu (`DropdownMenu`, the menu of an `ExposedDropdownMenuBox`, a sort menu) does not appear
+  in the shot: Robolectric does not draw popup windows. Its state may report `ok` with the menu closed
+  or missing. A `reached` row that is only a popup menu cannot be proved here: say so in the report
+  instead of counting it as seen, and show the result of choosing an item (a sorted list) in a state
+  of its own. Dialogs, bottom sheets and snackbars are drawn.
+- `enterText` fails the state when the typed text is not in a text field afterwards (a field that
+  ignores its change callback, or a custom field the action does not reach).
 
 Any finder takes `"index": n` (zero based) when several nodes match. A finder looks at the dialog
 first, then the screen. Prefer `text`; add `Modifier.testTag` in the screen only when no text is unique.
