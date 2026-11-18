@@ -36,18 +36,24 @@ class M3MotionTheme extends ThemeExtension<M3MotionTheme> {
 class M3Theme {
   M3Theme._();
 
-  static ThemeData light(ColorScheme scheme, {bool expressive = true}) => _build(scheme, expressive);
+  static ThemeData light(ColorScheme scheme, {bool expressive = true}) {
+    assert(scheme.brightness == Brightness.light, 'M3Theme.light needs a light color scheme');
+    return _build(scheme, expressive);
+  }
 
-  static ThemeData dark(ColorScheme scheme, {bool expressive = true}) => _build(scheme, expressive);
+  static ThemeData dark(ColorScheme scheme, {bool expressive = true}) {
+    assert(scheme.brightness == Brightness.dark, 'M3Theme.dark needs a dark color scheme');
+    return _build(scheme, expressive);
+  }
 
   static ThemeData _build(ColorScheme scheme, bool expressive) {
     return ThemeData(
       useMaterial3: true,
       colorScheme: scheme,
       textTheme: M3Type.textTheme,
-      cardTheme: const CardThemeData(shape: M3Shapes.medium),
-      dialogTheme: const DialogThemeData(shape: M3Shapes.extraLarge),
-      bottomSheetTheme: const BottomSheetThemeData(shape: M3Shapes.extraLargeTop),
+      cardTheme: const CardThemeData(shape: M3Shapes.medium), // md.comp.filled-card.container.shape (md.sys.shape.corner.medium)
+      dialogTheme: const DialogThemeData(shape: M3Shapes.extraLarge), // md.comp.dialog.container.shape (md.sys.shape.corner.extra-large)
+      bottomSheetTheme: const BottomSheetThemeData(shape: M3Shapes.extraLargeTop), // md.comp.sheet.bottom.docked.container.shape (md.sys.shape.corner.extra-large.top)
       // [material_ui] elevatedButtonTheme: ElevatedButtonThemeData(variant: expressive ? StyleVariant.material3Expressive : StyleVariant.material3),
       // [material_ui] iconButtonTheme: IconButtonThemeData(variant: expressive ? StyleVariant.material3Expressive : StyleVariant.material3),
       extensions: <ThemeExtension<dynamic>>[

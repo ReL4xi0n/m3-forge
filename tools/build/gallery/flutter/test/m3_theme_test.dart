@@ -35,6 +35,9 @@ void main() {
     final ThemeData c = M3Theme.light(classic.M3ColorSchemes.light, expressive: false);
     expect(e.extension<M3EmphasizedType>(), isNotNull);
     expect(c.extension<M3EmphasizedType>(), isNull);
+    // M3EmphasizedType.of falls back to the baseline emphasized scale when the theme has none,
+    // so a Classic sample must read the extension (or the plain textTheme), not .of(context).
+    expect(c.extension<M3EmphasizedType>() ?? M3EmphasizedType.baseline, same(M3EmphasizedType.baseline));
     expect(e.extension<M3MotionTheme>()!.scheme, same(M3Motion.expressive));
     expect(c.extension<M3MotionTheme>()!.scheme, same(M3Motion.standard));
     expect(e.colorScheme.brightness, Brightness.light);

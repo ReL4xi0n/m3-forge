@@ -157,7 +157,7 @@ function asShipped(assetPath, text) {
   if (assetPath.endsWith('.kt')) t = t.replace(/^package (?:[A-Za-z_]\w*\.)*theme[ \t]*$/m, 'package m3.theme');
   if (assetPath.endsWith('.dart')) {
     t = t.replace(/package:material_ui\/material_ui\.dart/g, 'package:flutter/material.dart');
-    t = t.replace(/^([ 	]*)(\S.*?) \/\/ \[material_ui\]$/gm, '$1// [material_ui] $2');
+    t = t.replace(/^([ 	]*)(\S.*,) \/\/ \[material_ui\]$/gm, '$1// [material_ui] $2');
   }
   return t.trimEnd();
 }
