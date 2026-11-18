@@ -51,7 +51,7 @@ export const MANIFEST = {
     ...Object.fromEntries(WEB_COMPONENTS.map((c) => [c, [{ src: `web/components/${c}.css`, group: 'main' }]])),
   },
   flutter: {
-    tokens: ['motion', 'shape', 'space', 'tokens', 'type'].map((n) => ({ src: `flutter/lib/m3/${n}.dart`, group: 'main' })),
+    tokens: ['motion', 'shape', 'space', 'theme', 'tokens', 'type'].map((n) => ({ src: `flutter/lib/m3/${n}.dart`, group: 'main' })),
     fonts: [...TTF_FONTS, ...LICENSES],
   },
   compose: {

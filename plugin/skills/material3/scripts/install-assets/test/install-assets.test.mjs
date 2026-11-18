@@ -67,6 +67,21 @@ test('flutter: material_ui import rewrite, identical on rerun, pubspec snippet',
   } finally { await rm(dir, { recursive: true, force: true }); }
 });
 
+test('flutter: theme.dart turns the material_ui lines into code only for material_ui', async () => {
+  const a = await project((d) => writeFile(join(d, 'pubspec.yaml'), 'dependencies:\n  material_ui: ^1.11.0\n'));
+  const b = await project();
+  try {
+    installAssets({ projectDir: a, platform: 'flutter', parts: ['tokens'] });
+    installAssets({ projectDir: b, platform: 'flutter', parts: ['tokens'] });
+    const ui = await readFile(join(a, 'lib/m3/theme.dart'), 'utf8');
+    const plain = await readFile(join(b, 'lib/m3/theme.dart'), 'utf8');
+    assert.match(ui, /^ +iconButtonTheme: IconButtonThemeData\(variant: expressive \? StyleVariant\.material3Expressive : StyleVariant\.material3\), \/\/ \[material_ui\]$/m);
+    assert.doesNotMatch(ui, /^ *\/\/ \[material_ui\] /m);
+    assert.match(plain, /^ +\/\/ \[material_ui\] iconButtonTheme: /m);
+    assert.doesNotMatch(plain, /^ +iconButtonTheme:/m);
+  } finally { await rm(a, { recursive: true, force: true }); await rm(b, { recursive: true, force: true }); }
+});
+
 test('flutter: plain material keeps the flutter import', async () => {
   const dir = await project();
   try {

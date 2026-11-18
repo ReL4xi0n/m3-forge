@@ -96,7 +96,8 @@ test('flutter: exact theme assets (material_ui rewrite) are theme files; a marke
   const dir = project({ 'pubspec.yaml': 'name: app\ndependencies:\n  material_ui: any\n' });
   try {
     const res = installAssets({ projectDir: dir, platform: 'flutter', parts: ['tokens'], flutterLibrary: 'material_ui' });
-    assert.equal(res.copied.length, 5);
+    assert.equal(res.copied.length, 6);
+    assert.match(readFileSync(join(dir, 'lib/m3/theme.dart'), 'utf8'), /^ +elevatedButtonTheme: ElevatedButtonThemeData\(variant: .*\), \/\/ \[material_ui\]$/m);
     assert.ok(res.copied.some(f => readFileSync(join(dir, f), 'utf8').includes('package:material_ui/material_ui.dart')), 'the rewrite applied');
     put(dir, 'lib/main.dart', "import 'm3/tokens.dart';\n\nconst gap = M3Space.space200;\n");
     // Spoof: the shipped space.dart header (marker and "do not edit") over an off-grid literal.

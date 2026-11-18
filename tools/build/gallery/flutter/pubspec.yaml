@@ -1,0 +1,29 @@
+name: m3_gallery
+description: Golden gallery for the material3 skill Flutter theme (maintainer tool, not shipped).
+publish_to: none
+version: 0.0.0
+
+environment:
+  sdk: ^3.14.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  material_ui: 1.11.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+  fonts:
+    - family: Roboto Flex
+      fonts:
+        - asset: assets/fonts/RobotoFlex.ttf
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto.ttf
+    - family: MaterialSymbolsOutlined
+      fonts:
+        - asset: assets/fonts/MaterialSymbolsOutlined.ttf

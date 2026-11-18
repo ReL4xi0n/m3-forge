@@ -20,7 +20,8 @@
 // Rewrites applied while copying (and when judging "identical"):
 //   Compose: `package m3.theme` becomes `package <package>.theme`
 //   Flutter: `package:flutter/material.dart` becomes `package:material_ui/material_ui.dart`
-//            when the project uses material_ui
+//            when the project uses material_ui; a line `// [material_ui] <code>` becomes
+//            `<code> // [material_ui]` (code only material_ui compiles, e.g. StyleVariant)
 import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { basename, dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -84,6 +85,8 @@ function render(entry, { platform, themePackage, flutterLibrary }) {
   }
   if (platform === 'flutter' && flutterLibrary === 'material_ui') {
     text = text.replace(/package:flutter\/material\.dart/g, 'package:material_ui/material_ui.dart');
+    // Lines only material_ui can compile (theme.dart) ship as comments; they become code here.
+    text = text.replace(/^([ 	]*)\/\/ \[material_ui\] (.*)$/gm, '$1$2 // [material_ui]');
   }
   return Buffer.from(text, 'utf8');
 }

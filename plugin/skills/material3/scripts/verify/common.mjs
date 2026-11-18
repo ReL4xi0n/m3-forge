@@ -122,6 +122,7 @@ export const THEME_ASSETS = new Set([
   'assets/flutter/lib/m3/shape.dart',
   'assets/flutter/lib/m3/space.dart',
   'assets/flutter/lib/m3/motion.dart',
+  'assets/flutter/lib/m3/theme.dart',
   'assets/compose/theme/Type.kt',
   'assets/compose/theme/Shape.kt',
   'assets/compose/theme/Space.kt',
@@ -154,7 +155,10 @@ function shippedAsset(assetPath) {
 function asShipped(assetPath, text) {
   let t = text;
   if (assetPath.endsWith('.kt')) t = t.replace(/^package (?:[A-Za-z_]\w*\.)*theme[ \t]*$/m, 'package m3.theme');
-  if (assetPath.endsWith('.dart')) t = t.replace(/package:material_ui\/material_ui\.dart/g, 'package:flutter/material.dart');
+  if (assetPath.endsWith('.dart')) {
+    t = t.replace(/package:material_ui\/material_ui\.dart/g, 'package:flutter/material.dart');
+    t = t.replace(/^([ 	]*)(\S.*?) \/\/ \[material_ui\]$/gm, '$1// [material_ui] $2');
+  }
   return t.trimEnd();
 }
 
