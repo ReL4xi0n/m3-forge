@@ -1,0 +1,20 @@
+{
+  "id": "flutter-r2",
+  "rows": [
+    {
+      "runId": "dev-2026-11-18-flutternonode-r2",
+      "condition": "skill-r2-nonode",
+      "cell": "plant-shop.flutter.flutter-material_ui.seed-2F6F5E",
+      "scores": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 2,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 2,
+        "dark-mode": 2,
+        "overall-polish": 2
+      }
+    }
+  ]
+}
