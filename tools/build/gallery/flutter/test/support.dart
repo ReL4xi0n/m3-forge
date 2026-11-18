@@ -21,13 +21,3 @@ Future<void> pumpApp(WidgetTester tester, Widget child, {Brightness brightness =
     home: Scaffold(body: SafeArea(child: child)),
   ));
 }
-
-/// A caption above [child].
-Widget labelled(String text, Widget child) => Padding(
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-        Builder(builder: (BuildContext context) => Text(text, style: Theme.of(context).textTheme.labelMedium)),
-        const SizedBox(height: 8),
-        child,
-      ]),
-    );

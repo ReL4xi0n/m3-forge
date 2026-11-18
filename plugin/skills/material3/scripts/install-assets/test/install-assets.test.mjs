@@ -94,10 +94,12 @@ test('flutter: plain material keeps the flutter import', async () => {
 test('flutter: expressive parts install under lib/m3/expressive; the loading indicator needs material_ui (R24)', async () => {
   const dir = await project();
   try {
-    const plain = installAssets({ projectDir: dir, platform: 'flutter', parts: ['tokens', 'loading-indicator'] });
+    const plain = installAssets({ projectDir: dir, platform: 'flutter', parts: ['tokens', 'button-group', 'loading-indicator'] });
+    assert.ok(plain.copied.includes('lib/m3/expressive/button_group.dart'));
     assert.ok(!plain.copied.some((f) => f.includes('loading_indicator')));
     assert.equal(plain.skipped.length, 1);
     assert.match(plain.skipped[0].reason, /material_ui/);
+    assert.match(await readFile(join(dir, 'lib/m3/expressive/button_group.dart'), 'utf8'), /package:flutter\/material\.dart/);
     const ui = installAssets({ projectDir: dir, platform: 'flutter', parts: ['loading-indicator'], flutterLibrary: 'material_ui' });
     assert.deepEqual(ui.copied, ['lib/m3/expressive/loading_indicator.dart']);
     assert.equal(ui.skipped, undefined);
@@ -108,11 +110,11 @@ test('flutter: expressive parts install under lib/m3/expressive; the loading ind
 test('flutter: expressive assets have no verify findings, and count as used once imported', async () => {
   const dir = await project();
   try {
-    installAssets({ projectDir: dir, platform: 'flutter', parts: ['tokens', 'loading-indicator'], flutterLibrary: 'material_ui' });
+    installAssets({ projectDir: dir, platform: 'flutter', parts: ['tokens', 'button-group', 'loading-indicator'], flutterLibrary: 'material_ui' });
     const unused = await verify({ projectDir: dir, platform: 'flutter' });
     assert.deepEqual(unused.violations.filter((v) => v.check !== 'asset-unused'), []);
-    assert.ok(unused.violations.some((v) => v.check === 'asset-unused' && /loading_indicator/.test(v.file)));
-    await writeFile(join(dir, 'lib/main.dart'), ["import 'm3/tokens.dart';", "import 'm3/expressive/loading_indicator.dart';", 'void main() {}', ''].join(String.fromCharCode(10)));
+    assert.ok(unused.violations.some((v) => v.check === 'asset-unused' && /button_group/.test(v.file)));
+    await writeFile(join(dir, 'lib/main.dart'), ["import 'm3/expressive/button_group.dart';", "import 'm3/expressive/loading_indicator.dart';", 'void main() {}', ''].join(String.fromCharCode(10)));
     const used = await verify({ projectDir: dir, platform: 'flutter' });
     assert.deepEqual(used.violations, []);
   } finally { await rm(dir, { recursive: true, force: true }); }

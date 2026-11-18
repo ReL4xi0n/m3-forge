@@ -57,6 +57,7 @@ export const MANIFEST = {
     // Expressive gap widgets (opt in, one part each); they import ../tokens.dart, so install `tokens` too.
     // library: 'material_ui' marks a widget that compiles only with material_ui (ruling R24).
     'loading-indicator': [{ src: 'flutter/lib/m3/expressive/loading_indicator.dart', group: 'main', name: 'expressive/loading_indicator.dart', library: 'material_ui' }],
+    'button-group': [{ src: 'flutter/lib/m3/expressive/button_group.dart', group: 'main', name: 'expressive/button_group.dart' }],
   },
   compose: {
     theme: ['Motion', 'Shape', 'Space', 'Tokens', 'Type'].map((n) => ({ src: `compose/theme/${n}.kt`, group: 'main' })),

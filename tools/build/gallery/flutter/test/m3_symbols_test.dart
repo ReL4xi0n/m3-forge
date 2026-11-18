@@ -2,7 +2,7 @@
 // Image goes to test/goldens/ (run.mjs copies it to out/gallery/flutter/).
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:m3_gallery/m3/m3_symbols.dart';
+import 'package:m3_gallery/symbols_showcase.dart';
 
 void main() {
   testWidgets('settings at fill 0/1 and weight 400/700', (WidgetTester tester) async {
@@ -12,7 +12,7 @@ void main() {
     Widget cell(double fill, double weight) => Padding(
           padding: const EdgeInsets.all(16),
           child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-            Icon(M3Symbols.settings, size: 64, fill: fill, weight: weight, grade: 0, opticalSize: 48, color: Colors.black),
+            Icon(settingsIcon, size: 64, fill: fill, weight: weight, grade: 0, opticalSize: 48, color: Colors.black),
             Text('FILL ${fill.toInt()}  wght ${weight.toInt()}', style: const TextStyle(fontSize: 12, color: Colors.black)),
           ]),
         );

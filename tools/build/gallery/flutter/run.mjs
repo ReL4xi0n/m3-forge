@@ -58,9 +58,12 @@ export async function runGallery(library, outDir = join(OUT, library)) {
     // Icon constants for the Symbols golden; the font is already in place from install-assets.
     flutterIcons({ projectDir: dir, names: ['settings'] });
     for (const w of WIDGETS) {
-      if (!widgetsFor(library).includes(w)) rmSync(join(dir, 'test', `m3_${w.replace(/-/g, '_')}_test.dart`), { force: true });
+      if (widgetsFor(library).includes(w)) continue;
+      const snake = w.replace(/-/g, '_');
+      rmSync(join(dir, 'test', `m3_${snake}_test.dart`), { force: true });
+      rmSync(join(dir, 'lib', `${snake}_showcase.dart`), { force: true });
     }
-    for (const f of ['lib/sample_screen.dart', ...readdirSync(join(dir, 'test')).filter(n => n.endsWith('.dart')).map(n => `test/${n}`)]) {
+    for (const f of ['lib', 'test'].flatMap(d => readdirSync(join(dir, d)).filter(n => n.endsWith('.dart')).map(n => `${d}/${n}`))) {
       const p = join(dir, f);
       writeFileSync(p, useLibrary(readFileSync(p, 'utf8'), library));
     }
