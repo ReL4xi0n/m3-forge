@@ -363,3 +363,14 @@ test('runCell: a skill run refuses an eval cell unless the prompt is given expli
   const m = await runCell({ ...common, cell: evalCell, runId: 'e2', promptOverride: '/material3 x', claudeCmd: dumpingClaude(base, [skillInit, wrote, result]) });
   assert.notEqual(m.status, 'refused');
 });
+
+test('settingsFor: a skill run may also read its screenshot folders in the run TEMP, nothing else there', winOnly, () => {
+  const base = { repoRoot: 'C:/r/repo', realCfg: 'C:/u/.claude', secretsDir: 'C:/u/.m3-toolchain/secrets', cfgDir: 'C:/m3-eval/cfg/x', skill: 'material3' };
+  const s = settingsFor({ ...base, tempDir: 'C:/m3-eval/appdata/run/cell/Temp' });
+  assert.deepEqual(s.permissions.allow, ['Read(//c/m3-eval/cfg/x/skills/material3/**)', 'Read(//c/m3-eval/appdata/run/cell/Temp/m3-screenshot-*/**)']);
+  assert.deepEqual(settingsFor(base).permissions.allow, ['Read(//c/m3-eval/cfg/x/skills/material3/**)']);
+  assert.deepEqual(s.permissions.deny, settingsFor(base).permissions.deny);
+  // A baseline run (no skill) gets no allow rule even with a TEMP folder.
+  const { skill, ...plainBase } = base;
+  assert.equal(settingsFor({ ...plainBase, tempDir: 'C:/m3-eval/appdata/run/cell/Temp' }).permissions.allow, undefined);
+});

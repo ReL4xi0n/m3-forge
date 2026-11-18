@@ -84,7 +84,9 @@ export function allNamesBut(name) {
 // skill: the name of the skill installed in <cfgDir>/skills/ for a skill run. The run may then read
 // that folder (the skill reads its own files through ${CLAUDE_SKILL_DIR}); every other entry of the run
 // config folder (settings.json, credentials, transcripts) stays unreadable, and nothing in it writable.
-export function settingsFor({ repoRoot, realCfg, secretsDir, cfgDir, skill = null }) {
+// tempDir (skill runs): the run's TEMP folder; the skill's screenshot step writes its PNGs to
+// <TEMP>/m3-screenshot-*, which the session must be able to read, as a user who allows the step would.
+export function settingsFor({ repoRoot, realCfg, secretsDir, cfgDir, skill = null, tempDir = null }) {
   const deny = [];
   for (const p of [repoRoot, realCfg, secretsDir, cfgDir].filter(Boolean)) {
     for (const tool of ['Read', 'Edit', 'Write']) {
@@ -98,7 +100,9 @@ export function settingsFor({ repoRoot, realCfg, secretsDir, cfgDir, skill = nul
     }
   }
   if (!skill) return { permissions: { deny }, enabledPlugins: {} };
-  return { permissions: { allow: [`Read(${permPath(join(cfgDir, 'skills', skill))}/**)`], deny }, enabledPlugins: {} };
+  const allow = [`Read(${permPath(join(cfgDir, 'skills', skill))}/**)`];
+  if (tempDir) allow.push(`Read(${permPath(tempDir)}/m3-screenshot-*/**)`);
+  return { permissions: { allow, deny }, enabledPlugins: {} };
 }
 
 const isFile = p => { try { return statSync(p).isFile(); } catch { return false; } };
@@ -240,7 +244,8 @@ export async function runCell(o) {
   if (prepare) await prepare(workDir);
   const skillInstall = skill ? join(cfgDir, 'skills', skill) : null;
   if (skill) cpSync(skillDir, skillInstall, { recursive: true });
-  writeFileSync(join(cfgDir, 'settings.json'), JSON.stringify(settingsFor({ repoRoot, realCfg, secretsDir, cfgDir, skill }), null, 2));
+  const sandboxDir = join(evalRoot, 'appdata', runId, cell.cell);
+  writeFileSync(join(cfgDir, 'settings.json'), JSON.stringify(settingsFor({ repoRoot, realCfg, secretsDir, cfgDir, skill, tempDir: skill ? join(sandboxDir, 'Temp') : null }), null, 2));
   restrictAcl(cfgDir);
 
   const checks = {};
@@ -250,7 +255,6 @@ export async function runCell(o) {
   }
   if (!existsSync(tokenFile)) return record('no-token', { problems: [`token file missing: ${tokenFile}`] });
   const token = readFileSync(tokenFile, 'utf8').trim();
-  const sandboxDir = join(evalRoot, 'appdata', runId, cell.cell);
   let env = sandboxEnv(dropRepoPaths(withToolchain(childEnv(process.env, { CLAUDE_CONFIG_DIR: cfgDir, CLAUDE_CODE_OAUTH_TOKEN: token })), repoRoot), sandboxDir);
   if (noNode) env = withoutNode(env);
 
