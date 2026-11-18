@@ -1,0 +1,21 @@
+name: m3_app
+description: A Material 3 Expressive app.
+publish_to: none
+version: 0.1.0
+
+environment:
+  sdk: ^3.14.0
+  flutter: ">=3.50.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  material_ui: ^1.11.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+  # fonts: add the entries that install-assets prints for --parts fonts (references/flutter/setup.md).

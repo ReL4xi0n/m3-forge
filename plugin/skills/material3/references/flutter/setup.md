@@ -4,6 +4,8 @@
 detect script reports `flutterLibrary`: `material_ui` when `pubspec.yaml` lists the package, else
 `material`.
 
+New project (no `pubspec.yaml`): `scaffold.md` first, then these steps. Which widget to use: `components.md`.
+
 ## Steps
 
 1. Color schemes (class `M3ColorSchemes`, written to `lib/m3/schemes.dart`):

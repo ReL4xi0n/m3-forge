@@ -2,10 +2,12 @@
 // Screenshot step of the material3 skill: renders the built UI in light and dark, and measures text
 // contrast and touch targets in the rendered page.
 //
-//   screenshot({ projectDir, platform, out?, url?, roots?, browsers? }) -> {
+//   screenshot({ projectDir, platform, out?, url?, roots?, browsers?, env? }) -> {
 //     ran: boolean, skippedReason?: string, engine?: 'playwright' | 'cdp', shots: string[] (PNG paths),
 //     runtime: { contrast: [{ where, detail }], targets: [{ where, detail }] },
 //     out, capture (capture.json path), pageErrors?, warnings?, measured?, playwright?, browser? }
+//   Flutter: back end in flutter.mjs (frames named <theme>-412x915-<nn>.png, 01 = top of the home screen;
+//   `env` replaces the environment whose PATH finds the flutter launcher, tests).
 //   `runtime` is what verify reads from capture.json. `roots` replaces the global node_modules
 //   folders searched for Playwright, `browsers` the browser executables tried without it (tests).
 //   engine 'playwright': a Playwright that resolves; 'cdp': an installed Chrome, Edge or Chromium.
@@ -18,11 +20,12 @@ import { mkdirSync, mkdtempSync, statSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { isAbsolute, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { screenshotFlutter } from './flutter.mjs';
 import { screenshotWeb } from './web.mjs';
 
 export const PLATFORMS = ['web', 'flutter', 'compose'];
 // Platform back ends: ({ projectDir, outDir, url, roots, browsers }) -> result without out/capture.
-export const BACKENDS = { web: screenshotWeb };
+export const BACKENDS = { web: screenshotWeb, flutter: screenshotFlutter };
 
 export class UsageError extends Error {}
 
@@ -32,7 +35,7 @@ const within = (child, parent) => {
   return r === '' || (!r.startsWith('..') && !isAbsolute(r));
 };
 
-export async function screenshot({ projectDir, platform, out, url, roots, browsers } = {}) {
+export async function screenshot({ projectDir, platform, out, url, roots, browsers, env } = {}) {
   if (!PLATFORMS.includes(platform)) throw new UsageError(`unknown platform "${platform}" (expected ${PLATFORMS.join(', ')})`);
   const dir = resolve(String(projectDir ?? ''));
   if (!isDir(dir)) throw new UsageError(`project folder not found: ${projectDir}`);
@@ -47,7 +50,7 @@ export async function screenshot({ projectDir, platform, out, url, roots, browse
 
   const backend = BACKENDS[platform];
   const result = backend
-    ? await backend({ projectDir: dir, outDir, url, roots, browsers })
+    ? await backend({ projectDir: dir, outDir, url, roots, browsers, env })
     : { ran: false, skippedReason: `no screenshot back end for ${platform} in this version: screenshots skipped`, shots: [], runtime: { contrast: [], targets: [] } };
 
   const capture = join(outDir, 'capture.json');

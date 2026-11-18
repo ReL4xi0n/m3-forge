@@ -158,9 +158,9 @@ test('browser candidates: Chrome / Edge / Chromium per OS; the first that exists
   assert.equal(findBrowser([join(bin, 'missing')]), null);
 });
 
-test('flutter and compose have no back end yet: skipped with the reason', async () => {
+test('compose has no back end yet: skipped with the reason', async () => {
   const dir = project();
-  for (const platform of ['flutter', 'compose']) {
+  for (const platform of ['compose']) {
     const r = await screenshot({ projectDir: dir, platform, roots: [] });
     assert.equal(r.ran, false);
     assert.match(r.skippedReason, new RegExp(`no screenshot back end for ${platform}`));
