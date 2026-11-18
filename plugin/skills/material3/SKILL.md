@@ -61,7 +61,7 @@ the request asks for classic Material 3. Below is the order of work. `S` is `${C
   a row `main` (on first load; whatever stays on screen, like a mini-player, nav bar or cart badge,
   is `main`) or `reached` (follows an action: confirmation dialog, empty search result, open menu
   or sheet). Never add a labelled "specimen" or demo section to show a state. For `reached` rows
-  write a states file (outside the project; format in the platform's screenshot section) with the
+  write a states file (in the OS temp dir; format in the platform's screenshot section) with the
   interaction that gets there. Add the hierarchy recipe (`typography.md`), then build. (F9, F10)
 
 Hard rules. `verify` checks these (contrast and touch targets only with the step 7 capture;
