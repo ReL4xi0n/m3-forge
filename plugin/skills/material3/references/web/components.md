@@ -221,6 +221,18 @@ sheet unmodified (verify exempts only the shipped file).
 Part `loading-indicator`. `<div class="m3-loading-indicator" role="progressbar"
 aria-label="Loading">`; `--contained` over busy content.
 
+## Expressive shapes
+
+Part `shapes`, Expressive only (under `data-m3-style="classic"` the mask is dropped; never plan
+them for classic). For avatars, image placeholders and one hero or selected container as emphasis.
+`<div class="m3-shape--cookie-9-sided" style="background: var(--md-sys-color-primary-container)">`
+The class is a mask only: the color is the element's own role background, an `<img>` is cut too.
+Names (Compose `MaterialShapes`): circle, square, slanted, arch, fan, arrow, semi-circle, oval,
+pill, triangle, diamond, clam-shell, pentagon, gem, sunny, very-sunny, cookie-4/6/7/9/12-sided,
+ghostish, clover-4-leaf, clover-8-leaf, burst, soft-burst, boom, soft-boom, flower, puffy,
+puffy-diamond, pixel-circle, pixel-triangle, bun, heart. Keep the box square (the shape stretches
+with it). The mask also cuts focus rings and shadows: put it on a non-interactive element.
+
 ## Bottom sheets
 
 Part `bottom-sheet`. Modal: `<dialog class="m3-bottom-sheet" aria-label="Share">` with an optional

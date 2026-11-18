@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="assets/m3/slider.css">
   <link rel="stylesheet" href="assets/m3/divider.css">
   <link rel="stylesheet" href="assets/m3/badge.css">
+  <link rel="stylesheet" href="assets/m3/shapes.css">
   <style>
     body {
       margin: 0;
@@ -90,6 +91,44 @@
       white-space: nowrap;
       direction: ltr;
       -webkit-font-smoothing: antialiased;
+    }
+    .gallery-shapes {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(var(--md-sys-space-900), 1fr));
+      gap: var(--md-sys-space-200);
+    }
+    .gallery-shape {
+      display: grid;
+      justify-items: center;
+      gap: var(--md-sys-space-50);
+      margin: 0;
+      text-align: center;
+      overflow-wrap: anywhere;
+      color: var(--md-sys-color-on-surface-variant);
+    }
+    .gallery-shape > div {
+      inline-size: var(--md-sys-space-800);
+      block-size: var(--md-sys-space-800);
+      background: var(--md-sys-color-primary-container);
+    }
+    .gallery-avatar, .gallery-placeholder {
+      display: grid;
+      place-items: center;
+      inline-size: var(--md-sys-space-800);
+      block-size: var(--md-sys-space-800);
+    }
+    .gallery-avatar {
+      background: var(--md-sys-color-primary-container);
+      color: var(--md-sys-color-on-primary-container);
+    }
+    .gallery-placeholder {
+      background: var(--md-sys-color-tertiary-container);
+      color: var(--md-sys-color-on-tertiary-container);
+    }
+    .gallery-wide {
+      inline-size: calc(var(--md-sys-space-800) * 3);
+      block-size: var(--md-sys-space-800);
+      background: var(--md-sys-color-secondary-container);
     }
   </style>
 </head>
@@ -361,6 +400,54 @@
       <span class="m3-badge">999+</span>
       <span class="gallery-anchor" role="img" aria-label="Mail, new messages"><span class="material-symbols-outlined" aria-hidden="true">mail</span><span class="m3-badge m3-badge--anchored"></span></span>
       <span class="gallery-anchor" role="img" aria-label="Notifications, 12 new"><span class="material-symbols-outlined" aria-hidden="true">notifications</span><span class="m3-badge m3-badge--anchored" aria-hidden="true">12</span></span>
+    </div>
+  </section>
+
+  <section aria-labelledby="shapes">
+    <h2 class="m3-type-title-large" id="shapes">Expressive shapes</h2>
+    <h3 class="m3-type-title-small">All 35 (MaterialShapes)</h3>
+    <div class="gallery-shapes">
+      <figure class="gallery-shape"><div class="m3-shape--circle"></div><figcaption class="m3-type-label-small">circle</figcaption></figure>
+      <figure class="gallery-shape"><div class="m3-shape--square"></div><figcaption class="m3-type-label-small">square</figcaption></figure>
+      <figure class="gallery-shape"><div class="m3-shape--slanted"></div><figcaption class="m3-type-label-small">slanted</figcaption></figure>
+      <figure class="gallery-shape"><div class="m3-shape--arch"></div><figcaption class="m3-type-label-small">arch</figcaption></figure>
+      <figure class="gallery-shape"><div class="m3-shape--fan"></div><figcaption class="m3-type-label-small">fan</figcaption></figure>
+      <figure class="gallery-shape"><div class="m3-shape--arrow"></div><figcaption class="m3-type-label-small">arrow</figcaption></figure>
+      <figure class="gallery-shape"><div class="m3-shape--semi-circle"></div><figcaption class="m3-type-label-small">semi-circle</figcaption></figure>
+      <figure class="gallery-shape"><div class="m3-shape--oval"></div><figcaption class="m3-type-label-small">oval</figcaption></figure>
+      <figure class="gallery-shape"><div class="m3-shape--pill"></div><figcaption class="m3-type-label-small">pill</figcaption></figure>
+      <figure class="gallery-shape"><div class="m3-shape--triangle"></div><figcaption class="m3-type-label-small">triangle</figcaption></figure>
+      <figure class="gallery-shape"><div class="m3-shape--diamond"></div><figcaption class="m3-type-label-small">diamond</figcaption></figure>
+      <figure class="gallery-shape"><div class="m3-shape--clam-shell"></div><figcaption class="m3-type-label-small">clam-shell</figcaption></figure>
+      <figure class="gallery-shape"><div class="m3-shape--pentagon"></div><figcaption class="m3-type-label-small">pentagon</figcaption></figure>
+      <figure class="gallery-shape"><div class="m3-shape--gem"></div><figcaption class="m3-type-label-small">gem</figcaption></figure>
+      <figure class="gallery-shape"><div class="m3-shape--sunny"></div><figcaption class="m3-type-label-small">sunny</figcaption></figure>
+      <figure class="gallery-shape"><div class="m3-shape--very-sunny"></div><figcaption class="m3-type-label-small">very-sunny</figcaption></figure>
+      <figure class="gallery-shape"><div class="m3-shape--cookie-4-sided"></div><figcaption class="m3-type-label-small">cookie-4-sided</figcaption></figure>
+      <figure class="gallery-shape"><div class="m3-shape--cookie-6-sided"></div><figcaption class="m3-type-label-small">cookie-6-sided</figcaption></figure>
+      <figure class="gallery-shape"><div class="m3-shape--cookie-7-sided"></div><figcaption class="m3-type-label-small">cookie-7-sided</figcaption></figure>
+      <figure class="gallery-shape"><div class="m3-shape--cookie-9-sided"></div><figcaption class="m3-type-label-small">cookie-9-sided</figcaption></figure>
+      <figure class="gallery-shape"><div class="m3-shape--cookie-12-sided"></div><figcaption class="m3-type-label-small">cookie-12-sided</figcaption></figure>
+      <figure class="gallery-shape"><div class="m3-shape--ghostish"></div><figcaption class="m3-type-label-small">ghostish</figcaption></figure>
+      <figure class="gallery-shape"><div class="m3-shape--clover-4-leaf"></div><figcaption class="m3-type-label-small">clover-4-leaf</figcaption></figure>
+      <figure class="gallery-shape"><div class="m3-shape--clover-8-leaf"></div><figcaption class="m3-type-label-small">clover-8-leaf</figcaption></figure>
+      <figure class="gallery-shape"><div class="m3-shape--burst"></div><figcaption class="m3-type-label-small">burst</figcaption></figure>
+      <figure class="gallery-shape"><div class="m3-shape--soft-burst"></div><figcaption class="m3-type-label-small">soft-burst</figcaption></figure>
+      <figure class="gallery-shape"><div class="m3-shape--boom"></div><figcaption class="m3-type-label-small">boom</figcaption></figure>
+      <figure class="gallery-shape"><div class="m3-shape--soft-boom"></div><figcaption class="m3-type-label-small">soft-boom</figcaption></figure>
+      <figure class="gallery-shape"><div class="m3-shape--flower"></div><figcaption class="m3-type-label-small">flower</figcaption></figure>
+      <figure class="gallery-shape"><div class="m3-shape--puffy"></div><figcaption class="m3-type-label-small">puffy</figcaption></figure>
+      <figure class="gallery-shape"><div class="m3-shape--puffy-diamond"></div><figcaption class="m3-type-label-small">puffy-diamond</figcaption></figure>
+      <figure class="gallery-shape"><div class="m3-shape--pixel-circle"></div><figcaption class="m3-type-label-small">pixel-circle</figcaption></figure>
+      <figure class="gallery-shape"><div class="m3-shape--pixel-triangle"></div><figcaption class="m3-type-label-small">pixel-triangle</figcaption></figure>
+      <figure class="gallery-shape"><div class="m3-shape--bun"></div><figcaption class="m3-type-label-small">bun</figcaption></figure>
+      <figure class="gallery-shape"><div class="m3-shape--heart"></div><figcaption class="m3-type-label-small">heart</figcaption></figure>
+    </div>
+    <h3 class="m3-type-title-small">Avatar, image placeholder, stretched to a wide box</h3>
+    <div class="gallery-row">
+      <div class="m3-shape--cookie-9-sided gallery-avatar m3-type-title-medium" role="img" aria-label="Ada Lovelace"><span aria-hidden="true">AL</span></div>
+      <div class="m3-shape--clover-4-leaf gallery-placeholder" role="img" aria-label="Image placeholder"><span class="material-symbols-outlined" aria-hidden="true">image</span></div>
+      <div class="m3-shape--arch gallery-wide"></div>
     </div>
   </section>
 </main>

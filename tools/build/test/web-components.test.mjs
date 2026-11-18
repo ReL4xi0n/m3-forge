@@ -79,13 +79,15 @@ function declarations(css) {
 //   nothing).
 //   100%: the containing block's size, where a position depends on it: an anchored badge's start
 //   (the anchor's end edge), a slider handle's travel and a progress track's length.
+//   mask-size: 100% 100% in shapes.css: the element's own box (a shape stretches to the element like
+//   Compose's RoundedPolygon.toShape()).
 //   1turn: the whole circle, where an angle along a circular progress indicator depends on it.
 //   @keyframes in progress.css: Compose's indeterminate timelines (offsets, 0 and 1 positions, the
 //   circular sweep and rotation angles); the keyframes test below derives each from the Compose
 //   constants.
 const NUMBER_EXCEPTIONS = [{ prop: 'z-index', value: '-1' }, { prop: '--_full-turn', value: '1turn' }];
 const HALVING = /\/\s*2(?![\d.])/g;
-const PERCENT_PROPS = new Set(['inset-inline-start', '--_handle-offset', '--_length']);
+const PERCENT_PROPS = new Set(['inset-inline-start', '--_handle-offset', '--_length', 'mask-size']);
 const KEYFRAME = /^(?:from|to|[\d.]+%)$/;
 
 test('every component style sheet is its own web install part and starts with the asset marker', () => {
@@ -138,7 +140,7 @@ test('colors come only from the --md-sys-color-* roles', () => {
 // Classic M3: every Expressive-only style sheet has a classic section scoped to the root attribute, and
 // no classic rule reads an Expressive size or shape token (the Expressive set is what it replaces).
 test('classic scoping: the Expressive-only styles have a classic section in their sheet', () => {
-  const classic = ['button', 'button-group', 'icon-button', 'list', 'loading-indicator', 'menu', 'navigation-bar', 'navigation-rail', 'progress', 'slider', 'top-app-bar'];
+  const classic = ['button', 'button-group', 'icon-button', 'list', 'loading-indicator', 'menu', 'navigation-bar', 'navigation-rail', 'progress', 'shapes', 'slider', 'top-app-bar'];
   for (const c of classic) {
     const css = sheets.get(`${c}.css`);
     assert.match(css, /^:root\[data-m3-style="classic"\] /m,`${c}: no classic section`);
@@ -181,12 +183,14 @@ test('class names are m3-<component> or m3-<component>--<variant>', () => {
     'tabs', 'tab', 'tab-content', 'tab-label', 'dialog', 'dialog-headline', 'dialog-content', 'dialog-actions',
     'bottom-sheet', 'bottom-sheet-drag-handle', 'menu', 'menu-item', 'menu-item-text', 'menu-item-supporting-text',
     'menu-item-trailing-text', 'snackbar', 'snackbar-text', 'tooltip', 'tooltip-subhead', 'tooltip-text', 'tooltip-actions',
-    'search', 'search-input', 'search-view', 'progress', 'loading-indicator',
+    'search', 'search-input', 'search-view', 'progress', 'loading-indicator', 'shape',
   ];
   const re = new RegExp(`^m3-(?:${COMPONENTS.join('|')})(?:--[a-z0-9]+(?:-[a-z0-9]+)*)?$`);
   for (const [f, css] of sheets) {
-    for (const m of stripComments(css).matchAll(/\.(m3-[\w-]+)/g)) assert.match(m[1], re, f);
-    for (const m of stripComments(css).matchAll(/\.(?!m3-)([a-z][\w-]*)/g)) assert.fail(`${f}: class .${m[1]} outside the m3- namespace`);
+    // Quoted strings (shapes.css's inline SVG masks name www.w3.org) hold no selectors.
+    const rules = stripComments(css).replace(/(["']).*?\1/g, '');
+    for (const m of rules.matchAll(/\.(m3-[\w-]+)/g)) assert.match(m[1], re, f);
+    for (const m of rules.matchAll(/\.(?!m3-)([a-z][\w-]*)/g)) assert.fail(`${f}: class .${m[1]} outside the m3- namespace`);
   }
 });
 

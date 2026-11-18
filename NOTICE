@@ -51,6 +51,17 @@ Apache License 2.0, at commit 10ecc14790612ca8fd164e3f4ffe9c16fc50d5b7.
 - The Material Symbols variable font and its codepoints file are listed under Fonts.
 
 ------------------------------------------------------------------------
+Material shapes (AndroidX Compose material3 and graphics-shapes)
+------------------------------------------------------------------------
+plugin/skills/material3/assets/web/components/shapes.css holds the outlines of the MaterialShapes of
+androidx.compose.material3:material3 1.5.0-rc01 (https://developer.android.com/jetpack/androidx/releases/compose-material3),
+which are RoundedPolygon objects of androidx.graphics:graphics-shapes 1.0.1
+(https://developer.android.com/jetpack/androidx/releases/graphics), Copyright The Android Open Source
+Project, Apache License 2.0. The geometry is generated from the official library: the cubic curves of
+each shape, read on the JVM by tools/build/material-shapes.mjs (stored in tools/build/material-shapes.json),
+written as SVG path data with 4 decimals.
+
+------------------------------------------------------------------------
 Fonts
 ------------------------------------------------------------------------
 Bundled in plugin/skills/material3/assets/fonts/ (sizes and SHA-256 hashes: plugin/skills/material3/versions.json).
