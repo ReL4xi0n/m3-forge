@@ -104,11 +104,13 @@ export function settingsFor({ repoRoot, realCfg, secretsDir, cfgDir, skill = nul
 const isFile = p => { try { return statSync(p).isFile(); } catch { return false; } };
 const pathKey = env => Object.keys(env).find(k => k.toLowerCase() === 'path') ?? 'PATH';
 
-// noNode runs: every PATH folder that holds node(.exe) is removed, so a tool the session starts cannot
-// find Node. Other folders (the toolchain's Flutter and Java among them) stay, in order.
+// noNode runs: every PATH folder that holds a JavaScript runtime (node, bun or deno, as an executable or
+// a .cmd/.bat shim) is removed, so a tool the session starts can run no script. Other folders (the
+// toolchain's Flutter and Java among them) stay, in order.
+const JS_RUNTIMES = ['node', 'bun', 'deno'].flatMap(n => [n, `${n}.exe`, `${n}.cmd`, `${n}.bat`]);
 export function withoutNode(env) {
   const key = pathKey(env);
-  const keep = String(env[key] ?? '').split(';').filter(d => d && !['node.exe', 'node'].some(f => isFile(join(d.replace(/^"|"$/g, ''), f))));
+  const keep = String(env[key] ?? '').split(';').filter(d => d && !JS_RUNTIMES.some(f => isFile(join(d.replace(/^"|"$/g, ''), f))));
   return { ...env, [key]: keep.join(';') };
 }
 

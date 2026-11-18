@@ -248,6 +248,19 @@ test('withoutNode: drops every PATH folder holding node or node.exe, keeps the r
   assert.equal(e.KEEP, '1');
 });
 
+test('withoutNode: also drops folders holding another JS runtime (bun, deno) or a node shim', winOnly, async () => {
+  const { withoutNode } = await import('../run-cell.mjs');
+  const base = mkdtempSync(join(tmpdir(), 'm3rt-'));
+  const dirs = ['bun', 'deno', 'shim', 'bat', 'keep'].map(n => { const p = join(base, n); mkdirSync(p); return p; });
+  writeFileSync(join(dirs[0], 'bun.exe'), '');
+  writeFileSync(join(dirs[1], 'deno.exe'), '');
+  writeFileSync(join(dirs[2], 'node.cmd'), '');
+  writeFileSync(join(dirs[3], 'node.bat'), '');
+  writeFileSync(join(dirs[4], 'bunyan.cmd'), '');
+  const e = withoutNode({ PATH: dirs.join(';') });
+  assert.deepEqual(e.PATH.split(';').filter(Boolean), [dirs[4]]);
+});
+
 // A stand-in for `claude` that records what it was started with into its cwd, then prints events.
 function dumpingClaude(dir, events) {
   const f = join(dir, 'dump-claude.mjs');
