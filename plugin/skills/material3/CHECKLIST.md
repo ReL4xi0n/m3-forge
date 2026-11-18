@@ -55,7 +55,8 @@ line says what a first-party screen has. Fix anything that does not match before
 - Selection is always shown: filters, chips, tabs, segmented buttons and list items display
   their selected state when one is active. (F9)
 - M3 Expressive cards, sheets and hero containers use the large to extra-extra-large corner
-  steps; small corners are for small controls. (F4)
+  steps; small corners are for small controls. Avatars and picture placeholders can take a library
+  shape (`references/core/shape.md`). (F4)
 - M3 Expressive shows in shape (larger and contrasting corners, shape morphs on selection),
   emphasized type and spring motion, used where they guide attention. Classic M3 uses none of
   them. (F4, F9)
