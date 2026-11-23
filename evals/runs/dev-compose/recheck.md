@@ -22,3 +22,12 @@
   }
 ]
 ```
+
+## plant-shop, state `sorted-price-low` again (2026-11-23)
+
+Phase 3 open gap 3. The r2 session's state failed (`click: nothing matches text "Price: low to high"`). Re-run
+on the recorded r2 project with the current screenshot step (skill at d055d7b, the session's own states
+file, only this state): `ok: true` in both themes, build ok, runtime 0 contrast / 0 targets, 115 s of Gradle.
+The light shot was read: the sort control reads "Sort: Price: low to high" and the grid starts at the lowest
+prices (11.90, 12.50, 14.90, 15.60). The open popup menu itself is still not drawn under Robolectric (known
+limitation); the sorted result is. Shots in `private/`.
