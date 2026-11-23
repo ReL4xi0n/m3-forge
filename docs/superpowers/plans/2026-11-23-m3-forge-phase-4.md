@@ -21,7 +21,7 @@ These are fixed now, with this plan's approval, and not changed after results ar
   harness v3 and Compose harness v3 (`evals/frozen-harness.json`). The baseline numbers of record are
   the v2/v3 re-scores (`automated-v2.md`, `judge-v2.md`, `flutter-harness-v3.md`,
   `compose-harness-v3.md`) and are scored again in the final pooled session (step 4).
-- **Release bar:** spec §12, word for word, plus the scoring rule below for the double pass. It is
+- **Release bar:** spec §12, word for word, plus the scoring rule of owner decision 2 (median of three sessions). It is
   not edited after results are seen. If it is not met, the outcome is a gap report and an owner
   decision (see "If the bar is not met").
 - **Model:** claude-opus-5-5 for all eval cells; Sonnet check with claude-sonnet-5-5.
@@ -82,71 +82,109 @@ windows. Runs go in batches of up to 6 cells; the pipeline's quota stop ends a b
 limit is hit and never works around it (owner rule). Phase 3 dev work for comparison: about $130 plus
 judging (≈ 3.2 baselines).
 
+## Owner decisions (2026-11-23)
+
+These update the proposals above and below; where they differ, these win.
+
+1. **Budget:** Full (spec option B) plus the regression sample. No cost limit; the aim is the best M3
+   result. The regression sample runs **after every round** (not only after the last), because the
+   keep rule below needs it.
+2. **Scoring: three blind sessions, median of record.** Every output is scored in three independent
+   blind judge v2 sessions (fresh anonymization, new IDs, own shuffle each). Per output and item the
+   score of record is the **median of the three**. "No single score below 2" applies to that median.
+   Baseline and final outputs are scored in the same three sessions, pooled. This replaces the
+   double-pass proposal. The rule holds for every judging in this phase (step 1 working scores,
+   rounds, step 4, step 5).
+3. **First 2 cells:** no stop. Stop and report only when a cell costs more than **twice** the upper
+   end of its platform's measured range (web $6.94, Flutter $6.20, Compose $7.26), or on a systematic
+   fault (timeouts, isolation failures, build failures). The first 2 cells' cost goes in the report.
+4. **Sonnet check:** `product-detail`, one cell per platform, approved.
+5. **Rounds:**
+   - **Weak cell:** in the medians, any item below 2; or any of hierarchy-typography,
+     spacing-layout, component-choice, overall-polish (F9/F10) below 2.5; or a requested element not
+     visible; or any automated finding (scored or unscored, verify or runtime).
+   - **Keep rule:** a round's skill change is kept only when (a) the targeted items of the targeted
+     weak cells improve in the medians (new outputs scored pooled with the previous outputs of the
+     same cells in the same three sessions), and (b) in the regression sample no item's median drops
+     by 1 or more and automated findings stay at 0. Otherwise the change is reverted and the revert is
+     written to the ledger; the previous outputs stay the outputs of record.
+   - Changes go into the shared core (CHECKLIST, `references/core`) and stay general; wording taken
+     from an eval request is forbidden (`overfit.mjs`).
+   - The always-read budget (54,514 characters) is not exceeded.
+6. **Memory:** thresholds accepted (Compose >= 3.5 GB available, web/Flutter pair >= 2.5 GB). The
+   owner's applications are never closed and `wsl --shutdown` is not run. Only this session's own
+   processes are cleaned: `gradlew --stop`, Kotlin daemons, leftover Chromium/Java/Dart processes.
+   When a threshold is not met: no stop; check every 10 minutes, run the web/Flutter cells whose
+   threshold holds, leave Compose to the end. If the Compose threshold never holds for 3 hours,
+   stop and report instead of skipping Compose cells.
+7. **Parallelism:** measurements run in one tree, in order. Release preparation that needs no build
+   or measurement (README draft, CHANGELOG, plugin icon, examples/ skeleton, install docs) may go to
+   one parallel agent in a separate worktree, under the standing rules (noreply email, guard and
+   hooks, `evals/holdout/` never read, nothing from `private/` in public files, no Google marks).
+   `examples/` is filled only with final skill outputs, after the measurements end.
+8. **Order:** final measurement -> at most 3 rounds -> hold-out (once) -> pooled three-session
+   scoring of baseline + final + hold-out + Sonnet -> second repeat on ambiguous cells -> PC-1 ->
+   spot-check page -> release preparation -> both install paths tried in a clean environment.
+9. **Stop point:** when the spot-check page and the release preparation are ready. The report gives
+   the bar result item by item (met / not met) and the gap report. The `v0.1.0` tag, the final merge
+   into main and publishing the README happen only after the owner's visual sign-off. The bar does
+   not change after results are seen.
+
 ## Order of work
 
 ### Step 0: preflight
-1. Memory check before every batch (rule below). Stop and tell the owner when it fails.
+1. Memory check before every batch (decision 6).
 2. `npm test` fast subset green; `tools/ci/overfit.mjs` and `tools/ci/skill-trace.mjs` ok; skill at a
    tagged commit `phase4-final-0`.
-3. Pick and record now (seeded, before any result): the Sonnet cells, the spot-check sample, the
-   regression-sample pool rule.
+3. Phase 4 tooling, with tests, before any paid run: the eval set runs with the skill only under an
+   explicit final-measurement flag; model override for the Sonnet cells; three-session pooled
+   judging with medians; shots of record per harness version.
+4. Pick and record now (seeded, before any result): the spot-check sample and the regression-sample
+   draw.
 
 ### Step 1: final measurement on the eval set
 - 26 cells, eval requests `evals/prompts/*`, skill installed, harness v3 capture, verify v2.
-- **Cost checkpoint (spec §15):** after the first 2 cells (one web, one Compose), report time and cost.
-  Proposal: continue without a stop when both are within the measured range plus 30%; otherwise stop.
+- First 2 cells (one web, one Compose): cost and time recorded for the report; stop only under
+  decision 3.
 - Concurrency: web and Flutter cells two at a time; **Compose cells one at a time, with nothing else
-  running**.
-- First pooled judging of the 26 outputs (2 passes) to find weak cells. This is a working score only;
-  the scores of record come from step 4.
+  running**, moved to the end when memory forces it (decision 6).
+- Working scores: the 26 outputs in three blind sessions (medians) to find weak cells. The scores of
+  record come from step 4.
 
 ### Step 2: improvement rounds (at most 3; only weak cells)
-- **Weak cell** (fixed rule): any automated finding (scored or unscored), any item below 2, or
-  spacing-layout, hierarchy-typography or overall-polish at or below 2 (F9/F10). Ranked by the number
-  of such items; at most 10 cells per round (Medium 8, Small 6).
-- **Focus F9/F10: hierarchy, spacing, composition.** Changes go into the shared core
-  (`references/core/composition.md`, `layout.md`, `typography.md`, CHECKLIST) and platform references,
-  never request-specific text: `overfit.mjs` must stay at "no eval terms" after each round. The
-  always-read budget (54,514 chars) still holds; new text is paid for by cuts.
-- Each round: re-run the weak cells; judge the new outputs pooled with the previous versions of the
-  same cells (2 passes in Full). A round's skill change is kept only if the targeted item means do
-  not drop and automated findings stay at 0; otherwise it is reverted and the previous outputs stay.
+- Weak cells by decision 5, ranked by the number of failing items; at most 10 per round.
+- Focus F9/F10 (hierarchy, spacing, composition, component choice). Changes in the shared core and
+  platform references, never request-specific text: `overfit.mjs` stays at "no eval terms" after
+  each round; the always-read budget holds (new text paid for by cuts).
+- Each round: re-run the weak cells and the regression sample (3 cells, 1 per platform, drawn with
+  the recorded seed among cells not re-run in that round); score the new outputs pooled with the
+  previous outputs of the same cells in three sessions; keep or revert by decision 5.
 - Compose's reverted 48 dp layout rule gets its first fresh test here (Phase 3 open gap 2).
-- After the last round: the regression sample (add-on) with the final skill.
 
-### Step 3: hold-out, once, at the end
-- Only now is `evals/holdout/` opened. 2 requests × 3 platforms = 6 cells with the final skill. No
+### Step 3: hold-out, once
+- Only now is `evals/holdout/` opened. 2 requests x 3 platforms = 6 cells with the final skill. No
   skill change after this point. A hold-out failure is reported, not fixed.
+- The Sonnet cells (decision 4) run with the final skill after the hold-out.
 
-### Step 4: pooled blind re-score of baseline and final
-- One fresh judge v2 session over all of: 26 baseline outputs, 26 final with-skill outputs, 6 hold-out
-  outputs, 3 Sonnet outputs. Anonymized together, shuffled, mapping opened only after scoring.
-- These scores alone are used for the before/after comparison and the bar.
+### Step 4: pooled blind re-score of baseline and final (three sessions)
+- Three fresh judge v2 sessions, each over all of: 26 baseline outputs, 26 final with-skill outputs,
+  6 hold-out outputs, 3 Sonnet outputs, anonymized together and shuffled independently; the mapping
+  is read only after the three sessions. Baseline Flutter outputs use their harness v3 captures,
+  baseline Compose outputs their compose-v3 captures (the harness versions of record).
+- The medians alone are used for the before/after comparison and the bar.
 
 ### Step 5: second repeat on ambiguous cells
-- Ambiguous cell (spec §12): pooled before/after difference ≤ 0.5 on any judged item mean of that cell.
-- Each one runs once more with the final skill. Then a second pooled session scores, together, the
-  baseline output, the first final output and the repeat of every ambiguous cell, so each comparison
-  is inside one session. A cell's with-skill score = mean of its two runs.
-
-### Judge noise (±0.5): double pass
-Proposal (Full and Medium): every output in the pooled sessions is scored **twice**, in two fresh
-judge sessions with independent shuffles and new IDs. Per output and item, the score of record is the
-mean of the two passes. Where the passes differ by 2 or more, a third pass scores that output only,
-and the median is used. The bar's "no single score below 2" applies to that per-output score (so 2+2,
-3+1 pass; 2+1 = 1.5 fails).
-- Cost: one pass over the step 4 pool (61 outputs) ≈ $7.3, so the second pass adds ≈ $7.3; the step 5
-  session (≈ 36 outputs) adds ≈ $4.3 per pass. Together ≈ $12, about 4–5 eval cells' worth.
-- Why: the bar compares means against 2.5 and baseline means; a single pass moves them by up to 0.5.
-  Averaging two independent passes halves the variance of each score for about 5% of the budget.
+- Ambiguous cell (spec §12): pooled before/after difference <= 0.5 on any judged item of that cell.
+- Each one runs once more with the final skill. Then three more pooled sessions score, together, the
+  baseline output, the first final output and the repeat of every ambiguous cell. A cell's
+  with-skill score = mean of its two runs' medians.
 
 ### Sonnet check and PC-1 (not in the release bar)
-- **Sonnet:** the final with-skill run of one cell per platform, run again with claude-sonnet-5-5:
-  proposed `product-detail` on web-empty, flutter-material_ui and compose-1.5 (default style),
-  scored in the step 4 session. Reported next to the Opus numbers; not counted toward the bar.
-- **PC-1 diagnostic:** the real-vs-generated discrimination test (`evals/tools/discriminate.mjs`) once
-  over the final with-skill outputs and the references. Reports accuracy, AUC and the cues the judge
-  named. Not in the bar.
+- **Sonnet:** `product-detail` on web-empty, flutter-material_ui and compose-1.5 (default style), run
+  with claude-sonnet-5-5 and the final skill, scored in the step 4 sessions. Reported next to the
+  Opus numbers; not counted toward the bar.
+- **PC-1 diagnostic:** `evals/tools/discriminate.mjs` once over the final with-skill outputs and the
+  references. Reports accuracy, AUC and the cues the judge named. Not in the bar.
 
 ## Owner visual sign-off (bar item 4)
 
@@ -161,7 +199,7 @@ and the median is used. The bar's "no single score below 2" applies to that per-
 
 ## If the bar is not met
 
-After the allowed rounds (3, 2 or 1 by option), stop with a gap report: each failing bar item per
+After the allowed rounds (3), stop with a gap report: each failing bar item per
 platform with the numbers, the failing outputs and their pictures, the single-cell drops, the likely
 causes, and options with their cost. The owner decides (another round, ship with documented gaps, or
 stop). The bar and the scores are not changed after results are seen.
@@ -194,22 +232,17 @@ Measured in Phases 2–3 on this machine (15.5 GB): runs started with 1.6–2.9 
 the limit; a Compose cell's Java processes peaked at 2.2–3.7 GB, a web or Flutter pair at about
 1.2–1.9 GB above the start.
 - Before each Compose cell: at least **3.5 GB free**; before a web/Flutter pair: at least **2.5 GB**.
-- Below that: do not start; stop and tell the owner (closing other apps, `wsl --shutdown` frees about
-  0.9 GB).
+- Below that: do not start that cell; re-check every 10 minutes (decision 6). Stop and report only
+  when the Compose threshold has not held for 3 hours.
 - Compose cells run one at a time with nothing else; Gradle daemons are stopped after each cell.
 - **Now (2026-11-23): 2.3 GB free**, below both thresholds.
 
 ## Evidence at the end (spec §15)
 
-Pooled before/after scores per platform (double pass), the single-cell drop list, hold-out results,
+Pooled before/after scores per platform (median of three sessions), the single-cell drop list, hold-out results,
 Sonnet and PC-1 results (marked outside the bar), the spot-check verdicts, costs per step, green CI,
 both install paths shown working; or the gap report.
 
 ## Decisions for the owner (with this plan)
 
-1. Budget option: Full, Medium or Small; regression-sample add-on yes/no.
-2. Double-pass judging and its scoring rule (mean of two passes, third pass on a gap of 2 or more).
-3. Cost checkpoint after the first 2 cells: stop always, or continue within range + 30%.
-4. Sonnet cells: `product-detail` × 3 platforms.
-5. Weak-cell rule and the per-round keep/revert rule.
-6. Memory thresholds (3.5 GB Compose, 2.5 GB pair).
+Answered on 2026-11-23; see "Owner decisions (2026-11-23)".
