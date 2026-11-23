@@ -1,3 +1,9 @@
+# Line endings: LF in the index and in the working tree on every OS, whatever core.autocrlf says.
+# (Repo-local core.autocrlf=false as well; Windows Git defaults to true, which wrote CRLF working
+# copies and broke byte-exact tests after a branch switch.) Binary files are detected by text=auto.
+* text=auto eol=lf
+tools/toolchain/shims/*.cmd text eol=crlf
+
 evals/**/*.md text eol=lf
 evals/**/*.json text eol=lf
 plugin/skills/material3/assets/fonts/** -text
