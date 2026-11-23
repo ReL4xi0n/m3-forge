@@ -165,22 +165,25 @@ test('pickGroup: thresholds per platform; a web/Flutter group that fits runs bef
   const { pickGroup } = await import('../pipeline.mjs');
   const c = { platform: 'compose' }, w = { platform: 'web' }, f = { platform: 'flutter' };
   const q = [[c], [w, f], [c]];
-  assert.equal(pickGroup(q, 4.0), 0);
-  assert.equal(pickGroup(q, 3.0), 1);
-  assert.equal(pickGroup(q, 2.4), -1);
-  assert.equal(pickGroup([[c]], 3.49), -1);
-  assert.equal(pickGroup([[c]], 3.5), 0);
+  assert.equal(pickGroup(q, 1.6), 0);
+  assert.equal(pickGroup(q, 1.3), 1);
+  assert.equal(pickGroup(q, 1.1), -1);
+  assert.equal(pickGroup([[c]], 1.49), -1);
+  assert.equal(pickGroup([[c]], 1.5), 0);
 });
 
-test('phase4Stop: cost over twice the measured range, or two systematic faults', async () => {
-  const { phase4Stop } = await import('../pipeline.mjs');
-  const r = (platform, costUsd, status = 'ok', buildOk = true) => ({ cell: { cell: `x.${platform}`, platform }, rec: { costUsd, status }, cap: { buildOk } });
-  assert.equal(phase4Stop([r('web', 6.5), r('compose', 7.0)]), null);
-  assert.equal(phase4Stop([r('web', 7.0)]).reason, 'cost');
-  assert.equal(phase4Stop([r('flutter', 6.3)]).reason, 'cost');
-  assert.equal(phase4Stop([r('web', 2, 'timeout')]), null, 'one fault is not systematic');
-  assert.equal(phase4Stop([r('web', 2, 'timeout'), r('flutter', 2, 'ok', false)]).reason, 'systematic');
+test('phase4Stop: no cost stop; two non-memory faults stop; memory failures never stop', async () => {
+  const { phase4Stop, memoryFailure, overCost } = await import('../pipeline.mjs');
+  const r = (platform, costUsd, status = 'ok', buildOk = true, reason = null) => ({ cell: { cell: `x.${platform}`, platform }, rec: { costUsd, status }, cap: { buildOk, reason } });
+  assert.equal(phase4Stop([r('web', 7.0), r('compose', 9.0)]), null);
+  assert.deepEqual(overCost([r('web', 7.0), r('web', 2)]).map(x => x.costUsd), [7.0]);
+  assert.equal(phase4Stop([r('web', 2, 'invalid-isolation')]), null, 'one fault is not systematic');
+  assert.equal(phase4Stop([r('web', 2, 'invalid-isolation'), r('flutter', 2, 'ok', false, 'compile error')]).reason, 'systematic');
+  assert.equal(phase4Stop([r('web', 2, 'timeout'), r('compose', 2, 'ok', false, 'java.lang.OutOfMemoryError: Java heap space')]), null, 'memory failures are retried, not stops');
   assert.equal(phase4Stop([r('web', 2, 'asked-question', false), r('web', 2)]), null, 'only faults of the run, not the model');
+  assert.equal(memoryFailure(r('compose', 2, 'ok', false, 'Gradle build daemon disappeared unexpectedly')), true);
+  assert.equal(memoryFailure(r('compose', 2, 'ok', false, 'compile error')), false);
+  assert.equal(memoryFailure(r('web', 2, 'timeout')), true);
 });
 
 test('ownLeftovers: only toolchain Java/Dart and browsers pointed at the eval root', async () => {
