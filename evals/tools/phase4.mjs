@@ -64,9 +64,34 @@ export function keepDecision({ targeted, regression }) {
   return { keep: improved && !drops.length && !autoHits.length, improved, before: avg('before'), after: avg('after'), pairs: pairs.length, drops, autoHits };
 }
 
+// Automated findings of one recorded cell: every verify count, scored and unscored (runtime contrast and
+// targets are merged into verify's counts); a cell without a verify result counts as one finding.
+export function autoFindings(verifyJson) {
+  if (!verifyJson || verifyJson.error) return { total: 1, detail: { 'no-verify': 1 } };
+  const detail = Object.fromEntries(Object.entries({ ...(verifyJson.counts ?? {}), ...(verifyJson.unscored ?? {}) }).filter(([, n]) => n > 0));
+  return { total: Object.values(detail).reduce((a, n) => a + n, 0), detail };
+}
+
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   const [cmd, what, round, rerun] = process.argv.slice(2);
-  if (cmd === 'draw' && what === 'spotcheck') console.log(JSON.stringify(spotcheckSample(), null, 2));
+  if (cmd === 'weak') {
+    // node evals/tools/phase4.mjs weak <pool-id> <runId> [missing.json: {cell: [element, ...]}]
+    const { readFileSync, existsSync } = await import('node:fs');
+    const { join, dirname } = await import('node:path');
+    const root = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
+    const [, pool, runId, missingFile] = process.argv.slice(2);
+    const sum = JSON.parse(readFileSync(join(root, 'private', 'evals', 'runs', `pooled3-${pool}`, 'summary.json'), 'utf8'));
+    const missing = missingFile ? JSON.parse(readFileSync(missingFile, 'utf8')) : {};
+    const out = [];
+    for (const row of sum.rows.filter((r) => r.runId === runId)) {
+      const vf = join(root, 'private', 'evals', 'runs', runId, row.cell, 'verify.json');
+      const auto = autoFindings(existsSync(vf) ? JSON.parse(readFileSync(vf, 'utf8')) : null);
+      const reasons = weakReasons({ medians: row.median, auto: auto.total, missing: missing[row.cell] ?? [] });
+      out.push({ cell: row.cell, weak: reasons.length > 0, reasons, auto: auto.detail, median: row.median });
+    }
+    out.sort((a, b) => b.reasons.length - a.reasons.length);
+    console.log(JSON.stringify(out, null, 1));
+  } else if (cmd === 'draw' && what === 'spotcheck') console.log(JSON.stringify(spotcheckSample(), null, 2));
   else if (cmd === 'draw' && what === 'regression' && round) console.log(JSON.stringify(regressionSample(Number(round), (rerun ?? '').split(',').filter(Boolean)), null, 2));
   else { console.error('usage: phase4.mjs draw spotcheck | draw regression <round> <rerun cells>'); process.exit(2); }
 }
