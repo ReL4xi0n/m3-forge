@@ -20,6 +20,9 @@ export function fastTestEnv(env) {
   delete out.M3_TOOLCHAIN_TESTS;
   // The hook exports these for the guard; the guard's own tests expect to set them themselves.
   for (const k of ['GUARD_REQUIRE_TERMS', 'GUARD_REQUIRE_CORPUS', 'GUARD_FORBIDDEN_TERMS']) delete out[k];
+  // Git sets GIT_DIR (and friends) for hooks, most visibly in a linked worktree; tests that init
+  // throwaway repos would otherwise commit into, and rewrite the config of, the real repository.
+  for (const k of Object.keys(out)) if (/^GIT_(DIR|WORK_TREE|INDEX_FILE|PREFIX|COMMON_DIR|OBJECT_DIRECTORY|NAMESPACE)$/.test(k)) delete out[k];
   // A test runner's child (NODE_TEST_CONTEXT set) skips `node --test` files; this run is its own suite.
   delete out.NODE_TEST_CONTEXT;
   return out;
