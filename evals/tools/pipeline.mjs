@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { execFileSync, spawnSync } from 'node:child_process';
 import { totalmem, freemem } from 'node:os';
 import { buildPrompt } from './run-cell.mjs';
-import { withToolchain } from './toolchain-env.mjs';
+import { withToolchain, toolchainRoot } from './toolchain-env.mjs';
 import { devCells, evalCells } from './cells.mjs';
 import { latestCanary } from './canary.mjs';
 
@@ -39,6 +39,64 @@ export const canaryDue = ({ sinceCanary, next }) => sinceCanary === null || sinc
 // Owner rule: if the quota runs out, stop; never try to get around it.
 export const isQuotaStop = rec => rec.status === 'session-error' &&
   /usage limit|limit reached|hit your limit|rate.?limit|\b429\b|quota|out of (extra )?usage/i.test(rec.resultText ?? '');
+
+// Owner decision 6 (2026-11-23): available memory a group needs before it starts (GB), the re-check
+// interval while it does not hold, and how long Compose may wait before the run stops.
+export const MEM_THRESHOLD_GB = { compose: 3.5, other: 2.5 };
+export const MEM_RECHECK_MS = 10 * 60_000;
+export const COMPOSE_WAIT_MS = 3 * 60 * 60_000;
+const needGb = g => (g[0].platform === 'compose' ? MEM_THRESHOLD_GB.compose : MEM_THRESHOLD_GB.other);
+
+// The first group in queue order whose threshold holds, or -1. Compose groups keep their place in the
+// order; when one does not fit, a later web/Flutter group that fits runs first.
+export function pickGroup(queue, availGb) {
+  return queue.findIndex(g => availGb >= needGb(g));
+}
+
+// Owner decision 3 (2026-11-23): a Phase 4 run stops when a cell costs more than twice the upper end of
+// its platform's measured range, or on a systematic fault: two or more cells that timed out, failed
+// isolation or did not build.
+export const COST_LIMIT_USD = { web: 2 * 3.47, flutter: 2 * 3.10, compose: 2 * 3.63 };
+export function phase4Stop(records) {
+  const over = records.find(r => (r.rec.costUsd ?? 0) > COST_LIMIT_USD[r.cell.platform]);
+  if (over) return { reason: 'cost', cell: over.cell.cell, costUsd: over.rec.costUsd, limit: COST_LIMIT_USD[over.cell.platform] };
+  const faults = records.filter(r => ['timeout', 'invalid-isolation', 'not-frozen', 'refused'].includes(r.rec.status) ||
+    (r.rec.status === 'ok' && !r.cap.buildOk));
+  if (faults.length >= 2) return { reason: 'systematic', cells: faults.map(r => ({ cell: r.cell.cell, status: r.rec.status, buildOk: r.cap.buildOk, reason: r.cap.reason?.slice(0, 300) ?? null })) };
+  return null;
+}
+
+// This session's own leftovers only (owner decision 6): Java and Dart processes started from the
+// toolchain folder (Gradle and Kotlin daemons, Dart tooling) and browsers whose command line points
+// into the eval root. Never anything else.
+export function ownLeftovers(procs, { toolchain, evalRoot = 'C:\\m3-eval' }) {
+  const low = s => String(s ?? '').toLowerCase().replace(/\//g, '\\');
+  const tc = low(toolchain);
+  const er = low(evalRoot);
+  return procs.filter(p => {
+    const name = low(p.Name);
+    const exe = low(p.ExecutablePath);
+    const cmd = low(p.CommandLine);
+    if (['java.exe', 'javaw.exe', 'dart.exe', 'dartaotruntime.exe'].includes(name)) return exe.startsWith(tc);
+    if (['chrome.exe', 'chrome-headless-shell.exe', 'msedge.exe', 'headless_shell.exe'].includes(name)) return cmd.includes(er);
+    return false;
+  });
+}
+
+export function cleanupOwnProcesses({ log = () => {} } = {}) {
+  if (process.platform !== 'win32') return [];
+  try {
+    const out = execFileSync('powershell', ['-NoProfile', '-Command',
+      "Get-CimInstance Win32_Process -Filter \"Name='java.exe' OR Name='javaw.exe' OR Name='dart.exe' OR Name='dartaotruntime.exe' OR Name='chrome.exe' OR Name='chrome-headless-shell.exe' OR Name='msedge.exe' OR Name='headless_shell.exe'\" | Select-Object ProcessId,Name,ExecutablePath,CommandLine | ConvertTo-Json -Compress"],
+      { encoding: 'utf8', windowsHide: true, timeout: 60_000 });
+    const procs = out.trim() ? [].concat(JSON.parse(out)) : [];
+    const mine = ownLeftovers(procs, { toolchain: toolchainRoot() });
+    for (const p of mine) {
+      try { process.kill(p.ProcessId); log('stopped leftover', p.Name, p.ProcessId); } catch { /* already gone */ }
+    }
+    return mine.map(p => p.ProcessId);
+  } catch (e) { log('leftover check failed:', e.message.slice(0, 200)); return []; }
+}
 
 // Samples memory every 5 s while a group runs: system-wide use and the total of java.exe working sets.
 function memSampler() {
@@ -79,8 +137,13 @@ async function capture(cell, projectDir, outDir) {
 }
 
 const USAGE = 'usage: pipeline.mjs --run-id <id> (--cells a,b | --all) [--pair 1|2] [--resume] [--judge-only [--recapture a,b]]\n' +
-  '       pipeline.mjs --set dev [--skill plugin/skills/material3] [--no-node] --run-id dev-<date>-<platform>-r<n> (--cells a,b | --all) [...]';
+  '       pipeline.mjs --set dev [--skill plugin/skills/material3] [--no-node] --run-id dev-<date>-<platform>-r<n> (--cells a,b | --all) [...]\n' +
+  '       pipeline.mjs --phase4 --skill plugin/skills/material3 --run-id p4-<label> (--cells a,b | --all) [--model <id>] [--mem-gate] [--no-judge] [...]';
 export const DEV_RUN_ID = /^dev-\d{4}-\d{2}-\d{2}-[a-z]+-r\d+$/;
+// Phase 4 (owner, 2026-11-23): the final measurement runs the skill on the eval requests, only under the
+// explicit --phase4 flag and a p4-<label> run id, so a dev command can never send an eval request.
+export const P4_RUN_ID = /^p4-[a-z0-9]+(?:-[a-z0-9]+)*$/;
+export const MODELS = ['claude-opus-5-5', 'claude-sonnet-5-5'];
 
 // Command line → options. --set eval (default) is the eval matrix, --set dev the development set. The
 // skill runs only on dev cells: running it on an eval request would let it learn the eval's answers.
@@ -95,11 +158,18 @@ export function pipelineOptions(argv, root) {
   const skillArg = arg('--skill');
   if (argv.includes('--skill') && (!skillArg || skillArg.startsWith('--'))) return { error: `--skill needs a skill folder\n${USAGE}` };
   if (!runId || !/^[A-Za-z0-9._-]+$/.test(runId) || !cells.length || !(pair === 1 || pair === 2)) return { error: USAGE };
-  if (skillArg && set !== 'dev') return { error: 'the skill runs only on the dev set (--set dev); never on eval requests' };
+  const phase4 = argv.includes('--phase4');
+  if (phase4 && set !== 'eval') return { error: '--phase4 runs the eval set only' };
+  if (phase4 && !skillArg) return { error: '--phase4 needs --skill' };
+  if (phase4 && !P4_RUN_ID.test(runId)) return { error: `a Phase 4 run id is p4-<label>, got ${runId}` };
+  if (skillArg && set !== 'dev' && !phase4) return { error: 'the skill runs only on the dev set (--set dev); never on eval requests (Phase 4 final runs: --phase4)' };
   if (set === 'dev' && !DEV_RUN_ID.test(runId)) return { error: `a dev run id is dev-<date>-<platform>-r<n>, got ${runId}` };
+  const model = arg('--model') ?? 'claude-opus-5-5';
+  if (!MODELS.includes(model)) return { error: `unknown model ${model} (${MODELS.join(', ')})` };
   const skillDir = skillArg ? (isAbsolute(skillArg) ? skillArg : join(root, skillArg)) : null;
   if (skillDir && !existsSync(join(skillDir, 'SKILL.md'))) return { error: `no SKILL.md in ${skillDir}` };
-  return { runId, set, cells, pair, skillDir, noNode: argv.includes('--no-node') };
+  return { runId, set, cells, pair, skillDir, noNode: argv.includes('--no-node'), phase4, model,
+    memGate: argv.includes('--mem-gate'), noJudge: argv.includes('--no-judge') };
 }
 
 export { latestCanary };
@@ -117,7 +187,15 @@ async function main() {
     console.error(opts.error);
     process.exit(2);
   }
-  const { runId, cells, pair, skillDir, noNode } = opts;
+  const { runId, cells, pair, skillDir, noNode, phase4, model, memGate, noJudge } = opts;
+  const memLog = [];
+  // A Phase 4 run measures a committed skill: the skill folder must be clean, and its commit is recorded.
+  let skillInfo = null;
+  if (skillDir) {
+    const git = (...a) => spawnSync('git', a, { cwd: root, encoding: 'utf8', windowsHide: true }).stdout?.trim() ?? '';
+    skillInfo = { commit: git('rev-parse', 'HEAD'), dirty: git('status', '--porcelain', '--', skillDir) !== '' };
+    if (phase4 && skillInfo.dirty) { console.error(`the skill folder has uncommitted changes; a Phase 4 run measures a committed skill`); process.exit(2); }
+  }
   const { runCell } = await import('./run-cell.mjs');
   const { prepareFixture } = await import('./prepare-fixture.mjs');
   const { probeBuiltIns } = await import('./isolation.mjs');
@@ -160,7 +238,7 @@ async function main() {
       if (!['invalid-isolation', 'session-error'].includes(saved.rec.status)) { log('reuse', cell.cell, saved.rec.status); return saved; }
     }
     log('run', cell.cell);
-    const rec = await runCell({ cell, runId, root, builtIns, allowedSkills: verdict.allowedSkills, skillDir, noNode,
+    const rec = await runCell({ cell, runId, root, builtIns, allowedSkills: verdict.allowedSkills, skillDir, noNode, model, finalEval: phase4,
       prepare: async w => { const r = await prepareFixture(cell.fixture, w); if (!r.ok) throw new Error(`fixture ${cell.fixture} failed:\n${r.log.slice(-2000)}`); } });
     log('  status', cell.cell, rec.status, 'durationMs', rec.durationMs, 'cost', rec.costUsd);
     return captureAndVerify(cell, rec, dest);
@@ -229,7 +307,36 @@ async function main() {
       log('earlier judging moved to', `superseded-${n}`);
     }
   }
-  for (const group of judgeOnly ? [] : schedule(cells, { pair })) {
+  const queue = judgeOnly ? [] : schedule(cells, { pair });
+  let composeBlockedSince = null;
+  while (queue.length) {
+    let pick = 0;
+    if (memGate) {
+      // Owner decision 6 (2026-11-23): before every group, clean this session's leftovers and check
+      // the available memory; a group whose threshold does not hold waits (10-minute re-checks) while
+      // the web/Flutter groups that fit run first; Compose not fitting for 3 hours stops the run.
+      for (;;) {
+        cleanupOwnProcesses({ log });
+        const availGb = freemem() / 2 ** 30;
+        pick = pickGroup(queue, availGb);
+        log('memory', availGb.toFixed(2), 'GB available; next group', pick >= 0 ? queue[pick].map(c => c.cell).join(',') : 'none fits');
+        if (pick >= 0) {
+          if (queue[pick][0].platform === 'compose') composeBlockedSince = null;
+          break;
+        }
+        if (queue.some(g => g[0].platform === 'compose')) composeBlockedSince ??= Date.now();
+        if (composeBlockedSince && Date.now() - composeBlockedSince >= COMPOSE_WAIT_MS) {
+          stopped = { reason: 'memory', waitedMs: Date.now() - composeBlockedSince, left: queue.flat().map(c => c.cell) };
+          break;
+        }
+        memLog.push({ at: new Date().toISOString(), availGb: +availGb.toFixed(2), waiting: queue.flat().map(c => c.cell) });
+        writeFileSync(join(priv, 'groups.json'), JSON.stringify({ skill: skillInfo, model, canaries, groups, memLog }, null, 2));
+        await new Promise(r => setTimeout(r, MEM_RECHECK_MS));
+      }
+      if (stopped) break;
+      if (queue.some((g, i) => i !== pick && g[0].platform === 'compose') && queue[pick][0].platform !== 'compose') composeBlockedSince ??= Date.now();
+    }
+    const group = queue.splice(pick, 1)[0];
     if (canaryDue({ sinceCanary, next: group.length })) {
       if (!runCanary()) { stopped = { reason: 'canary failed', before: group.map(c => c.cell) }; break; }
       sinceCanary = 0;
@@ -242,14 +349,19 @@ async function main() {
     sinceCanary += group.length;
     records.push(...recs);
     groups.push(g);
-    writeFileSync(join(priv, 'groups.json'), JSON.stringify({ canaries, groups }, null, 2));
+    writeFileSync(join(priv, 'groups.json'), JSON.stringify({ skill: skillInfo, model, canaries, groups, memLog }, null, 2));
     log('group done', JSON.stringify(g));
     const q = recs.find(r => isQuotaStop(r.rec));
     if (q) { stopped = { reason: 'quota', cell: q.cell.cell, text: q.rec.resultText }; log('QUOTA: stopping; no further cell starts'); break; }
+    if (phase4) {
+      const s = phase4Stop(records);
+      if (s) { stopped = s; log('PHASE 4 STOP:', JSON.stringify(s)); break; }
+    }
   }
 
-  // Blind judging over every output of this run; skipped when the run stopped early.
-  const outputs = stopped ? [] : records.filter(r => r.cap.shots.length).map(r => ({
+  // Blind judging over every output of this run; skipped when the run stopped early or with --no-judge
+  // (Phase 4 judges with evals/tools/pooled3.mjs: three sessions, medians).
+  const outputs = stopped || noJudge ? [] : records.filter(r => r.cap.shots.length).map(r => ({
     cell: r.cell.cell, condition: skillDir ? 'skill' : 'baseline', repeat: 1, runId, request: judgeRequest(r.cell, root), shots: r.cap.shots }));
   const scores = [];
   const judgeLog = [];

@@ -8,3 +8,5 @@ const evalsDir = join(dirname(fileURLToPath(import.meta.url)), '..');
 
 export const evalCells = () => JSON.parse(readFileSync(join(evalsDir, 'cells.json'), 'utf8'));
 export const devCells = () => JSON.parse(readFileSync(join(evalsDir, 'dev', 'cells.json'), 'utf8'));
+// Every cell a recorded run can hold (Phase 4 pooled judging).
+export const allCells = () => [...evalCells(), ...devCells()];

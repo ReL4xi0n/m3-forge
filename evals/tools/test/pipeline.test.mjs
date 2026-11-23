@@ -140,3 +140,58 @@ test('canaryPassed: only a canary that exited 0 and wrote a new passing verdict 
   assert.equal(canaryPassed({ exit: 0, before: 'canary-1', after: undefined, verdict: null }), false);
   assert.equal(canaryPassed({ exit: 0, before: 'canary-1', after: 'canary-2', verdict: { pass: false } }), false);
 });
+
+test('pipelineOptions: Phase 4 final runs need --phase4, --skill and a p4-<label> run id', async () => {
+  const { pipelineOptions } = await import('../pipeline.mjs');
+  const skill = ['--skill', 'plugin/skills/material3'];
+  const o = pipelineOptions(['--phase4', ...skill, '--run-id', 'p4-final-1', '--all', '--pair', '2', '--mem-gate', '--no-judge'], root);
+  assert.equal(o.error, undefined);
+  assert.equal(o.set, 'eval');
+  assert.equal(o.cells.length, 26);
+  assert.equal(o.phase4, true);
+  assert.equal(o.memGate, true);
+  assert.equal(o.noJudge, true);
+  assert.equal(o.model, 'claude-opus-5-5');
+  assert.match(pipelineOptions([...skill, '--run-id', 'p4-final-1', '--all'], root).error, /only on the dev set/);
+  assert.match(pipelineOptions(['--phase4', '--run-id', 'p4-final-1', '--all'], root).error, /needs --skill/);
+  assert.match(pipelineOptions(['--phase4', ...skill, '--run-id', 'final-1', '--all'], root).error, /p4-<label>/);
+  assert.match(pipelineOptions(['--phase4', '--set', 'dev', ...skill, '--run-id', 'p4-x', '--all'], root).error, /eval set only/);
+  const s = pipelineOptions(['--phase4', ...skill, '--run-id', 'p4-sonnet', '--cells', 'product-detail.web.web-empty.default', '--model', 'claude-sonnet-5-5'], root);
+  assert.equal(s.model, 'claude-sonnet-5-5');
+  assert.match(pipelineOptions(['--phase4', ...skill, '--run-id', 'p4-x', '--all', '--model', 'gpt'], root).error, /unknown model/);
+});
+
+test('pickGroup: thresholds per platform; a web/Flutter group that fits runs before a Compose group that does not', async () => {
+  const { pickGroup } = await import('../pipeline.mjs');
+  const c = { platform: 'compose' }, w = { platform: 'web' }, f = { platform: 'flutter' };
+  const q = [[c], [w, f], [c]];
+  assert.equal(pickGroup(q, 4.0), 0);
+  assert.equal(pickGroup(q, 3.0), 1);
+  assert.equal(pickGroup(q, 2.4), -1);
+  assert.equal(pickGroup([[c]], 3.49), -1);
+  assert.equal(pickGroup([[c]], 3.5), 0);
+});
+
+test('phase4Stop: cost over twice the measured range, or two systematic faults', async () => {
+  const { phase4Stop } = await import('../pipeline.mjs');
+  const r = (platform, costUsd, status = 'ok', buildOk = true) => ({ cell: { cell: `x.${platform}`, platform }, rec: { costUsd, status }, cap: { buildOk } });
+  assert.equal(phase4Stop([r('web', 6.5), r('compose', 7.0)]), null);
+  assert.equal(phase4Stop([r('web', 7.0)]).reason, 'cost');
+  assert.equal(phase4Stop([r('flutter', 6.3)]).reason, 'cost');
+  assert.equal(phase4Stop([r('web', 2, 'timeout')]), null, 'one fault is not systematic');
+  assert.equal(phase4Stop([r('web', 2, 'timeout'), r('flutter', 2, 'ok', false)]).reason, 'systematic');
+  assert.equal(phase4Stop([r('web', 2, 'asked-question', false), r('web', 2)]), null, 'only faults of the run, not the model');
+});
+
+test('ownLeftovers: only toolchain Java/Dart and browsers pointed at the eval root', async () => {
+  const { ownLeftovers } = await import('../pipeline.mjs');
+  const procs = [
+    { ProcessId: 1, Name: 'java.exe', ExecutablePath: String.raw`C:\Users\u\.m3-toolchain\jdk-21\bin\java.exe`, CommandLine: 'GradleDaemon' },
+    { ProcessId: 2, Name: 'java.exe', ExecutablePath: String.raw`C:\Program Files\Java\bin\java.exe`, CommandLine: 'someone else' },
+    { ProcessId: 3, Name: 'dart.exe', ExecutablePath: 'C:/Users/u/.m3-toolchain/flutter/bin/cache/dart-sdk/bin/dart.exe', CommandLine: '' },
+    { ProcessId: 4, Name: 'chrome.exe', ExecutablePath: String.raw`C:\Program Files\Google\Chrome\chrome.exe`, CommandLine: String.raw`chrome.exe --user-data-dir=C:\m3-eval\appdata\x` },
+    { ProcessId: 5, Name: 'chrome.exe', ExecutablePath: String.raw`C:\Program Files\Google\Chrome\chrome.exe`, CommandLine: 'chrome.exe --profile-directory=Default' },
+    { ProcessId: 6, Name: 'Spotify.exe', ExecutablePath: String.raw`C:\m3-eval\x.exe`, CommandLine: String.raw`C:\m3-eval` },
+  ];
+  assert.deepEqual(ownLeftovers(procs, { toolchain: String.raw`C:\Users\u\.m3-toolchain` }).map(p => p.ProcessId), [1, 3, 4]);
+});

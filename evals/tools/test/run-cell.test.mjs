@@ -362,6 +362,12 @@ test('runCell: a skill run refuses an eval cell unless the prompt is given expli
   // A micro-test passes its own prompt; no eval request is sent then.
   const m = await runCell({ ...common, cell: evalCell, runId: 'e2', promptOverride: '/material3 x', claudeCmd: dumpingClaude(base, [skillInit, wrote, result]) });
   assert.notEqual(m.status, 'refused');
+  // Phase 4: the final measurement passes finalEval explicitly; the eval request is sent then.
+  const f = await runCell({ ...common, cell: evalCell, runId: 'e3', finalEval: true, claudeCmd: dumpingClaude(base, [skillInit, wrote, result]) });
+  assert.notEqual(f.status, 'refused');
+  // Anything but true keeps the refusal.
+  const t = await runCell({ ...common, cell: evalCell, runId: 'e4', finalEval: 'yes', claudeCmd: dumpingClaude(base, [skillInit, wrote, result]) });
+  assert.equal(t.status, 'refused');
 });
 
 test('settingsFor: a skill run may also read its screenshot folders in the run TEMP, nothing else there', winOnly, () => {
