@@ -108,3 +108,9 @@ test('pre-push: an untracked test file blocks the push before any test runs', { 
   assert.notEqual(r.status, 0, r.out);
   assert.match(r.out, /working tree/);
 });
+
+test('fastTestEnv: git hook variables (GIT_DIR and friends) do not reach the tests', () => {
+  const env = fastTestEnv({ GIT_DIR: '/r/.git/worktrees/w', GIT_WORK_TREE: '/r', GIT_INDEX_FILE: 'i', GIT_COMMON_DIR: '/r/.git', GIT_AUTHOR_NAME: 'a', PATH: 'p' });
+  for (const k of ['GIT_DIR', 'GIT_WORK_TREE', 'GIT_INDEX_FILE', 'GIT_COMMON_DIR']) assert.equal(env[k], undefined, k);
+  assert.equal(env.PATH, 'p');
+});
