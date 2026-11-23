@@ -1,0 +1,60 @@
+name: regenerate-references
+# Manual only (spec sections 5 and 10): reference screenshots are produced on Linux and are the only
+# authoritative ones. This run uploads the web reference screenshots of the component gallery pages
+# as an artifact; with open_pr it also commits them to a new branch and opens a pull request.
+# Flutter goldens and Compose Roborazzi references are not produced here yet: the Flutter and Compose
+# harness code drives the Windows local toolchain and has not been ported to Linux runners.
+on:
+  workflow_dispatch:
+    inputs:
+      open_pr:
+        description: Commit the screenshots to a new branch and open a pull request
+        type: boolean
+        default: false
+permissions:
+  contents: read
+jobs:
+  web:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: npm ci
+      - run: npm ci --prefix harness/web
+      - run: npx playwright install --with-deps chromium
+      - name: capture the gallery pages
+        run: |
+          for page in actions classic containment navigation; do
+            node tools/build/gallery/web/site.mjs "$page" "out/site-$page"
+            node harness/web/capture.mjs "out/site-$page" web-empty "harness/web/references/$page"
+          done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: web-references
+          path: harness/web/references
+  pull-request:
+    if: ${{ inputs.open_pr }}
+    needs: web
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: web-references
+          path: harness/web/references
+      - name: commit and open the pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          branch="references/regenerate-${{ github.run_id }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$branch"
+          git add harness/web/references
+          git commit -m "chore(references): regenerate web references on Linux"
+          git push origin "$branch"
+          gh pr create --base main --head "$branch" --title "Regenerate web references" --body "Produced by the regenerate-references workflow, run ${{ github.run_id }}."

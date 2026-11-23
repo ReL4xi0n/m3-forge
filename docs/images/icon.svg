@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-label="m3-forge icon">
+  <title>m3-forge icon</title>
+  <rect width="256" height="256" rx="56" fill="#1F2A37"/>
+  <polygon points="40,108 200,108 176,148 148,152 148,180 180,180 180,204 76,204 76,180 108,180 108,152 80,148" fill="#E8DFD0"/>
+  <rect x="40" y="98" width="160" height="14" fill="#F4EEE3"/>
+  <polygon points="196,36 205,61 230,70 205,79 196,104 187,79 162,70 187,61" fill="#F2A33A"/>
+  <circle cx="150" cy="64" r="6" fill="#F2A33A"/>
+  <circle cx="226" cy="118" r="5" fill="#F2A33A"/>
+</svg>

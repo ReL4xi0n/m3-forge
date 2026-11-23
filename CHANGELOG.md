@@ -1,0 +1,51 @@
+# Changelog
+
+## 0.1.0 (unreleased)
+
+First release of m3-forge, an unofficial skill for Material Design 3.
+
+### Skill
+
+- `/material3 <UI request>` (`/m3-forge:material3` when installed as a plugin): builds a Material
+  Design 3 UI, M3 Expressive by default and classic M3 on request, for the web, Flutter and Jetpack
+  Compose.
+- An eight-step workflow: read the request, detect the project, load references, theme and icons,
+  build from a screen plan, verify, look at screenshots, report.
+- Graceful degradation: without Node, an SDK or a network the code is still written, and the report
+  names each skipped step.
+
+### References
+
+- Shared core notes: color, typography, shape, layout, composition, icons, content, components,
+  elevation, motion, states, accessibility, expressive, anti-patterns.
+- Per-platform notes for web, Flutter and Compose, and a build checklist with rule IDs.
+- Design tokens in JSON and precomputed color schemes for use without Node.
+
+### Assets
+
+- Web: token style sheet, font styles, component style sheets and a behavior script.
+- Flutter: theme, tokens and Expressive component widgets, with scaffolding for a new project.
+- Compose: theme files and a project template pinned to the Material 3 version that has Expressive.
+- Bundled fonts and a subset icon source, so no network is needed.
+
+### Scripts
+
+- `detect` (platform, framework, Material 3 version, tool availability), `color` (scheme
+  generation), `icons` (icon lookup and subsetting), `install-assets` (never overwrites a user
+  file), `verify` (static checks plus runtime results) and `screenshot` (light and dark captures,
+  plan check).
+
+### Harnesses
+
+- Capture harnesses for web (Playwright with contrast and target-size checks), Flutter (widget
+  tests) and Compose (Robolectric and Roborazzi), pinned and versioned.
+
+### Evals
+
+- A blind, rubric-based evaluation set with a no-skill baseline, automated checks, a judge
+  protocol, pooled scoring and a repository guard against eval content leaking into the skill.
+
+### Repository
+
+- Privacy guard for public commits, CI checks, plugin and marketplace validation, install
+  documentation and a plugin icon.
