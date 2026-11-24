@@ -64,8 +64,8 @@ Part `segmented-button` (retired: use a connected button group unless the reques
 
 Part `fab`. `<button class="m3-fab m3-fab--medium" aria-label="Compose">` + icon. Sizes default,
 `--medium`, `--large`; colors `--primary-container` (default), `--secondary-container`,
-`--tertiary-container`, `--primary`, `--secondary`, `--tertiary`. Place it with
-`position: fixed` and `--md-sys-space-*` insets. No disabled state.
+`--tertiary-container`, `--primary`, `--secondary`, `--tertiary`. Place it in the app shell
+(`#app-shell`) with `--md-sys-space-*` insets. No disabled state.
 
 ## Extended FAB
 
@@ -268,12 +268,22 @@ Floating: the same color, `--md-sys-shape-corner-full`, `--md-sys-elevation-leve
 [token:md.comp.toolbar.floating.container.elevation], padding `--md-sys-space-100`, gap
 `--md-sys-space-50`. Never with a navigation bar.
 
+## App shell
+
+On compact widths (below 600 px) the page is an app shell, never a document with bars fixed over it:
+the shell is one grid at the window height (`height: 100dvh`; rows: top app bar, content, navigation
+bar) with `overflow: hidden`, and only the content row scrolls (`overflow-y: auto`). The FAB is
+positioned absolutely in the shell, above the navigation bar, at the bottom trailing corner; the
+content row gets bottom padding so its last item clears the FAB. No bar or FAB uses `position: fixed`, so
+no bar or FAB lands on top of content in any screenshot. On wider windows the rail sits in its own
+grid column and the page may scroll normally.
+
 ## Navigation bar
 
 Part `navigation-bar`. `<nav class="m3-navigation-bar" aria-label="Main">` with three to five
 `<a class="m3-navigation-bar-item" href="..." aria-current="page"><span class="m3-icon"
-aria-hidden="true">home</span><span class="m3-navigation-bar-label">Home</span></a>`. Fix it to the
-bottom on compact widths only; the active item uses the filled glyph.
+aria-hidden="true">home</span><span class="m3-navigation-bar-label">Home</span></a>`. On compact
+widths only, as the last row of the app shell (`#app-shell`); the active item uses the filled glyph.
 
 ## Navigation rail
 

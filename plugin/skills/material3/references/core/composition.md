@@ -4,11 +4,13 @@ How first-party Material 3 screens arrange their parts: for the screen plan and 
 
 ## Placement
 
-- The page background is the plain surface role; content groups sit in containers one or two
-  surface-container steps away, with large corners. The container, not a line, shows the group.
+- The page background is the plain surface role; content groups sit in filled containers one or
+  two surface-container steps away, with large corners. The fill, not an outline, shows the group.
 - A screen reads top to bottom in this order: what this is (title, key visual), the key facts, the
   one main action, then supporting sections. The main action sits right under the facts it acts
   on, often full width on compact.
+- On a phone the first screen reaches the main content: header, hero or chart take at most about a
+  third of the height, and a requested list or table starts with its first rows.
 - Header block of a detail screen: the visual (image, icon or shape container) on the leading
   side, the name next to it, and one or two lines of qualifiers below the name. Key facts follow
   as a single row of short stat pairs (value above, label below) split by vertical dividers.
@@ -33,7 +35,7 @@ How first-party Material 3 screens arrange their parts: for the screen plan and 
   control or value trailing. Every row of a block uses the same anatomy.
 - Forms: one column of full-width fields; a field's extra action (remove, choose type) sits
   outside the field at its trailing side; optional fields hide behind a row of tonal "add" buttons
-  at the end of the form; the save action lives in the top app bar or at the end, not both.
+  at the end of the form; the save action lives in the top app bar or right after the last field (no empty band), not both.
 - Empty states: an illustration-sized graphic (Expressive: a library shape, below), a one-line
   title, one line of help, and the way out as the screen's FAB or a single button.
 
@@ -49,7 +51,8 @@ How first-party Material 3 screens arrange their parts: for the screen plan and 
 - One filled element per view carries the strongest color: the main action, or the selected
   navigation item. Secondary actions are tonal, outlined or text buttons.
 - The accent color appears in few places with a job: the active destination, the main action,
-  section labels, links and the selected state. Large areas stay on surface roles.
+  section labels, links and the selected state. Large areas stay on surface roles. The error role
+  marks errors only: a falling number gets an arrow icon, not an error fill.
 - `tertiary-container` and `error-container` never fill wide areas: only small ones (inline alert,
   chip, banner). A large error area (panel, list of issues) sits on a surface container, marked
   with the error color on its icon, title or edge. A full `error` fill is only for small badges.
