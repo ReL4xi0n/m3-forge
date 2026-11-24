@@ -46,7 +46,7 @@ first-party screen has. Fix every mismatch before reporting.
   FAB); others step down (tonal, outlined, text). (F9)
 - Each action appears once per view: no second toolbar repeating it. (F9)
 - Selection is always shown: filters, chips, tabs, segmented buttons and list items display
-  their selected state when one is active. (F9)
+  their selected state; a single-choice filter row starts with a selected "All" chip. (F9)
 - M3 Expressive cards, sheets and hero containers use the large to extra-extra-large corner
   steps; small corners are for small controls. Avatars and picture placeholders can take a library
   shape (`references/core/shape.md`). (F4)
