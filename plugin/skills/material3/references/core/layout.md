@@ -18,6 +18,7 @@ Names: web `--md-sys-space-<n>`, Flutter and Compose `M3Space.space<n>`. Steps n
   avoid a margin on every child.
 - Use leading/trailing (start/end, `EdgeInsetsDirectional`, `padding-inline-start`) so layouts
   mirror in right-to-left languages.
+- Spacing does not grow when text grows.
 - Related items sit closer than unrelated ones; repeat the same gap between like items.
 
 ## Breakpoints (by window width, never by device)
@@ -78,3 +79,4 @@ captures at 412 and 1440 px are compact and large.
 - Keep body text to roughly 40 to 60 characters per line by widening margins or adding columns on
   wide windows. More space reveals more structure; do not just scale things up.
 - Keep frequent controls in reach: bottom on compact, leading edge on wider windows.
+- Dense mode is opt-in, never automatic.

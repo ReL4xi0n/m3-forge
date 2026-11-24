@@ -26,16 +26,20 @@ make it specific to the request.
    `<name>@<productname>.<tld>` with a plausible top-level domain), phone numbers in the local
    format.
 6. Imagery: no image files or URLs. A picture becomes a container filled with a container role
-   (`secondaryContainer` or a surface container, one role per collection; never tertiary) holding, when it helps, a
+   (`primaryContainer`, `secondaryContainer`, `tertiaryContainer`) holding, when it helps, a
    centered Material Symbols icon in the matching on role that names the subject (`landscape`,
    `restaurant`). Avatars hold the person's initials (the `person` icon without a name). Shape: M3
    Expressive uses a library shape (composition.md, "Library shapes"; all three platforms),
    classic M3 a shape-scale corner (avatars full).
-7. Empty, loading and error states exist where the data could be empty or slow, written with the
+7. Destinations: the requested screen is complete. Every other visible destination (tab,
+   navigation item, menu entry, link) opens a simple but credible screen with real content (a
+   short list, a summary or a form with plausible data), never a blank or "coming soon" page.
+8. Empty, loading and error states exist where the data could be empty or slow, written with the
    same care (what happened, what to do next, one action).
 
 ## Writing rules
 
+- Sentence case for every title, button, tab, menu item and label. No ALL CAPS.
 - Address the user as you. The product does not speak as we or I (legal consent excepted).
 - Buttons say what happens, in one to three words, starting with a verb. No ellipsis on buttons
   that open a dialog.
