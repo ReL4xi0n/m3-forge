@@ -47,9 +47,8 @@ Choosing between neighbors:
 
 - Action vs choice: buttons act, chips filter or suggest, connected button groups and radio
   buttons choose, switches toggle a setting.
+- Interrupting vs not: dialog (must respond) > snackbar (may ignore) > tooltip (on demand).
 - Navigation by width: navigation bar on compact, collapsed rail from medium, expanded rail when
   there are many destinations (layout.md).
-- Steps of a flow: a determinate linear progress indicator with "Step n of m", under a top app
-  bar with a back button; never hand-drawn step bars.
-- Color or finish options: round swatches of the real colors, the selected one ringed, the name as
-  the label; never text-only pills.
+- Wait length: nothing for very short waits, loading indicator up to about five seconds, progress
+  indicator beyond.
