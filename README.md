@@ -12,7 +12,9 @@ a verifier, takes light and dark screenshots, looks at them and fixes what it fi
 
 <img src="docs/images/icon.png" alt="m3-forge icon: an anvil with a spark" width="96">
 
-**Status:** version 0.1.0, not yet released.
+**Status:** experimental, version 0.1.0, not yet released. The measured results are below: the
+automated checks pass everywhere, but blind judges rate the screens as "correct M3 with minor
+flaws", not first-party quality.
 
 ## Install
 
@@ -87,7 +89,37 @@ screenshots for each platform.
 
 ## Results
 
-<!-- PENDING: Phase 4 results -->
+Measured on 26 eval requests (6 screen types, 3 platforms, default, classic and seed-color styles),
+run once without the skill (baseline) and once with it, plus 6 unseen hold-out requests. Every output
+was scored by blind judges in three independent sessions; the score of record is the median, on a
+0–3 scale (2 = correct M3 with minor flaws, 3 = indistinguishable from first-party quality). Full
+numbers: [evals/runs/p4-gap-report.md](evals/runs/p4-gap-report.md).
+
+**Automated checks** (same verifier on every output): without the skill, every one of the 26 outputs
+had findings, 1,290 in total (370 off-scale type sizes, 493 icons not from the official Material
+Symbols source, 187 off-grid spacings, 73 touch targets below 48 dp, 60 hardcoded colors and more).
+With the skill: **0 findings** in all 35 outputs (eval, hold-out and a Sonnet check), and all of them
+build.
+
+**Judged design quality** (means of the medians, without → with the skill):
+
+| item | Web | Flutter | Compose |
+|---|---|---|---|
+| component choice | 2.56 → 2.78 | 2.33 → 2.44 | 2.75 → 2.38 |
+| hierarchy and typography | 2.22 → 2.00 | 2.44 → 2.78 | 2.63 → 3.00 |
+| color roles | 2.67 → 2.56 | 2.78 → 2.89 | 2.50 → 2.88 |
+| shape (Expressive) | 2.67 → 2.44 | 2.89 → 2.56 | 2.38 → 2.50 |
+| spacing and layout | 2.11 → 2.00 | 2.22 → 2.44 | 2.38 → 2.38 |
+| interaction states | 2.56 → 2.78 | 2.89 → 2.89 | 2.63 → 2.88 |
+| dark mode | 2.89 → 3.00 | 2.78 → 3.00 | 2.88 → 3.00 |
+| overall polish | 2.00 → 2.00 | 1.89 → 2.00 | 2.00 → 2.00 |
+
+What this means: the skill reliably produces token-correct, accessible M3 code with correct dark
+themes, and improves several judged items, especially on Compose and Flutter. It does **not** reach
+first-party polish: overall polish is 2 on every platform, and on the web the judges rate
+typography, shape and spacing slightly lower than without the skill. The project's own release bar
+(every judged item ≥ 2.5 on every platform and better than baseline) is **not met**; the gap report
+lists the reasons and the options being considered.
 
 ## Known limitations
 
