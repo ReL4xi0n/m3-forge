@@ -80,17 +80,22 @@ export const overCost = records => records.filter(r => (r.rec.costUsd ?? 0) > CO
 
 // This session's own leftovers only (owner decision 6): Java and Dart processes started from the
 // toolchain folder (Gradle and Kotlin daemons, Dart tooling) and browsers whose command line points
-// into the eval root. Never anything else.
-export function ownLeftovers(procs, { toolchain, evalRoot = 'C:\\m3-eval' }) {
+// into the eval root, and Node/esbuild processes (dev servers such as Vite that an eval session left
+// running) whose command line or executable points into the eval work folder. Never anything else, and
+// never this process or its parent.
+export function ownLeftovers(procs, { toolchain, evalRoot = 'C:\\m3-eval', self = [] }) {
   const low = s => String(s ?? '').toLowerCase().replace(/\//g, '\\');
   const tc = low(toolchain);
   const er = low(evalRoot);
+  const work = `${er.replace(/\\+$/, '')}\\work\\`;
   return procs.filter(p => {
+    if (self.includes(p.ProcessId)) return false;
     const name = low(p.Name);
     const exe = low(p.ExecutablePath);
     const cmd = low(p.CommandLine);
     if (['java.exe', 'javaw.exe', 'dart.exe', 'dartaotruntime.exe'].includes(name)) return exe.startsWith(tc);
     if (['chrome.exe', 'chrome-headless-shell.exe', 'msedge.exe', 'headless_shell.exe'].includes(name)) return cmd.includes(er);
+    if (['node.exe', 'esbuild.exe'].includes(name)) return cmd.includes(work) || exe.startsWith(work);
     return false;
   });
 }
@@ -99,10 +104,10 @@ export function cleanupOwnProcesses({ log = () => {} } = {}) {
   if (process.platform !== 'win32') return [];
   try {
     const out = execFileSync('powershell', ['-NoProfile', '-Command',
-      "Get-CimInstance Win32_Process -Filter \"Name='java.exe' OR Name='javaw.exe' OR Name='dart.exe' OR Name='dartaotruntime.exe' OR Name='chrome.exe' OR Name='chrome-headless-shell.exe' OR Name='msedge.exe' OR Name='headless_shell.exe'\" | Select-Object ProcessId,Name,ExecutablePath,CommandLine | ConvertTo-Json -Compress"],
+      "Get-CimInstance Win32_Process -Filter \"Name='java.exe' OR Name='javaw.exe' OR Name='dart.exe' OR Name='dartaotruntime.exe' OR Name='chrome.exe' OR Name='chrome-headless-shell.exe' OR Name='msedge.exe' OR Name='headless_shell.exe' OR Name='node.exe' OR Name='esbuild.exe'\" | Select-Object ProcessId,Name,ExecutablePath,CommandLine | ConvertTo-Json -Compress"],
       { encoding: 'utf8', windowsHide: true, timeout: 60_000 });
     const procs = out.trim() ? [].concat(JSON.parse(out)) : [];
-    const mine = ownLeftovers(procs, { toolchain: toolchainRoot() });
+    const mine = ownLeftovers(procs, { toolchain: toolchainRoot(), self: [process.pid, process.ppid] });
     for (const p of mine) {
       try { process.kill(p.ProcessId); log('stopped leftover', p.Name, p.ProcessId); } catch { /* already gone */ }
     }
@@ -356,6 +361,8 @@ async function main() {
     const mem = memSampler();
     const t0 = Date.now();
     const recs = await Promise.all(group.map(doCell));
+    // Every cell's end: stop the dev servers and daemons its session left behind (owner, 2026-11-26).
+    if (memGate) cleanupOwnProcesses({ log });
     if (phase4) {
       // Memory-caused failures (owner, relay 2026-11-23): clean up, retry once (a timed-out session runs
       // again; a capture that failed runs the capture again), then skip and report.

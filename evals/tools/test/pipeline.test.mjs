@@ -198,3 +198,15 @@ test('ownLeftovers: only toolchain Java/Dart and browsers pointed at the eval ro
   ];
   assert.deepEqual(ownLeftovers(procs, { toolchain: String.raw`C:\Users\u\.m3-toolchain` }).map(p => p.ProcessId), [1, 3, 4]);
 });
+
+test('ownLeftovers: Node/esbuild dev servers in the eval work folder, never the pipeline or other Node', async () => {
+  const { ownLeftovers } = await import('../pipeline.mjs');
+  const procs = [
+    { ProcessId: 10, Name: 'node.exe', ExecutablePath: String.raw`C:\Program Files\nodejs\node.exe`, CommandLine: String.raw`node C:\m3-eval\work\p4-r3\landing\node_modules\vite\bin\vite.js` },
+    { ProcessId: 11, Name: 'esbuild.exe', ExecutablePath: String.raw`C:\m3-eval\work\p4-r3\landing\node_modules\@esbuild\win32-x64\esbuild.exe`, CommandLine: 'esbuild --service=0.21.5 --ping' },
+    { ProcessId: 12, Name: 'node.exe', ExecutablePath: String.raw`C:\Program Files\nodejs\node.exe`, CommandLine: String.raw`node C:\Users\u\Desktop\other-project\server.js` },
+    { ProcessId: 13, Name: 'node.exe', ExecutablePath: String.raw`C:\Program Files\nodejs\node.exe`, CommandLine: String.raw`node evals/tools/pipeline.mjs --cwd C:\m3-eval\work\x` },
+    { ProcessId: 14, Name: 'node.exe', ExecutablePath: String.raw`C:\Program Files\nodejs\node.exe`, CommandLine: String.raw`node C:\m3-eval\appdata\tool.js` },
+  ];
+  assert.deepEqual(ownLeftovers(procs, { toolchain: String.raw`C:\Users\u\.m3-toolchain`, self: [13] }).map(p => p.ProcessId), [10, 11]);
+});
