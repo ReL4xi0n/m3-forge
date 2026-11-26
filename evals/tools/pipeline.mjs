@@ -9,7 +9,7 @@ import { execFileSync, spawnSync } from 'node:child_process';
 import { totalmem, freemem } from 'node:os';
 import { buildPrompt } from './run-cell.mjs';
 import { withToolchain, toolchainRoot } from './toolchain-env.mjs';
-import { devCells, evalCells } from './cells.mjs';
+import { devCells, evalCells, holdoutCells } from './cells.mjs';
 import { latestCanary } from './canary.mjs';
 
 // Rubric v1 automated items (default) and v2 (evals/automated-v2.md), in evals/tools/automated.mjs.
@@ -168,15 +168,17 @@ export function pipelineOptions(argv, root) {
   const arg = k => { const i = argv.indexOf(k); return i >= 0 ? argv[i + 1] ?? null : null; };
   const runId = arg('--run-id');
   const set = arg('--set') ?? 'eval';
-  if (!['eval', 'dev'].includes(set)) return { error: `unknown set ${set} (eval or dev)` };
-  const all = set === 'dev' ? devCells() : evalCells();
+  if (!['eval', 'dev', 'holdout'].includes(set)) return { error: `unknown set ${set} (eval, dev or holdout)` };
+  // The hold-out set runs once, with the final skill, only as a Phase 4 run (plan step 3).
+  if (set === 'holdout' && !argv.includes('--phase4')) return { error: '--set holdout runs only with --phase4' };
+  const all = set === 'dev' ? devCells() : set === 'holdout' ? holdoutCells() : evalCells();
   const cells = argv.includes('--all') ? all : all.filter(c => (arg('--cells') ?? '').split(',').includes(c.cell));
   const pair = Number(arg('--pair') ?? 1);
   const skillArg = arg('--skill');
   if (argv.includes('--skill') && (!skillArg || skillArg.startsWith('--'))) return { error: `--skill needs a skill folder\n${USAGE}` };
   if (!runId || !/^[A-Za-z0-9._-]+$/.test(runId) || !cells.length || !(pair === 1 || pair === 2)) return { error: USAGE };
   const phase4 = argv.includes('--phase4');
-  if (phase4 && set !== 'eval') return { error: '--phase4 runs the eval set only' };
+  if (phase4 && set === 'dev') return { error: '--phase4 runs the eval or hold-out set only' };
   if (phase4 && !skillArg) return { error: '--phase4 needs --skill' };
   if (phase4 && !P4_RUN_ID.test(runId)) return { error: `a Phase 4 run id is p4-<label>, got ${runId}` };
   if (skillArg && set !== 'dev' && !phase4) return { error: 'the skill runs only on the dev set (--set dev); never on eval requests (Phase 4 final runs: --phase4)' };

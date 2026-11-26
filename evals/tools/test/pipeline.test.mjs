@@ -155,7 +155,7 @@ test('pipelineOptions: Phase 4 final runs need --phase4, --skill and a p4-<label
   assert.match(pipelineOptions([...skill, '--run-id', 'p4-final-1', '--all'], root).error, /only on the dev set/);
   assert.match(pipelineOptions(['--phase4', '--run-id', 'p4-final-1', '--all'], root).error, /needs --skill/);
   assert.match(pipelineOptions(['--phase4', ...skill, '--run-id', 'final-1', '--all'], root).error, /p4-<label>/);
-  assert.match(pipelineOptions(['--phase4', '--set', 'dev', ...skill, '--run-id', 'p4-x', '--all'], root).error, /eval set only/);
+  assert.match(pipelineOptions(['--phase4', '--set', 'dev', ...skill, '--run-id', 'p4-x', '--all'], root).error, /eval or hold-out set only/);
   const s = pipelineOptions(['--phase4', ...skill, '--run-id', 'p4-sonnet', '--cells', 'product-detail.web.web-empty.default', '--model', 'claude-sonnet-5-5'], root);
   assert.equal(s.model, 'claude-sonnet-5-5');
   assert.match(pipelineOptions(['--phase4', ...skill, '--run-id', 'p4-x', '--all', '--model', 'gpt'], root).error, /unknown model/);
@@ -209,4 +209,21 @@ test('ownLeftovers: Node/esbuild dev servers in the eval work folder, never the 
     { ProcessId: 14, Name: 'node.exe', ExecutablePath: String.raw`C:\Program Files\nodejs\node.exe`, CommandLine: String.raw`node C:\m3-eval\appdata\tool.js` },
   ];
   assert.deepEqual(ownLeftovers(procs, { toolchain: String.raw`C:\Users\u\.m3-toolchain`, self: [13] }).map(p => p.ProcessId), [10, 11]);
+});
+
+test('pipelineOptions: the hold-out set runs only with --phase4; six neutral cell names; dev never with --phase4', async () => {
+  const { pipelineOptions } = await import('../pipeline.mjs');
+  assert.match(pipelineOptions(['--set', 'holdout', '--skill', 'plugin/skills/material3', '--run-id', 'p4-h1', '--all'], root).error, /only with --phase4/);
+  const o = pipelineOptions(['--phase4', '--set', 'holdout', '--skill', 'plugin/skills/material3', '--run-id', 'p4-h1', '--all'], root);
+  assert.equal(o.error, undefined);
+  assert.equal(o.cells.length, 6);
+  assert.ok(o.cells.every(c => c.set === 'holdout' && c.variant === 'default' && !/hold/i.test(c.cell)));
+  assert.deepEqual([...new Set(o.cells.map(c => c.platform))].sort(), ['compose', 'flutter', 'web']);
+  assert.match(pipelineOptions(['--phase4', '--set', 'dev', '--skill', 'plugin/skills/material3', '--run-id', 'p4-x', '--all'], root).error, /eval or hold-out/);
+});
+
+test('cellTarget: hold-out cells pair with form and list anchors', async () => {
+  const { cellTarget } = await import('../pairing.mjs');
+  const { holdoutCells } = await import('../cells.mjs');
+  assert.deepEqual(holdoutCells().map(c => cellTarget(c).screen).sort(), ['form', 'form', 'form', 'list', 'list', 'list']);
 });

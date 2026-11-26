@@ -14,6 +14,7 @@ export function forbiddenFor(realCfg, evalRoot, builtIns) {
 }
 import { withToolchain, toolchainRoot } from './toolchain-env.mjs';
 import { checkFrozen } from './frozen.mjs';
+import { HOLDOUT_FILES } from './cells.mjs';
 import { scanSecrets, redactSecrets } from '../../tools/guard/secrets.mjs';
 import { decodeText } from '../../tools/guard/lib.mjs';
 
@@ -29,7 +30,10 @@ export function buildPrompt(cell, root, { skill = false } = {}) {
 }
 
 function basePrompt(cell, root) {
-  const request = readFileSync(join(root, 'evals', cell.set === 'dev' ? 'dev' : 'prompts', `${cell.request}.md`), 'utf8').trim();
+  const file = cell.set === 'dev' ? join('dev', `${cell.request}.md`)
+    : cell.set === 'holdout' ? join('holdout', `${HOLDOUT_FILES[cell.request]}.md`)
+    : join('prompts', `${cell.request}.md`);
+  const request = readFileSync(join(root, 'evals', file), 'utf8').trim();
   const variants = readFileSync(join(root, 'evals', 'prompts', 'variants.md'), 'utf8');
   const kind = cell.variant.startsWith('seed:') ? 'seed' : cell.variant;
   const m = variants.match(new RegExp(`^- ${kind}: (.+)$`, 'm'));
