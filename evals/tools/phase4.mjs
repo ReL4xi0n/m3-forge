@@ -5,7 +5,7 @@
 //   node evals/tools/phase4.mjs draw regression <round> <cell,cell,...re-run in that round>
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
-import { evalCells } from './cells.mjs';
+import { evalCells, holdoutCells } from './cells.mjs';
 
 export const PLATFORMS = ['web', 'flutter', 'compose'];
 export const SEEDS = { spotcheck: 'm3-forge-phase4-spotcheck', regression: 'm3-forge-phase4-regression' };
@@ -19,8 +19,9 @@ export function seededPick(ids, seed) {
 }
 
 // Spot-check sample per platform (plan, owner sign-off): one drawn default cell, the classic cell and
-// the seed cell. The hold-out cell is drawn the same way once the hold-out cells exist (step 3).
-export function spotcheckSample(cells = evalCells()) {
+// the seed cell, plus one hold-out cell drawn the same way (seed recorded in step 0, hold-out cells exist
+// since step 3).
+export function spotcheckSample(cells = evalCells(), holdout = holdoutCells()) {
   return Object.fromEntries(PLATFORMS.map((p) => {
     const mine = cells.filter((c) => c.platform === p);
     const defaults = mine.filter((c) => c.variant === 'default').map((c) => c.cell);
@@ -28,6 +29,7 @@ export function spotcheckSample(cells = evalCells()) {
       default: seededPick(defaults, `${SEEDS.spotcheck}|${p}`),
       classic: mine.find((c) => c.variant === 'classic')?.cell ?? null,
       seed: mine.find((c) => c.variant.startsWith('seed:') || c.variant.startsWith('seed-'))?.cell ?? null,
+      holdout: seededPick(holdout.filter((c) => c.platform === p).map((c) => c.cell), `${SEEDS.spotcheck}|holdout|${p}`),
     }];
   }));
 }
