@@ -1,0 +1,347 @@
+{
+  "rows": [
+    {
+      "runId": "baseline-2026-11-17",
+      "cell": "landing.compose.compose-1.5.default",
+      "buildOk": true,
+      "picturesIdentical": true,
+      "contrast": {
+        "before": 0,
+        "after": 0
+      },
+      "targets": {
+        "before": 0,
+        "after": 0
+      },
+      "total": {
+        "before": 36,
+        "after": 36
+      }
+    },
+    {
+      "runId": "baseline-2026-11-17",
+      "cell": "settings.compose.compose-1.5.default",
+      "buildOk": true,
+      "picturesIdentical": true,
+      "contrast": {
+        "before": 0,
+        "after": 0
+      },
+      "targets": {
+        "before": 0,
+        "after": 0
+      },
+      "total": {
+        "before": 21,
+        "after": 21
+      }
+    },
+    {
+      "runId": "baseline-2026-11-17",
+      "cell": "dashboard.compose.compose-1.5.default",
+      "buildOk": true,
+      "picturesIdentical": true,
+      "contrast": {
+        "before": 0,
+        "after": 0
+      },
+      "targets": {
+        "before": 0,
+        "after": 0
+      },
+      "total": {
+        "before": 20,
+        "after": 20
+      }
+    },
+    {
+      "runId": "baseline-2026-11-17",
+      "cell": "product-detail.compose.compose-1.5.default",
+      "buildOk": true,
+      "picturesIdentical": true,
+      "contrast": {
+        "before": 0,
+        "after": 0
+      },
+      "targets": {
+        "before": 2,
+        "after": 2
+      },
+      "total": {
+        "before": 34,
+        "after": 34
+      }
+    },
+    {
+      "runId": "baseline-2026-11-17",
+      "cell": "onboarding.compose.compose-1.5.default",
+      "buildOk": true,
+      "picturesIdentical": true,
+      "contrast": {
+        "before": 0,
+        "after": 0
+      },
+      "targets": {
+        "before": 0,
+        "after": 0
+      },
+      "total": {
+        "before": 20,
+        "after": 20
+      }
+    },
+    {
+      "runId": "baseline-2026-11-17",
+      "cell": "empty-error.compose.compose-1.5.default",
+      "buildOk": true,
+      "picturesIdentical": true,
+      "contrast": {
+        "before": 0,
+        "after": 0
+      },
+      "targets": {
+        "before": 0,
+        "after": 0
+      },
+      "total": {
+        "before": 16,
+        "after": 16
+      }
+    },
+    {
+      "runId": "baseline-2026-11-17",
+      "cell": "settings.compose.compose-1.5.classic",
+      "buildOk": true,
+      "picturesIdentical": true,
+      "contrast": {
+        "before": 0,
+        "after": 0
+      },
+      "targets": {
+        "before": 0,
+        "after": 0
+      },
+      "total": {
+        "before": 21,
+        "after": 21
+      }
+    },
+    {
+      "runId": "baseline-2026-11-17",
+      "cell": "dashboard.compose.compose-1.5.seed-B5651D",
+      "buildOk": true,
+      "picturesIdentical": true,
+      "contrast": {
+        "before": 0,
+        "after": 0
+      },
+      "targets": {
+        "before": 0,
+        "after": 0
+      },
+      "total": {
+        "before": 24,
+        "after": 24
+      }
+    },
+    {
+      "runId": "p4-final",
+      "cell": "landing.compose.compose-1.5.default",
+      "buildOk": true,
+      "picturesIdentical": true,
+      "contrast": {
+        "before": 0,
+        "after": 0
+      },
+      "targets": {
+        "before": 0,
+        "after": 0
+      },
+      "total": {
+        "before": 0,
+        "after": 0
+      }
+    },
+    {
+      "runId": "p4-final",
+      "cell": "settings.compose.compose-1.5.default",
+      "buildOk": true,
+      "picturesIdentical": true,
+      "contrast": {
+        "before": 0,
+        "after": 0
+      },
+      "targets": {
+        "before": 0,
+        "after": 0
+      },
+      "total": {
+        "before": 0,
+        "after": 0
+      }
+    },
+    {
+      "runId": "p4-final",
+      "cell": "dashboard.compose.compose-1.5.default",
+      "buildOk": true,
+      "picturesIdentical": true,
+      "contrast": {
+        "before": 0,
+        "after": 0
+      },
+      "targets": {
+        "before": 0,
+        "after": 0
+      },
+      "total": {
+        "before": 0,
+        "after": 0
+      }
+    },
+    {
+      "runId": "p4-final",
+      "cell": "product-detail.compose.compose-1.5.default",
+      "buildOk": true,
+      "picturesIdentical": true,
+      "contrast": {
+        "before": 0,
+        "after": 0
+      },
+      "targets": {
+        "before": 0,
+        "after": 0
+      },
+      "total": {
+        "before": 0,
+        "after": 0
+      }
+    },
+    {
+      "runId": "p4-final",
+      "cell": "onboarding.compose.compose-1.5.default",
+      "buildOk": true,
+      "picturesIdentical": true,
+      "contrast": {
+        "before": 0,
+        "after": 0
+      },
+      "targets": {
+        "before": 0,
+        "after": 0
+      },
+      "total": {
+        "before": 0,
+        "after": 0
+      }
+    },
+    {
+      "runId": "p4-final",
+      "cell": "empty-error.compose.compose-1.5.default",
+      "buildOk": true,
+      "picturesIdentical": true,
+      "contrast": {
+        "before": 0,
+        "after": 0
+      },
+      "targets": {
+        "before": 0,
+        "after": 0
+      },
+      "total": {
+        "before": 0,
+        "after": 0
+      }
+    },
+    {
+      "runId": "p4-final",
+      "cell": "settings.compose.compose-1.5.classic",
+      "buildOk": true,
+      "picturesIdentical": true,
+      "contrast": {
+        "before": 0,
+        "after": 0
+      },
+      "targets": {
+        "before": 0,
+        "after": 0
+      },
+      "total": {
+        "before": 0,
+        "after": 0
+      }
+    },
+    {
+      "runId": "p4-final",
+      "cell": "dashboard.compose.compose-1.5.seed-B5651D",
+      "buildOk": true,
+      "picturesIdentical": true,
+      "contrast": {
+        "before": 0,
+        "after": 0
+      },
+      "targets": {
+        "before": 0,
+        "after": 0
+      },
+      "total": {
+        "before": 0,
+        "after": 0
+      }
+    },
+    {
+      "runId": "p4-h1",
+      "cell": "booking.compose.compose-1.5.default",
+      "buildOk": true,
+      "picturesIdentical": true,
+      "contrast": {
+        "before": 2,
+        "after": 0
+      },
+      "targets": {
+        "before": 0,
+        "after": 0
+      },
+      "total": {
+        "before": 2,
+        "after": 0
+      },
+      "note": "pre-fix capture of 2026-11-26 (P23)"
+    },
+    {
+      "runId": "p4-h1",
+      "cell": "chat.compose.compose-1.5.default",
+      "buildOk": true,
+      "picturesIdentical": true,
+      "contrast": {
+        "before": 0,
+        "after": 0
+      },
+      "targets": {
+        "before": 0,
+        "after": 0
+      },
+      "total": {
+        "before": 0,
+        "after": 0
+      }
+    },
+    {
+      "runId": "p4-sonnet",
+      "cell": "product-detail.compose.compose-1.5.default",
+      "buildOk": true,
+      "picturesIdentical": true,
+      "contrast": {
+        "before": 0,
+        "after": 0
+      },
+      "targets": {
+        "before": 0,
+        "after": 0
+      },
+      "total": {
+        "before": 0,
+        "after": 0
+      }
+    }
+  ]
+}
