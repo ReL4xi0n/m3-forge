@@ -6,7 +6,7 @@
 // harness did not change). The run's v1 judging is not touched.
 //   node evals/tools/rejudge.mjs --run-id <id> [--set eval|dev] [--out evals/runs/<folder>]
 import { createHash } from 'node:crypto';
-import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { basename, dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { anonymize, stripPng } from './anonymize.mjs';
@@ -45,9 +45,37 @@ export function resolveCells(priv, set = null) {
 }
 
 // Judges outputs [{cell, condition, repeat, runId, request, shots, target}] with judge v2.
-export async function judgeV2({ root, outputs, judgeDir, mappingPath, batchPrefix, builtIns }) {
+// Checkpoint (owner, 2026-11-26: a session stopped for memory resumes where it stopped): the session's
+// ids and every finished batch's scores, saved after each batch. A resumed session keeps the same judge
+// folder, mapping and ids (no new anonymization), skips the saved batches and runs the rest; a failed
+// batch is not saved, so it runs again. Scores are by anonymous id; the mapping is not read here.
+export const BATCH = 12;
+export function pendingBatches(ids, done = {}) {
+  const out = [];
+  for (let i = 0; i < ids.length; i += BATCH) if (!done[i / BATCH + 1]) out.push({ n: i / BATCH + 1, ids: ids.slice(i, i + BATCH) });
+  return out;
+}
+const readJson = p => JSON.parse(readFileSync(p, 'utf8'));
+
+export async function judgeV2({ root, outputs, judgeDir, mappingPath, batchPrefix, builtIns, checkpoint = null, runBatch = runJudgeBatch }) {
   const frozen = checkFrozen(root, 'v2');
   if (!frozen.ok) throw new Error(`judge v2 is not frozen: ${frozen.problems.join('; ')}`);
+  const resumed = checkpoint && existsSync(checkpoint) && existsSync(mappingPath) && existsSync(join(judgeDir, 'pairs.json'));
+  const state = resumed ? readJson(checkpoint) : null;
+  if (resumed) {
+    const scores = Object.values(state.done).flatMap(d => d.scores);
+    const log = Object.entries(state.done).map(([n, d]) => ({ batch: Number(n), ok: true, attempts: d.attempts, log: d.log, resumed: true }));
+    for (const b of pendingBatches(state.ids, state.done)) {
+      const r = await runBatch({ judgeDir, ids: b.ids, root, batchId: `${batchPrefix}-${b.n}`, builtIns, version: 'v2' });
+      log.push({ batch: b.n, ok: r.ok, attempts: r.attempts, log: r.log });
+      console.log(new Date().toISOString().slice(11, 19), 'judge v2 batch', b.n, r.ok ? 'ok' : 'FAILED', 'attempts', r.attempts, '(resumed session)');
+      if (r.ok) { scores.push(...r.scores); state.done[b.n] = { scores: r.scores, attempts: r.attempts, log: r.log }; writeFileSync(checkpoint, JSON.stringify(state)); }
+    }
+    log.sort((a, b) => a.batch - b.batch);
+    return { ids: state.ids, scores, log, pairs: readJson(join(judgeDir, 'pairs.json')) };
+  }
+  // A session stopped before its first checkpoint starts over in its own (per-stamp) folder.
+  if (checkpoint && existsSync(judgeDir)) rmSync(judgeDir, { recursive: true, force: true });
   const { ids } = anonymize({ outputs, judgeDir, mappingPath });
   const refDir = join(root, 'private', 'reference-screenshots');
   const { anchors } = splitReferences(readdirSync(refDir));
@@ -70,12 +98,16 @@ export async function judgeV2({ root, outputs, judgeDir, mappingPath, batchPrefi
   writeFileSync(join(judgeDir, 'pairs.json'), JSON.stringify(pairs, null, 2));
   const scores = [];
   const log = [];
-  for (let i = 0; i < ids.length; i += 12) {
-    const batch = ids.slice(i, i + 12);
-    const r = await runJudgeBatch({ judgeDir, ids: batch, root, batchId: `${batchPrefix}-${i / 12 + 1}`, builtIns, version: 'v2' });
-    log.push({ batch: i / 12 + 1, ok: r.ok, attempts: r.attempts, log: r.log });
-    console.log(new Date().toISOString().slice(11, 19), 'judge v2 batch', i / 12 + 1, r.ok ? 'ok' : 'FAILED', 'attempts', r.attempts);
-    if (r.ok) scores.push(...r.scores);
+  const cp = { ids, done: {} };
+  if (checkpoint) writeFileSync(checkpoint, JSON.stringify(cp));
+  for (const b of pendingBatches(ids)) {
+    const r = await runBatch({ judgeDir, ids: b.ids, root, batchId: `${batchPrefix}-${b.n}`, builtIns, version: 'v2' });
+    log.push({ batch: b.n, ok: r.ok, attempts: r.attempts, log: r.log });
+    console.log(new Date().toISOString().slice(11, 19), 'judge v2 batch', b.n, r.ok ? 'ok' : 'FAILED', 'attempts', r.attempts);
+    if (r.ok) {
+      scores.push(...r.scores);
+      if (checkpoint) { cp.done[b.n] = { scores: r.scores, attempts: r.attempts, log: r.log }; writeFileSync(checkpoint, JSON.stringify(cp)); }
+    }
   }
   return { ids, scores, log, pairs };
 }
