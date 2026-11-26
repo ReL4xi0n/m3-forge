@@ -30,14 +30,17 @@ paths on each system and troubleshooting.
 
 Command: `/m3-forge:material3`.
 
-A bare `/material3` after a plugin install: <!-- PENDING: install-path verification -->
+A bare `/material3` also worked after a plugin install. In a clean configuration with no other
+skills, Claude Code ran the plugin's skill for it, although the session's command list only shows
+`m3-forge:material3`. If another installed command is also called `material3`, use the full name.
 
 ### As a personal skill
 
 Copy `plugin/skills/material3/` to `~/.claude/skills/material3/` (on Windows
 `%USERPROFILE%\.claude\skills\material3\`). Command: `/material3`.
 
-Result of the manual install: <!-- PENDING: install-path verification -->
+Both installs were tried in a clean configuration (Claude Code 2.1.332, Windows), each with a
+small web request. Both built the screen with `verify` reporting no errors, and took screenshots.
 
 ## Supported platforms and requirements
 
@@ -82,7 +85,7 @@ in the images, and anything you must run later.
 
 ## Examples
 
-<!-- PENDING: gallery -->
+<!-- PENDING: gallery (outputs picked by the owner from the spot-check) -->
 
 Finished outputs of the skill will be collected in [examples/](examples/): code plus light and dark
 screenshots for each platform.
@@ -116,8 +119,9 @@ build.
 
 What this means: the skill reliably produces token-correct, accessible M3 code with correct dark
 themes, and improves several judged items, especially on Compose and Flutter. It does **not** reach
-first-party polish: overall polish is 2 on every platform, and on the web the judges rate
-typography, shape and spacing slightly lower than without the skill. The project's own release bar
+first-party polish: overall polish is 2 on every platform. On the web, a second run of every cell
+confirmed that the skill's screens are less Expressive in shape and use smaller titles than
+screens built without it. The project's own release bar
 (every judged item ≥ 2.5 on every platform and better than baseline) is **not met**; the gap report
 lists the reasons and the options being considered.
 
