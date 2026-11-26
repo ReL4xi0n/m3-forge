@@ -1,0 +1,2095 @@
+{
+  "id": "p4-webdiag",
+  "sessions": 3,
+  "failed": [],
+  "rows": [
+    {
+      "runId": "baseline-2026-11-17",
+      "condition": "baseline",
+      "repeat": 1,
+      "cell": "landing.web.web-empty.default",
+      "sessions": {
+        "component-choice": [
+          3,
+          3,
+          3
+        ],
+        "hierarchy-typography": [
+          2,
+          3,
+          3
+        ],
+        "color-roles": [
+          2,
+          3,
+          2
+        ],
+        "shape-expressive": [
+          3,
+          3,
+          3
+        ],
+        "spacing-layout": [
+          2,
+          3,
+          3
+        ],
+        "interaction-states": [
+          3,
+          3,
+          3
+        ],
+        "dark-mode": [
+          2,
+          2,
+          2
+        ],
+        "overall-polish": [
+          2,
+          2,
+          2
+        ]
+      },
+      "median": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 2,
+        "shape-expressive": 3,
+        "spacing-layout": 3,
+        "interaction-states": 3,
+        "dark-mode": 2,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "baseline-2026-11-17",
+      "condition": "baseline",
+      "repeat": 1,
+      "cell": "settings.web.web-react.default",
+      "sessions": {
+        "component-choice": [
+          2,
+          3,
+          3
+        ],
+        "hierarchy-typography": [
+          2,
+          3,
+          3
+        ],
+        "color-roles": [
+          3,
+          3,
+          3
+        ],
+        "shape-expressive": [
+          2,
+          3,
+          3
+        ],
+        "spacing-layout": [
+          2,
+          3,
+          2
+        ],
+        "interaction-states": [
+          3,
+          3,
+          3
+        ],
+        "dark-mode": [
+          3,
+          3,
+          3
+        ],
+        "overall-polish": [
+          2,
+          3,
+          2
+        ]
+      },
+      "median": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "baseline-2026-11-17",
+      "condition": "baseline",
+      "repeat": 1,
+      "cell": "dashboard.web.web-react.default",
+      "sessions": {
+        "component-choice": [
+          3,
+          3,
+          3
+        ],
+        "hierarchy-typography": [
+          2,
+          3,
+          2
+        ],
+        "color-roles": [
+          3,
+          3,
+          2
+        ],
+        "shape-expressive": [
+          3,
+          3,
+          3
+        ],
+        "spacing-layout": [
+          1,
+          1,
+          1
+        ],
+        "interaction-states": [
+          3,
+          3,
+          3
+        ],
+        "dark-mode": [
+          3,
+          3,
+          3
+        ],
+        "overall-polish": [
+          2,
+          2,
+          2
+        ]
+      },
+      "median": {
+        "component-choice": 3,
+        "hierarchy-typography": 2,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 1,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "baseline-2026-11-17",
+      "condition": "baseline",
+      "repeat": 1,
+      "cell": "product-detail.web.web-empty.default",
+      "sessions": {
+        "component-choice": [
+          2,
+          2,
+          3
+        ],
+        "hierarchy-typography": [
+          2,
+          2,
+          3
+        ],
+        "color-roles": [
+          2,
+          3,
+          2
+        ],
+        "shape-expressive": [
+          2,
+          2,
+          2
+        ],
+        "spacing-layout": [
+          2,
+          2,
+          2
+        ],
+        "interaction-states": [
+          2,
+          3,
+          3
+        ],
+        "dark-mode": [
+          2,
+          3,
+          3
+        ],
+        "overall-polish": [
+          2,
+          2,
+          2
+        ]
+      },
+      "median": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 2,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "baseline-2026-11-17",
+      "condition": "baseline",
+      "repeat": 1,
+      "cell": "onboarding.web.web-react.default",
+      "sessions": {
+        "component-choice": [
+          3,
+          2,
+          2
+        ],
+        "hierarchy-typography": [
+          2,
+          3,
+          3
+        ],
+        "color-roles": [
+          3,
+          3,
+          3
+        ],
+        "shape-expressive": [
+          3,
+          3,
+          2
+        ],
+        "spacing-layout": [
+          2,
+          3,
+          3
+        ],
+        "interaction-states": [
+          2,
+          3,
+          2
+        ],
+        "dark-mode": [
+          3,
+          2,
+          3
+        ],
+        "overall-polish": [
+          2,
+          2,
+          2
+        ]
+      },
+      "median": {
+        "component-choice": 2,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 3,
+        "interaction-states": 2,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "baseline-2026-11-17",
+      "condition": "baseline",
+      "repeat": 1,
+      "cell": "empty-error.web.web-empty.default",
+      "sessions": {
+        "component-choice": [
+          3,
+          3,
+          2
+        ],
+        "hierarchy-typography": [
+          3,
+          3,
+          3
+        ],
+        "color-roles": [
+          2,
+          2,
+          3
+        ],
+        "shape-expressive": [
+          3,
+          3,
+          3
+        ],
+        "spacing-layout": [
+          2,
+          2,
+          2
+        ],
+        "interaction-states": [
+          2,
+          3,
+          3
+        ],
+        "dark-mode": [
+          2,
+          2,
+          3
+        ],
+        "overall-polish": [
+          2,
+          2,
+          2
+        ]
+      },
+      "median": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 2,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 2,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "baseline-2026-11-17",
+      "condition": "baseline",
+      "repeat": 1,
+      "cell": "onboarding.web.web-vue.default",
+      "sessions": {
+        "component-choice": [
+          3,
+          3,
+          3
+        ],
+        "hierarchy-typography": [
+          3,
+          3,
+          3
+        ],
+        "color-roles": [
+          3,
+          3,
+          3
+        ],
+        "shape-expressive": [
+          2,
+          3,
+          3
+        ],
+        "spacing-layout": [
+          2,
+          2,
+          2
+        ],
+        "interaction-states": [
+          2,
+          3,
+          3
+        ],
+        "dark-mode": [
+          3,
+          3,
+          3
+        ],
+        "overall-polish": [
+          2,
+          2,
+          2
+        ]
+      },
+      "median": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "baseline-2026-11-17",
+      "condition": "baseline",
+      "repeat": 1,
+      "cell": "settings.web.web-react.classic",
+      "sessions": {
+        "component-choice": [
+          3,
+          2,
+          3
+        ],
+        "hierarchy-typography": [
+          2,
+          2,
+          2
+        ],
+        "color-roles": [
+          3,
+          2,
+          3
+        ],
+        "shape-expressive": [
+          3,
+          2,
+          3
+        ],
+        "spacing-layout": [
+          2,
+          2,
+          2
+        ],
+        "interaction-states": [
+          3,
+          3,
+          3
+        ],
+        "dark-mode": [
+          3,
+          3,
+          3
+        ],
+        "overall-polish": [
+          2,
+          2,
+          2
+        ]
+      },
+      "median": {
+        "component-choice": 3,
+        "hierarchy-typography": 2,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "baseline-2026-11-17",
+      "condition": "baseline",
+      "repeat": 1,
+      "cell": "dashboard.web.web-empty.seed-B5651D",
+      "sessions": {
+        "component-choice": [
+          1,
+          2,
+          2
+        ],
+        "hierarchy-typography": [
+          2,
+          2,
+          2
+        ],
+        "color-roles": [
+          3,
+          3,
+          2
+        ],
+        "shape-expressive": [
+          3,
+          3,
+          3
+        ],
+        "spacing-layout": [
+          2,
+          2,
+          2
+        ],
+        "interaction-states": [
+          2,
+          2,
+          1
+        ],
+        "dark-mode": [
+          3,
+          3,
+          3
+        ],
+        "overall-polish": [
+          1,
+          1,
+          1
+        ]
+      },
+      "median": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 2,
+        "dark-mode": 3,
+        "overall-polish": 1
+      }
+    },
+    {
+      "runId": "p4-webdiag-base",
+      "condition": "baseline2",
+      "repeat": 1,
+      "cell": "landing.web.web-empty.default",
+      "sessions": {
+        "component-choice": [
+          3,
+          3,
+          3
+        ],
+        "hierarchy-typography": [
+          2,
+          2,
+          3
+        ],
+        "color-roles": [
+          3,
+          3,
+          3
+        ],
+        "shape-expressive": [
+          3,
+          3,
+          3
+        ],
+        "spacing-layout": [
+          2,
+          2,
+          2
+        ],
+        "interaction-states": [
+          3,
+          3,
+          3
+        ],
+        "dark-mode": [
+          3,
+          3,
+          3
+        ],
+        "overall-polish": [
+          2,
+          2,
+          2
+        ]
+      },
+      "median": {
+        "component-choice": 3,
+        "hierarchy-typography": 2,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "p4-webdiag-base",
+      "condition": "baseline2",
+      "repeat": 1,
+      "cell": "settings.web.web-react.default",
+      "sessions": {
+        "component-choice": [
+          3,
+          3,
+          3
+        ],
+        "hierarchy-typography": [
+          2,
+          3,
+          3
+        ],
+        "color-roles": [
+          3,
+          3,
+          3
+        ],
+        "shape-expressive": [
+          3,
+          3,
+          3
+        ],
+        "spacing-layout": [
+          2,
+          3,
+          3
+        ],
+        "interaction-states": [
+          3,
+          3,
+          3
+        ],
+        "dark-mode": [
+          3,
+          3,
+          3
+        ],
+        "overall-polish": [
+          2,
+          3,
+          2
+        ]
+      },
+      "median": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 3,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "p4-webdiag-base",
+      "condition": "baseline2",
+      "repeat": 1,
+      "cell": "dashboard.web.web-react.default",
+      "sessions": {
+        "component-choice": [
+          3,
+          3,
+          3
+        ],
+        "hierarchy-typography": [
+          3,
+          2,
+          3
+        ],
+        "color-roles": [
+          2,
+          2,
+          3
+        ],
+        "shape-expressive": [
+          2,
+          2,
+          2
+        ],
+        "spacing-layout": [
+          2,
+          2,
+          2
+        ],
+        "interaction-states": [
+          3,
+          3,
+          3
+        ],
+        "dark-mode": [
+          3,
+          2,
+          3
+        ],
+        "overall-polish": [
+          2,
+          2,
+          2
+        ]
+      },
+      "median": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 2,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "p4-webdiag-base",
+      "condition": "baseline2",
+      "repeat": 1,
+      "cell": "product-detail.web.web-empty.default",
+      "sessions": {
+        "component-choice": [
+          2,
+          3,
+          2
+        ],
+        "hierarchy-typography": [
+          2,
+          3,
+          2
+        ],
+        "color-roles": [
+          2,
+          2,
+          2
+        ],
+        "shape-expressive": [
+          2,
+          3,
+          3
+        ],
+        "spacing-layout": [
+          2,
+          2,
+          2
+        ],
+        "interaction-states": [
+          2,
+          3,
+          3
+        ],
+        "dark-mode": [
+          2,
+          2,
+          2
+        ],
+        "overall-polish": [
+          2,
+          2,
+          2
+        ]
+      },
+      "median": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 2,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 2,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "p4-webdiag-base",
+      "condition": "baseline2",
+      "repeat": 1,
+      "cell": "onboarding.web.web-react.default",
+      "sessions": {
+        "component-choice": [
+          2,
+          2,
+          2
+        ],
+        "hierarchy-typography": [
+          3,
+          3,
+          3
+        ],
+        "color-roles": [
+          3,
+          3,
+          3
+        ],
+        "shape-expressive": [
+          3,
+          3,
+          2
+        ],
+        "spacing-layout": [
+          2,
+          2,
+          2
+        ],
+        "interaction-states": [
+          2,
+          2,
+          2
+        ],
+        "dark-mode": [
+          3,
+          3,
+          3
+        ],
+        "overall-polish": [
+          2,
+          2,
+          2
+        ]
+      },
+      "median": {
+        "component-choice": 2,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 2,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "p4-webdiag-base",
+      "condition": "baseline2",
+      "repeat": 1,
+      "cell": "empty-error.web.web-empty.default",
+      "sessions": {
+        "component-choice": [
+          2,
+          2,
+          2
+        ],
+        "hierarchy-typography": [
+          3,
+          2,
+          3
+        ],
+        "color-roles": [
+          2,
+          3,
+          3
+        ],
+        "shape-expressive": [
+          3,
+          3,
+          3
+        ],
+        "spacing-layout": [
+          2,
+          2,
+          2
+        ],
+        "interaction-states": [
+          2,
+          2,
+          3
+        ],
+        "dark-mode": [
+          2,
+          2,
+          3
+        ],
+        "overall-polish": [
+          2,
+          2,
+          2
+        ]
+      },
+      "median": {
+        "component-choice": 2,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 2,
+        "dark-mode": 2,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "p4-webdiag-base",
+      "condition": "baseline2",
+      "repeat": 1,
+      "cell": "onboarding.web.web-vue.default",
+      "sessions": {
+        "component-choice": [
+          3,
+          3,
+          3
+        ],
+        "hierarchy-typography": [
+          3,
+          3,
+          2
+        ],
+        "color-roles": [
+          3,
+          3,
+          3
+        ],
+        "shape-expressive": [
+          3,
+          3,
+          2
+        ],
+        "spacing-layout": [
+          2,
+          2,
+          2
+        ],
+        "interaction-states": [
+          2,
+          3,
+          3
+        ],
+        "dark-mode": [
+          3,
+          3,
+          3
+        ],
+        "overall-polish": [
+          2,
+          2,
+          2
+        ]
+      },
+      "median": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "p4-webdiag-base",
+      "condition": "baseline2",
+      "repeat": 1,
+      "cell": "settings.web.web-react.classic",
+      "sessions": {
+        "component-choice": [
+          3,
+          3,
+          3
+        ],
+        "hierarchy-typography": [
+          3,
+          3,
+          2
+        ],
+        "color-roles": [
+          3,
+          3,
+          3
+        ],
+        "shape-expressive": [
+          3,
+          3,
+          3
+        ],
+        "spacing-layout": [
+          3,
+          2,
+          2
+        ],
+        "interaction-states": [
+          3,
+          3,
+          3
+        ],
+        "dark-mode": [
+          3,
+          3,
+          3
+        ],
+        "overall-polish": [
+          2,
+          2,
+          2
+        ]
+      },
+      "median": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "p4-webdiag-base",
+      "condition": "baseline2",
+      "repeat": 1,
+      "cell": "dashboard.web.web-empty.seed-B5651D",
+      "sessions": {
+        "component-choice": [
+          3,
+          3,
+          3
+        ],
+        "hierarchy-typography": [
+          3,
+          3,
+          3
+        ],
+        "color-roles": [
+          3,
+          2,
+          2
+        ],
+        "shape-expressive": [
+          3,
+          3,
+          3
+        ],
+        "spacing-layout": [
+          2,
+          2,
+          2
+        ],
+        "interaction-states": [
+          3,
+          3,
+          3
+        ],
+        "dark-mode": [
+          3,
+          3,
+          3
+        ],
+        "overall-polish": [
+          2,
+          2,
+          2
+        ]
+      },
+      "median": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 2,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "p4-final",
+      "condition": "final",
+      "repeat": 1,
+      "cell": "landing.web.web-empty.default",
+      "sessions": {
+        "component-choice": [
+          3,
+          3,
+          3
+        ],
+        "hierarchy-typography": [
+          2,
+          2,
+          2
+        ],
+        "color-roles": [
+          2,
+          3,
+          3
+        ],
+        "shape-expressive": [
+          2,
+          3,
+          3
+        ],
+        "spacing-layout": [
+          2,
+          2,
+          2
+        ],
+        "interaction-states": [
+          3,
+          3,
+          3
+        ],
+        "dark-mode": [
+          2,
+          3,
+          3
+        ],
+        "overall-polish": [
+          2,
+          2,
+          2
+        ]
+      },
+      "median": {
+        "component-choice": 3,
+        "hierarchy-typography": 2,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "p4-final",
+      "condition": "final",
+      "repeat": 1,
+      "cell": "settings.web.web-react.default",
+      "sessions": {
+        "component-choice": [
+          3,
+          3,
+          2
+        ],
+        "hierarchy-typography": [
+          2,
+          2,
+          3
+        ],
+        "color-roles": [
+          3,
+          3,
+          3
+        ],
+        "shape-expressive": [
+          3,
+          3,
+          3
+        ],
+        "spacing-layout": [
+          2,
+          2,
+          2
+        ],
+        "interaction-states": [
+          3,
+          3,
+          3
+        ],
+        "dark-mode": [
+          3,
+          3,
+          3
+        ],
+        "overall-polish": [
+          2,
+          2,
+          2
+        ]
+      },
+      "median": {
+        "component-choice": 3,
+        "hierarchy-typography": 2,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "p4-final",
+      "condition": "final",
+      "repeat": 1,
+      "cell": "dashboard.web.web-react.default",
+      "sessions": {
+        "component-choice": [
+          3,
+          3,
+          3
+        ],
+        "hierarchy-typography": [
+          3,
+          3,
+          2
+        ],
+        "color-roles": [
+          3,
+          2,
+          2
+        ],
+        "shape-expressive": [
+          2,
+          2,
+          2
+        ],
+        "spacing-layout": [
+          2,
+          3,
+          2
+        ],
+        "interaction-states": [
+          3,
+          3,
+          3
+        ],
+        "dark-mode": [
+          3,
+          3,
+          3
+        ],
+        "overall-polish": [
+          2,
+          2,
+          2
+        ]
+      },
+      "median": {
+        "component-choice": 3,
+        "hierarchy-typography": 3,
+        "color-roles": 2,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "p4-final",
+      "condition": "final",
+      "repeat": 1,
+      "cell": "product-detail.web.web-empty.default",
+      "sessions": {
+        "component-choice": [
+          3,
+          3,
+          3
+        ],
+        "hierarchy-typography": [
+          2,
+          2,
+          2
+        ],
+        "color-roles": [
+          2,
+          2,
+          3
+        ],
+        "shape-expressive": [
+          3,
+          3,
+          3
+        ],
+        "spacing-layout": [
+          2,
+          2,
+          2
+        ],
+        "interaction-states": [
+          3,
+          3,
+          3
+        ],
+        "dark-mode": [
+          3,
+          3,
+          3
+        ],
+        "overall-polish": [
+          2,
+          2,
+          2
+        ]
+      },
+      "median": {
+        "component-choice": 3,
+        "hierarchy-typography": 2,
+        "color-roles": 2,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "p4-final",
+      "condition": "final",
+      "repeat": 1,
+      "cell": "onboarding.web.web-react.default",
+      "sessions": {
+        "component-choice": [
+          1,
+          3,
+          1
+        ],
+        "hierarchy-typography": [
+          3,
+          3,
+          2
+        ],
+        "color-roles": [
+          3,
+          3,
+          2
+        ],
+        "shape-expressive": [
+          2,
+          2,
+          2
+        ],
+        "spacing-layout": [
+          3,
+          3,
+          2
+        ],
+        "interaction-states": [
+          2,
+          3,
+          2
+        ],
+        "dark-mode": [
+          3,
+          3,
+          3
+        ],
+        "overall-polish": [
+          2,
+          2,
+          1
+        ]
+      },
+      "median": {
+        "component-choice": 1,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 2,
+        "spacing-layout": 3,
+        "interaction-states": 2,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "p4-final",
+      "condition": "final",
+      "repeat": 1,
+      "cell": "empty-error.web.web-empty.default",
+      "sessions": {
+        "component-choice": [
+          2,
+          2,
+          2
+        ],
+        "hierarchy-typography": [
+          2,
+          2,
+          2
+        ],
+        "color-roles": [
+          2,
+          2,
+          2
+        ],
+        "shape-expressive": [
+          2,
+          2,
+          2
+        ],
+        "spacing-layout": [
+          2,
+          2,
+          2
+        ],
+        "interaction-states": [
+          3,
+          3,
+          2
+        ],
+        "dark-mode": [
+          3,
+          3,
+          3
+        ],
+        "overall-polish": [
+          2,
+          2,
+          1
+        ]
+      },
+      "median": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 2,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "p4-final",
+      "condition": "final",
+      "repeat": 1,
+      "cell": "onboarding.web.web-vue.default",
+      "sessions": {
+        "component-choice": [
+          2,
+          2,
+          2
+        ],
+        "hierarchy-typography": [
+          3,
+          3,
+          3
+        ],
+        "color-roles": [
+          3,
+          3,
+          3
+        ],
+        "shape-expressive": [
+          2,
+          2,
+          2
+        ],
+        "spacing-layout": [
+          2,
+          2,
+          3
+        ],
+        "interaction-states": [
+          2,
+          2,
+          3
+        ],
+        "dark-mode": [
+          3,
+          3,
+          3
+        ],
+        "overall-polish": [
+          2,
+          2,
+          2
+        ]
+      },
+      "median": {
+        "component-choice": 2,
+        "hierarchy-typography": 3,
+        "color-roles": 3,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 2,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "p4-final",
+      "condition": "final",
+      "repeat": 1,
+      "cell": "settings.web.web-react.classic",
+      "sessions": {
+        "component-choice": [
+          2,
+          3,
+          2
+        ],
+        "hierarchy-typography": [
+          3,
+          2,
+          2
+        ],
+        "color-roles": [
+          3,
+          2,
+          3
+        ],
+        "shape-expressive": [
+          3,
+          3,
+          3
+        ],
+        "spacing-layout": [
+          2,
+          2,
+          2
+        ],
+        "interaction-states": [
+          3,
+          3,
+          3
+        ],
+        "dark-mode": [
+          3,
+          3,
+          3
+        ],
+        "overall-polish": [
+          2,
+          2,
+          2
+        ]
+      },
+      "median": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "p4-final",
+      "condition": "final",
+      "repeat": 1,
+      "cell": "dashboard.web.web-empty.seed-B5651D",
+      "sessions": {
+        "component-choice": [
+          2,
+          3,
+          3
+        ],
+        "hierarchy-typography": [
+          2,
+          2,
+          3
+        ],
+        "color-roles": [
+          2,
+          2,
+          2
+        ],
+        "shape-expressive": [
+          2,
+          2,
+          2
+        ],
+        "spacing-layout": [
+          2,
+          2,
+          2
+        ],
+        "interaction-states": [
+          3,
+          3,
+          3
+        ],
+        "dark-mode": [
+          3,
+          3,
+          3
+        ],
+        "overall-polish": [
+          2,
+          2,
+          2
+        ]
+      },
+      "median": {
+        "component-choice": 3,
+        "hierarchy-typography": 2,
+        "color-roles": 2,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "p4-webdiag-final",
+      "condition": "final2",
+      "repeat": 1,
+      "cell": "landing.web.web-empty.default",
+      "sessions": {
+        "component-choice": [
+          3,
+          3,
+          3
+        ],
+        "hierarchy-typography": [
+          2,
+          2,
+          2
+        ],
+        "color-roles": [
+          3,
+          3,
+          3
+        ],
+        "shape-expressive": [
+          3,
+          3,
+          2
+        ],
+        "spacing-layout": [
+          3,
+          2,
+          2
+        ],
+        "interaction-states": [
+          3,
+          3,
+          3
+        ],
+        "dark-mode": [
+          3,
+          3,
+          3
+        ],
+        "overall-polish": [
+          2,
+          2,
+          2
+        ]
+      },
+      "median": {
+        "component-choice": 3,
+        "hierarchy-typography": 2,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "p4-webdiag-final",
+      "condition": "final2",
+      "repeat": 1,
+      "cell": "settings.web.web-react.default",
+      "sessions": {
+        "component-choice": [
+          3,
+          3,
+          3
+        ],
+        "hierarchy-typography": [
+          2,
+          3,
+          2
+        ],
+        "color-roles": [
+          3,
+          3,
+          3
+        ],
+        "shape-expressive": [
+          2,
+          3,
+          3
+        ],
+        "spacing-layout": [
+          2,
+          2,
+          2
+        ],
+        "interaction-states": [
+          3,
+          3,
+          3
+        ],
+        "dark-mode": [
+          3,
+          3,
+          3
+        ],
+        "overall-polish": [
+          2,
+          2,
+          2
+        ]
+      },
+      "median": {
+        "component-choice": 3,
+        "hierarchy-typography": 2,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "p4-webdiag-final",
+      "condition": "final2",
+      "repeat": 1,
+      "cell": "dashboard.web.web-react.default",
+      "sessions": {
+        "component-choice": [
+          2,
+          3,
+          2
+        ],
+        "hierarchy-typography": [
+          2,
+          2,
+          2
+        ],
+        "color-roles": [
+          2,
+          3,
+          2
+        ],
+        "shape-expressive": [
+          2,
+          2,
+          2
+        ],
+        "spacing-layout": [
+          3,
+          3,
+          2
+        ],
+        "interaction-states": [
+          3,
+          3,
+          3
+        ],
+        "dark-mode": [
+          2,
+          3,
+          2
+        ],
+        "overall-polish": [
+          2,
+          2,
+          2
+        ]
+      },
+      "median": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 2,
+        "shape-expressive": 2,
+        "spacing-layout": 3,
+        "interaction-states": 3,
+        "dark-mode": 2,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "p4-webdiag-final",
+      "condition": "final2",
+      "repeat": 1,
+      "cell": "product-detail.web.web-empty.default",
+      "sessions": {
+        "component-choice": [
+          2,
+          2,
+          2
+        ],
+        "hierarchy-typography": [
+          1,
+          2,
+          2
+        ],
+        "color-roles": [
+          2,
+          2,
+          2
+        ],
+        "shape-expressive": [
+          2,
+          2,
+          2
+        ],
+        "spacing-layout": [
+          2,
+          2,
+          2
+        ],
+        "interaction-states": [
+          2,
+          3,
+          2
+        ],
+        "dark-mode": [
+          2,
+          2,
+          3
+        ],
+        "overall-polish": [
+          2,
+          2,
+          2
+        ]
+      },
+      "median": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 2,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 2,
+        "dark-mode": 2,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "p4-webdiag-final",
+      "condition": "final2",
+      "repeat": 1,
+      "cell": "onboarding.web.web-react.default",
+      "sessions": {
+        "component-choice": [
+          2,
+          2,
+          2
+        ],
+        "hierarchy-typography": [
+          2,
+          2,
+          2
+        ],
+        "color-roles": [
+          3,
+          3,
+          3
+        ],
+        "shape-expressive": [
+          2,
+          2,
+          2
+        ],
+        "spacing-layout": [
+          2,
+          2,
+          2
+        ],
+        "interaction-states": [
+          2,
+          2,
+          2
+        ],
+        "dark-mode": [
+          3,
+          3,
+          3
+        ],
+        "overall-polish": [
+          2,
+          2,
+          2
+        ]
+      },
+      "median": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 3,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 2,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "p4-webdiag-final",
+      "condition": "final2",
+      "repeat": 1,
+      "cell": "empty-error.web.web-empty.default",
+      "sessions": {
+        "component-choice": [
+          2,
+          2,
+          2
+        ],
+        "hierarchy-typography": [
+          2,
+          2,
+          2
+        ],
+        "color-roles": [
+          2,
+          2,
+          2
+        ],
+        "shape-expressive": [
+          2,
+          2,
+          2
+        ],
+        "spacing-layout": [
+          2,
+          2,
+          2
+        ],
+        "interaction-states": [
+          3,
+          3,
+          3
+        ],
+        "dark-mode": [
+          3,
+          3,
+          3
+        ],
+        "overall-polish": [
+          2,
+          2,
+          2
+        ]
+      },
+      "median": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 2,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "p4-webdiag-final",
+      "condition": "final2",
+      "repeat": 1,
+      "cell": "onboarding.web.web-vue.default",
+      "sessions": {
+        "component-choice": [
+          2,
+          2,
+          2
+        ],
+        "hierarchy-typography": [
+          2,
+          2,
+          2
+        ],
+        "color-roles": [
+          3,
+          3,
+          3
+        ],
+        "shape-expressive": [
+          2,
+          2,
+          2
+        ],
+        "spacing-layout": [
+          2,
+          2,
+          2
+        ],
+        "interaction-states": [
+          2,
+          2,
+          2
+        ],
+        "dark-mode": [
+          3,
+          3,
+          3
+        ],
+        "overall-polish": [
+          2,
+          2,
+          2
+        ]
+      },
+      "median": {
+        "component-choice": 2,
+        "hierarchy-typography": 2,
+        "color-roles": 3,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 2,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "p4-webdiag-final",
+      "condition": "final2",
+      "repeat": 1,
+      "cell": "settings.web.web-react.classic",
+      "sessions": {
+        "component-choice": [
+          2,
+          3,
+          3
+        ],
+        "hierarchy-typography": [
+          2,
+          2,
+          2
+        ],
+        "color-roles": [
+          3,
+          2,
+          3
+        ],
+        "shape-expressive": [
+          3,
+          3,
+          3
+        ],
+        "spacing-layout": [
+          2,
+          2,
+          2
+        ],
+        "interaction-states": [
+          3,
+          3,
+          3
+        ],
+        "dark-mode": [
+          3,
+          3,
+          3
+        ],
+        "overall-polish": [
+          2,
+          2,
+          2
+        ]
+      },
+      "median": {
+        "component-choice": 3,
+        "hierarchy-typography": 2,
+        "color-roles": 3,
+        "shape-expressive": 3,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    },
+    {
+      "runId": "p4-webdiag-final",
+      "condition": "final2",
+      "repeat": 1,
+      "cell": "dashboard.web.web-empty.seed-B5651D",
+      "sessions": {
+        "component-choice": [
+          3,
+          3,
+          3
+        ],
+        "hierarchy-typography": [
+          2,
+          2,
+          2
+        ],
+        "color-roles": [
+          2,
+          3,
+          2
+        ],
+        "shape-expressive": [
+          2,
+          2,
+          2
+        ],
+        "spacing-layout": [
+          2,
+          2,
+          2
+        ],
+        "interaction-states": [
+          3,
+          3,
+          3
+        ],
+        "dark-mode": [
+          3,
+          3,
+          3
+        ],
+        "overall-polish": [
+          2,
+          2,
+          2
+        ]
+      },
+      "median": {
+        "component-choice": 3,
+        "hierarchy-typography": 2,
+        "color-roles": 2,
+        "shape-expressive": 2,
+        "spacing-layout": 2,
+        "interaction-states": 3,
+        "dark-mode": 3,
+        "overall-polish": 2
+      }
+    }
+  ]
+}
