@@ -49,8 +49,7 @@ How first-party Material 3 screens arrange their parts: for the screen plan and 
 - One filled element per view carries the strongest color: the main action, or the selected
   navigation item. Secondary actions are tonal, outlined or text buttons.
 - The accent color appears in few places with a job: the active destination, the main action,
-  section labels, links and the selected state. Large areas stay on surface roles. The error role
-  marks errors only: a falling number gets an arrow icon, not an error fill.
+  section labels, links and the selected state. Large areas stay on surface roles.
 - `tertiary-container` and `error-container` never fill wide areas: only small ones (inline alert,
   chip, banner). A large error area (panel, list of issues) sits on a surface container, marked
   with the error color on its icon, title or edge. A full `error` fill is only for small badges.

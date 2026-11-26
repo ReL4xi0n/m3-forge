@@ -28,17 +28,14 @@ as one level. "(E)" means the emphasized twin in M3 Expressive and the baseline 
 
 | Screen | Focal point | Second level | Supporting text | Metadata and small print |
 |---|---|---|---|---|
-| Product detail | product name: headline medium | price: title large (E), `onSurface`, shown once at that size | description: body large | rating, stock, delivery: label large, `onSurfaceVariant` |
+| Product detail | product name: headline medium | price: headline small (E), `onSurface` | description: body large | rating, stock, delivery: label large, `onSurfaceVariant` |
 | Product card in a grid | price: title large (E) | name: title medium | one attribute: body medium, `onSurfaceVariant` | badge text: label small |
 | List or queue | selected or current item label: body large (E) | item label: body large [token:md.comp.list.list-item.label-text.type] | body medium [token:md.comp.list.list-item.supporting-text.type], one or two lines | trailing time, count, price: label small [token:md.comp.list.list-item.trailing-supporting-text.type]; section headers: title small |
 | Form | screen title: headline small (or the app bar title) | section titles: title medium | inputs: body large [token:md.comp.filled-text-field.input-text.type] | total or result: title large (E); helper text stays the field's default |
 | Media player | track title: headline small (E) | artist or show: title medium, `onSurfaceVariant` | episode notes: body medium | elapsed and remaining time: label medium, tabular figures |
-| Settings | screen title: headline medium | section labels: title small, `primary` | row labels: body large; values: body medium, `onSurfaceVariant` | the account name: title medium, never above the screen title |
 | Dashboard | key numbers: display small or headline large (E), one row | card titles: title medium | chart and table text: body medium | number labels and deltas: label large, `onSurfaceVariant`; a delta carries an icon, not color alone |
 
 - One focal point per screen or card. A collection repeats its card recipe exactly.
-- The screen title is headline medium or larger (headline large on expanded); a subtitle is body
-  large in `onSurfaceVariant` just below it.
 
 ## Emphasized styles (M3 Expressive)
 
@@ -51,9 +48,13 @@ as one level. "(E)" means the emphasized twin in M3 Expressive and the baseline 
 
 ## Where the styles come from
 
-The platform asset (web `tokens.css` classes, Flutter `type.dart`, Compose `Type.kt`), installed with
-`scripts/install-assets`; how to read the styles is in the platform's theme or setup reference. Do
-not copy the numbers out of it.
+| Platform | Asset | In UI code |
+|---|---|---|
+| Web | `assets/web/tokens.css` | classes `.m3-type-<role>-<size>` and `.m3-type-emphasized-<role>-<size>`, or `var(--md-sys-typescale-<role>-<size>-font\|size\|line-height\|weight\|tracking)` |
+| Flutter | `assets/flutter/lib/m3/type.dart` | `ThemeData(textTheme: M3Type.textTheme, extensions: [M3EmphasizedType.baseline])`; read `Theme.of(context).textTheme.titleLarge`, `M3EmphasizedType.of(context).labelLarge` |
+| Compose | `assets/compose/theme/Type.kt` | `MaterialTheme(typography = M3Typography)`; read `MaterialTheme.typography.titleLarge`, `M3EmphasizedType.labelLarge` |
+
+Install the asset with `scripts/install-assets` before using it. Do not copy the numbers out of it.
 
 ## Typefaces
 
@@ -68,8 +69,7 @@ not copy the numbers out of it.
 
 - Default text: `onSurface`. Secondary text: `onSurfaceVariant`. Text on a filled role: that role's
   on partner (see color.md).
-- Never lower text opacity or use `outline` to make text secondary; use `onSurfaceVariant` (helper
-  text included).
+- Never lower text opacity to make it secondary; use `onSurfaceVariant`.
 
 ## Scaling and fitting
 
