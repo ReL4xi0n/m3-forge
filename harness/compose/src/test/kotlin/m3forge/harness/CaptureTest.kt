@@ -136,6 +136,17 @@ class M3CaptureTest {
         ShadowTrace.reset()
     }
 
+    // A node counts as enabled only when it and every ancestor are enabled (spec §9: contrast excludes
+    // disabled elements, and the text inside a disabled button is part of that button).
+    private fun enabledWithAncestors(e: com.google.android.apps.common.testing.accessibility.framework.uielement.ViewHierarchyElement): Boolean {
+        var n: com.google.android.apps.common.testing.accessibility.framework.uielement.ViewHierarchyElement? = e
+        while (n != null) {
+            if (n.isEnabled == false) return false
+            n = n.parentView
+        }
+        return true
+    }
+
     private fun runAtf(root: View, png: File): JSONArray {
         val bitmap = requireNotNull(BitmapFactory.decodeFile(png.absolutePath)) { "cannot decode $png" }
         // ATF bails out on the "robolectric" fingerprint; Roborazzi uses the same workaround.
@@ -164,7 +175,10 @@ class M3CaptureTest {
                             .put("resourceName", e.resourceName)
                             .put("clickable", e.isClickable)
                             // Compose maps SemanticsProperties.Disabled to AccessibilityNodeInfo.isEnabled == false.
-                            .put("enabled", e.isEnabled)
+                            // ATF reports the unmerged Text child of a disabled Button, which is itself
+                            // enabled (hold-out 2026-11-26), so the flag covers the ancestors too.
+                            .put("enabled", enabledWithAncestors(e))
+                            .put("selfEnabled", e.isEnabled)
                             .put("bounds", JSONArray(listOf(b.left, b.top, b.right, b.bottom))),
                     )
                 }

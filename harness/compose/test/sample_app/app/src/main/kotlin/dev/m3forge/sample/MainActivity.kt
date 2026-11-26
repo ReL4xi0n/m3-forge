@@ -28,7 +28,8 @@ import androidx.compose.ui.unit.sp
 
 // Hand-written sample for the Compose capture harness test. It has three planted findings:
 // a low-contrast caption, a 32dp clickable box (below the 48dp touch target) and a disabled
-// 32dp clickable box that the harness must leave out. The official Button (40dp) and AssistChip (32dp)
+// 32dp clickable box that the harness must leave out, as it must the label of a disabled Button
+// (spec §9: contrast excludes disabled elements). The official Button (40dp) and AssistChip (32dp)
 // keep their layout size but extend the touch area to 48dp (minimumInteractiveComponentSize).
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,6 +63,8 @@ class MainActivity : ComponentActivity() {
                                 .clickable(enabled = false) { },
                         )
                         Button(onClick = { }) { Text("Official button") }
+                        // Disabled button: ATF flags its low-contrast label on the (enabled) Text child.
+                        Button(onClick = { }, enabled = false) { Text("Disabled button") }
                         AssistChip(onClick = { }, label = { Text("Official chip") })
                     }
                 }
