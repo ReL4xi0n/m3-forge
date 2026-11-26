@@ -25,6 +25,6 @@ test('withToolchain: GRADLE_USER_HOME gets the memory limits from tools/toolchai
   const env = withToolchain({ PATH: '', USERPROFILE: process.env.USERPROFILE ?? 'C:/Users/x' });
   const got = readFileSync(join(env.GRADLE_USER_HOME, 'gradle.properties'), 'utf8');
   assert.equal(got, readFileSync(join(repo, 'tools', 'toolchain', 'gradle.properties'), 'utf8'));
-  assert.match(got, /^org\.gradle\.jvmargs=-Xmx2g\b/m);
+  assert.match(got, /^org\.gradle\.jvmargs=-Xmx1536m\b/m);
   assert.match(got, /^kotlin\.daemon\.jvmargs=-Xmx/m);
 });

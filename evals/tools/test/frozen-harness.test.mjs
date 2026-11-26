@@ -7,7 +7,8 @@ import { hashes } from '../freeze-harness.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
 
-// Flutter and Compose harness v3 are frozen: a change needs a new version and a re-capture of the baseline.
+// Flutter and Compose harness v3 are frozen: a change needs a new version and a re-capture of the baseline,
+// except a recorded amendment that can only remove findings (amendments[] in evals/frozen-harness.json).
 test('harness/flutter and harness/compose files match evals/frozen-harness.json', () => {
   const frozen = JSON.parse(readFileSync(join(root, 'evals', 'frozen-harness.json'), 'utf8'));
   assert.equal(frozen.flutterHarness, 'v3');

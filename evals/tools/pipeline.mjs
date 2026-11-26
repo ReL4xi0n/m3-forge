@@ -9,7 +9,7 @@ import { execFileSync, spawnSync } from 'node:child_process';
 import { totalmem, freemem } from 'node:os';
 import { buildPrompt } from './run-cell.mjs';
 import { withToolchain, toolchainRoot } from './toolchain-env.mjs';
-import { devCells, evalCells } from './cells.mjs';
+import { devCells, evalCells, holdoutCells } from './cells.mjs';
 import { latestCanary } from './canary.mjs';
 
 // Rubric v1 automated items (default) and v2 (evals/automated-v2.md), in evals/tools/automated.mjs.
@@ -42,7 +42,10 @@ export const isQuotaStop = rec => rec.status === 'session-error' &&
 
 // Owner decision 6 (2026-11-23): available memory a group needs before it starts (GB), the re-check
 // interval while it does not hold, and how long Compose may wait before the run stops.
-export const MEM_THRESHOLD_GB = { compose: 3.5, other: 2.5 };
+// Relaxed by the owner the same evening (relay, 2026-11-23, replaces decision 6's figures: the machine
+// stayed at 1.3-1.9 GB available all evening; Phases 2-3 ran from 1.6-2.9 GB with a 32 GB pagefile):
+// web/Flutter cells one at a time from 1.2 GB, Compose alone from 1.5 GB.
+export const MEM_THRESHOLD_GB = { compose: 1.5, other: 1.2 };
 export const MEM_RECHECK_MS = 10 * 60_000;
 export const COMPOSE_WAIT_MS = 3 * 60 * 60_000;
 const needGb = g => (g[0].platform === 'compose' ? MEM_THRESHOLD_GB.compose : MEM_THRESHOLD_GB.other);
@@ -53,32 +56,46 @@ export function pickGroup(queue, availGb) {
   return queue.findIndex(g => availGb >= needGb(g));
 }
 
-// Owner decision 3 (2026-11-23): a Phase 4 run stops when a cell costs more than twice the upper end of
-// its platform's measured range, or on a systematic fault: two or more cells that timed out, failed
-// isolation or did not build.
+// A failure caused by memory pressure (owner, relay 2026-11-23): retried once after cleanup, then the
+// cell is skipped and reported as "missing because of memory"; never a stop.
+export const MEMORY_FAILURE = /OutOfMemory|Java heap space|GC overhead|Metaspace|daemon disappeared|Gradle build daemon .*(crash|stopped|disappeared)|Could not (create|reserve).*(heap|memory)|paging file|insufficient memory|not enough memory|timed? ?out|timeout/i;
+export function memoryFailure(r) {
+  if (r.rec.status === 'timeout') return true;
+  if (r.rec.status !== 'ok' && r.rec.status !== 'secret-redacted') return false;
+  return !r.cap.buildOk && MEMORY_FAILURE.test(String(r.cap.reason ?? ''));
+}
+
+// Owner decision 3 as amended (relay, 2026-11-23: continue even when cost and time rise): a Phase 4 run
+// stops only on a systematic fault that memory does not explain: two or more cells that failed isolation
+// or the freeze check, or that did not build for a reason other than memory. Cells over twice the
+// measured cost range are reported, not stopped on.
 export const COST_LIMIT_USD = { web: 2 * 3.47, flutter: 2 * 3.10, compose: 2 * 3.63 };
 export function phase4Stop(records) {
-  const over = records.find(r => (r.rec.costUsd ?? 0) > COST_LIMIT_USD[r.cell.platform]);
-  if (over) return { reason: 'cost', cell: over.cell.cell, costUsd: over.rec.costUsd, limit: COST_LIMIT_USD[over.cell.platform] };
-  const faults = records.filter(r => ['timeout', 'invalid-isolation', 'not-frozen', 'refused'].includes(r.rec.status) ||
-    (r.rec.status === 'ok' && !r.cap.buildOk));
+  const faults = records.filter(r => !r.memorySkipped && !memoryFailure(r) &&
+    (['invalid-isolation', 'not-frozen', 'refused'].includes(r.rec.status) || (r.rec.status === 'ok' && !r.cap.buildOk)));
   if (faults.length >= 2) return { reason: 'systematic', cells: faults.map(r => ({ cell: r.cell.cell, status: r.rec.status, buildOk: r.cap.buildOk, reason: r.cap.reason?.slice(0, 300) ?? null })) };
   return null;
 }
+export const overCost = records => records.filter(r => (r.rec.costUsd ?? 0) > COST_LIMIT_USD[r.cell.platform]).map(r => ({ cell: r.cell.cell, costUsd: r.rec.costUsd }));
 
 // This session's own leftovers only (owner decision 6): Java and Dart processes started from the
 // toolchain folder (Gradle and Kotlin daemons, Dart tooling) and browsers whose command line points
-// into the eval root. Never anything else.
-export function ownLeftovers(procs, { toolchain, evalRoot = 'C:\\m3-eval' }) {
+// into the eval root, and Node/esbuild processes (dev servers such as Vite that an eval session left
+// running) whose command line or executable points into the eval work folder. Never anything else, and
+// never this process or its parent.
+export function ownLeftovers(procs, { toolchain, evalRoot = 'C:\\m3-eval', self = [] }) {
   const low = s => String(s ?? '').toLowerCase().replace(/\//g, '\\');
   const tc = low(toolchain);
   const er = low(evalRoot);
+  const work = `${er.replace(/\\+$/, '')}\\work\\`;
   return procs.filter(p => {
+    if (self.includes(p.ProcessId)) return false;
     const name = low(p.Name);
     const exe = low(p.ExecutablePath);
     const cmd = low(p.CommandLine);
     if (['java.exe', 'javaw.exe', 'dart.exe', 'dartaotruntime.exe'].includes(name)) return exe.startsWith(tc);
     if (['chrome.exe', 'chrome-headless-shell.exe', 'msedge.exe', 'headless_shell.exe'].includes(name)) return cmd.includes(er);
+    if (['node.exe', 'esbuild.exe'].includes(name)) return cmd.includes(work) || exe.startsWith(work);
     return false;
   });
 }
@@ -87,10 +104,10 @@ export function cleanupOwnProcesses({ log = () => {} } = {}) {
   if (process.platform !== 'win32') return [];
   try {
     const out = execFileSync('powershell', ['-NoProfile', '-Command',
-      "Get-CimInstance Win32_Process -Filter \"Name='java.exe' OR Name='javaw.exe' OR Name='dart.exe' OR Name='dartaotruntime.exe' OR Name='chrome.exe' OR Name='chrome-headless-shell.exe' OR Name='msedge.exe' OR Name='headless_shell.exe'\" | Select-Object ProcessId,Name,ExecutablePath,CommandLine | ConvertTo-Json -Compress"],
+      "Get-CimInstance Win32_Process -Filter \"Name='java.exe' OR Name='javaw.exe' OR Name='dart.exe' OR Name='dartaotruntime.exe' OR Name='chrome.exe' OR Name='chrome-headless-shell.exe' OR Name='msedge.exe' OR Name='headless_shell.exe' OR Name='node.exe' OR Name='esbuild.exe'\" | Select-Object ProcessId,Name,ExecutablePath,CommandLine | ConvertTo-Json -Compress"],
       { encoding: 'utf8', windowsHide: true, timeout: 60_000 });
     const procs = out.trim() ? [].concat(JSON.parse(out)) : [];
-    const mine = ownLeftovers(procs, { toolchain: toolchainRoot() });
+    const mine = ownLeftovers(procs, { toolchain: toolchainRoot(), self: [process.pid, process.ppid] });
     for (const p of mine) {
       try { process.kill(p.ProcessId); log('stopped leftover', p.Name, p.ProcessId); } catch { /* already gone */ }
     }
@@ -151,15 +168,17 @@ export function pipelineOptions(argv, root) {
   const arg = k => { const i = argv.indexOf(k); return i >= 0 ? argv[i + 1] ?? null : null; };
   const runId = arg('--run-id');
   const set = arg('--set') ?? 'eval';
-  if (!['eval', 'dev'].includes(set)) return { error: `unknown set ${set} (eval or dev)` };
-  const all = set === 'dev' ? devCells() : evalCells();
+  if (!['eval', 'dev', 'holdout'].includes(set)) return { error: `unknown set ${set} (eval, dev or holdout)` };
+  // The hold-out set runs once, with the final skill, only as a Phase 4 run (plan step 3).
+  if (set === 'holdout' && !argv.includes('--phase4')) return { error: '--set holdout runs only with --phase4' };
+  const all = set === 'dev' ? devCells() : set === 'holdout' ? holdoutCells() : evalCells();
   const cells = argv.includes('--all') ? all : all.filter(c => (arg('--cells') ?? '').split(',').includes(c.cell));
   const pair = Number(arg('--pair') ?? 1);
   const skillArg = arg('--skill');
   if (argv.includes('--skill') && (!skillArg || skillArg.startsWith('--'))) return { error: `--skill needs a skill folder\n${USAGE}` };
   if (!runId || !/^[A-Za-z0-9._-]+$/.test(runId) || !cells.length || !(pair === 1 || pair === 2)) return { error: USAGE };
   const phase4 = argv.includes('--phase4');
-  if (phase4 && set !== 'eval') return { error: '--phase4 runs the eval set only' };
+  if (phase4 && set === 'dev') return { error: '--phase4 runs the eval or hold-out set only' };
   if (phase4 && !skillArg) return { error: '--phase4 needs --skill' };
   if (phase4 && !P4_RUN_ID.test(runId)) return { error: `a Phase 4 run id is p4-<label>, got ${runId}` };
   if (skillArg && set !== 'dev' && !phase4) return { error: 'the skill runs only on the dev set (--set dev); never on eval requests (Phase 4 final runs: --phase4)' };
@@ -330,7 +349,7 @@ async function main() {
           break;
         }
         memLog.push({ at: new Date().toISOString(), availGb: +availGb.toFixed(2), waiting: queue.flat().map(c => c.cell) });
-        writeFileSync(join(priv, 'groups.json'), JSON.stringify({ skill: skillInfo, model, canaries, groups, memLog }, null, 2));
+        writeFileSync(join(priv, 'groups.json'), JSON.stringify({ skill: skillInfo, model, canaries, groups, memLog, overCost: overCost(records) }, null, 2));
         await new Promise(r => setTimeout(r, MEM_RECHECK_MS));
       }
       if (stopped) break;
@@ -344,12 +363,42 @@ async function main() {
     const mem = memSampler();
     const t0 = Date.now();
     const recs = await Promise.all(group.map(doCell));
+    // Every cell's end: stop the dev servers and daemons its session left behind (owner, 2026-11-26).
+    if (memGate) cleanupOwnProcesses({ log });
+    if (phase4) {
+      // Memory-caused failures (owner, relay 2026-11-23): clean up, retry once (a timed-out session runs
+      // again; a capture that failed runs the capture again), then skip and report.
+      for (let i = 0; i < recs.length; i++) {
+        if (!memoryFailure(recs[i])) continue;
+        const cell = recs[i].cell;
+        const dest = join(priv, cell.cell);
+        log('memory failure', cell.cell, recs[i].rec.status, String(recs[i].cap.reason ?? '').slice(0, 200));
+        cleanupOwnProcesses({ log });
+        if (cell.platform === 'compose' && existsSync(recs[i].rec.workDir ?? '')) stopGradle(recs[i].rec.workDir);
+        const { renameSync } = await import('node:fs');
+        let n = 1;
+        while (existsSync(`${dest}-attempt${n}`)) n++;
+        const first = { status: recs[i].rec.status, reason: recs[i].cap.reason ?? null, attempt: `${cell.cell}-attempt${n}` };
+        let again;
+        if (recs[i].rec.status === 'timeout') {
+          renameSync(dest, `${dest}-attempt${n}`);
+          again = await doCell(cell);
+        } else {
+          cpSync(dest, `${dest}-attempt${n}`, { recursive: true });
+          again = await captureAndVerify(cell, recs[i].rec, dest);
+        }
+        again.memoryRetry = first;
+        if (memoryFailure(again)) { again.memorySkipped = true; log('memory failure again, skipped:', cell.cell); }
+        writeFileSync(join(dest, 'record.json'), JSON.stringify(again, null, 2));
+        recs[i] = again;
+      }
+    }
     const g = { cells: group.map(c => c.cell), wallMs: Date.now() - t0, memory: mem.stop(),
       costUsd: +recs.reduce((a, r) => a + (r.rec.costUsd ?? 0), 0).toFixed(4) };
     sinceCanary += group.length;
     records.push(...recs);
     groups.push(g);
-    writeFileSync(join(priv, 'groups.json'), JSON.stringify({ skill: skillInfo, model, canaries, groups, memLog }, null, 2));
+    writeFileSync(join(priv, 'groups.json'), JSON.stringify({ skill: skillInfo, model, canaries, groups, memLog, overCost: overCost(records) }, null, 2));
     log('group done', JSON.stringify(g));
     const q = recs.find(r => isQuotaStop(r.rec));
     if (q) { stopped = { reason: 'quota', cell: q.cell.cell, text: q.rec.resultText }; log('QUOTA: stopping; no further cell starts'); break; }

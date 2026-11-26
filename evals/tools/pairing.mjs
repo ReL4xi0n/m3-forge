@@ -35,10 +35,13 @@ export function pairAnchors(target, anchors) {
 
 // Development requests (evals/dev) -> the screen type of the closest anchors.
 export const DEV_SCREENS = { 'podcast-player': 'app', 'expense-report': 'form', 'plant-shop': 'list', 'clinic-schedule': 'list' };
+// Hold-out requests (Phase 4 step 3) -> the screen type of the closest anchors.
+export const HOLDOUT_SCREENS = { booking: 'form', chat: 'list' };
 
-// A cell (evals/cells.json or evals/dev/cells.json entry) -> pairing target.
+// A cell (evals/cells.json, evals/dev/cells.json or hold-out entry) -> pairing target.
 export const cellTarget = cell => ({
   family: cell.platform === 'web' ? 'web' : 'android',
-  screen: cell.set === 'dev' ? (DEV_SCREENS[cell.request] ?? cell.request) : cell.request,
+  screen: cell.set === 'dev' ? (DEV_SCREENS[cell.request] ?? cell.request)
+    : cell.set === 'holdout' ? (HOLDOUT_SCREENS[cell.request] ?? cell.request) : cell.request,
   formFactors: cell.platform === 'web' ? ['phone', 'desktop'] : ['phone'],
 });

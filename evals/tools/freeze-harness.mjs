@@ -14,6 +14,8 @@ export const hashes = (root) => Object.fromEntries(HARNESS_FILES.map((f) => [f, 
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   const root = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
-  writeFileSync(join(root, 'evals', 'frozen-harness.json'), `${JSON.stringify({ flutterHarness: 'v3', composeHarness: 'v3', frozenOn: '2026-11-18', files: hashes(root) }, null, 2)}\n`);
+  // Amendments (filters that can only remove findings; screenshots unchanged) are kept from the existing file.
+  const prev = (() => { try { return JSON.parse(readFileSync(join(root, 'evals', 'frozen-harness.json'), 'utf8')); } catch { return {}; } })();
+  writeFileSync(join(root, 'evals', 'frozen-harness.json'), `${JSON.stringify({ flutterHarness: 'v3', composeHarness: 'v3', frozenOn: '2026-11-18', amendments: prev.amendments ?? [], files: hashes(root) }, null, 2)}\n`);
   console.log('frozen flutter and compose harness v3');
 }

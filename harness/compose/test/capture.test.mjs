@@ -49,6 +49,11 @@ test('captures light and dark with touch-target and contrast hits', { skip, time
     assert.equal(cap.harness, 'v3');
     assert.ok(cap.runtime.contrast.length >= 1, 'expected a contrast hit');
     assert.ok(cap.raw.atf.light.length > 0 && cap.raw.atf.dark.length > 0, 'raw ATF results per theme');
+    // The label of a disabled Button: ATF reports its Text child (itself enabled); the harness drops it
+    // because an ancestor is disabled (hold-out, 2026-11-26).
+    assert.ok(!cap.runtime.contrast.some(c => /Disabled button/.test(c.where)), JSON.stringify(cap.runtime.contrast));
+    const label = [...cap.raw.atf.light, ...cap.raw.atf.dark].find(r => r.element?.text === 'Disabled button');
+    if (label) assert.deepEqual([label.element.selfEnabled, label.element.enabled], [true, false]);
     assert.deepEqual(JSON.parse(readFileSync(join(outDir, 'capture.json'), 'utf8')), JSON.parse(JSON.stringify(cap)));
   } finally {
     rmSync(root, { recursive: true, force: true });

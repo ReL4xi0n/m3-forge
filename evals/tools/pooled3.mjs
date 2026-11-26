@@ -5,7 +5,7 @@
 // (baseline, final, rounds, hold-out, Sonnet) are pooled into the same sessions. The mappings are read
 // only after every session has finished.
 //   node evals/tools/pooled3.mjs --id <pool-id> [--out evals/runs/<folder>] [--sessions 3] [--parallel]
-//        --run <runId>:<condition>[:<cell,cell,...>] [--run ...]
+//        --run <runId>:<condition>[:<cell,cell,...>] [--run ...] [--resume]
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { basename, dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -117,9 +117,17 @@ async function main() {
   mkdirSync(dest, { recursive: true });
   const { probeBuiltIns } = await import('./isolation.mjs');
   const builtIns = probeBuiltIns();
-  const stamp = Date.now();
+  // --resume (owner, 2026-11-26): continue the pool recorded in state.json; every session resumes from its
+  // checkpoint (same ids, finished batches kept). Without it a new pool starts and old checkpoints go.
+  const statePath = join(dest, 'state.json');
+  const resume = process.argv.includes('--resume') && existsSync(statePath);
+  const { rmSync } = await import('node:fs');
+  if (!resume) for (let k = 1; k <= n; k++) rmSync(join(dest, `checkpoint-s${k}.json`), { force: true });
+  const stamp = resume ? JSON.parse(readFileSync(statePath, 'utf8')).stamp : Date.now();
+  if (!resume) writeFileSync(statePath, JSON.stringify({ stamp, outputs: outputs.length, startedAt: new Date().toISOString() }));
+  else console.log(`resuming pool ${id} (stamp ${stamp})`);
   const one = (k) => judgeV2({ root, outputs, judgeDir: join('C:\\m3-eval', 'judge-in', `pooled3-${id}-${stamp}-s${k}`),
-    mappingPath: join(dest, `mapping-s${k}.json`), batchPrefix: `pooled3-${id}-${stamp}-s${k}`, builtIns });
+    mappingPath: join(dest, `mapping-s${k}.json`), batchPrefix: `pooled3-${id}-${stamp}-s${k}`, builtIns, checkpoint: join(dest, `checkpoint-s${k}.json`) });
   const results = [];
   if (process.argv.includes('--parallel')) results.push(...await Promise.all(Array.from({ length: n }, (_, k) => one(k + 1))));
   else for (let k = 1; k <= n; k++) results.push(await one(k));

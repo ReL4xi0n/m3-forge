@@ -65,3 +65,32 @@ test('dev cells: judge request is the dev request text and pairing finds same-fa
     assert.equal(cellTarget(c).family, 'web');
   }
 });
+
+test('pendingBatches: batches of 12, finished ones skipped', async () => {
+  const { pendingBatches } = await import('../rejudge.mjs');
+  const ids = Array.from({ length: 30 }, (_, i) => `id${i}`);
+  assert.deepEqual(pendingBatches(ids).map(b => [b.n, b.ids.length]), [[1, 12], [2, 12], [3, 6]]);
+  assert.deepEqual(pendingBatches(ids, { 1: {}, 3: {} }).map(b => [b.n, b.ids[0]]), [[2, 'id12']]);
+});
+
+// A session stopped after batch 1 resumes with the same ids and runs only batches 2-3 (owner, 2026-11-26).
+const privRuns = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..', 'private', 'evals', 'runs', 'p4-final');
+test('judgeV2 checkpoint: resume keeps ids and finished batches, re-runs failed ones', { skip: !(await import('node:fs')).existsSync(privRuns) && 'needs the private repo' }, async () => {
+  const { judgeV2 } = await import('../rejudge.mjs');
+  const { shotsOfRecord } = await import('../pooled3.mjs');
+  const { ITEMS } = await import('../judge.mjs');
+  const root = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
+  const outputs = evalCells().map(c => ({ cell: c.cell, condition: 'final', repeat: 1, runId: 'p4-final', request: judgeRequest(c, root), shots: shotsOfRecord(privRuns, c.cell).shots, target: cellTarget(c) })).filter(o => o.shots.length);
+  const tmp = mkdtempSync(join(tmpdir(), 'm3-cp-'));
+  const opts = { root, outputs, judgeDir: join(tmp, 'judge'), mappingPath: join(tmp, 'mapping.json'), batchPrefix: 't', builtIns: [], checkpoint: join(tmp, 'cp.json') };
+  const fake = (okBatches, seen) => async ({ ids, batchId }) => { const n = Number(batchId.split('-').pop()); seen.push(n); return okBatches.includes(n) ? { ok: true, attempts: 1, log: [], scores: ids.flatMap(id => ITEMS.map(item => ({ id, item, score: 2 }))) } : { ok: false, attempts: 3, log: [], scores: [] }; };
+  const s1 = [];
+  const first = await judgeV2({ ...opts, runBatch: fake([1], s1) });
+  assert.deepEqual(s1, [1, 2, 3]);
+  const s2 = [];
+  const again = await judgeV2({ ...opts, runBatch: fake([1, 2, 3], s2) });
+  assert.deepEqual(s2, [2, 3]);
+  assert.deepEqual(again.ids, first.ids);
+  assert.equal(again.scores.length, outputs.length * ITEMS.length);
+  assert.deepEqual(again.log.map(l => [l.batch, l.ok]), [[1, true], [2, true], [3, true]]);
+});

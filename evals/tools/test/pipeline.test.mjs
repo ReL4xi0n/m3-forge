@@ -155,7 +155,7 @@ test('pipelineOptions: Phase 4 final runs need --phase4, --skill and a p4-<label
   assert.match(pipelineOptions([...skill, '--run-id', 'p4-final-1', '--all'], root).error, /only on the dev set/);
   assert.match(pipelineOptions(['--phase4', '--run-id', 'p4-final-1', '--all'], root).error, /needs --skill/);
   assert.match(pipelineOptions(['--phase4', ...skill, '--run-id', 'final-1', '--all'], root).error, /p4-<label>/);
-  assert.match(pipelineOptions(['--phase4', '--set', 'dev', ...skill, '--run-id', 'p4-x', '--all'], root).error, /eval set only/);
+  assert.match(pipelineOptions(['--phase4', '--set', 'dev', ...skill, '--run-id', 'p4-x', '--all'], root).error, /eval or hold-out set only/);
   const s = pipelineOptions(['--phase4', ...skill, '--run-id', 'p4-sonnet', '--cells', 'product-detail.web.web-empty.default', '--model', 'claude-sonnet-5-5'], root);
   assert.equal(s.model, 'claude-sonnet-5-5');
   assert.match(pipelineOptions(['--phase4', ...skill, '--run-id', 'p4-x', '--all', '--model', 'gpt'], root).error, /unknown model/);
@@ -165,22 +165,25 @@ test('pickGroup: thresholds per platform; a web/Flutter group that fits runs bef
   const { pickGroup } = await import('../pipeline.mjs');
   const c = { platform: 'compose' }, w = { platform: 'web' }, f = { platform: 'flutter' };
   const q = [[c], [w, f], [c]];
-  assert.equal(pickGroup(q, 4.0), 0);
-  assert.equal(pickGroup(q, 3.0), 1);
-  assert.equal(pickGroup(q, 2.4), -1);
-  assert.equal(pickGroup([[c]], 3.49), -1);
-  assert.equal(pickGroup([[c]], 3.5), 0);
+  assert.equal(pickGroup(q, 1.6), 0);
+  assert.equal(pickGroup(q, 1.3), 1);
+  assert.equal(pickGroup(q, 1.1), -1);
+  assert.equal(pickGroup([[c]], 1.49), -1);
+  assert.equal(pickGroup([[c]], 1.5), 0);
 });
 
-test('phase4Stop: cost over twice the measured range, or two systematic faults', async () => {
-  const { phase4Stop } = await import('../pipeline.mjs');
-  const r = (platform, costUsd, status = 'ok', buildOk = true) => ({ cell: { cell: `x.${platform}`, platform }, rec: { costUsd, status }, cap: { buildOk } });
-  assert.equal(phase4Stop([r('web', 6.5), r('compose', 7.0)]), null);
-  assert.equal(phase4Stop([r('web', 7.0)]).reason, 'cost');
-  assert.equal(phase4Stop([r('flutter', 6.3)]).reason, 'cost');
-  assert.equal(phase4Stop([r('web', 2, 'timeout')]), null, 'one fault is not systematic');
-  assert.equal(phase4Stop([r('web', 2, 'timeout'), r('flutter', 2, 'ok', false)]).reason, 'systematic');
+test('phase4Stop: no cost stop; two non-memory faults stop; memory failures never stop', async () => {
+  const { phase4Stop, memoryFailure, overCost } = await import('../pipeline.mjs');
+  const r = (platform, costUsd, status = 'ok', buildOk = true, reason = null) => ({ cell: { cell: `x.${platform}`, platform }, rec: { costUsd, status }, cap: { buildOk, reason } });
+  assert.equal(phase4Stop([r('web', 7.0), r('compose', 9.0)]), null);
+  assert.deepEqual(overCost([r('web', 7.0), r('web', 2)]).map(x => x.costUsd), [7.0]);
+  assert.equal(phase4Stop([r('web', 2, 'invalid-isolation')]), null, 'one fault is not systematic');
+  assert.equal(phase4Stop([r('web', 2, 'invalid-isolation'), r('flutter', 2, 'ok', false, 'compile error')]).reason, 'systematic');
+  assert.equal(phase4Stop([r('web', 2, 'timeout'), r('compose', 2, 'ok', false, 'java.lang.OutOfMemoryError: Java heap space')]), null, 'memory failures are retried, not stops');
   assert.equal(phase4Stop([r('web', 2, 'asked-question', false), r('web', 2)]), null, 'only faults of the run, not the model');
+  assert.equal(memoryFailure(r('compose', 2, 'ok', false, 'Gradle build daemon disappeared unexpectedly')), true);
+  assert.equal(memoryFailure(r('compose', 2, 'ok', false, 'compile error')), false);
+  assert.equal(memoryFailure(r('web', 2, 'timeout')), true);
 });
 
 test('ownLeftovers: only toolchain Java/Dart and browsers pointed at the eval root', async () => {
@@ -194,4 +197,33 @@ test('ownLeftovers: only toolchain Java/Dart and browsers pointed at the eval ro
     { ProcessId: 6, Name: 'Spotify.exe', ExecutablePath: String.raw`C:\m3-eval\x.exe`, CommandLine: String.raw`C:\m3-eval` },
   ];
   assert.deepEqual(ownLeftovers(procs, { toolchain: String.raw`C:\Users\u\.m3-toolchain` }).map(p => p.ProcessId), [1, 3, 4]);
+});
+
+test('ownLeftovers: Node/esbuild dev servers in the eval work folder, never the pipeline or other Node', async () => {
+  const { ownLeftovers } = await import('../pipeline.mjs');
+  const procs = [
+    { ProcessId: 10, Name: 'node.exe', ExecutablePath: String.raw`C:\Program Files\nodejs\node.exe`, CommandLine: String.raw`node C:\m3-eval\work\p4-r3\landing\node_modules\vite\bin\vite.js` },
+    { ProcessId: 11, Name: 'esbuild.exe', ExecutablePath: String.raw`C:\m3-eval\work\p4-r3\landing\node_modules\@esbuild\win32-x64\esbuild.exe`, CommandLine: 'esbuild --service=0.21.5 --ping' },
+    { ProcessId: 12, Name: 'node.exe', ExecutablePath: String.raw`C:\Program Files\nodejs\node.exe`, CommandLine: String.raw`node C:\Users\u\Desktop\other-project\server.js` },
+    { ProcessId: 13, Name: 'node.exe', ExecutablePath: String.raw`C:\Program Files\nodejs\node.exe`, CommandLine: String.raw`node evals/tools/pipeline.mjs --cwd C:\m3-eval\work\x` },
+    { ProcessId: 14, Name: 'node.exe', ExecutablePath: String.raw`C:\Program Files\nodejs\node.exe`, CommandLine: String.raw`node C:\m3-eval\appdata\tool.js` },
+  ];
+  assert.deepEqual(ownLeftovers(procs, { toolchain: String.raw`C:\Users\u\.m3-toolchain`, self: [13] }).map(p => p.ProcessId), [10, 11]);
+});
+
+test('pipelineOptions: the hold-out set runs only with --phase4; six neutral cell names; dev never with --phase4', async () => {
+  const { pipelineOptions } = await import('../pipeline.mjs');
+  assert.match(pipelineOptions(['--set', 'holdout', '--skill', 'plugin/skills/material3', '--run-id', 'p4-h1', '--all'], root).error, /only with --phase4/);
+  const o = pipelineOptions(['--phase4', '--set', 'holdout', '--skill', 'plugin/skills/material3', '--run-id', 'p4-h1', '--all'], root);
+  assert.equal(o.error, undefined);
+  assert.equal(o.cells.length, 6);
+  assert.ok(o.cells.every(c => c.set === 'holdout' && c.variant === 'default' && !/hold/i.test(c.cell)));
+  assert.deepEqual([...new Set(o.cells.map(c => c.platform))].sort(), ['compose', 'flutter', 'web']);
+  assert.match(pipelineOptions(['--phase4', '--set', 'dev', '--skill', 'plugin/skills/material3', '--run-id', 'p4-x', '--all'], root).error, /eval or hold-out/);
+});
+
+test('cellTarget: hold-out cells pair with form and list anchors', async () => {
+  const { cellTarget } = await import('../pairing.mjs');
+  const { holdoutCells } = await import('../cells.mjs');
+  assert.deepEqual(holdoutCells().map(c => cellTarget(c).screen).sort(), ['form', 'form', 'form', 'list', 'list', 'list']);
 });

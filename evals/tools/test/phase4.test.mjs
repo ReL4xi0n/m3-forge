@@ -13,6 +13,7 @@ test('spotcheckSample: per platform one default, the classic and the seed cell',
     assert.match(s[p].default, new RegExp(`\\.${p}\\..*\\.default$`));
     assert.match(s[p].classic, /\.classic$/);
     assert.match(s[p].seed, /\.seed-/);
+    assert.match(s[p].holdout, new RegExp(`^(booking|chat)\\.${p}\\.`));
   }
 });
 
