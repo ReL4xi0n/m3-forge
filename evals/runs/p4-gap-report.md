@@ -185,4 +185,4 @@ All three below are changes for a future phase; none is applied here.
 ## 7. Not in the bar
 
 - Sonnet check (claude-sonnet-5-5, product-detail, final skill): all three built with 0 findings; medians web 2/2/3/2/2/2/3/2, Flutter 3/3/2/2/3/2/2/2, Compose 2/2/2/2/2/2/3/2 (items in table order); Opus final on the same cells is equal or higher on most items.
-- PC-1 discrimination: PENDING.
+- PC-1 discrimination (rubric-free judge, real reference screens mixed with final with-skill outputs, seed 20261127): 34 items, accuracy 1.00, AUC 1.00, the same as the baseline PC-1 (1.00). The judge named design as the cue only twice. Its other cues: brand 14, system UI 9, language 6, content 3. It tells real screens from generated ones mostly by brand marks, the system status bar and content, not by M3 design quality. So PC-1 cannot measure how close the design comes to first-party screens.
