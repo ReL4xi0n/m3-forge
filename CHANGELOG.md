@@ -1,8 +1,10 @@
 # Changelog
 
-## 0.1.0 (unreleased)
+## 0.1.0 (2026-11-27, experimental pre-release)
 
-First release of m3-forge, an unofficial skill for Material Design 3.
+First release of m3-forge, an unofficial skill for Material Design 3. Experimental: the project's
+release bar (spec section 12) is not met; see the Results section of the README and
+[evals/runs/p4-gap-report.md](evals/runs/p4-gap-report.md).
 
 ### Skill
 

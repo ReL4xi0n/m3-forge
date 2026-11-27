@@ -12,9 +12,9 @@ a verifier, takes light and dark screenshots, looks at them and fixes what it fi
 
 <img src="docs/images/icon.png" alt="m3-forge icon: an anvil with a spark" width="96">
 
-**Status:** experimental, version 0.1.0, not yet released. The measured results are below: the
+**Status:** experimental, version 0.1.0 (pre-release). The measured results are below: the
 automated checks pass everywhere, but blind judges rate the screens as "correct M3 with minor
-flaws", not first-party quality.
+flaws", not first-party quality, and the project's own release bar is not met.
 
 ## Install
 
@@ -124,6 +124,12 @@ confirmed that the skill's screens are less Expressive in shape and use smaller 
 screens built without it. The project's own release bar
 (every judged item ≥ 2.5 on every platform and better than baseline) is **not met**; the gap report
 lists the reasons and the options being considered.
+
+**Owner's visual check:** the owner looked at a sample of 12 outputs (4 per platform, 3 of them
+hold-out) in light and dark next to reference screens and passed all 12. This is one person's
+pass/fail check that the screens are usable and look like M3; it does not replace the judged
+scores above (overall polish 2.00 on every platform, 4 single scores below 2). Both are reported
+as measured. See also [Known limitations](#known-limitations).
 
 ## Known limitations
 
