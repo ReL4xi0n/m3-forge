@@ -81,7 +81,24 @@ A second run changes a cell's with-skill score to the mean of its two medians, s
 
 ## 2. Web diagnostic: real regression or generation noise?
 
-PENDING (runs in progress): the 9 web baseline and 9 web final cells were run once more (same isolation and harness) and are scored pooled with their first outputs in three blind sessions. The result goes here; it does not change the bar.
+The 9 web baseline and 9 web final cells were run once more (same isolation, harness and skill; $15.2 and $21.3) and scored pooled with their first outputs in three new blind sessions (`evals/runs/p4-webdiag/`, 36 outputs). This does not change the bar.
+
+| item | baseline, 2 runs | final, 2 runs | cells lower in both final runs / higher in both | run-to-run spread (baseline / final) | reading |
+|---|---|---|---|---|---|
+| shape-expressive | 2.89 | 2.39 | 4 / 0 | 0.22 / 0.11 | **real regression** |
+| hierarchy-typography | 2.67 | 2.17 | 2 / 0 | 0.44 / 0.33 | **real regression**, noisier |
+| color-roles | 2.67 | 2.56 | 0 / 0 | 0.44 / 0.00 | within noise |
+| spacing-layout | 2.11 | 2.11 | 0 / 0 | 0.44 / 0.22 | no regression |
+| component-choice | 2.67 | 2.44 | 1 / 0 | 0.22 / 0.44 | noise (it was +0.22 in the step 4 pool) |
+| interaction-states | 2.78 | 2.72 | 1 / 0 | 0.22 / 0.11 | within noise |
+| dark-mode | 2.78 | 2.89 | 0 / 1 | 0.22 / 0.22 | within noise |
+| overall-polish | 1.94 | 2.00 | 0 / 0 | 0.11 / 0.00 | equal |
+
+The same first outputs also moved between the step 4 pool and this one (for example web baseline hierarchy 2.22 there, 2.56 here). Judge sessions therefore shift a 9-cell mean by up to about 0.3 even when the outputs are identical.
+
+Conclusion: two of the four web drops are real. With the skill, web outputs are less Expressive in shape (uniform card radii, one Expressive accent at most) and set page titles and supporting text smaller. The spacing and color drops in the step 4 pool are noise. Automated findings on the repeats: baseline 838, final 0.
+
+Second repeat (ruling P26): the web with-skill score as the mean of the two runs' medians leaves web line 3 not met (hierarchy 2.17 < baseline 2.67, shape 2.39 < 2.89).
 
 ## 3. What the judges said is missing for a 3
 
@@ -116,7 +133,7 @@ Gap texts of the with-skill outputs (final + hold-out) with a median below 3, gr
 | color-roles | container tint spread, low separation | 3 (2) | 0 |
 | color-roles | saturated status fills | 6 (3) | 6 (4) |
 
-Reading: with the skill, web outputs use the M3 type scale literally (smaller page titles and body sizes than the reference screens' display-style headers), stay with the baseline shape set, and leave more empty space on desktop; the mobile-overlap complaint is partly the full-page capture of fixed bars (Phase 4 finding) and is lower with the skill.
+Reading (confirmed for shape and hierarchy by the web diagnostic, section 2): with the skill, web outputs use the M3 type scale literally, with smaller page titles and body text than the reference screens' display-style headers, and they rarely go beyond uniform card radii for shape. The spacing themes, more empty space on desktop and fewer overlaps, did not hold up as a regression in the second run. The mobile-overlap complaint comes partly from the full-page capture of fixed bars, a Phase 4 finding.
 
 ### Other items
 - component-choice (44): requested sections not visible in the captured frame 20; custom chips or radio cards in place of a standard picker 8; no top app bar or back affordance 6.
@@ -168,4 +185,4 @@ All three below are changes for a future phase; none is applied here.
 ## 7. Not in the bar
 
 - Sonnet check (claude-sonnet-5-5, product-detail, final skill): all three built with 0 findings; medians web 2/2/3/2/2/2/3/2, Flutter 3/3/2/2/3/2/2/2, Compose 2/2/2/2/2/2/3/2 (items in table order); Opus final on the same cells is equal or higher on most items.
-- PC-1 discrimination: PENDING.
+- PC-1 discrimination (rubric-free judge, real reference screens mixed with final with-skill outputs, seed 20261127): 34 items, accuracy 1.00, AUC 1.00, the same as the baseline PC-1 (1.00). The judge named design as the cue only twice. Its other cues: brand 14, system UI 9, language 6, content 3. It tells real screens from generated ones mostly by brand marks, the system status bar and content, not by M3 design quality. So PC-1 cannot measure how close the design comes to first-party screens.
