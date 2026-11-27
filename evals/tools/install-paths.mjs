@@ -55,7 +55,7 @@ const flags = ['--output-format', 'stream-json', '--verbose', '--setting-sources
 runs.forEach((prompt, i) => {
   const work = join(base, `run${i + 1}`); mkdirSync(work, { recursive: true });
   const t0 = Date.now();
-  const r = cli(['-p', quote(prompt), ...flags, '--permission-mode', 'acceptEdits', '--allowedTools', quote('Bash Read Write Edit Glob Grep')], work, 45 * 60000);
+  const r = cli(['-p', quote(prompt), ...flags, '--permission-mode', 'acceptEdits', '--allowedTools', quote('Bash PowerShell Read Write Edit Glob Grep')], work, 45 * 60000);
   writeFileSync(join(evidence, `run${i + 1}.jsonl`), r.stdout ?? '');
   const ev = events(r.stdout ?? '');
   const res = ev.find((e) => e.type === 'result');
