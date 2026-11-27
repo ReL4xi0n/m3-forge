@@ -24,7 +24,7 @@ test('real repo plugin is valid', async () => {
 });
 
 const mutations = [
-  ['disable-model-invocation false', SKILL, s => s.replace('disable-model-invocation: true', 'disable-model-invocation: false'), /disable-model-invocation/],
+  ['disable-model-invocation true', SKILL, s => s.replace('argument-hint:', 'disable-model-invocation: true\nargument-hint:'), /disable-model-invocation/],
   ['skill name changed', SKILL, s => s.replace('name: material3', 'name: material-3'), /name/],
   ['missing $ARGUMENTS', SKILL, s => s.replace('$ARGUMENTS', 'ARGS'), /\$ARGUMENTS/],
   ['empty argument-hint', SKILL, s => s.replace(/argument-hint: .*/, 'argument-hint: ""'), /argument-hint/],

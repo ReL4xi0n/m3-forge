@@ -68,7 +68,7 @@ export async function validatePlugin(repoRoot) {
     } else {
       const { fm, body, lineCount } = parsed;
       if (fm.name !== 'material3') errors.push(`SKILL.md frontmatter name must be "material3" (got "${fm.name}")`);
-      if (fm['disable-model-invocation'] !== 'true') errors.push('SKILL.md must set disable-model-invocation: true');
+      if (fm['disable-model-invocation'] === 'true') errors.push('SKILL.md must not set disable-model-invocation: true (the model may start the skill when asked in plain words)');
       if (!fm['argument-hint']) errors.push('SKILL.md argument-hint must be non-empty');
       if (!body.includes('$ARGUMENTS')) errors.push('SKILL.md body must contain $ARGUMENTS');
       if (lineCount > MAX_SKILL_LINES) errors.push(`SKILL.md must be <= ${MAX_SKILL_LINES} lines (has ${lineCount})`);

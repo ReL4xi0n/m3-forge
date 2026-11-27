@@ -268,7 +268,7 @@ export async function runCell(o) {
   if (!checks.preflight.ok) { rmSync(cfgDir, { recursive: true, force: true }); return record('invalid-isolation', { checks }); }
 
   // The Skill tool stays disallowed in skill runs too: a user-typed slash command loads the skill
-  // without it (canary, 2026-11-17), and disable-model-invocation keeps the model from calling it.
+  // without it (canary, 2026-11-17), and with the Skill tool disallowed the model cannot start it on its own.
   const args = [...claudeCmd.slice(1), '-p', o.promptOverride ?? buildPrompt(cell, root, { skill: Boolean(skill) }),
     '--output-format', 'stream-json', '--verbose', '--model', model,
     '--setting-sources', 'user', '--strict-mcp-config', '--permission-mode', 'acceptEdits',

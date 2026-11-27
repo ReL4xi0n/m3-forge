@@ -28,7 +28,8 @@ paths on each system and troubleshooting.
 /plugin install m3-forge@m3-forge
 ```
 
-Command: `/m3-forge:material3`.
+Command: `/m3-forge:material3`. You can also ask in plain words ("use the material3 skill to build …");
+Claude then starts the skill itself.
 
 A bare `/material3` also worked after a plugin install. In a clean configuration with no other
 skills, Claude Code ran the plugin's skill for it, although the session's command list only shows

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.1 (2026-11-27)
+
+- The skill can be started by Claude when asked in plain words (for example "use the material3
+  skill to …"), not only through the slash command. `disable-model-invocation` is removed.
+
 ## 0.1.0 (2026-11-27, experimental pre-release)
 
 First release of m3-forge, an unofficial skill for Material Design 3. Experimental: the project's

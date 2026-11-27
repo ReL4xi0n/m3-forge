@@ -2,12 +2,11 @@
 name: material3
 description: Build a Material Design 3 (Expressive by default) UI for web, Flutter or Jetpack Compose from a request. An unofficial skill for Material Design 3.
 argument-hint: "<UI request>"
-disable-model-invocation: true
 ---
 
 # Material 3 UI builder
 
-Request: $ARGUMENTS
+Request: $ARGUMENTS (empty: the latest UI request)
 
 Build the requested UI so that it looks like a first-party Material 3 product: M3 Expressive unless
 the request asks for classic Material 3. Below is the order of work. `S` is `${CLAUDE_SKILL_DIR}`; run scripts as `node "S/scripts/<name>/index.mjs" ...`.
